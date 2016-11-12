@@ -1,38 +1,82 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿/* MAIN STYLES */
+
+* {
+    margin: 0;
+    padding: 0;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+
+/*body {
+    background-color: #F5F5F5 !important;
+}*/
+
+.ui.main.grid {
+    left: 18.75%;
+    position: relative;
+    width: 81.25%;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+.ui.fixed.main.menu {
+    display: none;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.ui.left.fixed.vertical.menu {
+    padding-left: 0;
+    padding-right: 0;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
-    width: 100%;
+
+/* smartphone */
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .ui.main.grid .row {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .ui.left.fixed.vertical.menu {
+        display: none;
+    }
+    .ui.fixed.main.menu {
+        display: block;
+    }
+    .ui.main.grid {
+        left: 0%;
+        margin: 0 auto;
+        padding: 2.75rem 0 0;
+        position: relative;
+        width: 100%;
+    }
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+
+/* tablet */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .ui.header.datetime {
+        margin: 3rem 0 1rem;
+    }
+    .ui.left.fixed.vertical.menu {
+        display: none;
+    }
+    .ui.fixed.main.menu {
+        display: block;
+    }
+    .ui.main.grid {
+        left: 0%;
+        padding-top: 2.75rem !important;
+        position: relative;
+        width: 100%;
+    }
+}
+
+
+/*PC Only*/
+
+@media only screen and (min-width: 992px) {
+    .ui.fixed.main.menu {
+        display: none;
+    }
+    .ui.left.fixed.menu {
+        display: block;
+    }
 }
