@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
+using BookStore.Services;
 
 namespace BookStore
 {
@@ -43,6 +44,8 @@ namespace BookStore
             //Configure connection string in "appsettings.json"
             services.AddDbContext<BOOKSTOREContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("BookStore")));
+
+            services.AddScoped<IBookStoreData, BookStoreData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
