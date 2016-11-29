@@ -12,9 +12,7 @@ namespace BookStore.Controllers
         BOOKSTOREContext context = new BOOKSTOREContext();
         public IActionResult Index()
         {
-            Khachhang a = new Khachhang { TenKhachHang = "nguyen a", SoDienThoai = "1235465487" };
-            context.Add(a);
-            context.SaveChanges();
+            
             return View();
         }
         

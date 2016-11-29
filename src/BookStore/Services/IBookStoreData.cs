@@ -8,6 +8,6 @@ namespace BookStore.Services
 {
     public interface IBookStoreData
     {
-        IEnumerable<Khachhang> GetAllCustomer();
+        IEnumerable<KhachHang> GetAllCustomer();
     }
 }

@@ -3,25 +3,37 @@ using System.Collections.Generic;
 
 namespace BookStore.Models
 {
-    public partial class Hanghoa
+    public partial class HangHoa
     {
-        public Hanghoa()
+        public HangHoa()
         {
-            Chitietdonhang = new HashSet<Chitietdonhang>();
-            Chitietphieunhap = new HashSet<Chitietphieunhap>();
+            ChiTietDonHang = new HashSet<ChiTietDonHang>();
+            ChiTietHangHoa = new HashSet<ChiTietHangHoa>();
+            ChiTietPhieuKiemKho = new HashSet<ChiTietPhieuKiemKho>();
+            ChiTietPhieuNhapHang = new HashSet<ChiTietPhieuNhapHang>();
         }
 
-        public int MaHangHoa { get; set; }
-        public int? DaBan { get; set; }
-        public int? TonKho { get; set; }
-        public decimal? GiaBan { get; set; }
+        public int Id { get; set; }
+        public DateTime? NgayTao { get; set; }
+        public string TenHangHoa { get; set; }
+        public int LoaiHangHoaId { get; set; }
+        public int TonKho { get; set; }
+        public int NhaCungCapId { get; set; }
+        public int NhanHieuId { get; set; }
+        public decimal GiaKhoiTao { get; set; }
         public decimal? GiaNhap { get; set; }
-        public int MaTrangThai { get; set; }
+        public decimal? GiaBanSi { get; set; }
+        public decimal? GiaBanLe { get; set; }
+        public int TrangThaiId { get; set; }
+        public int? DaBan { get; set; }
 
-        public virtual ICollection<Chitietdonhang> Chitietdonhang { get; set; }
-        public virtual ICollection<Chitietphieunhap> Chitietphieunhap { get; set; }
-        public virtual Sach MaHangHoaNavigation { get; set; }
-        public virtual Vanphongpham MaHangHoa1 { get; set; }
-        public virtual Trangthai MaTrangThaiNavigation { get; set; }
+        public virtual ICollection<ChiTietDonHang> ChiTietDonHang { get; set; }
+        public virtual ICollection<ChiTietHangHoa> ChiTietHangHoa { get; set; }
+        public virtual ICollection<ChiTietPhieuKiemKho> ChiTietPhieuKiemKho { get; set; }
+        public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
+        public virtual LoaiHangHoa LoaiHangHoa { get; set; }
+        public virtual NhaCungCap NhaCungCap { get; set; }
+        public virtual NhanHieu NhanHieu { get; set; }
+        public virtual TrangThai TrangThai { get; set; }
     }
 }

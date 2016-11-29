@@ -3,21 +3,24 @@ using System.Collections.Generic;
 
 namespace BookStore.Models
 {
-    public partial class Khachhang
+    public partial class KhachHang
     {
-        public Khachhang()
+        public KhachHang()
         {
-            Donhang = new HashSet<Donhang>();
-            Phieutrahang = new HashSet<Phieutrahang>();
+            DonHang = new HashSet<DonHang>();
+            PhieuTraHang = new HashSet<PhieuTraHang>();
         }
 
-        public int MaKhachHang { get; set; }
+        public int Id { get; set; }
         public string TenKhachHang { get; set; }
         public string SoDienThoai { get; set; }
         public string DiaChi { get; set; }
         public string Email { get; set; }
+        public int LoaiKhachHangId { get; set; }
+        public DateTime NgayLap { get; set; }
 
-        public virtual ICollection<Donhang> Donhang { get; set; }
-        public virtual ICollection<Phieutrahang> Phieutrahang { get; set; }
+        public virtual ICollection<DonHang> DonHang { get; set; }
+        public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }
+        public virtual LoaiKhachHang LoaiKhachHang { get; set; }
     }
 }

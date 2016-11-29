@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace BookStore.Models
 {
-    public partial class Trangthai
+    public partial class TrangThai
     {
-        public Trangthai()
+        public TrangThai()
         {
-            Donhang = new HashSet<Donhang>();
-            Hanghoa = new HashSet<Hanghoa>();
+            DonHang = new HashSet<DonHang>();
+            HangHoa = new HashSet<HangHoa>();
         }
 
-        public int MaTrangThai { get; set; }
+        public int Id { get; set; }
         public string TenTrangThai { get; set; }
-
-        public virtual ICollection<Donhang> Donhang { get; set; }
-        public virtual ICollection<Hanghoa> Hanghoa { get; set; }
+        public string VietTat { get; set; }
+        public virtual ICollection<DonHang> DonHang { get; set; }
+        public virtual ICollection<HangHoa> HangHoa { get; set; }
     }
 }

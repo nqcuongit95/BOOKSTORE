@@ -15,9 +15,9 @@ namespace BookStore.Services
             _context = context;
         }
 
-        public IEnumerable<Khachhang> GetAllCustomer()
+        public IEnumerable<KhachHang> GetAllCustomer()
         {
-            return _context.Khachhang;
+            return _context.KhachHang;
         }
     }
 }

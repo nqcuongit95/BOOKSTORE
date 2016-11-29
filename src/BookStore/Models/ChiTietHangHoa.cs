@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 namespace BookStore.Models
 {
-    public partial class ChiTietDonHang
+    public partial class ChiTietHangHoa
     {
         public int Id { get; set; }
-        public int DonHangId { get; set; }
         public int HangHoaId { get; set; }
-        public int SoLuong { get; set; }
-        public decimal GiaBan { get; set; }
+        public string ThuocTinh { get; set; }
+        public string GiaTri { get; set; }
 
-        public virtual DonHang DonHang { get; set; }
         public virtual HangHoa HangHoa { get; set; }
     }
 }
