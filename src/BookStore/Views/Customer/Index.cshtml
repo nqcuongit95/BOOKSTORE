@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Khachhang>
+
+@{
+    ViewData["Title"] = "Khách hàng";
+}
+
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Khách Hàng</h2>
+
+        <div class="right menu">
+            <a class="ui active item" asp-action="Index">
+                Danh Sách
+            </a>
+            <a class="ui item" asp-action="CreateCustomer">
+                Thêm Mới
+            </a>
+            <a class="ui item">
+                Transactions
+            </a>
+        </div>
+    </div>
+}
+
+    <div class="ui header">Danh Sách Khách Hàng</div>
+
+    <div class="row">
+        <div class="ten wide column">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Tên Khách Hàng</th>
+                        <th>Số Điện Thoại</th>
+                        <th>Địa Chỉ</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customer in Model)
+                    {
+                        <tr>
+                            <td>@customer.TenKhachHang</td>
+                            <td>@customer.SoDienThoai</td>
+                            <td>@customer.DiaChi</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
