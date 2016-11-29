@@ -9,5 +9,10 @@ namespace BookStore.Services
     public interface IBookStoreData
     {
         IEnumerable<KhachHang> GetAllCustomer();
+
+        void CreateCustomer(KhachHang customer);
+
+        IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang();
+
     }
 }

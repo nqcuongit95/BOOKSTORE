@@ -73,7 +73,7 @@
                     Đơn Hàng
                     <div class="ui label">22</div>
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="Customer" asp-action="Index">
                     Khách Hàng
                 </a>
                 <a class="item" asp-controller="" asp-action="">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-
+                @RenderSection("menu",false)
                 @RenderBody()
 
             </div>

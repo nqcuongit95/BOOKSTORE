@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<Khachhang>
+﻿@model KhachHangViewModel
 
 @{
     ViewData["Title"] = "Khách hàng";
@@ -23,29 +22,40 @@
     </div>
 }
 
-
+<div class="row right aligned">
+    <div class="ui header">
+        Thêm Mới Khách Hàng
+    </div>
+</div>
 <div class="ui ten wide column">
-    <div class="ui right floated header">Thêm Mới Khách Hàng</div>
 
     <form class="ui form" method="post" asp-action="CreateCustomer">
-        <div class="field">
-            <label>Tên Khách Hàng</label>
-            <input type="text" name="TenKhachHang" placeholder="Tên">
+        <div class="two fields">
+            <div class="field">
+                <label>Tên Khách Hàng</label>
+                <input type="text" asp-for="@Model.KhachHang.TenKhachHang" placeholder="Tên">
+            </div>
+            <div class="field">
+                <label>Loại Khách Hàng</label>
+                <select class="ui fluid dropdown" asp-for="@Model.KhachHang.LoaiKhachHangId" asp-items="@Model.LoaiKhachHang"></select>
+            </div>
         </div>
         <div class="field">
             <label>Số Điện Thoại</label>
-            <input type="text" name="SoDienThoai" placeholder="Số điện thoại">
+            <input type="text" asp-for="@Model.KhachHang.SoDienThoai" placeholder="Số điện thoại">
         </div>
         <div class="field">
             <label>Địa Chỉ</label>
-            <input type="text" name="DiaChi" placeholder="Địa chỉ">
+            <input type="text" asp-for="@Model.KhachHang.DiaChi" placeholder="Địa chỉ">
         </div>
         <div class="field">
             <label>Email</label>
-            <input type="text" name="Email" placeholder="Email">
-        </div>        
+            <input type="text" asp-for="@Model.KhachHang.Email" placeholder="Email">
+        </div>
         <button class="ui primary button" type="submit">Thêm</button>
     </form>
 </div>
+
+<script src="~/js/KhachHang.js"></script>
 
 

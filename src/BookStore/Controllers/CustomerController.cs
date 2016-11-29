@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.Models;
+using BookStore.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,16 +28,22 @@ namespace BookStore.Controllers
 
         public IActionResult CreateCustomer()
         {
-            return View();
+            var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
+            var model = new KhachHangViewModel();
+            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang");
+             
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateCustomer(Khachhang model)
+        public IActionResult CreateCustomer(KhachHangViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _bookStoreData.CreateCustomer(model);
+                model.KhachHang.NgayLap = DateTime.Now;
+                _bookStoreData.CreateCustomer(model.KhachHang);
+
                 return RedirectToAction("Index");
             }
 
