@@ -23,11 +23,12 @@ namespace BookStore.Models
         public virtual DbSet<Tacgia> Tacgia { get; set; }
         public virtual DbSet<Theloaisach> Theloaisach { get; set; }
         public virtual DbSet<Trangthai> Trangthai { get; set; }
-        public virtual DbSet<Vanphongpham> Vanphongpham { get; set; }        
+        public virtual DbSet<Vanphongpham> Vanphongpham { get; set; }
 
-        public BOOKSTOREContext(DbContextOptions options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseSqlServer(@"Server=NGUYENQUOCCUONG;Database=BOOKSTORE;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,9 +40,7 @@ namespace BookStore.Models
 
                 entity.ToTable("CHITIETDONHANG");
 
-                entity.Property(e => e.MaCtdh)
-                    .HasColumnName("MaCTDH")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaCtdh).HasColumnName("MaCTDH");
 
                 entity.Property(e => e.GiaBan).HasColumnType("money");
 
@@ -65,9 +64,7 @@ namespace BookStore.Models
 
                 entity.ToTable("CHITIETPHIEUNHAP");
 
-                entity.Property(e => e.MaCtpn)
-                    .HasColumnName("MaCTPN")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaCtpn).HasColumnName("MaCTPN");
 
                 entity.Property(e => e.GiaNhap).HasColumnType("money");
 
@@ -91,9 +88,7 @@ namespace BookStore.Models
 
                 entity.ToTable("CHITIETPHIEUTRA");
 
-                entity.Property(e => e.MaCtpt)
-                    .HasColumnName("MaCTPT")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaCtpt).HasColumnName("MaCTPT");
 
                 entity.Property(e => e.MaCtdh).HasColumnName("MaCTDH");
 
@@ -116,8 +111,6 @@ namespace BookStore.Models
                     .HasName("PK_DONHANG");
 
                 entity.ToTable("DONHANG");
-
-                entity.Property(e => e.MaDonHang).ValueGeneratedNever();
 
                 entity.Property(e => e.NgayGiaoHang).HasColumnType("datetime");
 
@@ -151,7 +144,7 @@ namespace BookStore.Models
 
                 entity.ToTable("HANGHOA");
 
-                entity.Property(e => e.MaHangHoa).ValueGeneratedNever();
+                entity.Property(e => e.MaHangHoa).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.GiaBan).HasColumnType("money");
 
@@ -183,8 +176,6 @@ namespace BookStore.Models
 
                 entity.ToTable("HINHTHUCVANCHUYEN");
 
-                entity.Property(e => e.MaVanChuyen).ValueGeneratedNever();
-
                 entity.Property(e => e.HinhThucVanChuyen)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -196,8 +187,6 @@ namespace BookStore.Models
                     .HasName("PK_KHACHHANG");
 
                 entity.ToTable("KHACHHANG");
-
-                entity.Property(e => e.MaKhachHang).ValueGeneratedNever();
 
                 entity.Property(e => e.DiaChi).HasMaxLength(50);
 
@@ -219,9 +208,7 @@ namespace BookStore.Models
 
                 entity.ToTable("NHACUNGCAP");
 
-                entity.Property(e => e.MaNcc)
-                    .HasColumnName("MaNCC")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaNcc).HasColumnName("MaNCC");
 
                 entity.Property(e => e.Email).HasColumnType("varchar(30)");
 
@@ -242,13 +229,11 @@ namespace BookStore.Models
 
                 entity.ToTable("NHASANXUAT");
 
-                entity.Property(e => e.MaNsx)
-                    .HasColumnName("MaNSX")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaNsx).HasColumnName("MaNSX");
 
                 entity.Property(e => e.TenNsx)
                     .HasColumnName("TenNSX")
-                    .HasColumnType("varchar(50)");
+                    .HasMaxLength(50);
 
                 entity.HasOne(d => d.MaQuocGiaNavigation)
                     .WithMany(p => p.Nhasanxuat)
@@ -263,9 +248,7 @@ namespace BookStore.Models
 
                 entity.ToTable("NHAXUATBAN");
 
-                entity.Property(e => e.MaNxb)
-                    .HasColumnName("MaNXB")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaNxb).HasColumnName("MaNXB");
 
                 entity.Property(e => e.TenNxb)
                     .IsRequired()
@@ -286,8 +269,6 @@ namespace BookStore.Models
 
                 entity.ToTable("PHIEUNHAPHANG");
 
-                entity.Property(e => e.MaPhieuNhap).ValueGeneratedNever();
-
                 entity.Property(e => e.MaNcc).HasColumnName("MaNCC");
 
                 entity.Property(e => e.NgayNhap).HasColumnType("datetime");
@@ -305,8 +286,6 @@ namespace BookStore.Models
                     .HasName("PK_PHIEUTRAHANG");
 
                 entity.ToTable("PHIEUTRAHANG");
-
-                entity.Property(e => e.MaPhieuTra).ValueGeneratedNever();
 
                 entity.Property(e => e.GhiChu).HasMaxLength(80);
 
@@ -332,9 +311,7 @@ namespace BookStore.Models
 
                 entity.ToTable("QUOCGIA");
 
-                entity.Property(e => e.MaQuocGia).ValueGeneratedNever();
-
-                entity.Property(e => e.TenQuocGia).HasColumnType("varchar(50)");
+                entity.Property(e => e.TenQuocGia).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Sach>(entity =>
@@ -386,8 +363,6 @@ namespace BookStore.Models
 
                 entity.ToTable("TACGIA");
 
-                entity.Property(e => e.MaTacGia).ValueGeneratedNever();
-
                 entity.Property(e => e.TenTacGia)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -406,8 +381,6 @@ namespace BookStore.Models
 
                 entity.ToTable("THELOAISACH");
 
-                entity.Property(e => e.MaLoaiSach).ValueGeneratedNever();
-
                 entity.Property(e => e.TenLoaiSach)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -419,8 +392,6 @@ namespace BookStore.Models
                     .HasName("PK_TRANGTHAI");
 
                 entity.ToTable("TRANGTHAI");
-
-                entity.Property(e => e.MaTrangThai).ValueGeneratedNever();
 
                 entity.Property(e => e.TenTrangThai)
                     .IsRequired()
