@@ -21,14 +21,19 @@ namespace BookStore.Services
             _context.SaveChanges();
         }
 
-        public IEnumerable<KhachHang> GetAllCustomer()
+        public IEnumerable<KhachHang> GetAllKhachHang()
         {
-            return _context.KhachHang;
+            return _context.KhachHang.ToList();
         }
 
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
         {
             return _context.LoaiKhachHang;
+        }
+
+        public string GetTenLoaiKhachHang(int id)
+        {
+            return _context.LoaiKhachHang.First(i => i.Id == id).TenLoaiKhachHang;
         }
     }
 }

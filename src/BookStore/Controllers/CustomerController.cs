@@ -5,6 +5,8 @@ using BookStore.Models;
 using BookStore.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,9 +23,24 @@ namespace BookStore.Controllers
 
         public IActionResult Index()
         {
-            var model = _bookStoreData.GetAllCustomer();
+            List<ThongTinKhachHangViewModel> models = new List<ThongTinKhachHangViewModel>();
+                       
+            var customers = _bookStoreData.GetAllKhachHang();
 
-            return View(model);
+            foreach (var item in customers)
+            {
+                var customerInfos = new ThongTinKhachHangViewModel();
+
+                customerInfos.TenKhachHang = item.TenKhachHang;
+                customerInfos.SoDienThoai = item.SoDienThoai;
+                customerInfos.DiaChi = item.DiaChi;
+                customerInfos.Email = item.Email;
+                customerInfos.NgayLap = item.NgayLap;
+                customerInfos.TenLoaiKhachHang = _bookStoreData.GetTenLoaiKhachHang(item.LoaiKhachHangId);
+                models.Add(customerInfos);
+            }
+            
+            return View(models);
         }
 
         public IActionResult CreateCustomer()

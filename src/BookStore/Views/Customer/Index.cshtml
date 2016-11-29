@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KhachHang>
+﻿@model IEnumerable<ThongTinKhachHangViewModel>
 
 @{
     ViewData["Title"] = "Khách hàng";
@@ -26,14 +26,16 @@
     <div class="ui header">Danh Sách Khách Hàng</div>
 
     <div class="row">
-        <div class="ten wide column">
+        <div class="fourteen wide column">
             <table class="ui celled table">
                 <thead>
                     <tr>
                         <th>Tên Khách Hàng</th>
                         <th>Số Điện Thoại</th>
                         <th>Địa Chỉ</th>
-                        <th></th>
+                        <th>Email</th>
+                        <th>Loại Khách Hàng</th>
+                        <th>Ngày Lập</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +45,9 @@
                             <td>@customer.TenKhachHang</td>
                             <td>@customer.SoDienThoai</td>
                             <td>@customer.DiaChi</td>
+                            <td>@customer.Email</td>
+                            <td>@customer.TenLoaiKhachHang</td>
+                            <td>@customer.NgayLap</td>
                         </tr>
                     }
                 </tbody>
