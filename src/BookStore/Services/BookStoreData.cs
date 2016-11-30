@@ -15,9 +15,25 @@ namespace BookStore.Services
             _context = context;
         }
 
-        public IEnumerable<KhachHang> GetAllCustomer()
+        public void CreateCustomer(KhachHang customer)
         {
-            return _context.KhachHang;
+            _context.Add(customer);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<KhachHang> GetAllKhachHang()
+        {
+            return _context.KhachHang.ToList();
+        }
+
+        public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
+        {
+            return _context.LoaiKhachHang;
+        }
+
+        public string GetTenLoaiKhachHang(int id)
+        {
+            return _context.LoaiKhachHang.First(i => i.Id == id).TenLoaiKhachHang;
         }
     }
 }

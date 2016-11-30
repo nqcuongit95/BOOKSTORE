@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ThongTinKhachHangViewModel>
+
+@{
+    ViewData["Title"] = "Khách hàng";
+}
+
+
+@section menu{
+    <div class="ui secondary pointing fluid sticky menu">
+        <h2 class="ui header">Khách Hàng</h2>
+
+        <div class="right menu">
+            <a class="ui active item" asp-action="Index">
+                Danh Sách
+            </a>
+            <a class="ui item" asp-action="CreateCustomer">
+                Thêm Mới
+            </a>
+            <a class="ui item">
+                Transactions
+            </a>
+        </div>
+    </div>
+}
+
+<div class="ui header">Danh Sách Khách Hàng</div>
+
+<div class="row" id="context">
+    <div class="sixteen wide column">
+        <table class="ui fixed sortable celled  table">
+            <thead>
+                <tr>
+                    <th class="sorted ascending">Tên Khách Hàng</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Địa Chỉ</th>
+                    <th>Email</th>
+                    <th>Loại Khách Hàng</th>
+                    <th>Ngày Lập</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@customer.TenKhachHang</td>
+                        <td>@customer.SoDienThoai</td>
+                        <td>@customer.DiaChi</td>
+                        <td>@customer.Email</td>
+                        <td>@customer.TenLoaiKhachHang</td>
+                        <td>@customer.NgayLap</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/js/KhachHang.js"></script>
+<script src="~/js/tablesort.js"></script>

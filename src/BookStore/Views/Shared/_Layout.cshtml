@@ -73,7 +73,7 @@
                     Đơn Hàng
                     <div class="ui label">22</div>
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="Customer" asp-action="Index">
                     Khách Hàng
                 </a>
                 <a class="item" asp-controller="" asp-action="">
@@ -87,7 +87,7 @@
             <div class="ui main centered grid">
 
                 <!-- Responsive top menu -->
-                <div class="ui fixed inverted main menu">
+                <div class="ui fixed inverted main menu responsive">
                     <div class="ui container">
                         <a class="launch icon item sidebar-toggle">
                             <i class="sidebar icon"></i>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-
+                @RenderSection("menu",false)
                 @RenderBody()
 
             </div>
