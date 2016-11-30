@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookStore.Services
-{    
+{
     public class BookStoreData : IBookStoreData
     {
         private BOOKSTOREContext _context;
