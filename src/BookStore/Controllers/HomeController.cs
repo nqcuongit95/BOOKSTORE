@@ -12,7 +12,6 @@ namespace BookStore.Controllers
         BOOKSTOREContext context = new BOOKSTOREContext();
         public IActionResult Index()
         {
-            
             return View();
         }
         
