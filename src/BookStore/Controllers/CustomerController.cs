@@ -47,7 +47,7 @@ namespace BookStore.Controllers
         {
             var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
             var model = new KhachHangViewModel();
-            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang");
+            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang",3);
              
             return View(model);
         }
