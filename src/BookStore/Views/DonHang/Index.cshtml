@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DonHangViewModels>
+
+@{
+    ViewData["Title"] = "Don Hang";
+    //var model = ViewBag.listdh;
+}
+
+<div class="ui pointing secondary fluid menu" style="padding:0">
+    <div class="right menu">
+        <a class="active item" data-tab="first">Đơn hàng</a>
+        <a class="item" data-tab="second">Tạo đơn hàng</a>
+        <a class="item" data-tab="third">Third</a>
+    </div>
+    
+</div>
+<div class="ui active tab segment" data-tab="first">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Trạng thái</th>
+                <th>Tổng tiền</th>
+                <th>Ngày lập</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var donhang in Model)
+            {
+                <tr>
+                    <td>@donhang.MaDonHang</td>
+                    <td>@donhang.KhachHang</td>
+                    <td>@donhang.TrangThai</td>
+                    <td>@donhang.TongTien</td>
+                    <td>@donhang.NgayLap</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="ui tab segment" data-tab="second">
+</div>
+<div class="ui tab segment" data-tab="third">
+</div>
+
+<script>
+    $('.menu .item')
+  .tab()
+    ;
+</script>
