@@ -39,7 +39,7 @@ namespace BookStore.Controllers
                 customerInfos.TenLoaiKhachHang = _bookStoreData.GetTenLoaiKhachHang(item.LoaiKhachHangId);
                 models.Add(customerInfos);
             }
-            
+
             return View(models);
         }
 
