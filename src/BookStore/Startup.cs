@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace BookStore
 {
@@ -36,6 +39,10 @@ namespace BookStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
@@ -46,13 +53,42 @@ namespace BookStore
                 options => options.UseSqlServer(Configuration.GetConnectionString("BookStore")));
 
             services.AddScoped<IBookStoreData, BookStoreData>();
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            CultureInfo[] supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("vi-VN")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("vi-VN"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home";
+                    await next();
+                }
+            });
 
             app.UseApplicationInsightsRequestTelemetry();
 

@@ -29,6 +29,17 @@ namespace BookStore.Models
         public BOOKSTOREContext(DbContextOptions<BOOKSTOREContext> options) : base(options)
         { }
 
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    ConfigurationBuilder builder = new ConfigurationBuilder();
+        //    builder.SetBasePath(Directory.GetCurrentDirectory());
+        //    builder.AddJsonFile("appsettings.json");
+
+        //    IConfigurationRoot connectionStringConfig = builder.Build();
+
+        //    optionsBuilder.UseSqlServer(connectionStringConfig.GetConnectionString("BookStore"));
+        //}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietDonHang>(entity =>

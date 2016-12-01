@@ -1,0 +1,35 @@
+﻿@model string
+
+@{
+    var actionTitle = string.Empty;
+}
+<div class="header-menu">
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@ViewData["Title"]</h2>
+
+        <div class="right menu">
+            @foreach (var item in NhaCungCapActionMenu.Elements)
+            {
+                if (Model == item.Key)
+                {
+                    actionTitle = @item.Value.Name;
+
+                    <a class="active item">
+                        @item.Value.Name
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller=@item.Value.Controller asp-action="@item.Value.Action"
+                       class="item">
+                        @item.Value.Name
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
+    <h2 class="action-title ui right aligned header">
+        @actionTitle
+    </h2>
+</div>

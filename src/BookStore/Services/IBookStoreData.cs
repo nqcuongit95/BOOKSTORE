@@ -8,5 +8,7 @@ namespace BookStore.Services
 {
     public interface IBookStoreData
     {
+        IQueryable<NhaCungCap> GetAllNhaCungCap();
+        Task<int> CountNhaCungCap();
     }
 }
