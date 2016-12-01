@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DonHangViewModels>
+﻿@model IEnumerable<BookStore.Models.DonHang>
 
 @{
     ViewData["Title"] = "Don Hang";
@@ -28,11 +28,16 @@
             @foreach (var donhang in Model)
             {
                 <tr>
-                    <td>@donhang.MaDonHang</td>
-                    <td>@donhang.KhachHang</td>
-                    <td>@donhang.TrangThai</td>
+                    @*<td>@donhang.Id</td>*@
+                    <td>@Html.DisplayFor(md => donhang.Id)</td>
+                    <td>@Html.DisplayFor(md => donhang.KhachHang.TenKhachHang)</td>
+                    @*<td>@Html.DisplayFor(md => donhang.TrangThai.TenTrangThai)</td>*@
+                    <td>@Html.DisplayFor(md => donhang.TongTien)</td>
+                    <td>@Html.DisplayFor(md => donhang.NgayLap)</td>
+                    @*<td>@donhang.KhachHang.TenKhachHang</td>
+                    <td>@donhang.TrangThai.TenTrangThai</td>
                     <td>@donhang.TongTien</td>
-                    <td>@donhang.NgayLap</td>
+                    <td>@donhang.NgayLap</td>*@
                 </tr>
             }
         </tbody>

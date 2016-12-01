@@ -1,4 +1,5 @@
 ﻿using BookStore.Models;
+using BookStore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace BookStore.Services
     {
         IEnumerable<KhachHang> GetAllCustomer();
 
-        List<object> GetAllDonHang();
+        //List<object> GetAllDonHang();
         IEnumerable<DonHang> GetDonHang();
     }
 }
