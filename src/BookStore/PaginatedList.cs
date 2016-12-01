@@ -11,6 +11,37 @@ namespace BookStore
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
 
+    public class Paginated
+    {
+        public int PageIndex { get; private set; }
+        public int TotalPages { get; private set; }
+
+        public string Href { get; private set; }
+
+        public Paginated(int pageIndex, int totalPages, string href)
+        {
+            PageIndex = pageIndex;
+            TotalPages = totalPages;
+            Href = href;
+        }
+
+        public bool HasPreviousPage
+        {
+            get
+            {
+                return (PageIndex > 1);
+            }
+        }
+
+        public bool HasNextPage
+        {
+            get
+            {
+                return (PageIndex > 0) && (PageIndex < TotalPages);
+            }
+        }
+    }
+
     public class PaginatedList<T> : List<T>
     {
         public int PageIndex { get; private set; }
