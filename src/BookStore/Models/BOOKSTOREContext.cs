@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace BookStore.Models
 {
@@ -24,11 +26,8 @@ namespace BookStore.Models
         public virtual DbSet<ThuocTinhHangHoa> ThuocTinhHangHoa { get; set; }
         public virtual DbSet<TrangThai> TrangThai { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=NGUYENQUOCCUONG;Database=BOOKSTORE;Trusted_Connection=True;");
-        }
+        public BOOKSTOREContext(DbContextOptions<BOOKSTOREContext> options) : base(options)
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
