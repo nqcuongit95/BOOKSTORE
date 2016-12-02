@@ -23,14 +23,20 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
+            ViewData["QueryName"] = nameof(searchString);
             ViewData["SortDirection"] = "up";
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
 
             var customers = _bookStoreData.GetAllKhachHang();
-            
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.TenKhachHang.Contains(searchString));
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":

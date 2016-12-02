@@ -1,6 +1,10 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
 
+    $('#search-input').bind("enterKey", function (e) {
+        alert("fck me!");
+    });
+
     $(".ui.fluid.dropdown").dropdown();
 
     $('.ui.sticky').sticky({
