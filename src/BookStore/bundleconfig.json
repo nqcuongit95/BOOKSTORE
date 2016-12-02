@@ -5,15 +5,13 @@
     "outputFileName": "wwwroot/css/site.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
-      "wwwroot/css/site.css",
-      "wwwroot/css/hanghoa.css"
+      "wwwroot/css/site.css"
     ]
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js",
-      "wwwroot/js/hanghoa.js"
+      "wwwroot/js/site.js"
     ],
     // Optionally specify minification options
     "minify": {
@@ -21,6 +19,34 @@
       "renameLocals": true
     },
     // Optinally generate .map file
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/noname.min.css",
+    "inputFiles": [
+      "wwwroot/css/noname.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/noname.min.js",
+    "inputFiles": [
+      "wwwroot/js/noname.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/noname.validate.min.js",
+    "inputFiles": [
+      "wwwroot/js/noname.validate.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
     "sourceMap": false
   }
 ]

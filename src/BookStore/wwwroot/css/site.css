@@ -31,41 +31,6 @@
     padding-right: 0;
 }
 
-.page-container {
-    position: relative;
-    margin-bottom: 16px !important;
-}
-
-    .page-container .pagination.menu .item {
-        position: relative;
-    }
-
-    .page-container .pagination.menu .first,
-    .page-container .pagination.menu .last {
-        min-width: 72px !important;
-    }
-
-        .page-container .pagination.menu .first .icon,
-        .page-container .pagination.menu .last .icon {
-            margin: 0 5px !important;
-            position: absolute;
-        }
-
-    .page-container .pagination.menu .previous::before {
-        background: none;
-    }
-
-    .page-container .pagination.menu .ui.selection.dropdown {
-        min-width: 64px;
-        height: 100%;
-        margin: 0 !important;
-        border: none;
-    }
-
-.header-menu {
-    width: 100%;
-}
-
 /* smartphone */
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {

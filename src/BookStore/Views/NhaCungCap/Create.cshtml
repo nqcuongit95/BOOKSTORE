@@ -1,10 +1,10 @@
-﻿@model PaginatedList<NhaCungCap>
+﻿@model NhaCungCap
 
 @{
     ViewData["Title"] = "Nhà cung cấp";
 }
 
-@await Html.PartialAsync("~/Views/NhaCungCap/_HeaderMenuPartial.cshtml", "Index")
+@await Html.PartialAsync("~/Views/NhaCungCap/_HeaderMenuPartial.cshtml", "Create")
 
 <div class="page-container">
     <div class="ui sixteen column grid">
@@ -12,8 +12,10 @@
             @await Html.PartialAsync("_HangHoaMenuPartial", "NhaCungCap")
         </div>
 
-        <div class="twelve wide column">
-            @await Html.PartialAsync("~/Views/NhaCungCap/_IndexPartial.cshtml", Model)
+        <div class="twelve wide column left aligned">
+            <div class="row">
+                @await Html.PartialAsync("~/Views/NhaCungCap/_CreatePartial.cshtml", Model)
+            </div>
         </div>
     </div>
 </div>
@@ -21,5 +23,6 @@
 @section Additional {
     @{
         await Html.RenderPartialAsync("_NonamePartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

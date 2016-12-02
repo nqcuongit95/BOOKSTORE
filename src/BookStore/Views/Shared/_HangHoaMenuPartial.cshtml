@@ -1,22 +1,21 @@
 ﻿@model string
 
-<div class="sub-menu four wide column">
-    <div class="ui secondary vertical menu">
-        @foreach (var item in HangHoaMenu.Elements)
+<div class="sub-menu ui secondary vertical menu">
+    @foreach (var item in HangHoaMenu.Elements)
+    {
+        if (Model == item.Key)
         {
-            if (Model == item.Key)
-            {
-                <a class="active item">
-                    @item.Value.Name
-                </a>
-            }
-            else
-            {
-                <a asp-controller=@item.Value.Controller asp-action="@item.Value.Action"
-                   class="item">
-                    @item.Value.Name
-                </a>
-            }
+            <a class="active item">
+                @item.Value.Name
+            </a>
         }
-    </div>
+        else
+        {
+            <a asp-controller=@item.Value.Controller
+               asp-action="@item.Value.Action"
+               class="item">
+                @item.Value.Name
+            </a>
+        }
+    }
 </div>

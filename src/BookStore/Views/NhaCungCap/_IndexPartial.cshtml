@@ -1,0 +1,55 @@
+﻿@model PaginatedList<NhaCungCap>
+
+<table class="data-table ui fixed table">
+    <thead>
+        <tr>
+            <th>Tên nhà cung cấp</th>
+            <th>Ngày lập</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr asp-action="Edit"
+                asp-route-id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayLap)
+                </td>
+                <td class="action-buttons">
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="ui basic icon button">
+                        <i class="edit icon"></i>
+                    </a>
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="ui basic icon button">
+                        <i class="file text outline icon"></i>
+                    </a>
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="ui basic icon button">
+                        <i class="trash icon"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{var paginated = new Paginated(
+                                      Model.PageIndex,
+                                      Model.TotalPages,
+                                      "/HangHoa/NhaCungCap?page=");
+}
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+@section Additional {
+    @{
+        await Html.RenderPartialAsync("_NonamePartial");
+    }
+}

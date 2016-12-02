@@ -11,11 +11,9 @@ using BookStore.Models;
 
 namespace BookStore.Controllers
 {
-    [Route("HangHoa/NhaCungCap")]
     public class NhaCungCapController : Controller
     {
         private readonly IBookStoreData _bookStoreData = null;
-        private readonly IStringLocalizer<NhaCungCapController> _localizer;
 
         public NhaCungCapController(IBookStoreData bookStoreData)
         {
@@ -23,6 +21,7 @@ namespace BookStore.Controllers
         }
 
         [HttpGet]
+        [Route("HangHoa/NhaCungCap")]
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             try
@@ -37,5 +36,22 @@ namespace BookStore.Controllers
             }
             catch (Exception) { return NotFound(); }
         }
+
+        [HttpGet]
+        [Route("HangHoa/NhaCungCap/Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,NgayLap,TenNhaCungCap")] NhaCungCap nhaCungCap)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //    }
+        //    return View(nhaCungCap);
+        //}
     }
 }
