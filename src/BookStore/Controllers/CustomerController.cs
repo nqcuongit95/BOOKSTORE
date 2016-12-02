@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,26 +23,33 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            List<ThongTinKhachHangViewModel> models = new List<ThongTinKhachHangViewModel>();
-                       
+            ViewData["SortDirection"] = "up";
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
             var customers = _bookStoreData.GetAllKhachHang();
-
-            foreach (var item in customers)
+            
+            switch (sortOrder)
             {
-                var customerInfos = new ThongTinKhachHangViewModel();
-
-                customerInfos.TenKhachHang = item.TenKhachHang;
-                customerInfos.SoDienThoai = item.SoDienThoai;
-                customerInfos.DiaChi = item.DiaChi;
-                customerInfos.Email = item.Email;
-                customerInfos.NgayLap = item.NgayLap;
-                customerInfos.TenLoaiKhachHang = _bookStoreData.GetTenLoaiKhachHang(item.LoaiKhachHangId);
-                models.Add(customerInfos);
+                case "name_desc":
+                    customers = customers.OrderByDescending(c => c.TenKhachHang);
+                        ViewData["SortDirection"] = "down";
+                    break;
+                case "Date":
+                    customers = customers.OrderBy(c => c.NgayLap);
+                    break;
+                case "date_desc":
+                    customers = customers.OrderByDescending(c => c.NgayLap);
+                    break;
+                default:
+                    customers = customers.OrderBy(c => c.TenKhachHang);
+                    ViewData["SortDirection"] = "up";
+                    break;
             }
 
-            return View(models);
+            return View(await customers.AsNoTracking().ToListAsync());
         }
 
         public IActionResult CreateCustomer()

@@ -1,4 +1,5 @@
 ﻿using BookStore.Models;
+using BookStore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,21 @@ namespace BookStore.Services
             _context.SaveChanges();
         }
 
-        public IEnumerable<KhachHang> GetAllKhachHang()
+        public IQueryable<CustomerInfoViewModel> GetAllKhachHang()
         {
-            return _context.KhachHang.ToList();
+            var query = from customer in _context.KhachHang
+                        join type in _context.LoaiKhachHang
+                        on customer.LoaiKhachHangId equals type.Id
+                        select new CustomerInfoViewModel
+                        {
+                            TenKhachHang = customer.TenKhachHang,
+                            SoDienThoai = customer.SoDienThoai,
+                            Email = customer.Email,
+                            TenLoaiKhachHang = type.TenLoaiKhachHang,
+                            NgayLap = customer.NgayLap
+                        };
+
+            return query;
         }
 
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()

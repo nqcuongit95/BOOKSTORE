@@ -1,4 +1,5 @@
 ﻿using BookStore.Models;
+using BookStore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace BookStore.Services
 {
     public interface IBookStoreData
     {
-        IEnumerable<KhachHang> GetAllKhachHang();
+        IQueryable<CustomerInfoViewModel> GetAllKhachHang();
 
         void CreateCustomer(KhachHang customer);
 

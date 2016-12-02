@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ThongTinKhachHangViewModel>
+﻿@model IEnumerable<CustomerInfoViewModel>
 
 @{
     ViewData["Title"] = "Khách hàng";
@@ -27,15 +27,25 @@
 
 <div class="row" id="context">
     <div class="sixteen wide column">
-        <table class="ui fixed sortable celled  table">
+        <table class="ui fixed celled table">
             <thead>
                 <tr>
-                    <th class="sorted ascending">Tên Khách Hàng</th>
-                    <th>Số Điện Thoại</th>
-                    <th>Địa Chỉ</th>
+                    <th>
+                        <a asp-action="Index"                            
+                           asp-route-sortOrder="@ViewData["NameSortParm"]">
+                            Tên Khách Hàng
+                            <i class="caret @ViewData["SortDirection"] icon"></i>
+                        </a>
+                    </th>
+                    <th>Số Điện Thoại</th>                   
                     <th>Email</th>
                     <th>Loại Khách Hàng</th>
-                    <th>Ngày Lập</th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["DateSortParm"]">
+                            Ngày Lập
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -43,8 +53,7 @@
                 {
                     <tr>
                         <td>@customer.TenKhachHang</td>
-                        <td>@customer.SoDienThoai</td>
-                        <td>@customer.DiaChi</td>
+                        <td>@customer.SoDienThoai</td>                        
                         <td>@customer.Email</td>
                         <td>@customer.TenLoaiKhachHang</td>
                         <td>@customer.NgayLap</td>
@@ -56,4 +65,3 @@
 </div>
 
 <script src="~/js/KhachHang.js"></script>
-<script src="~/js/tablesort.js"></script>
