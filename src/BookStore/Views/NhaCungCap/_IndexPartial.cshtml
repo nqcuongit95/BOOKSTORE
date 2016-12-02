@@ -11,8 +11,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr asp-action="Edit"
-                asp-route-id="@item.Id">
+            <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.TenNhaCungCap)
                 </td>

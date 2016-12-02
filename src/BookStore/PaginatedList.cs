@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,10 +62,15 @@ namespace BookStore
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {
+            if (pageSize < 1)
+                pageSize = 10;
+
             var count = await source.CountAsync();
             var totalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-            if (pageIndex > totalPages)
+            if (pageIndex < 1)
+                pageIndex = 1;
+            else if (pageIndex > totalPages)
                 pageIndex = totalPages;
 
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
