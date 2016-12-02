@@ -1,6 +1,6 @@
 ﻿@model PaginatedList<NhaCungCap>
 
-<table class="data-table ui fixed table">
+<table class="data-table ui fixed selectable sortable table">
     <thead>
         <tr>
             <th>Tên nhà cung cấp</th>
@@ -20,36 +20,29 @@
                     @Html.DisplayFor(modelItem => item.NgayLap)
                 </td>
                 <td class="action-buttons">
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id"
-                       class="ui basic icon button">
-                        <i class="edit icon"></i>
-                    </a>
-                    <a asp-action="Details"
-                       asp-route-id="@item.Id"
-                       class="ui basic icon button">
-                        <i class="file text outline icon"></i>
-                    </a>
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id"
-                       class="ui basic icon button">
-                        <i class="trash icon"></i>
-                    </a>
+                    <div class="ui floated menu">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="popup icon item"
+                           data-content="Cập nhật">
+                            <i class="edit icon"></i>
+                        </a>
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="popup icon item"
+                           data-content="Chi tiết">
+                            <i class="file text outline icon"></i>
+                        </a>
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="popup icon item"
+                           data-content="Xóa">
+                            <i class="trash icon"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@{var paginated = new Paginated(
-                                      Model.PageIndex,
-                                      Model.TotalPages,
-                                      "/HangHoa/NhaCungCap?page=");
-}
-@await Html.PartialAsync("_PaginatedPartial", paginated)
-
-@section Additional {
-    @{
-        await Html.RenderPartialAsync("_NonamePartial");
-    }
-}

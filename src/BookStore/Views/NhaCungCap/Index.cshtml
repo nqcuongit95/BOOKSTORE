@@ -1,5 +1,4 @@
 ﻿@model PaginatedList<NhaCungCap>
-
 @{
     ViewData["Title"] = "Nhà cung cấp";
 }
@@ -14,6 +13,13 @@
 
         <div class="twelve wide column">
             @await Html.PartialAsync("~/Views/NhaCungCap/_IndexPartial.cshtml", Model)
+
+            @{var paginated = new Paginated(
+                                      Model.PageIndex,
+                                      Model.TotalPages,
+                                      "/HangHoa/NhaCungCap?page=");
+            }
+            @await Html.PartialAsync("_PaginatedPartial", paginated)
         </div>
     </div>
 </div>
