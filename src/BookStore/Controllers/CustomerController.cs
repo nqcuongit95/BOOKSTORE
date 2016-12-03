@@ -23,12 +23,27 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString,
+                                               string currentFilter,int? page,                                               
+                                               int? firstShowedPage, int ? lastShowedPage)
         {
             ViewData["QueryName"] = nameof(searchString);
             ViewData["SortDirection"] = "up";
+
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
 
             var customers = _bookStoreData.GetAllKhachHang();
 
@@ -55,7 +70,13 @@ namespace BookStore.Controllers
                     break;
             }
 
-            return View(await customers.AsNoTracking().ToListAsync());
+            int pageSize = 9;
+            int numberOfDisplayPages = 5;
+
+            return View(await PaginatedList<CustomerInfoViewModel>.
+                        CreateAsync(customers, page ?? 1, pageSize,
+                                    numberOfDisplayPages,
+                                    firstShowedPage,lastShowedPage));
         }
 
         public IActionResult CreateCustomer()
