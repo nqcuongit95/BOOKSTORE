@@ -23,6 +23,7 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
+        
         public async Task<IActionResult> Index(string sortOrder, string searchString,
                                                string currentFilter,int? page,                                               
                                                int? firstShowedPage, int ? lastShowedPage)
@@ -103,5 +104,19 @@ namespace BookStore.Controllers
             return View();
         }
 
+
+        public IActionResult Details(int id, string section)
+        {
+            var customer = _bookStoreData.GetKhachHang(id);
+
+            var model = new CustomerDetailsViewModel
+            {
+                ID = customer.ID,
+                Name = customer.TenKhachHang,
+                Section = string.IsNullOrEmpty(section) ? "Details" : section
+            };
+
+            return View(model);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Khách hàng";
-   
+
 }
 
 
@@ -24,10 +24,7 @@
             </a>
             <a class="ui item" asp-action="CreateCustomer">
                 Thêm Mới
-            </a>
-            <a class="ui item">
-                Transactions
-            </a>
+            </a>            
         </div>
     </div>
 }
@@ -36,7 +33,7 @@
 
 <div class="row" id="context">
     <div class="sixteen wide column">
-        <table class="ui five teal selectable table">
+        <table class="ui five teal table">
             <thead>
                 <tr>
                     <th>
@@ -63,18 +60,39 @@
                 @foreach (var customer in Model)
                 {
                     <tr>
-                        <td>@customer.TenKhachHang</td>
-                        <td>@customer.SoDienThoai</td>
-                        <td>@customer.Email</td>
-                        <td>@customer.TenLoaiKhachHang</td>
-                        <td>@customer.NgayLap</td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenKhachHang
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.SoDienThoai
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.Email
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenLoaiKhachHang
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.NgayLap
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>
+
         </table>
 
-        @Html.Partial("_Paginated", Model);
-
+        @Html.Partial("_Paginated", Model)
+        
     </div>
 </div>
 

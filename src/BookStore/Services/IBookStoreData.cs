@@ -17,5 +17,7 @@ namespace BookStore.Services
 
         string GetTenLoaiKhachHang(int id);
 
+        CustomerInfoViewModel GetKhachHang(int id);
+
     }
 }

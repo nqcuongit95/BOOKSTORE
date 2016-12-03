@@ -29,11 +29,13 @@ namespace BookStore.Services
                         on customer.LoaiKhachHangId equals type.Id
                         select new CustomerInfoViewModel
                         {
+                            ID = customer.Id,
                             TenKhachHang = customer.TenKhachHang,
                             SoDienThoai = customer.SoDienThoai,
                             Email = customer.Email,
                             TenLoaiKhachHang = type.TenLoaiKhachHang,
-                            NgayLap = customer.NgayLap
+                            NgayLap = customer.NgayLap,
+                            DiaChi= customer.DiaChi
                         };
 
             return query;
@@ -42,6 +44,26 @@ namespace BookStore.Services
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
         {
             return _context.LoaiKhachHang;
+        }
+
+        public CustomerInfoViewModel GetKhachHang(int id)
+        {
+            var query = from customer in _context.KhachHang
+                         where customer.Id == id
+                         join type in _context.LoaiKhachHang
+                         on customer.LoaiKhachHangId equals type.Id
+                         select new CustomerInfoViewModel
+                         {
+                             ID = customer.Id,
+                             TenKhachHang = customer.TenKhachHang,
+                             SoDienThoai = customer.SoDienThoai,
+                             Email = customer.Email,
+                             TenLoaiKhachHang = type.TenLoaiKhachHang,
+                             NgayLap = customer.NgayLap,
+                             DiaChi = customer.DiaChi
+                         };
+
+            return query.First();
         }
 
         public string GetTenLoaiKhachHang(int id)
