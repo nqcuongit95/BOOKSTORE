@@ -18,7 +18,7 @@ namespace BookStore.ViewComponents
         
         public IViewComponentResult Invoke(int id)
         {
-            var model = _bookStoreData.GetKhachHang(id);
+            var model = _bookStoreData.GetKhachHangInfo(id);
             
             return View("Default", model);           
         }

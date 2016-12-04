@@ -9,6 +9,7 @@ namespace BookStore.Services
 {
     public interface IBookStoreData
     {
+        void Commit();
         IQueryable<CustomerInfoViewModel> GetAllKhachHang();
 
         void CreateCustomer(KhachHang customer);
@@ -17,7 +18,8 @@ namespace BookStore.Services
 
         string GetTenLoaiKhachHang(int id);
 
-        CustomerInfoViewModel GetKhachHang(int id);
+        CustomerInfoViewModel GetKhachHangInfo(int id);
+        KhachHang GetKhachHang(int id);
 
     }
 }

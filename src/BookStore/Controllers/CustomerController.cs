@@ -107,8 +107,10 @@ namespace BookStore.Controllers
 
         public IActionResult Details(int id, string section)
         {
-            var customer = _bookStoreData.GetKhachHang(id);
+            ActiveItemHelperFunction(section);
 
+            var customer = _bookStoreData.GetKhachHangInfo(id);
+                       
             var model = new CustomerDetailsViewModel
             {
                 ID = customer.ID,
@@ -117,6 +119,45 @@ namespace BookStore.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, KhachHangViewModel model)
+        {
+            var customer = _bookStoreData.GetKhachHang(id);
+
+            if (ModelState.IsValid)
+            {
+                customer.TenKhachHang = model.KhachHang.TenKhachHang;
+                customer.SoDienThoai = model.KhachHang.SoDienThoai;
+                customer.Email = model.KhachHang.Email;
+                customer.DiaChi = model.KhachHang.DiaChi;
+                customer.LoaiKhachHangId = model.KhachHang.LoaiKhachHangId;
+
+                _bookStoreData.Commit();
+
+                return RedirectToAction("Details",new { id = id });
+            }
+
+            return View("Details", new { id = id, section = "Edit" });            
+        }
+
+        void ActiveItemHelperFunction(string section)
+        {
+            ViewData["Details"] = "";
+            ViewData["Edit"] = "";
+            ViewData["Transaction"] = "";
+            ViewData["Liabilities"] = "";
+
+            if (string.IsNullOrEmpty(section))
+            {
+                ViewData["Details"] = "active";
+            }
+            else
+            {
+                ViewData[section] = "active";
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model CustomerDetailsViewModel   
+﻿@model CustomerDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Name;
@@ -15,39 +15,39 @@
                         <i class="search icon"></i>
                     </a>
                 </div>
-            </div>            
+            </div>
             <a class="ui active item" asp-action="Index">
                 Danh Sách
             </a>
             <a class="ui item" asp-action="CreateCustomer">
                 Thêm Mới
-            </a></div>
+            </a>
+        </div>
     </div>
 }
 
 <div class="four wide column">
     <div class="ui secondary vertical menu">
-        <a class="active item" asp-action="Details" 
+        <a class="@ViewData["Details"] item" asp-action="Details"
            asp-route-id="@Model.ID"
            asp-route-section="Details">
             Thông Tin
         </a>
-        <a class="item"
+        <a class="@ViewData["Edit"] item"
            asp-route-id="@Model.ID"
            asp-route-section="Edit">
             Cập Nhật
         </a>
-        <a class="item"
+        <a class="@ViewData["Transaction"] item"
            asp-route-id="@Model.ID"
            asp-route-section="Transaction">
             Lịch Sử Giao Dịch
         </a>
-        <a class="item"
+        <a class="@ViewData["Liabilities"] item"
            asp-route-id="@Model.ID"
            asp-route-section="Liabilities">
             Công Nợ
         </a>
-        
     </div>
 </div>
 <div class="twelve wide column">

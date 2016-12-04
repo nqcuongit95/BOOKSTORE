@@ -16,6 +16,11 @@ namespace BookStore.Services
             _context = context;
         }
 
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
         public void CreateCustomer(KhachHang customer)
         {
             _context.Add(customer);
@@ -46,7 +51,12 @@ namespace BookStore.Services
             return _context.LoaiKhachHang;
         }
 
-        public CustomerInfoViewModel GetKhachHang(int id)
+        public KhachHang GetKhachHang(int id)
+        {
+            return _context.KhachHang.First(c => c.Id == id);
+        }
+
+        public CustomerInfoViewModel GetKhachHangInfo(int id)
         {
             var query = from customer in _context.KhachHang
                          where customer.Id == id

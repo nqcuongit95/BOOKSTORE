@@ -1,3 +1,9 @@
 ﻿.sub.header{
-    font-size:medium !important;
+    font-size:small !important;
 }
+
+.form-label{
+    font-size:small !important;    
+    float: right !important;
+}
+
