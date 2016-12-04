@@ -4,16 +4,17 @@
     <h3 class="ui dividing teal header">Cập Nhật Thông Tin</h3>
     <div class="ui hidden divider"></div>
     <div class="two fields">
-        <div class="field">
+        <div class="required field">
             <label class="form-label">Tên Khách Hàng</label>
             <div class="ui transparent input">
                 <input type="text"
                        asp-for="KhachHang.TenKhachHang"
-                       value="@Model.KhachHang.TenKhachHang">
+                       value="@Model.KhachHang.TenKhachHang"
+                       data-validate="valid-name">
             </div>
             <div class="ui divider"></div>
         </div>
-        <div class="field">
+        <div class="required field">
             <label class="form-label">Nhóm Khách Hàng</label>
             <div class="ui fluid dropdown" style="display:inline-block;">
                 <i class="dropdown icon"></i>
@@ -39,12 +40,13 @@
     </div>
 
     <div class="two fields">
-        <div class="field">
+        <div class="required field">
             <label class="form-label">Số Điện Thoại</label>
             <div class="ui transparent input">
                 <input type="text"
                        asp-for="KhachHang.SoDienThoai"
-                       value="@Model.KhachHang.SoDienThoai">
+                       value="@Model.KhachHang.SoDienThoai"
+                       data-validate="valid-phone">
             </div>
             <div class="ui divider"></div>
         </div>
@@ -58,18 +60,20 @@
             <div class="ui divider"></div>
         </div>
     </div>
-    <div class="field">
+    <div class="required field">
         <label class="form-label">Địa Chỉ</label>
         <div class="ui transparent input">
             <input type="text"
                    asp-for="KhachHang.DiaChi"
-                   value="@Model.KhachHang.DiaChi">
+                   value="@Model.KhachHang.DiaChi"
+                   data-validate="valid-address">
         </div>
         <div class="ui divider"></div>
     </div>
 
     <button class="ui primary tiny submit button" type="submit">Cập Nhật</button>
     <div class="ui reset tiny button">Mặc Định</div>
+    <div class="ui error message"></div>
 </form>
 
 <script src="~/js/KhachHang.js"></script>

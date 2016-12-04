@@ -32,21 +32,25 @@
            asp-route-id="@Model.ID"
            asp-route-section="Details">
             Thông Tin
+            <i class="info icon"></i>
         </a>
-        <a class="@ViewData["Edit"] item"
+        <a class="@ViewData["Edit"] icon item"
            asp-route-id="@Model.ID"
            asp-route-section="Edit">
             Cập Nhật
+            <i class="edit icon"></i>
         </a>
-        <a class="@ViewData["Transaction"] item"
+        <a class="@ViewData["Transaction"] icon item"
            asp-route-id="@Model.ID"
            asp-route-section="Transaction">
             Lịch Sử Giao Dịch
+            <i class="history icon"></i>
         </a>
-        <a class="@ViewData["Liabilities"] item"
+        <a class="@ViewData["Liabilities"] icon item"
            asp-route-id="@Model.ID"
            asp-route-section="Liabilities">
             Công Nợ
+            <i class="money icon"></i>
         </a>
     </div>
 </div>
