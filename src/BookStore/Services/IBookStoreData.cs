@@ -21,5 +21,7 @@ namespace BookStore.Services
         CustomerInfoViewModel GetKhachHangInfo(int id);
         KhachHang GetKhachHang(int id);
 
+        Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
+
     }
 }

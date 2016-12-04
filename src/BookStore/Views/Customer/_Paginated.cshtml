@@ -1,10 +1,9 @@
 ﻿@model PaginatedList<CustomerInfoViewModel>
 
-
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    var display = Model.TotalPages > 1 ? "" : "none";
+    var display = Model.TotalPages > 1 ? "" : "none";    
 }
 
 
@@ -20,7 +19,14 @@
     </a>
     @for (int i = Model.FirstShowedPage; i <= Model.LastShowedPage; i++)
     {
-        <a class="item"
+        var active = "";
+
+        if (i == Model.PageIndex)
+        {
+            active = "active";
+        }
+
+        <a class="item @active"
            asp-action="Index"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-page="@i"

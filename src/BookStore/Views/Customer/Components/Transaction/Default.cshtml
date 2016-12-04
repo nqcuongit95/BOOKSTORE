@@ -1,0 +1,62 @@
+﻿@model CustomerTransactionsViewModel
+
+<h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
+
+
+<div class="ui equal width internally celled grid">
+    <div class="row">
+        <div class="column center aligned">
+            <div class="ui mini horizontal grey statistic">
+                <div class="value">
+                    @Model.TotalInvoices
+                </div>
+                <div class="label">
+                    ĐƠN HÀNG TỔNG CỘNG
+                </div>
+            </div>
+        </div>
+        <div class="column center aligned">
+            <div class="ui mini horizontal grey statistic">
+                <div class="value">
+                    @Model.TotalValues
+                </div>
+                <div class="label">
+                    (VND) TỔNG GIÁ TRỊ GIAO DỊCH
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+</div>
+
+<table class="ui very basic table">
+    <thead>
+        <tr>
+            <th class="center aligned">Mã Số</th>
+            <th class="center aligned">Ngày Lập</th>
+            <th class="center aligned">Trạng Thái</th>
+            <th class="center aligned">Tổng Tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var invoice in Model.Invoices)
+            {
+            <tr>
+                <td>
+                    @invoice.ID
+                </td>
+                <td>
+                    @invoice.Date
+                </td>
+                <td>
+                    @invoice.Status
+                </td>
+                <td>
+                    @invoice.TotalValues
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

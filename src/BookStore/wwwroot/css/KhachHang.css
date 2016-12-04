@@ -7,3 +7,7 @@
     float: right !important;
 }
 
+.icon.disabled.item{
+    pointer-events: none;
+}
+
