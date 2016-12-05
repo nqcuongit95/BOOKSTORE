@@ -166,7 +166,7 @@
     <value>Nhãn hiệu</value>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>Không tìm thấy, vui lòng kiểm tra hoặc tải lại trang .</value>
+    <value>Không tìm thấy, vui lòng kiểm tra lại hoặc tải lại trang.</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
