@@ -1,12 +1,16 @@
 ﻿.header-menu {
     width: 100%;
+    padding: 1rem !important;
 }
 
 .page-container {
     position: relative;
     width: 100%;
-    margin-bottom: 16px !important;
 }
+
+    .page-container .form-modal {
+        display: none;
+    }
 
     .page-container .sub-menu {
         text-align: left;
@@ -36,4 +40,50 @@
         height: 100%;
         margin: 0 !important;
         border: none;
+    }
+
+#message .header .icon.hidden,
+#message .actions .button.hidden {
+    display: none !important;
+}
+
+#message[type=success] .header,
+#message[type=success] .content {
+    color: #2ECC40;
+}
+
+#message[type=error] .header,
+#message[type=error] .content {
+    color: #FF695E;
+}
+
+#message[type=warning] .header,
+#message[type=warning] .content {
+    color: #FFDF05;
+}
+
+#message-progress {
+    display: block;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+    #message-progress.hidden {
+        display: none;
+    }
+
+.crud-form {
+    padding: 24px;
+    text-align: left;
+}
+
+    .crud-form .action-buttons {
+        text-align: right;
+    }
+
+    .crud-form .action-button {
+        min-width: 120px;
     }

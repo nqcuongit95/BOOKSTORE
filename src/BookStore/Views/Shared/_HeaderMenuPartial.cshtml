@@ -1,0 +1,37 @@
+﻿@model Menu
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<div class="header-menu">
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@ViewData["Title"]</h2>
+
+        <div class="right menu">
+            @foreach (var item in Model)
+            {
+                if (Model.SelectedKey == item.Key)
+                {
+                    <a class="active item">
+                        @(string.Format("{0} {1}",
+                        sharedLocalizer[item.Value.Action].Value,
+                        sharedLocalizer[item.Value.Controller].Value.ToLower()))
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="@item.Value.Controller"
+                       asp-action="@item.Value.Action"
+                       class="item">
+                        @(string.Format("{0} {1}",
+                        sharedLocalizer[item.Value.Action].Value,
+                        sharedLocalizer[item.Value.Controller].Value.ToLower()))
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
+    <h2 class="action-title ui right aligned header">
+        @ViewData["Action"]
+    </h2>
+</div>

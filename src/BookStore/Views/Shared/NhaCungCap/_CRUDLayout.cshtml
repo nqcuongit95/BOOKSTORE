@@ -1,0 +1,21 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    var menu = new HangHoaMenu(controller);
+    var headermenu = new DefaultHeaderActionMenu(action, controller);
+}
+
+@await Html.PartialAsync("_MessagePartial")
+
+@await Html.PartialAsync("_HeaderMenuPartial", headermenu)
+
+<div class="page-container ui grid">
+    <div class="four wide column">
+        @await Html.PartialAsync("_MenuPartial", menu)
+    </div>
+
+    <div class="twelve wide column">
+        @RenderBody();
+    </div>
+</div>

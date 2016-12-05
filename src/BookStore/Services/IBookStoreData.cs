@@ -8,7 +8,13 @@ namespace BookStore.Services
 {
     public interface IBookStoreData
     {
+        #region NhaCungCap
         IQueryable<NhaCungCap> GetAllNhaCungCap();
-        Task<int> CountNhaCungCap();
+        bool NhaCungCapExists(int? id);
+        Task<int> AddNhaCungCap(NhaCungCap nhaCungCap);
+        Task<NhaCungCap> GetNhaCungCapById(int? id);
+        Task<int> UpdateNhaCungCap(NhaCungCap nhaCungCap);
+        Task<int> DeleteNhaCungCap(int id);
+        #endregion
     }
 }

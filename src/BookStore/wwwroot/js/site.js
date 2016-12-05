@@ -10,16 +10,5 @@ $(document).ready(function () {
     $('.disabled').click(function (e) {
         e.preventDefault();
     })
-
-    //pagination
-    $('.pagination>.dropdown').dropdown(
-        'set selected', $('#page-index').val());
-
-    $('.pagination>.dropdown')
-     .dropdown({
-         onChange: function (value, text, $selectedItem) {
-             location = $('.pagination>.dropdown>select').attr('href') + value;
-         }
-     });
 });
 

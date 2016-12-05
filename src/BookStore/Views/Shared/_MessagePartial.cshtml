@@ -1,0 +1,41 @@
+﻿@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<div id="message-progress"
+     class="ui top attached indicating progress hidden">
+    <div class="bar"></div>
+</div>
+
+<div id="message-loader"
+     class="ui centered inverted dimmer">">
+    <div class="ui large text loader">
+        @sharedLocalizer["PleaseWait"]
+    </div>
+</div>
+
+<div id="message"
+     class="ui small basic modal" type="error">
+    <div class="ui icon header">
+        <i class="checkmark success icon hidden"></i>
+        <i class="remove error icon hidden"></i>
+        <i class="warning sign warning icon hidden"></i>
+        <p data-default-value="@sharedLocalizer["DefaultErrorHeader"]"
+           class="title large header"></p>
+    </div>
+    <div data-default-value="@sharedLocalizer["DefaultErrorContent"]"
+         class="content">
+    </div>
+    <div class="actions">
+        <div class="ui green ok inverted success button hidden">
+            @sharedLocalizer["OK"]
+            <i class="checkmark icon"></i>
+        </div>
+        <div class="ui red ok inverted error button hidden">
+            @sharedLocalizer["OK"]
+            <i class="checkmark icon"></i>
+        </div>
+        <div class="ui yellow ok inverted warning button hidden">
+            @sharedLocalizer["OK"]
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>

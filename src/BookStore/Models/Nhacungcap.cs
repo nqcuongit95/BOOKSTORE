@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Models
 {
-    [DisplayName("Nhà cung cấp")]
+    [DisplayName("Nhà cung cấp"),]
     public partial class NhaCungCap
     {
         public NhaCungCap()

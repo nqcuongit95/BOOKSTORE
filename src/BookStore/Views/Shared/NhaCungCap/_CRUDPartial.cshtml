@@ -1,17 +1,12 @@
-﻿@model PaginatedList<NhaCungCap>
+﻿@model NhaCungCap
 
 @{
     var controller = ViewContext.RouteData.Values["controller"].ToString();
     var action = ViewContext.RouteData.Values["action"].ToString();
 
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
     @await Html.PartialAsync(string.Format(
         "~/Views/Shared/{0}/_{1}Partial.cshtml",
         controller, action), Model)
-}
-
-@section Additional {
-    @{
-        @await Html.PartialAsync("_NonamePartial")
-        @await Html.PartialAsync("_ValidationScriptsPartial")
-    }
 }

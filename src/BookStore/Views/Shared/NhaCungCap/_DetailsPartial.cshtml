@@ -1,0 +1,47 @@
+﻿@model NhaCungCap
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<form id="NhaCungCap"
+      asp-action="DetailsConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form update ui form">
+    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
+    {
+        <h2 class="ui header">@ViewData["Action"]</h2>
+    }
+
+    <div class="field">
+        <label asp-for="TenNhaCungCap"></label>
+        <input asp-for="TenNhaCungCap"
+               type="text"
+               readonly=""
+               placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
+    </div>
+    <div class="field">
+        <label asp-for="NgayLap"></label>
+        <input type="date"
+               readonly=""
+               placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
+               value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
+    </div>
+
+    <div class="action-buttons">
+        @if ((bool)ViewData["Modal"] == true)
+        {
+            <a class="action-button cancel ui basic return button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index"
+               class="action-button cancel ui basic return button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+    </div>
+</form>

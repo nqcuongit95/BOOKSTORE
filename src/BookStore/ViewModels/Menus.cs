@@ -7,54 +7,59 @@ namespace BookStore.ViewModels
 {
     public class MenuElements
     {
-        public string Name;
         public string Action;
         public string Controller;
     }
 
-    public static class HangHoaMenu
+    public class Menu : Dictionary<string, MenuElements>
     {
-        public static readonly Dictionary<string, MenuElements> Elements = new Dictionary<string, MenuElements>()
+        public string SelectedKey;
+    }
+
+    public class HangHoaMenu : Menu
+    {
+        public HangHoaMenu(string selectedKey)
         {
+            Add("HangHoa", new MenuElements
             {
-                "HangHoa", new MenuElements{
-                Name ="Hàng hóa",
                 Action = "Index",
-                Controller="HangHoa"}
-            },
+                Controller = "HangHoa"
+            });
+
+            Add("NhaCungCap", new MenuElements
             {
-                "NhaCungCap", new MenuElements{
-                Name ="Nhà cung cấp",
                 Action = "Index",
-                Controller="NhaCungCap"}
-            },
+                Controller = "NhaCungCap"
+            });
+
+            Add("NhaHieu", new MenuElements
             {
-                "NhaHieu", new MenuElements{
-                Name ="Nhãn hiệu",
                 Action = "Index",
-                Controller="NhaHieu"}
-            }
-        };
+                Controller = "NhaHieu"
+            });
+
+            SelectedKey = selectedKey;
+        }
     }
 
     #region NhaCungCap
-    public static class NhaCungCapActionMenu
+    public class DefaultHeaderActionMenu : Menu
     {
-        public static readonly Dictionary<string, MenuElements> Elements = new Dictionary<string, MenuElements>()
+        public DefaultHeaderActionMenu(string selectedKey, string controller)
         {
+            Add("Index", new MenuElements
             {
-                "Index", new MenuElements{
-                Name ="Danh sách nhà cung cấp",
                 Action = "Index",
-                Controller="NhaCungCap"}
-            },
+                Controller = controller
+            });
+            Add("Create", new MenuElements
             {
-                "Create", new MenuElements{
-                Name ="Thêm nhà cung cấp",
                 Action = "Create",
-                Controller="NhaCungCap"}
-            }
-        };
+                Controller = controller
+            });
+
+            SelectedKey = selectedKey;
+        }
     }
     #endregion
 }

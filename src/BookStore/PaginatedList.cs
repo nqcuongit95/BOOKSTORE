@@ -18,13 +18,10 @@ namespace BookStore
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 
-        public string Href { get; private set; }
-
-        public Paginated(int pageIndex, int totalPages, string href)
+        public Paginated(int pageIndex, int totalPages)
         {
             PageIndex = pageIndex;
             TotalPages = totalPages;
-            Href = href;
         }
 
         public bool HasPreviousPage
@@ -60,7 +57,8 @@ namespace BookStore
             this.AddRange(items);
         }
 
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+        public static async Task<PaginatedList<T>> CreateAsync(
+            IQueryable<T> source, int pageIndex, int pageSize)
         {
             if (pageSize < 1)
                 pageSize = 10;
@@ -70,8 +68,17 @@ namespace BookStore
 
             if (pageIndex < 1)
                 pageIndex = 1;
-            else if (pageIndex > totalPages)
-                pageIndex = totalPages;
+
+            if (totalPages < 1)
+                totalPages = 1;
+
+            if (pageIndex > totalPages)
+            {
+                if (totalPages > 0)
+                    pageIndex = totalPages;
+                else
+                    pageIndex = 1;
+            }
 
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 

@@ -1,10 +1,19 @@
 ﻿@model PaginatedList<NhaCungCap>
 
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    NhaCungCap nhaCungCap = new NhaCungCap();
+}
+
 <table class="data-table ui fixed selectable sortable table">
     <thead>
         <tr>
-            <th>Tên nhà cung cấp</th>
-            <th>Ngày lập</th>
+            <th>@Html.DisplayNameFor(p => nhaCungCap.TenNhaCungCap)</th>
+            <th>@Html.DisplayNameFor(p => nhaCungCap.NgayLap)</th>
             <th></th>
         </tr>
     </thead>
@@ -22,20 +31,17 @@
                     <div class="ui floated menu">
                         <a asp-action="Edit"
                            asp-route-id="@item.Id"
-                           class="popup icon item"
-                           data-content="Cập nhật">
+                           class="popup icon item">
                             <i class="edit icon"></i>
                         </a>
                         <a asp-action="Details"
                            asp-route-id="@item.Id"
-                           class="popup icon item"
-                           data-content="Chi tiết">
+                           class="popup icon item">
                             <i class="file text outline icon"></i>
                         </a>
                         <a asp-action="Delete"
                            asp-route-id="@item.Id"
-                           class="popup icon item"
-                           data-content="Xóa">
+                           class="popup icon item">
                             <i class="trash icon"></i>
                         </a>
                     </div>
@@ -45,3 +51,14 @@
     </tbody>
 </table>
 
+@{
+    var paginated = new Paginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui modal">
+</div>
