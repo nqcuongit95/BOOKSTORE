@@ -32,10 +32,10 @@ namespace BookStore.ViewModels
                 Controller = "NhaCungCap"
             });
 
-            Add("NhaHieu", new MenuElements
+            Add("NhanHieu", new MenuElements
             {
                 Action = "Index",
-                Controller = "NhaHieu"
+                Controller = "NhanHieu"
             });
 
             SelectedKey = selectedKey;
