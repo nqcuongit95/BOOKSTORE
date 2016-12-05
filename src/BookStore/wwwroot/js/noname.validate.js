@@ -3,26 +3,32 @@
 });
 
 function initializeValidation() {
-    var nhaCungCapValidationRules = {
-        TenNhaCungCap: {
+    initializeNhaCungCapForm();
+}
+
+function initializeNhaCungCapForm() {
+    var form = $('#TenNhaCungCap')
+
+    var nhaCungCapFieldsRules = {
+        'TenNhaCungCap': {
             identifier: 'TenNhaCungCap',
             rules: [
               {
                   type: 'empty',
-                  prompt: $('#TenNhaCungCap').attr('data-val-required')
+                  prompt: form.attr('data-val-required')
               },
               {
                   type: 'maxLength[' +
-                      $('#TenNhaCungCap').attr('data-val-maxlength-max')
+                      form.attr('data-val-maxlength-max')
                       + ']',
-                  prompt: $('#TenNhaCungCap').attr('data-val-maxlength')
+                  prompt: form.attr('data-val-maxlength')
               }
             ]
-        },
+        }
     }
 
     $('#NhaCungCap').form({
-        fields: nhaCungCapValidationRules,
+        fields: nhaCungCapFieldsRules,
         inline: true,
         on: 'blur',
         onSuccess: function (event) {
