@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/chart.js/chart.bundle.js" />
 /// <reference path="js/khachhang.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />

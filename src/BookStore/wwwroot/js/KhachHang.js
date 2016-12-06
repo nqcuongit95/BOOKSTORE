@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('.ui.sticky').sticky({
         context: '#context'
     });
-
+    
     $('.ui.form')
        .form({
            on: 'blur',
