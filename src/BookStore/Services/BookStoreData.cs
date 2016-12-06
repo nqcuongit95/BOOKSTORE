@@ -112,5 +112,20 @@ namespace BookStore.Services
 
             return model;
         }
+
+        public async Task<StatisticsViewModel> GetStatisticsInformation()
+        {
+            var model = new StatisticsViewModel();
+
+            var totalCustomers = await _context.KhachHang.CountAsync();
+            var totalGoods = await _context.HangHoa.CountAsync();
+            var totalTransactionValues = await _context.DonHang.SumAsync(i=>i.TongTien);
+
+            model.TotalCustomers = totalCustomers;
+            model.ToTalGoods = totalGoods;
+            model.TotalTransactionValues = totalTransactionValues;
+
+            return model;
+        }
     }
 }
