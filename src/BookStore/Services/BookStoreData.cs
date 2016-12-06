@@ -22,10 +22,12 @@ namespace BookStore.Services
             _context.SaveChanges();
         }
 
-        public void CreateCustomer(KhachHang customer)
+        public int CreateCustomer(KhachHang customer)
         {
             _context.Add(customer);
             _context.SaveChanges();
+
+            return customer.Id;
         }
 
         public IQueryable<CustomerInfoViewModel> GetAllKhachHang()

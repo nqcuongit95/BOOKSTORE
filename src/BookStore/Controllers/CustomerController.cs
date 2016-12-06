@@ -80,33 +80,35 @@ namespace BookStore.Controllers
                                     firstShowedPage,lastShowedPage));
         }
 
-        public IActionResult CreateCustomer()
+        public IActionResult Create()
         {
             var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
             var model = new KhachHangViewModel();
             model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang",3);
-             
+           
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateCustomer(KhachHangViewModel model)
+        public IActionResult Create(KhachHangViewModel model)
         {
             if (ModelState.IsValid)
             {
                 model.KhachHang.NgayLap = DateTime.Now;
-                _bookStoreData.CreateCustomer(model.KhachHang);
-
-                return RedirectToAction("Index");
-            }
-
+                var ID = _bookStoreData.CreateCustomer(model.KhachHang);
+                
+                return RedirectToAction("Details",new { id = ID, message = "_CreateMessage" });
+                }
+            
             return View();
         }
 
-
-        public IActionResult Details(int id, string section)
+        public IActionResult Details(int id, string section, string message)
         {
+            //render the success message
+            ViewData["message"] = message;
+
             ActiveItemHelperFunction(section);
 
             var customer = _bookStoreData.GetKhachHangInfo(id);
@@ -137,8 +139,8 @@ namespace BookStore.Controllers
 
                 _bookStoreData.Commit();
 
-                return RedirectToAction("Details",new { id = id });
-            }
+                return RedirectToAction("Details",new { id = id, message = "_UpdateMessage" });
+                }
 
             return View("Details", new { id = id, section = "Edit" });            
         }

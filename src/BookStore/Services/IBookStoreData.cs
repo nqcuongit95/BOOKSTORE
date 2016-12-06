@@ -12,7 +12,7 @@ namespace BookStore.Services
         void Commit();
         IQueryable<CustomerInfoViewModel> GetAllKhachHang();
 
-        void CreateCustomer(KhachHang customer);
+        int CreateCustomer(KhachHang customer);
 
         IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang();
 

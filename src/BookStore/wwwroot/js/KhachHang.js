@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('.ui.sticky').sticky({
         context: '#context'
     });
-        
+
     $('.ui.form')
        .form({
            on: 'blur',
@@ -25,8 +25,8 @@ $(document).ready(function () {
                            prompt: 'Số điện thoại không được để trống.'
                        },
                        {
-                           type:'minLength[10]',
-                           prompt: "Vui lòng nhập đúng số điện thoại" 
+                           type: 'minLength[10]',
+                           prompt: "Vui lòng nhập đúng số điện thoại"
                        }
                    ]
                },
@@ -47,4 +47,14 @@ $(document).ready(function () {
            }
        });
 
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+              .closest('.message')
+              .transition('fade');
+        });
+     
+    setTimeout(function () {
+        $('.ui.success.message').slideDown('fast').delay(2000).fadeOut('slow');
+    }, 400);
 });
