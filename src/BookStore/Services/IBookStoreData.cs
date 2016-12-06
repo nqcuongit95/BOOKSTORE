@@ -16,5 +16,23 @@ namespace BookStore.Services
         Task<int> UpdateNhaCungCap(NhaCungCap nhaCungCap);
         Task<int> DeleteNhaCungCap(int id);
         #endregion
+
+        #region NhanHieu
+        IQueryable<NhanHieu> GetAllNhanHieu();
+        bool NhanHieuExists(int? id);
+        Task<int> AddNhanHieu(NhanHieu nhanHieu);
+        Task<NhanHieu> GetNhanHieuById(int? id);
+        Task<int> UpdateNhanHieu(NhanHieu nhanHieu);
+        Task<int> DeleteNhanHieu(int id);
+        #endregion
+
+        #region HangHoa
+        IQueryable<HangHoa> GetAllHangHoa();
+        bool HangHoaExists(int? id);
+        Task<int> AddHangHoa(HangHoa hangHoa);
+        Task<HangHoa> GetHangHoaById(int? id);
+        Task<int> UpdateHangHoa(HangHoa hangHoa);
+        Task<int> DeleteHangHoa(int id);
+        #endregion
     }
 }

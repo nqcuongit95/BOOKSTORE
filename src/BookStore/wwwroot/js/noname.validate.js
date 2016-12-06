@@ -1,39 +1,56 @@
-﻿$(document).ready(function () {
-    initializeValidation();
-});
+﻿function initializeValidationCRUDForm() {
+    var forms = $('.crud-form');
 
-function initializeValidation() {
-    initializeNhaCungCapForm();
-}
+    forms.each(function (index, element) {
+        var fieldsRules = {};
 
-function initializeNhaCungCapForm() {
-    var form = $('#TenNhaCungCap')
+        var form = $(this);
 
-    var nhaCungCapFieldsRules = {
-        'TenNhaCungCap': {
-            identifier: 'TenNhaCungCap',
-            rules: [
-              {
-                  type: 'empty',
-                  prompt: form.attr('data-val-required')
-              },
-              {
-                  type: 'maxLength[' +
-                      form.attr('data-val-maxlength-max')
-                      + ']',
-                  prompt: form.attr('data-val-maxlength')
-              }
-            ]
-        }
-    }
+        form.find('input').each(function (index, element) {
+            var input = $(this);
+            var name = input.attr('name');
+            var rules = [];
 
-    $('#NhaCungCap').form({
-        fields: nhaCungCapFieldsRules,
-        inline: true,
-        on: 'blur',
-        onSuccess: function (event) {
-            event.preventDefault();
-            crudFormSubmit(this);
-        }
+            var required = input.attr('data-val-required');
+            var maxlength = input.attr('data-val-maxlength-max')
+
+            if (required !== null) {
+                rules.push({
+                    type: 'empty',
+                    prompt: required
+                });
+            }
+
+            if (maxlength !== null) {
+                rules.push({
+                    type: 'empty',
+                    prompt: required
+                });
+            }
+
+            if (maxlength) {
+                rules.push({
+                    type: 'maxLength[' + maxlength + ']',
+                    prompt: input.attr('data-val-maxlength')
+                });
+
+                input.attr('maxlength', maxlength);
+            }
+
+            fieldsRules[name] = {
+                identifier: name,
+                rules: rules
+            };
+        });
+
+        form.form({
+            fields: fieldsRules,
+            inline: true,
+            on: 'blur',
+            onSuccess: function (event) {
+                event.preventDefault();
+                crudFormSubmit(this);
+            }
+        });
     });
 }

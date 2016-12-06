@@ -14,8 +14,8 @@ using Microsoft.AspNetCore.Routing;
 
 namespace BookStore.Controllers
 {
-    [Route("HangHoa/NhaCungCap")]
-    public class NhaCungCapController : Controller
+    [Route("HangHoa/NhanHieu")]
+    public class NhanHieuController : Controller
     {
         private readonly IBookStoreData _bookStoreData = null;
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
@@ -23,7 +23,7 @@ namespace BookStore.Controllers
         private string controller;
         private string action;
 
-        public NhaCungCapController(
+        public NhanHieuController(
             IBookStoreData bookStoreData,
             IStringLocalizer<SharedResource> sharedLocalizer)
         {
@@ -37,8 +37,8 @@ namespace BookStore.Controllers
 
             try
             {
-                var result = await PaginatedList<NhaCungCap>.CreateAsync(
-                    _bookStoreData.GetAllNhaCungCap(), page ?? 1, pageSize ?? 10);
+                var result = await PaginatedList<NhanHieu>.CreateAsync(
+                    _bookStoreData.GetAllNhanHieu(), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -59,7 +59,7 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         [Route("CreateConfirmed")]
         public async Task<IActionResult> CreateConfirmed(
-            [Bind("TenNhaCungCap")] NhaCungCap nhaCungCap,
+            [Bind("TenNhanHieu")] NhanHieu nhanHieu,
              bool? modal,
              bool? redirect)
         {
@@ -74,9 +74,7 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    nhaCungCap.NgayLap = DateTime.Now;
-
-                    await _bookStoreData.AddNhaCungCap(nhaCungCap);
+                    await _bookStoreData.AddNhanHieu(nhanHieu);
 
                     message.Type = MessageType.Success;
                     message.Header = _sharedLocalizer["Success"];
@@ -91,7 +89,7 @@ namespace BookStore.Controllers
                     if (isRedirect)
                         message.Results["RedirectUrl"] = Url.Action(
                             "Details",
-                            new { id = nhaCungCap.Id });
+                            new { id = nhanHieu.Id });
                 }
                 catch (Exception ex)
                 {
@@ -139,7 +137,7 @@ namespace BookStore.Controllers
         [Route("EditConfirmed")]
         public async Task<IActionResult> EditConfirmed(
             int id,
-            [Bind("Id,TenNhaCungCap")] NhaCungCap nhaCungCap,
+            [Bind("Id,TenNhanHieu")] NhanHieu nhanHieu,
             bool? modal,
             bool? redirect)
         {
@@ -150,7 +148,7 @@ namespace BookStore.Controllers
 
             Message message = new Message();
 
-            if (id != nhaCungCap.Id)
+            if (id != nhanHieu.Id)
             {
                 message.Type = MessageType.Error;
                 message.Header = _sharedLocalizer["DefaultErrorHeader"];
@@ -160,7 +158,7 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    await _bookStoreData.UpdateNhaCungCap(nhaCungCap);
+                    await _bookStoreData.UpdateNhanHieu(nhanHieu);
 
                     message.Type = MessageType.Success;
                     message.Header = _sharedLocalizer["Success"];
@@ -175,7 +173,7 @@ namespace BookStore.Controllers
                     if (isRedirect)
                         message.Results["RedirectUrl"] = Url.Action(
                             "Details",
-                            new { id = nhaCungCap.Id });
+                            new { id = nhanHieu.Id });
                 }
                 catch (Exception ex)
                 {
@@ -220,7 +218,7 @@ namespace BookStore.Controllers
 
             try
             {
-                await _bookStoreData.DeleteNhaCungCap(id);
+                await _bookStoreData.DeleteNhanHieu(id);
 
                 message.Type = MessageType.Warning;
                 message.Header = _sharedLocalizer["Success"];
@@ -296,9 +294,9 @@ namespace BookStore.Controllers
 
             try
             {
-                NhaCungCap nhaCungCap = await _bookStoreData.GetNhaCungCapById(id);
+                NhanHieu nhanHieu = await _bookStoreData.GetNhanHieuById(id);
 
-                if (nhaCungCap == null)
+                if (nhanHieu == null)
                 {
                     if (isModal)
                     {
@@ -313,9 +311,9 @@ namespace BookStore.Controllers
                     ViewData["Redirect"] = isRedirect;
 
                     if (isModal)
-                        return PartialView(GetUrlPartialPartial(), nhaCungCap);
+                        return PartialView(GetUrlPartialPartial(), nhanHieu);
                     else
-                        return View(nhaCungCap);
+                        return View(nhanHieu);
                 }
             }
             catch (Exception ex)

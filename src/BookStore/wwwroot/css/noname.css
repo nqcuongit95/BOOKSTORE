@@ -42,6 +42,15 @@
         border: none;
     }
 
+.data-table td {
+    cursor: pointer;
+}
+
+.hang-hoa.data-table .action-buttons .button {
+    display: block;
+    margin: 3.5px;
+}
+
 #message .header .icon.hidden,
 #message .actions .button.hidden {
     display: none !important;

@@ -60,6 +60,60 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Đã bán.
+        /// </summary>
+        public static string DaBan {
+            get {
+                return ResourceManager.GetString("DaBan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Giá bán lẽ.
+        /// </summary>
+        public static string GiaBanLe {
+            get {
+                return ResourceManager.GetString("GiaBanLe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Giá bán sĩ.
+        /// </summary>
+        public static string GiaBanSi {
+            get {
+                return ResourceManager.GetString("GiaBanSi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Giá khởi tạo.
+        /// </summary>
+        public static string GiaKhoiTao {
+            get {
+                return ResourceManager.GetString("GiaKhoiTao", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Giá nhập.
+        /// </summary>
+        public static string GiaNhap {
+            get {
+                return ResourceManager.GetString("GiaNhap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Loại hàng hóa.
+        /// </summary>
+        public static string LoaiHangHoa {
+            get {
+                return ResourceManager.GetString("LoaiHangHoa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Ngày lập.
         /// </summary>
         public static string NgayLap {
@@ -69,11 +123,65 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Nhà cung cấp.
+        /// </summary>
+        public static string NhaCungCap {
+            get {
+                return ResourceManager.GetString("NhaCungCap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Nhãn hiệu.
+        /// </summary>
+        public static string NhanHieu {
+            get {
+                return ResourceManager.GetString("NhanHieu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tên hàng hóa.
+        /// </summary>
+        public static string TenHangHoa {
+            get {
+                return ResourceManager.GetString("TenHangHoa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Tên nhà cung cấp.
         /// </summary>
         public static string TenNhaCungCap {
             get {
                 return ResourceManager.GetString("TenNhaCungCap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tên nhãn hiệu.
+        /// </summary>
+        public static string TenNhanHieu {
+            get {
+                return ResourceManager.GetString("TenNhanHieu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tồn kho.
+        /// </summary>
+        public static string TonKho {
+            get {
+                return ResourceManager.GetString("TonKho", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Trạng thái.
+        /// </summary>
+        public static string TrangThai {
+            get {
+                return ResourceManager.GetString("TrangThai", resourceCulture);
             }
         }
     }

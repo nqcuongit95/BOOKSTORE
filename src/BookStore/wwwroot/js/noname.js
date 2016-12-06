@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     initializeCRUDForm();
 
-    initializeDataTableActionButton();
+    initializeDataTable();
     initializeIndexPagination();
 
     initializeMessageProgress(0, 100);
@@ -12,11 +12,7 @@ function initializeCRUDForm() {
         hideFormModal();
     });
 
-    $('.crud-form .field input').each(function () {
-        $(this).attr('maxlength', $(this).attr('data-val-maxlength-max'));
-    });
-
-    initializeValidation();
+    initializeValidationCRUDForm();
 }
 
 function crudFormSubmit(element) {
@@ -72,7 +68,9 @@ function crudFormSubmit(element) {
     });
 }
 
-function initializeDataTableActionButton() {
+function initializeDataTable() {
+    var table = $('.data-table');
+
     $('.data-table .action-buttons .item').click(function (event) {
         onClickActionButton(this, event);
     });

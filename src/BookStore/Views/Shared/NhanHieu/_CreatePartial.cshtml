@@ -1,8 +1,8 @@
-﻿@model NhaCungCap
+﻿@model NhanHieu
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
-<form id="NhaCungCap"
+<form id="NhanHieu"
       asp-action="CreateConfirmed"
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
@@ -13,17 +13,10 @@
     }
 
     <div class="required field">
-        <label asp-for="TenNhaCungCap"></label>
-        <input asp-for="TenNhaCungCap"
+        <label asp-for="TenNhanHieu"></label>
+        <input asp-for="TenNhanHieu"
                type="text"
-               placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
-    </div>
-    <div class="field">
-        <label asp-for="NgayLap"></label>
-        <input type="date"
-               readonly=""
-               placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
-               value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)">
+               placeholder="@Html.DisplayNameFor(model => model.TenNhanHieu)">
     </div>
 
     <div class="action-buttons">

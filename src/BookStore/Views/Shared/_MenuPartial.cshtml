@@ -2,7 +2,7 @@
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
-<div class="sub-menu ui secondary vertical menu">
+<div class="sub-menu ui secondary horizontal menu">
     @foreach (var item in Model)
     {
         if (Model.SelectedKey == item.Key)

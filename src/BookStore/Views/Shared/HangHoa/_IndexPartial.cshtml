@@ -1,0 +1,104 @@
+﻿@model PaginatedList<HangHoa>
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    HangHoa hangHoa = new HangHoa();
+}
+
+<table class="hang-hoa data-table ui sortable table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
+            <th>@Html.DisplayNameFor(p => hangHoa.NgayTao)</th>
+            <th>@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
+            <th>@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
+            <th>@Html.DisplayNameFor(p => hangHoa.DaBan)</th>
+            <th>@Html.DisplayNameFor(p => hangHoa.TrangThaiId)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string rowState = string.Empty;
+            string iconState = string.Empty;
+
+            switch (item.TrangThai.VietTat)
+            {
+                case "NOTUSE":
+                    rowState = "negative";
+                    iconState = "<i class=\"large icon close\"></i>";
+                    break;
+
+                case "USE":
+                    iconState = "<i class=\"large green checkmark icon\"></i>";
+                    break;
+
+                default:
+                    break;
+            }
+
+            <tr class="@rowState">
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenHangHoa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayTao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoaiHangHoa.TenLoaiHangHoa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TonKho)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DaBan)
+                </td>
+                <td>
+                    <b>
+                        @Html.Raw(iconState)
+                        @sharedLocalizer[item.TrangThai.VietTat]
+                    </b>
+                </td>
+
+                <td class="action-buttons">
+                    <div class="ui">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="ui blue icon button">
+                            <i class="edit icon"></i>
+                        </a>
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="ui blue icon button">
+                            <i class="file text outline icon"></i>
+                        </a>
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="ui blue icon button">
+                            <i class="trash icon"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var paginated = new Paginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui modal">
+</div>

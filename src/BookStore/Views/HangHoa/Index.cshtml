@@ -1,0 +1,17 @@
+﻿@model PaginatedList<HangHoa>
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    @await Html.PartialAsync(string.Format(
+        "~/Views/Shared/{0}/_{1}Partial.cshtml",
+        controller, action), Model)
+}
+
+@section Additional {
+    @{
+        @await Html.PartialAsync("_NonamePartial")
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+}

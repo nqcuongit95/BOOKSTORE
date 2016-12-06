@@ -159,6 +159,9 @@
   <data name="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException" xml:space="preserve">
     <value>Lỗi truy cập đồng thời.</value>
   </data>
+  <data name="Microsoft.EntityFrameworkCore.DbUpdateException" xml:space="preserve">
+    <value>Đối tượng hiện đang được sử dụng.</value>
+  </data>
   <data name="NhaCungCap" xml:space="preserve">
     <value>Nhà cung cấp</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Không tìm thấy, vui lòng kiểm tra lại hoặc tải lại trang.</value>
+  </data>
+  <data name="NOTUSE" xml:space="preserve">
+    <value>Ngưng sử dụng</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -182,5 +188,8 @@
   </data>
   <data name="System.Data.SqlClient.SqlException" xml:space="preserve">
     <value>Không kết nối được với cơ sở dữ liệu.</value>
+  </data>
+  <data name="USE" xml:space="preserve">
+    <value>Đang sử dụng</value>
   </data>
 </root>
