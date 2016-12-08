@@ -24,11 +24,7 @@
     <!--Responsive sidebar menu-->
     <div class="ui sidebar inverted vertical menu">
         <div class="item">
-            <div class="header">Hello, Cuong!</div>
-            <div class="menu">
-                <a class="item" asp-controller="" asp-action="">Account</a>
-                <a class="item" asp-controller="" asp-action="">Sign out</a>
-            </div>
+            @await Component.InvokeAsync("LoginLogout")
         </div>
         <a class="active gray item" asp-controller="" asp-action="">
             Tổng Quan
@@ -57,11 +53,7 @@
         <div class="ui grid container">
             <div class="ui left fixed vertical menu">
                 <div class="item">
-                    <div class="header">Hello, Cuong!</div>
-                    <div class="menu">
-                        <a class="item" asp-controller="" asp-action="">Account</a>
-                        <a class="item" asp-controller="" asp-action="">Sign out</a>
-                    </div>
+                    @await Component.InvokeAsync("LoginLogout")
                 </div>
                 <a class="active gray item" asp-controller="Dashboard" asp-action="Index">
                     Tổng Quan

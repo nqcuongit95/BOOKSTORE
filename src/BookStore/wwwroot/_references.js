@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/account.js" />
 /// <reference path="js/chart.js/chart.bundle.js" />
 /// <reference path="js/dashboard/customergraph.js" />
 /// <reference path="js/dashboard/dashboard.js" />

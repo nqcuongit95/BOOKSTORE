@@ -1,25 +1,26 @@
-﻿using System;
+﻿using BookStore.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace BookStore.Models
 {
-    public partial class ChiTietPhieuNhapHang
+    public partial class PhieuTraNhapHang
     {
-        public ChiTietPhieuNhapHang()
+        public PhieuTraNhapHang()
         {
             ChiTietPhieuTraNhapHang = new HashSet<ChiTietPhieuTraNhapHang>();
+            PhieuThu = new HashSet<PhieuThu>();
         }
 
         public int Id { get; set; }
+        public DateTime NgayLap { get; set; }
+        public string NhanVienId { get; set; }
         public int PhieuNhapHangId { get; set; }
-        public int HangHoaId { get; set; }
-        public int SoLuong { get; set; }
-        public decimal GiaNhap { get; set; }
-        public int NhaCungCapId { get; set; }
+        public decimal TongTien { get; set; }
 
         public virtual ICollection<ChiTietPhieuTraNhapHang> ChiTietPhieuTraNhapHang { get; set; }
-        public virtual HangHoa HangHoa { get; set; }
-        public virtual NhaCungCap NhaCungCap { get; set; }
+        public virtual ICollection<PhieuThu> PhieuThu { get; set; }
+        public virtual User NhanVien { get; set; }
         public virtual PhieuNhapHang PhieuNhapHang { get; set; }
     }
 }

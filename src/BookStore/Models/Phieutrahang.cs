@@ -8,6 +8,7 @@ namespace BookStore.Models
         public PhieuTraHang()
         {
             ChiTietPhieuTraHang = new HashSet<ChiTietPhieuTraHang>();
+            PhieuChi = new HashSet<PhieuChi>();
         }
 
         public int Id { get; set; }
@@ -18,6 +19,7 @@ namespace BookStore.Models
         public decimal TongTien { get; set; }
 
         public virtual ICollection<ChiTietPhieuTraHang> ChiTietPhieuTraHang { get; set; }
+        public virtual ICollection<PhieuChi> PhieuChi { get; set; }
         public virtual DonHang DonHang { get; set; }
         public virtual KhachHang KhachHang { get; set; }
     }

@@ -1,0 +1,16 @@
+﻿
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="header">Hello, @User.Identity.Name</div>
+    <div class="menu">
+        <a class="item" asp-controller="" asp-action="">Account</a>
+        <a class="item" asp-controller="Account" asp-action="Logout">Sign out</a>
+    </div>
+}
+else
+{
+    <div class="header">Bạn chưa đăng nhập.</div>
+    <div class="menu">
+        <a class="item" asp-controller="Account" asp-action="Login">Login</a>        
+    </div>
+}
