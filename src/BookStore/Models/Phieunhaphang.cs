@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookStore.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace BookStore.Models
@@ -15,9 +16,11 @@ namespace BookStore.Models
         public int Id { get; set; }
         public DateTime NgayLap { get; set; }
         public decimal TongTien { get; set; }
+        public int NhanVienId { get; set; }
 
         public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
         public virtual ICollection<PhieuChi> PhieuChi { get; set; }
         public virtual ICollection<PhieuTraNhapHang> PhieuTraNhapHang { get; set; }
+        public virtual User NhanVien { get; set; }
     }
 }

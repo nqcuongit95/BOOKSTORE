@@ -7,7 +7,7 @@ namespace BookStore.Models
     public partial class PhieuChi
     {
         public int Id { get; set; }
-        public string NhanVienId { get; set; }
+        public int NhanVienId { get; set; }
         public DateTime NgayLap { get; set; }
         public int? PhieuTraHangId { get; set; }
         public int? PhieuNhapHangId { get; set; }

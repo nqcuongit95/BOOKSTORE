@@ -10,7 +10,7 @@ namespace BookStore.Models
         public DateTime NgayLap { get; set; }
         public int? DonHangId { get; set; }
         public int? PhieuTraNhapHangId { get; set; }
-        public string NhanVienId { get; set; }
+        public int NhanVienId { get; set; }
         public decimal TongTien { get; set; }
 
         public virtual DonHang DonHang { get; set; }

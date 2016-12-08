@@ -18,7 +18,7 @@ namespace BookStore.Models
         public int KhachHangId { get; set; }
         public int TrangThaiId { get; set; }
         public decimal TongTien { get; set; }
-        public string NhanVienId { get; set; }
+        public int NhanVienId { get; set; }
 
         public virtual ICollection<ChiTietDonHang> ChiTietDonHang { get; set; }
         public virtual ICollection<PhieuThu> PhieuThu { get; set; }

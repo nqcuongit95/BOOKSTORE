@@ -49,7 +49,7 @@ namespace BookStore
 
             services.AddScoped<IBookStoreData, BookStoreData>();
 
-            services.AddIdentity<User, IdentityRole>(
+            services.AddIdentity<User, IdentityRole<int>>(
                     config =>
                     {
                         config.User.RequireUniqueEmail = false;
@@ -57,7 +57,7 @@ namespace BookStore
                     
 
                     })
-                    .AddEntityFrameworkStores<BOOKSTOREContext>();
+                    .AddEntityFrameworkStores<BOOKSTOREContext,int>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
