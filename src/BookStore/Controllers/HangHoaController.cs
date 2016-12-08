@@ -31,6 +31,7 @@ namespace BookStore.Controllers
             _sharedLocalizer = sharedLocalizer;
         }
 
+        #region Index
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
@@ -38,7 +39,7 @@ namespace BookStore.Controllers
             try
             {
                 var result = await PaginatedList<HangHoa>.CreateAsync(
-                    _bookStoreData.GetAllHangHoa(), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetHangHoa(), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -47,63 +48,79 @@ namespace BookStore.Controllers
                 return NotFound();
             }
         }
+        #endregion
 
-        //#region Create
-        //[Route("Create")]
-        //public IActionResult Create(bool? modal)
-        //{
-        //    return C(false, modal);
-        //}
+        #region Create
+        [Route("Create")]
+        public IActionResult Create(bool? modal)
+        {
+            return C(false, modal);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("CreateConfirmed")]
-        //public async Task<IActionResult> CreateConfirmed(
-        //    [Bind("TenHangHoa")] HangHoa nhaCungCap,
-        //     bool? modal,
-        //     bool? redirect)
-        //{
-        //    AddInfoToViewData();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("CreateConfirmed")]
+        public async Task<IActionResult> CreateConfirmed(
+            [Bind("GiaBanLe,GiaBanSi,GiaKhoiTao,GiaNhap,LoaiHangHoaId,NhaCungCapId,NhanHieuId,TenHangHoa,TonKho")]
+        HangHoa hangHoa,
+            ICollection<ChiTietHangHoa> properties,
+            bool? modal, bool? redirect)
+        {
+            AddInfoToViewData();
 
-        //    bool isModal = modal ?? false;
-        //    bool isRedirect = redirect ?? true;
+            bool isModal = modal ?? false;
+            bool isRedirect = redirect ?? true;
 
-        //    Message message = new Message();
+            Message message = new Message();
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            nhaCungCap.NgayLap = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    hangHoa.NgayTao = DateTime.Now;
+                    hangHoa.GiaNhap = hangHoa.GiaNhap ?? 0;
+                    hangHoa.GiaBanSi = hangHoa.GiaBanSi ?? 0;
+                    hangHoa.GiaBanLe = hangHoa.GiaBanLe ?? 0;
+                    hangHoa.DaBan = 0;
+                    hangHoa.TrangThai = new TrangThai()
+                    {
+                        VietTat = "USE"
+                    };
 
-        //            await _bookStoreData.AddHangHoa(nhaCungCap);
+                    await _bookStoreData.AddHangHoa(hangHoa, properties);
 
-        //            message.Type = MessageType.Success;
-        //            message.Header = _sharedLocalizer["Success"];
-        //            message.Content = string.Format(
-        //                "{0} {1}",
-        //                _sharedLocalizer[action],
-        //                _sharedLocalizer[controller].Value.ToLower());
+                    message.Type = MessageType.Success;
+                    message.Header = _sharedLocalizer["Success"];
+                    message.Content = string.Format(
+                        "{0} {1}",
+                        _sharedLocalizer[action],
+                        _sharedLocalizer[controller].Value.ToLower());
 
-        //            //if (isModal)
-        //            //    message.Results["Reload"] = true;
+                    //if (isModal)
+                    //    message.Results["Reload"] = true;
 
-        //            if (isRedirect)
-        //                message.Results["RedirectUrl"] = Url.Action(
-        //                    "Details",
-        //                    new { id = nhaCungCap.Id });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            message.Type = MessageType.Error;
-        //            message.Header = _sharedLocalizer["DefaultErrorHeader"];
-        //            message.Content = _sharedLocalizer[ex.GetType().FullName];
-        //        }
-        //    }
+                    if (isRedirect)
+                        message.Results["RedirectUrl"] = Url.Action(
+                            "Details",
+                            new { id = hangHoa.Id });
+                    else
+                        message.Results["Current"] = new
+                        {
+                            value = hangHoa.Id,
+                            name = hangHoa.TenHangHoa
+                        };
+                }
+                catch (Exception ex)
+                {
+                    message.Type = MessageType.Error;
+                    message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                    message.Content = _sharedLocalizer[ex.GetType().FullName];
+                }
+            }
 
-        //    return Json(message);
-        //}
-        //#endregion
+            return Json(message);
+        }
+        #endregion
 
         //#region Details
         //[Route("Details")]

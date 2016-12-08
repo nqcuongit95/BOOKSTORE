@@ -1,37 +1,29 @@
-﻿@model NhaCungCap
+﻿@model LoaiHangHoa
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
-<form id="NhaCungCap"
-      asp-action="EditConfirmed"
+<form id="LoaiHangHoa"
+      asp-action="DeleteConfirmed"
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
+      asp-route-id="@Model.Id"
       class="crud-form update ui form">
     @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
     {
         <h2 class="ui header">@ViewData["Action"]</h2>
     }
 
-    <input type="hidden" asp-for="Id" />
-
     <div class="field">
-        <label asp-for="TenNhaCungCap"></label>
-        <input asp-for="TenNhaCungCap"
-               placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
-    </div>
-    <div asp-for="NgayLap"
-         class="field">
-        <label asp-for="NgayLap"></label>
-        <input type="date"
+        <label asp-for="TenLoaiHangHoa"></label>
+        <input asp-for="TenLoaiHangHoa"
                readonly=""
-               placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
-               value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
+               placeholder="@Html.DisplayNameFor(model => model.TenLoaiHangHoa)">
     </div>
 
     <div class="action-buttons">
         <button class="action-button ui basic button">
-            <i class="checkmark icon"></i>
-            @sharedLocalizer["Edit"]
+            <i class="trash icon"></i>
+            @sharedLocalizer["Delete"]
         </button>
         @if ((bool)ViewData["Modal"] == true)
         {

@@ -192,4 +192,37 @@
   <data name="USE" xml:space="preserve">
     <value>Đang sử dụng</value>
   </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Thao tác</value>
+  </data>
+  <data name="LoaiHangHoa" xml:space="preserve">
+    <value>Loại hàng hóa</value>
+  </data>
+  <data name="DefaultConstruct" xml:space="preserve">
+    <value>Khởi tạo ban đầu</value>
+  </data>
+  <data name="GiaBanLe" xml:space="preserve">
+    <value>Giá bán lẽ</value>
+  </data>
+  <data name="GiaBanSi" xml:space="preserve">
+    <value>Giá bán sĩ</value>
+  </data>
+  <data name="GiaKhoiTao" xml:space="preserve">
+    <value>Giá khởi tạo</value>
+  </data>
+  <data name="GiaNhap" xml:space="preserve">
+    <value>Giá nhập</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Tùy chọn</value>
+  </data>
+  <data name="PleaseChoose" xml:space="preserve">
+    <value>Vui lòng chọn</value>
+  </data>
+  <data name="TonKho" xml:space="preserve">
+    <value>Tồn kho</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Thuộc tính</value>
+  </data>
 </root>

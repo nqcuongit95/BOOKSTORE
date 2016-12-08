@@ -9,7 +9,7 @@ namespace BookStore.Services
     public interface IBookStoreData
     {
         #region NhaCungCap
-        IQueryable<NhaCungCap> GetAllNhaCungCap();
+        IQueryable<NhaCungCap> GetNhaCungCap();
         bool NhaCungCapExists(int? id);
         Task<int> AddNhaCungCap(NhaCungCap nhaCungCap);
         Task<NhaCungCap> GetNhaCungCapById(int? id);
@@ -18,7 +18,7 @@ namespace BookStore.Services
         #endregion
 
         #region NhanHieu
-        IQueryable<NhanHieu> GetAllNhanHieu();
+        IQueryable<NhanHieu> GetNhanHieu();
         bool NhanHieuExists(int? id);
         Task<int> AddNhanHieu(NhanHieu nhanHieu);
         Task<NhanHieu> GetNhanHieuById(int? id);
@@ -26,10 +26,29 @@ namespace BookStore.Services
         Task<int> DeleteNhanHieu(int id);
         #endregion
 
+        #region LoaiHangHoa
+        IQueryable<LoaiHangHoa> GetLoaiHangHoa();
+        Task<LoaiHangHoa> GetLoaiHangHoaById(int? id);
+        bool LoaiHangHoaExists(int? id);
+        Task<int> AddLoaiHangHoa(LoaiHangHoa loaiHangHoa);
+        Task<int> UpdateLoaiHangHoa(LoaiHangHoa loaiHangHoa);
+        Task<int> DeleteLoaiHangHoa(int id);
+        #endregion
+
+        #region ThuocTinhHangHoa
+        IQueryable<ThuocTinhHangHoa> GetThuocTinhHangHoa(int? loaiHangHoaId);
+        bool ThuocTinhHangHoaExists(int? id);
+        Task<int> AddThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu);
+        Task<ThuocTinhHangHoa> GetThuocTinhHangHoaById(int? id);
+        Task<int> UpdateThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu);
+        Task<int> DeleteThuocTinhHangHoa(int id);
+        #endregion
+
         #region HangHoa
-        IQueryable<HangHoa> GetAllHangHoa();
+        IQueryable<HangHoa> GetHangHoa();
         bool HangHoaExists(int? id);
-        Task<int> AddHangHoa(HangHoa hangHoa);
+        Task<int> AddHangHoa(HangHoa hangHoa,
+            ICollection<ChiTietHangHoa> properties);
         Task<HangHoa> GetHangHoaById(int? id);
         Task<int> UpdateHangHoa(HangHoa hangHoa);
         Task<int> DeleteHangHoa(int id);

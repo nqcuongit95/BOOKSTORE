@@ -12,6 +12,14 @@
     font-size: 16px;
 }
 
+.ui.header, .title, h1, h2, h3, h4, h5 {
+    font-family: bookstrore-gdi,Arial,Helvetica,sans-serif !important;
+}
+
+.ui.selection.dropdown {
+    min-width: 0 !important;
+    line-height: 1.25em !important;
+}
 
 /*body {
     background-color: #F5F5F5 !important;

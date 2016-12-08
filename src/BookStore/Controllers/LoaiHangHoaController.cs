@@ -14,8 +14,8 @@ using Microsoft.AspNetCore.Routing;
 
 namespace BookStore.Controllers
 {
-    [Route("HangHoa/NhaCungCap")]
-    public class NhaCungCapController : Controller
+    [Route("HangHoa/LoaiHangHoa")]
+    public class LoaiHangHoaController : Controller
     {
         private readonly IBookStoreData _bookStoreData = null;
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
@@ -23,7 +23,7 @@ namespace BookStore.Controllers
         private string controller;
         private string action;
 
-        public NhaCungCapController(
+        public LoaiHangHoaController(
             IBookStoreData bookStoreData,
             IStringLocalizer<SharedResource> sharedLocalizer)
         {
@@ -31,15 +31,14 @@ namespace BookStore.Controllers
             _sharedLocalizer = sharedLocalizer;
         }
 
-        #region Index
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
 
             try
             {
-                var result = await PaginatedList<NhaCungCap>.CreateAsync(
-                    _bookStoreData.GetNhaCungCap(), page ?? 1, pageSize ?? 10);
+                var result = await PaginatedList<LoaiHangHoa>.CreateAsync(
+                    _bookStoreData.GetLoaiHangHoa(), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -48,7 +47,6 @@ namespace BookStore.Controllers
                 return NotFound();
             }
         }
-        #endregion
 
         #region Create
         [Route("Create")]
@@ -61,7 +59,7 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         [Route("CreateConfirmed")]
         public async Task<IActionResult> CreateConfirmed(
-            [Bind("TenNhaCungCap")] NhaCungCap nhaCungCap,
+            [Bind("TenLoaiHangHoa")] LoaiHangHoa loaiHangHoa,
              bool? modal,
              bool? redirect)
         {
@@ -76,9 +74,7 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    nhaCungCap.NgayLap = DateTime.Now;
-
-                    await _bookStoreData.AddNhaCungCap(nhaCungCap);
+                    await _bookStoreData.AddLoaiHangHoa(loaiHangHoa);
 
                     message.Type = MessageType.Success;
                     message.Header = _sharedLocalizer["Success"];
@@ -93,12 +89,12 @@ namespace BookStore.Controllers
                     if (isRedirect)
                         message.Results["RedirectUrl"] = Url.Action(
                             "Details",
-                            new { id = nhaCungCap.Id });
+                            new { id = loaiHangHoa.Id });
                     else
                         message.Results["Current"] = new
                         {
-                            value = nhaCungCap.Id,
-                            name = nhaCungCap.TenNhaCungCap
+                            value = loaiHangHoa.Id,
+                            name = loaiHangHoa.TenLoaiHangHoa
                         };
                 }
                 catch (Exception ex)
@@ -147,7 +143,7 @@ namespace BookStore.Controllers
         [Route("EditConfirmed")]
         public async Task<IActionResult> EditConfirmed(
             int id,
-            [Bind("Id,TenNhaCungCap")] NhaCungCap nhaCungCap,
+            [Bind("Id,TenLoaiHangHoa")] LoaiHangHoa LoaiHangHoa,
             bool? modal,
             bool? redirect)
         {
@@ -158,7 +154,7 @@ namespace BookStore.Controllers
 
             Message message = new Message();
 
-            if (id != nhaCungCap.Id)
+            if (id != LoaiHangHoa.Id)
             {
                 message.Type = MessageType.Error;
                 message.Header = _sharedLocalizer["DefaultErrorHeader"];
@@ -168,7 +164,7 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    await _bookStoreData.UpdateNhaCungCap(nhaCungCap);
+                    await _bookStoreData.UpdateLoaiHangHoa(LoaiHangHoa);
 
                     message.Type = MessageType.Success;
                     message.Header = _sharedLocalizer["Success"];
@@ -183,7 +179,7 @@ namespace BookStore.Controllers
                     if (isRedirect)
                         message.Results["RedirectUrl"] = Url.Action(
                             "Details",
-                            new { id = nhaCungCap.Id });
+                            new { id = LoaiHangHoa.Id });
                 }
                 catch (Exception ex)
                 {
@@ -228,7 +224,7 @@ namespace BookStore.Controllers
 
             try
             {
-                await _bookStoreData.DeleteNhaCungCap(id);
+                await _bookStoreData.DeleteLoaiHangHoa(id);
 
                 message.Type = MessageType.Warning;
                 message.Header = _sharedLocalizer["Success"];
@@ -304,9 +300,9 @@ namespace BookStore.Controllers
 
             try
             {
-                NhaCungCap nhaCungCap = await _bookStoreData.GetNhaCungCapById(id);
+                LoaiHangHoa LoaiHangHoa = await _bookStoreData.GetLoaiHangHoaById(id);
 
-                if (nhaCungCap == null)
+                if (LoaiHangHoa == null)
                 {
                     if (isModal)
                     {
@@ -321,9 +317,9 @@ namespace BookStore.Controllers
                     ViewData["Redirect"] = isRedirect;
 
                     if (isModal)
-                        return PartialView(GetUrlPartialPartial(), nhaCungCap);
+                        return PartialView(GetUrlPartialPartial(), LoaiHangHoa);
                     else
-                        return View(nhaCungCap);
+                        return View(LoaiHangHoa);
                 }
             }
             catch (Exception ex)

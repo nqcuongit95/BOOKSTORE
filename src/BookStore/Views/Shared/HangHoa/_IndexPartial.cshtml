@@ -11,16 +11,16 @@
     HangHoa hangHoa = new HangHoa();
 }
 
-<table class="hang-hoa data-table ui sortable table">
+<table class="hang-hoa data-table ui blue selectable sortable table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
-            <th>@Html.DisplayNameFor(p => hangHoa.NgayTao)</th>
-            <th>@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
-            <th>@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
-            <th>@Html.DisplayNameFor(p => hangHoa.DaBan)</th>
-            <th>@Html.DisplayNameFor(p => hangHoa.TrangThaiId)</th>
-            <th></th>
+            <th class="three wide">@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.NgayTao)</th>
+            <th class="three wide">@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.DaBan)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TrangThaiId)</th>
+            <th class="two wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
     <tbody>
@@ -68,20 +68,20 @@
                 </td>
 
                 <td class="action-buttons">
-                    <div class="ui">
+                    <div class="ui floated menu">
                         <a asp-action="Edit"
                            asp-route-id="@item.Id"
-                           class="ui blue icon button">
+                           class="edit icon item">
                             <i class="edit icon"></i>
                         </a>
                         <a asp-action="Details"
                            asp-route-id="@item.Id"
-                           class="ui blue icon button">
+                           class="details icon item">
                             <i class="file text outline icon"></i>
                         </a>
                         <a asp-action="Delete"
                            asp-route-id="@item.Id"
-                           class="ui blue icon button">
+                           class="delete icon item">
                             <i class="trash icon"></i>
                         </a>
                     </div>

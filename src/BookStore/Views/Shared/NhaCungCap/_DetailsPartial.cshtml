@@ -15,7 +15,6 @@
     <div class="field">
         <label asp-for="TenNhaCungCap"></label>
         <input asp-for="TenNhaCungCap"
-               type="text"
                readonly=""
                placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
     </div>
@@ -30,7 +29,7 @@
     <div class="action-buttons">
         @if ((bool)ViewData["Modal"] == true)
         {
-            <a class="action-button cancel ui basic return button">
+            <a class="action-button cancel ui basic button">
                 <i class="reply icon"></i>
                 @sharedLocalizer["Cancel"]
             </a>
@@ -38,7 +37,7 @@
         else
         {
             <a asp-action="Index"
-               class="action-button cancel ui basic return button">
+               class="action-button cancel ui basic button">
                 <i class="reply icon"></i>
                 @sharedLocalizer["Cancel"]
             </a>

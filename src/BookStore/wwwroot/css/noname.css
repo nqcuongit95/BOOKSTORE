@@ -46,9 +46,12 @@
     cursor: pointer;
 }
 
-.hang-hoa.data-table .action-buttons .button {
-    display: block;
-    margin: 3.5px;
+.data-table .ui.floated.menu {
+    position: relative;
+}
+
+.data-table .action-buttons {
+    min-height: 46px;
 }
 
 #message .header .icon.hidden,
@@ -96,3 +99,38 @@
     .crud-form .action-button {
         min-width: 120px;
     }
+
+    .crud-form .dropdown .text {
+        width: 100%;
+        -o-text-overflow: ellipsis;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .crud-form .add.button {
+        display: inline-block;
+        margin: .5rem 0 !important;
+    }
+
+    .crud-form fieldset {
+        border: none;
+    }
+
+    .crud-form .properties {
+        margin: 1rem 0;
+    }
+
+.hidden, .hidden-form {
+    display: none;
+}
+
+.properties-form {
+    width: 100%;
+}
+
+.property-form {
+    max-width: 100% !important;
+    text-align: left;
+}

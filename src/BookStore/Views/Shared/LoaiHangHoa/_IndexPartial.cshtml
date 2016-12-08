@@ -1,4 +1,4 @@
-﻿@model PaginatedList<NhaCungCap>
+﻿@model PaginatedList<LoaiHangHoa>
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
@@ -8,14 +8,13 @@
 
     Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
 
-    NhaCungCap nhaCungCap = new NhaCungCap();
+    LoaiHangHoa loaiHangHoa = new LoaiHangHoa();
 }
 
-<table class="nha-cung-cap data-table ui blue selectable sortable table">
+<table class="nhan-hieu data-table ui blue selectable sortable table">
     <thead>
         <tr>
-            <th class="twelve wide">@Html.DisplayNameFor(p => nhaCungCap.TenNhaCungCap)</th>
-            <th class="two wide">@Html.DisplayNameFor(p => nhaCungCap.NgayLap)</th>
+            <th class="fourteen wide">@Html.DisplayNameFor(p => loaiHangHoa.TenLoaiHangHoa)</th>
             <th class="two wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
@@ -24,26 +23,23 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TenNhaCungCap)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NgayLap)
+                    @Html.DisplayFor(modelItem => item.TenLoaiHangHoa)
                 </td>
                 <td class="action-buttons">
                     <div class="ui floated menu">
                         <a asp-action="Edit"
                            asp-route-id="@item.Id"
-                           class="edit icon item">
+                           class="popup icon item">
                             <i class="edit icon"></i>
                         </a>
                         <a asp-action="Details"
                            asp-route-id="@item.Id"
-                           class="details icon item">
+                           class="popup icon item">
                             <i class="file text outline icon"></i>
                         </a>
                         <a asp-action="Delete"
                            asp-route-id="@item.Id"
-                           class="delete icon item">
+                           class="popup icon item">
                             <i class="trash icon"></i>
                         </a>
                     </div>
@@ -62,5 +58,5 @@
 
 @await Html.PartialAsync("_PaginatedPartial", paginated)
 
-<div id="form-modal" class="ui small modal">
+<div id="form-modal" class="ui modal">
 </div>

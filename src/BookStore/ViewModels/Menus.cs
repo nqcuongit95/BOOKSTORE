@@ -5,13 +5,18 @@ using System.Threading.Tasks;
 
 namespace BookStore.ViewModels
 {
-    public class MenuElements
+    public class MenuElement
     {
         public string Action;
         public string Controller;
     }
 
-    public class Menu : Dictionary<string, MenuElements>
+    public class RearchResult
+    {
+        public List<object> Results = new List<object>();
+    }
+
+    public class Menu : Dictionary<string, MenuElement>
     {
         public string SelectedKey;
     }
@@ -20,19 +25,25 @@ namespace BookStore.ViewModels
     {
         public HangHoaMenu(string selectedKey)
         {
-            Add("HangHoa", new MenuElements
+            Add("HangHoa", new MenuElement
             {
                 Action = "Index",
                 Controller = "HangHoa"
             });
 
-            Add("NhaCungCap", new MenuElements
+            Add("LoaiHangHoa", new MenuElement
+            {
+                Action = "Index",
+                Controller = "LoaiHangHoa"
+            });
+
+            Add("NhaCungCap", new MenuElement
             {
                 Action = "Index",
                 Controller = "NhaCungCap"
             });
 
-            Add("NhanHieu", new MenuElements
+            Add("NhanHieu", new MenuElement
             {
                 Action = "Index",
                 Controller = "NhanHieu"
@@ -42,17 +53,16 @@ namespace BookStore.ViewModels
         }
     }
 
-    #region NhaCungCap
     public class DefaultHeaderActionMenu : Menu
     {
         public DefaultHeaderActionMenu(string selectedKey, string controller)
         {
-            Add("Index", new MenuElements
+            Add("Index", new MenuElement
             {
                 Action = "Index",
                 Controller = controller
             });
-            Add("Create", new MenuElements
+            Add("Create", new MenuElement
             {
                 Action = "Create",
                 Controller = controller
@@ -61,5 +71,4 @@ namespace BookStore.ViewModels
             SelectedKey = selectedKey;
         }
     }
-    #endregion
 }

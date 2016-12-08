@@ -31,6 +31,7 @@ namespace BookStore.Controllers
             _sharedLocalizer = sharedLocalizer;
         }
 
+        #region Index
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
@@ -38,7 +39,7 @@ namespace BookStore.Controllers
             try
             {
                 var result = await PaginatedList<NhanHieu>.CreateAsync(
-                    _bookStoreData.GetAllNhanHieu(), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetNhanHieu(), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -47,12 +48,13 @@ namespace BookStore.Controllers
                 return NotFound();
             }
         }
+        #endregion
 
         #region Create
         [Route("Create")]
-        public IActionResult Create(bool? modal)
+        public IActionResult Create(bool? modal, bool? redirect)
         {
-            return C(false, modal);
+            return C(modal, redirect);
         }
 
         [HttpPost]
@@ -90,6 +92,12 @@ namespace BookStore.Controllers
                         message.Results["RedirectUrl"] = Url.Action(
                             "Details",
                             new { id = nhanHieu.Id });
+                    else
+                        message.Results["Current"] = new
+                        {
+                            value = nhanHieu.Id,
+                            name = nhanHieu.TenNhanHieu
+                        };
                 }
                 catch (Exception ex)
                 {

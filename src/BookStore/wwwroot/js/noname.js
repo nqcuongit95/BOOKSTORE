@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     initializeCRUDForm();
+    $('#form-modal').modal({
+        autofocus: false
+    });
 
     initializeDataTable();
     initializeIndexPagination();
@@ -8,15 +11,33 @@
 });
 
 function initializeCRUDForm() {
-    $('.crud-form .action-buttons .cancel.button').click(function () {
+    initializeValidationCRUDForm();
+
+    $('.crud-form .action-buttons .cancel.button').click(function (event) {
         hideFormModal();
     });
+    $('.crud-form .add.button').each(function () {
+        $(this).click(function () {
+            onClickActionButton(this);
+        });
+    });
+    $('.crud-form .add-property.button').click(function () {
+        addPropertyForm($('.crud-form .properties'));
 
-    initializeValidationCRUDForm();
+        updateProperties();
+        initializeValidationCRUDForm();
+    });
+    $('.crud-form .ui.dropdown').dropdown({
+        onChange: function () {
+            updateProperties();
+        }
+    });
 }
 
-function crudFormSubmit(element) {
-    var form = $(element);
+function crudFormSubmit(form) {
+    var form = $(form);
+    var dropdown = $(arguments[1]);
+
     var url = form.closest('form').attr('action');
     var data = form.closest('form').serialize();
     var timeout = 1000;
@@ -28,14 +49,14 @@ function crudFormSubmit(element) {
         type: 'post',
         data: data,
         success: function (result) {
-            if (result !== null) {
+            if (typeof result !== undefined) {
                 inactiveMessageLoader();
                 showMessage(result);
 
                 if (result.type !== 'error') {
                     activeMessageProgress();
 
-                    if (result.results["Reload"] !== null &&
+                    if (typeof result.results["Reload"] !== undefined &&
                         result.results["Reload"] === true) {
                         setTimeout(
                             function () {
@@ -46,7 +67,7 @@ function crudFormSubmit(element) {
                     else {
                         var redirect = result.results["RedirectUrl"];
 
-                        if (redirect !== null) {
+                        if (typeof redirect !== undefined) {
                             setTimeout(
                                 function () {
                                     location = redirect;
@@ -68,6 +89,68 @@ function crudFormSubmit(element) {
     });
 }
 
+function initializePropertyFieldset() {
+    $('.property .remove.button').click(function () {
+        var fieldset = $(this).closest('.property');
+
+        fieldset.transition({
+            animation: 'scale',
+            onComplete: function () {
+                $(this).closest('.property').remove();
+
+                updateProperties();
+                initializeValidationCRUDForm();
+            }
+        });
+    });
+}
+
+function addPropertyForm(content) {
+    var content = $(content);
+    var field = $('#properties');
+
+    content.append(field.html());
+
+    field = content.children('.fields:last-child');
+
+    initializePropertyFieldset();
+}
+
+function updateProperties() {
+    var fields = $('.crud-form .properties .fields');
+
+    fields.each(function (index) {
+        $(this).find('input').each(function () {
+            var defaultName = $(this).attr('default-name');
+            if (typeof defaultName !== undefined) {
+                var name = 'properties[' + index + '].' +
+                    defaultName;
+
+                $(this).attr('id', name);
+                $(this).attr('name', name);
+            }
+        });
+
+        $(this).find('.ui.search').each(function () {
+            console.log($('#' + $(this).attr('for-id')).val());
+
+            $(this).search({
+                minCharacters: 0,
+                apiSettings: {
+                    url: $(this).attr('href') + '?' +
+                        $(this).attr('for-id') + '=' +
+                        $('#' + $(this).attr('for-id')).val()
+                },
+                fields: {
+                    results: 'results',
+                    title: 'title'
+                },
+                error: false
+            });
+        });
+    });
+}
+
 function initializeDataTable() {
     var table = $('.data-table');
 
@@ -77,7 +160,7 @@ function initializeDataTable() {
 }
 
 function initializeIndexPagination() {
-    var dropdown = $('#index-pagination>.dropdown');
+    var dropdown = $('#index-pagination > .ui.dropdown');
 
     dropdown.dropdown('set selected', $('#page-index').val());
 
@@ -88,9 +171,7 @@ function initializeIndexPagination() {
     });
 }
 
-function onClickActionButton(element, event) {
-    event.preventDefault();
-
+function onClickActionButton(element) {
     element = $(element);
 
     var url = element.attr('href');
@@ -118,6 +199,8 @@ function onClickActionButton(element, event) {
         error: function (xhr, status, error) {
             inactiveMessageLoader();
             showDefaultErrorMessage();
+
+            return null;
         }
     });
 }
@@ -142,7 +225,7 @@ function showDefaultErrorMessage() {
 }
 
 function showMessage(message) {
-    if (message !== null) {
+    if (typeof message !== undefined) {
         var element = $('#message');
         var title = $('#message>.header>.title');
         var content = $('#message>.content');

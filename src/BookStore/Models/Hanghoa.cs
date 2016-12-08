@@ -35,6 +35,9 @@ namespace BookStore.Models
         [Display(Name = "TonKho", ResourceType = typeof(
             Resources.DataAnnotations))]
         [Required(ErrorMessage = "Bạn không được để trống trường này.")]
+        [MaxLength(7, ErrorMessage = "{0} tối đa {1} ký tự.")]
+        [Range(0, 1000000,
+            ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public int TonKho { get; set; }
 
         [Display(Name = "NhaCungCap", ResourceType = typeof(
@@ -51,21 +54,33 @@ namespace BookStore.Models
             Resources.DataAnnotations))]
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Bạn không được để trống trường này.")]
+        [MaxLength(7, ErrorMessage = "{0} tối đa {1} ký tự.")]
+        [Range(0, 1000000,
+            ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]        
         public decimal GiaKhoiTao { get; set; }
 
         [Display(Name = "GiaNhap", ResourceType = typeof(
             Resources.DataAnnotations))]
         [DataType(DataType.Currency)]
+        [MaxLength(7, ErrorMessage = "{0} tối đa {1} ký tự.")]
+        [Range(0, 1000000,
+            ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public decimal? GiaNhap { get; set; }
 
         [Display(Name = "GiaBanSi", ResourceType = typeof(
             Resources.DataAnnotations))]
         [DataType(DataType.Currency)]
+        [MaxLength(7, ErrorMessage = "{0} tối đa {1} ký tự.")]
+        [Range(0, 1000000,
+            ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public decimal? GiaBanSi { get; set; }
 
         [Display(Name = "GiaBanLe", ResourceType = typeof(
             Resources.DataAnnotations))]
         [DataType(DataType.Currency)]
+        [MaxLength(7, ErrorMessage = "{0} tối đa {1} ký tự.")]
+        [Range(0, 1000000,
+            ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public decimal? GiaBanLe { get; set; }
 
         [Display(Name = "TrangThai", ResourceType = typeof(

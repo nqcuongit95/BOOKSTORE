@@ -13,11 +13,10 @@
         <h2 class="ui header">@ViewData["Action"]</h2>
     }
 
-    <div class="required field">
+    <div class="field">
         <label asp-for="TenNhaCungCap"></label>
         <input asp-for="TenNhaCungCap"
                readonly=""
-               type="text"
                placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
     </div>
     <div class="field">
@@ -29,13 +28,13 @@
     </div>
 
     <div class="action-buttons">
-        <button class="action-button submit ui basic button" type="submit">
+        <button class="action-button ui basic button">
             <i class="trash icon"></i>
             @sharedLocalizer["Delete"]
         </button>
         @if ((bool)ViewData["Modal"] == true)
         {
-            <a class="action-button cancel ui basic return button">
+            <a class="action-button cancel ui basic button">
                 <i class="reply icon"></i>
                 @sharedLocalizer["Cancel"]
             </a>
@@ -43,7 +42,7 @@
         else
         {
             <a asp-action="Index"
-               class="action-button cancel ui basic return button">
+               class="action-button cancel ui basic button">
                 <i class="reply icon"></i>
                 @sharedLocalizer["Cancel"]
             </a>

@@ -132,6 +132,9 @@
   <data name="GiaNhap" xml:space="preserve">
     <value>Giá nhập</value>
   </data>
+  <data name="GiaTri" xml:space="preserve">
+    <value>Giá trị</value>
+  </data>
   <data name="LoaiHangHoa" xml:space="preserve">
     <value>Loại hàng hóa</value>
   </data>
@@ -147,11 +150,17 @@
   <data name="TenHangHoa" xml:space="preserve">
     <value>Tên hàng hóa</value>
   </data>
+  <data name="TenLoaiHangHoa" xml:space="preserve">
+    <value>Tên loại hàng hóa</value>
+  </data>
   <data name="TenNhaCungCap" xml:space="preserve">
     <value>Tên nhà cung cấp</value>
   </data>
   <data name="TenNhanHieu" xml:space="preserve">
     <value>Tên nhãn hiệu</value>
+  </data>
+  <data name="ThuocTinh" xml:space="preserve">
+    <value>Thuộc tính</value>
   </data>
   <data name="TonKho" xml:space="preserve">
     <value>Tồn kho</value>

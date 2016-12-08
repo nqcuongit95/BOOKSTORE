@@ -11,11 +11,11 @@
     NhanHieu nhanHieu = new NhanHieu();
 }
 
-<table class="data-table ui selectable sortable table">
+<table class="nhan-hieu data-table ui blue selectable sortable table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(p => nhanHieu.TenNhanHieu)</th>
-            <th></th>
+            <th class="fourteen wide">@Html.DisplayNameFor(p => nhanHieu.TenNhanHieu)</th>
+            <th class="two wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
     <tbody>

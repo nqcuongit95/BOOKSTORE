@@ -1,9 +1,9 @@
-﻿@model NhaCungCap
+﻿@model LoaiHangHoa
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
-<form id="NhaCungCap"
-      asp-action="EditConfirmed"
+<form id="LoaiHangHoa"
+      asp-action="CreateConfirmed"
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       class="crud-form update ui form">
@@ -12,26 +12,17 @@
         <h2 class="ui header">@ViewData["Action"]</h2>
     }
 
-    <input type="hidden" asp-for="Id" />
-
     <div class="field">
-        <label asp-for="TenNhaCungCap"></label>
-        <input asp-for="TenNhaCungCap"
-               placeholder="@Html.DisplayNameFor(model => model.TenNhaCungCap)">
-    </div>
-    <div asp-for="NgayLap"
-         class="field">
-        <label asp-for="NgayLap"></label>
-        <input type="date"
-               readonly=""
-               placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
-               value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
+        <label asp-for="TenLoaiHangHoa"></label>
+        <input asp-for="TenLoaiHangHoa"
+
+               placeholder="@Html.DisplayNameFor(model => model.TenLoaiHangHoa)">
     </div>
 
     <div class="action-buttons">
         <button class="action-button ui basic button">
-            <i class="checkmark icon"></i>
-            @sharedLocalizer["Edit"]
+            <i class="add icon"></i>
+            @sharedLocalizer["Create"]
         </button>
         @if ((bool)ViewData["Modal"] == true)
         {
