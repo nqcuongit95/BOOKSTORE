@@ -16,15 +16,21 @@
               asp-antiforgery="true">
             <div class="required field">
                 <label>Tài Khoản</label>
-                <input placeholder="Tài khoản" asp-for="@Model.Username" 
-                       type="text"
-                       data-validate="valid-user">
+                <div class="ui left icon input">
+                    <input placeholder="Tài khoản" asp-for="@Model.Username"
+                           type="text"
+                           data-validate="valid-user">
+                    <i class="user icon"></i>                    
+                </div>                
             </div>
             <div class="required field">
                 <label>Mật Khẩu</label>
-                <input placeholder="Mật khẩu" asp-for="@Model.Password" 
-                       type="password"
-                       data-validate="valid-password">
+                <div class="ui left icon input">
+                    <input placeholder="Mật khẩu" asp-for="@Model.Password"
+                           type="password"
+                           data-validate="valid-password">
+                    <i class="lock icon"></i>                    
+                </div>                
             </div>
             <div class="inline field">
                 <div class="ui checkbox">

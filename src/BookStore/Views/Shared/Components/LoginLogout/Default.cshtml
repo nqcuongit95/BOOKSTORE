@@ -1,7 +1,7 @@
 ﻿
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="header">Hello, @User.Identity.Name</div>
+    <div class="header">Hello, @User.Identity.Name !</div>
     <div class="menu">
         <a class="item" asp-controller="" asp-action="">Account</a>
         <a class="item" asp-controller="Account" asp-action="Logout">Sign out</a>

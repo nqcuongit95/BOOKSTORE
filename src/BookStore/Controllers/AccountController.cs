@@ -31,6 +31,10 @@ namespace BookStore.Controllers
             {
                 var user = new User { UserName = model.Username };
 
+                //other fields
+                user.FullName = model.FullName;
+                user.DateCreate = System.DateTime.Now;
+
                 var createResult = await _userManager.CreateAsync(user, model.Password);
                 if (createResult.Succeeded)
                 {
@@ -84,7 +88,7 @@ namespace BookStore.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Dashboard", "Index");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                 }
             }

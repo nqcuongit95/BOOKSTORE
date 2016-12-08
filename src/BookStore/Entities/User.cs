@@ -28,6 +28,7 @@ namespace BookStore.Entities
         public virtual ICollection<PhieuTraNhapHang> PhieuTraNhapHang { get; set; }
         public virtual ICollection<PhieuKiemKho> PhieuKiemKho { get; set; }
         public virtual ICollection<PhieuNhapHang> PhieuNhapHang { get; set; }
-        public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }
+        public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }        
+
     }
 }
