@@ -9,20 +9,20 @@
         form.form({
             fields: fieldsRules,
             inline: true,
-            on: 'blur'
+            on: 'blur',
+            onSuccess: function (event) {
+                event.preventDefault();
+
+                crudFormSubmit(this);
+            }
         });
 
-        form.submit(function (event) {
-            event.preventDefault();
+        //form.submit(function (event) {
+        //    event.preventDefault();
 
-            crudFormSubmit(this);
-        });
+        //    crudFormSubmit(this);
+        //});
     });
-}
-
-function initializeValidationFormModal() {
-    var form = $('#form-modal > .crud-form');
-
 }
 
 function createFieldsRules(form) {
@@ -58,22 +58,24 @@ function createFieldsRules(form) {
             });
         }
 
-        if (typeof range !== 'undefined') {
-            if (typeof min !== 'undefined') {
+        if (range !== undefined) {
+            if (min !== undefined) {
                 input.attr('min', min);
             }
             else {
                 min = 0;
             }
 
-            if (typeof max !== 'undefined') {
+            if (max !== undefined) {
                 input.attr('max', max);
             }
             else {
                 max = Number.MAX_SAFE_INTEGER;
             }
 
-            input.attr('value', min);
+            if (input.attr('value') === '') {
+                input.attr('value', min);
+            }
             input.blur(function () {
                 if ($(this).val() === null ||
                     $(this).val() === '')

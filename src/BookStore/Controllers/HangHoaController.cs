@@ -52,9 +52,9 @@ namespace BookStore.Controllers
 
         #region Create
         [Route("Create")]
-        public IActionResult Create(bool? modal)
+        public IActionResult Create(bool? modal, bool? redirect)
         {
-            return C(false, modal);
+            return C(modal, redirect);
         }
 
         [HttpPost]
@@ -122,146 +122,148 @@ namespace BookStore.Controllers
         }
         #endregion
 
-        //#region Details
-        //[Route("Details")]
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    return await RUD(id, false, true);
-        //}
+        #region Details
+        [Route("Details")]
+        public async Task<IActionResult> Details(int? id)
+        {
+            return await RUD(id, false, true);
+        }
 
-        //[HttpPost, ActionName("Details")]
-        //[Route("Details")]
-        //public async Task<IActionResult> DetailsModal(int? id)
-        //{
-        //    return await RUD(id, true, false);
-        //}
-        //#endregion
+        [HttpPost, ActionName("Details")]
+        [Route("Details")]
+        public async Task<IActionResult> DetailsModal(int? id)
+        {
+            return await RUD(id, true, false);
+        }
+        #endregion
 
-        //#region Edit
-        //[Route("Edit")]
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    return await RUD(id, false, true);
-        //}
+        #region Edit
+        [Route("Edit")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            return await RUD(id, false, true);
+        }
 
-        //[HttpPost, ActionName("Edit")]
-        //[Route("Edit")]
-        //public async Task<IActionResult> EditModal(int? id, bool? redirect)
-        //{
-        //    return await RUD(id, true, redirect);
-        //}
+        [HttpPost, ActionName("Edit")]
+        [Route("Edit")]
+        public async Task<IActionResult> EditModal(int? id, bool? redirect)
+        {
+            return await RUD(id, true, redirect);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("EditConfirmed")]
-        //public async Task<IActionResult> EditConfirmed(
-        //    int id,
-        //    [Bind("Id,TenHangHoa")] HangHoa nhaCungCap,
-        //    bool? modal,
-        //    bool? redirect)
-        //{
-        //    AddInfoToViewData();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("EditConfirmed")]
+        public async Task<IActionResult> EditConfirmed(
+            int id,
+            [Bind("GiaBanLe,GiaBanSi,GiaKhoiTao,GiaNhap,LoaiHangHoaId,NhaCungCapId,NhanHieuId,TenHangHoa,TonKho")]
+        HangHoa hangHoa,
+            ICollection<ChiTietHangHoa> properties,
+            bool? modal,
+            bool? redirect)
+        {
+            AddInfoToViewData();
 
-        //    bool isModal = modal ?? false;
-        //    bool isRedirect = redirect ?? true;
+            bool isModal = modal ?? false;
+            bool isRedirect = redirect ?? true;
 
-        //    Message message = new Message();
+            Message message = new Message();
 
-        //    if (id != nhaCungCap.Id)
-        //    {
-        //        message.Type = MessageType.Error;
-        //        message.Header = _sharedLocalizer["DefaultErrorHeader"];
-        //        message.Content = _sharedLocalizer["Invalid"];
-        //    }
-        //    else if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await _bookStoreData.UpdateHangHoa(nhaCungCap);
+            if (id != hangHoa.Id)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer["Invalid"];
+            }
+            else if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _bookStoreData.UpdateHangHoa(hangHoa);
 
-        //            message.Type = MessageType.Success;
-        //            message.Header = _sharedLocalizer["Success"];
-        //            message.Content = string.Format(
-        //                "{0} {1}",
-        //                _sharedLocalizer[action],
-        //                _sharedLocalizer[controller].Value.ToLower());
+                    message.Type = MessageType.Success;
+                    message.Header = _sharedLocalizer["Success"];
+                    message.Content = string.Format(
+                        "{0} {1}",
+                        _sharedLocalizer[action],
+                        _sharedLocalizer[controller].Value.ToLower());
 
-        //            if (isModal)
-        //                message.Results["Reload"] = true;
+                    if (isModal)
+                        message.Results["Reload"] = true;
 
-        //            if (isRedirect)
-        //                message.Results["RedirectUrl"] = Url.Action(
-        //                    "Details",
-        //                    new { id = nhaCungCap.Id });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            message.Type = MessageType.Error;
-        //            message.Header = _sharedLocalizer["DefaultErrorHeader"];
-        //            message.Content = _sharedLocalizer[ex.GetType().FullName];
-        //        }
-        //    }
+                    if (isRedirect)
+                        message.Results["RedirectUrl"] = Url.Action(
+                            "Details",
+                            new { id = hangHoa.Id });
+                }
+                catch (Exception ex)
+                {
+                    message.Type = MessageType.Error;
+                    message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                    message.Content = _sharedLocalizer[ex.GetType().FullName];
+                }
+            }
 
-        //    return Json(message);
-        //}
-        //#endregion
+            return Json(message);
+        }
+        #endregion
 
-        //#region Delete
-        //[Route("Delete")]
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    return await RUD(id, false, true);
-        //}
+        #region Delete
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            return await RUD(id, false, true);
+        }
 
-        //[HttpPost, ActionName("Delete")]
-        //[Route("Delete")]
-        //public async Task<IActionResult> DeleteModal(int? id)
-        //{
-        //    return await RUD(id, true, false);
-        //}
+        [HttpPost, ActionName("Delete")]
+        [Route("Delete")]
+        public async Task<IActionResult> DeleteModal(int? id)
+        {
+            return await RUD(id, true, false);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("DeleteConfirmed")]
-        //public async Task<IActionResult> DeleteConfirmed(
-        //    int id,
-        //    bool? modal,
-        //    bool? redirect)
-        //{
-        //    AddInfoToViewData();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("DeleteConfirmed")]
+        public async Task<IActionResult> DeleteConfirmed(
+            int id,
+            bool? modal,
+            bool? redirect)
+        {
+            AddInfoToViewData();
 
-        //    bool isModal = modal ?? false;
-        //    bool isRedirect = redirect ?? true;
+            bool isModal = modal ?? false;
+            bool isRedirect = redirect ?? true;
 
-        //    Message message = new Message();
+            Message message = new Message();
 
-        //    try
-        //    {
-        //        await _bookStoreData.DeleteHangHoa(id);
+            try
+            {
+                await _bookStoreData.DeleteHangHoa(id);
 
-        //        message.Type = MessageType.Warning;
-        //        message.Header = _sharedLocalizer["Success"];
-        //        message.Content = string.Format(
-        //            "{0} {1}",
-        //            _sharedLocalizer[action],
-        //            _sharedLocalizer[controller].Value.ToLower());
+                message.Type = MessageType.Warning;
+                message.Header = _sharedLocalizer["Success"];
+                message.Content = string.Format(
+                    "{0} {1}",
+                    _sharedLocalizer[action],
+                    _sharedLocalizer[controller].Value.ToLower());
 
-        //        if (isModal)
-        //            message.Results["Reload"] = true;
+                if (isModal)
+                    message.Results["Reload"] = true;
 
-        //        if (isRedirect)
-        //            message.Results["RedirectUrl"] = Url.Action("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        message.Type = MessageType.Error;
-        //        message.Header = _sharedLocalizer["DefaultErrorHeader"];
-        //        message.Content = _sharedLocalizer[ex.GetType().FullName];
-        //    }
+                if (isRedirect)
+                    message.Results["RedirectUrl"] = Url.Action("Index");
+            }
+            catch (Exception ex)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer[ex.GetType().FullName];
+            }
 
-        //    return Json(message);
-        //}
-        //#endregion
+            return Json(message);
+        }
+        #endregion
 
         #region Other
         private IActionResult C(bool? modal, bool? redirect)
@@ -313,9 +315,17 @@ namespace BookStore.Controllers
 
             try
             {
-                HangHoa nhaCungCap = await _bookStoreData.GetHangHoaById(id);
+                HangHoa hangHoa = await _bookStoreData.GetHangHoaById(id);
 
-                if (nhaCungCap == null)
+                hangHoa.LoaiHangHoa =
+                    await _bookStoreData.GetLoaiHangHoaById(hangHoa.LoaiHangHoaId);
+                hangHoa.NhaCungCap =
+                    await _bookStoreData.GetNhaCungCapById(hangHoa.NhaCungCapId);
+                hangHoa.NhanHieu =
+                    await _bookStoreData.GetNhanHieuById(hangHoa.NhanHieuId);
+                hangHoa.ChiTietHangHoa = await _bookStoreData.GetChiTietHangHoa(id).ToArrayAsync();
+
+                if (hangHoa == null)
                 {
                     if (isModal)
                     {
@@ -330,9 +340,9 @@ namespace BookStore.Controllers
                     ViewData["Redirect"] = isRedirect;
 
                     if (isModal)
-                        return PartialView(GetUrlPartialPartial(), nhaCungCap);
+                        return PartialView(GetUrlPartialPartial(), hangHoa);
                     else
-                        return View(nhaCungCap);
+                        return View(hangHoa);
                 }
             }
             catch (Exception ex)

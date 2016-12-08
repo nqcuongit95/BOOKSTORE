@@ -28,7 +28,7 @@ namespace BookStore.Services
 
         public async Task<NhanHieu> GetNhanHieuById(int? id)
         {
-            return await _context.NhanHieu.SingleOrDefaultAsync(m => m.Id == id);
+            return await _context.NhanHieu.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<NhanHieu, bool>>)(m => m.Id == id));
         }
 
         public async Task<int> AddNhanHieu(NhanHieu nhanHieu)
@@ -41,21 +41,20 @@ namespace BookStore.Services
         public async Task<int> UpdateNhanHieu(NhanHieu nhanHieu)
         {
             _context.Entry(nhanHieu).State = EntityState.Modified;
-            _context.Entry(nhanHieu).Property("NgayLap").IsModified = false;
 
             return await _context.SaveChangesAsync();
         }
 
         public bool NhanHieuExists(int? id)
         {
-            return _context.NhanHieu.Any(e => e.Id == id);
+            return _context.NhanHieu.Any((System.Linq.Expressions.Expression<Func<NhanHieu, bool>>)(e => e.Id == id));
         }
 
         public async Task<int> DeleteNhanHieu(int id)
         {
             var nhanHieu = await _context.NhanHieu
-                .SingleOrDefaultAsync(m => m.Id == id);
-            _context.NhanHieu.Remove(nhanHieu);
+                .SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<NhanHieu, bool>>)(m => m.Id == id));
+            _context.NhanHieu.Remove((NhanHieu)nhanHieu);
 
             return await _context.SaveChangesAsync();
         }

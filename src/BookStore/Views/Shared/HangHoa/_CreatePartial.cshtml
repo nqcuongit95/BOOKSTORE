@@ -7,7 +7,6 @@
     ChiTietHangHoa chiTietHangHoa = new ChiTietHangHoa();
 }
 
-
 <form id="HangHoa"
       asp-action="CreateConfirmed"
       asp-route-modal="@ViewData["Modal"]"
@@ -20,8 +19,8 @@
 
     <h2 class="ui dividing header">
         @string.Format("{0} {1}",
-     sharedLocalizer["Details"],
-     sharedLocalizer["HangHoa"].Value.ToLower())
+       sharedLocalizer["Details"],
+       sharedLocalizer["HangHoa"].Value.ToLower())
     </h2>
 
     <div class="two fields">
@@ -47,8 +46,8 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">
                     @string.Format("{0} {1}",
-     sharedLocalizer["PleaseChoose"],
-     sharedLocalizer["LoaiHangHoa"].Value.ToLower())
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["LoaiHangHoa"].Value.ToLower())
                 </div>
                 <div class="menu">
                     @foreach (var loaiHangHoa in bookStoreData.GetLoaiHangHoa())
@@ -60,8 +59,8 @@
                 </div>
             </div>
             <div href="@Url.Action(
-    "Create", "LoaiHangHoa",
-    new { modal = true, redirect = false })"
+                      "Create", "LoaiHangHoa",
+                      new { modal = true, redirect = false })"
                  class="loai-hang-hoa add ui blue icon button">
                 <i class="add icon"></i>
             </div>
@@ -74,8 +73,8 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">
                     @string.Format("{0} {1}",
-     sharedLocalizer["PleaseChoose"],
-     sharedLocalizer["NhanHieu"].Value.ToLower())
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhanHieu"].Value.ToLower())
                 </div>
                 <div class="menu">
                     @foreach (var nhanHieu in bookStoreData.GetNhanHieu())
@@ -87,8 +86,8 @@
                 </div>
             </div>
             <div href="@Url.Action(
-    "Create", "NhanHieu",
-    new { modal = true, redirect = false })"
+                      "Create", "NhanHieu",
+                      new { modal = true, redirect = false })"
                  class="nhan-hieu add ui blue icon button">
                 <i class="add icon"></i>
             </div>
@@ -101,8 +100,8 @@
                 <i class="dropdown icon"></i>
                 <div class="default text">
                     @string.Format("{0} {1}",
-     sharedLocalizer["PleaseChoose"],
-     sharedLocalizer["NhaCungCap"].Value.ToLower())
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhaCungCap"].Value.ToLower())
                 </div>
                 <div class="menu">
                     @foreach (var nhaCungCap in bookStoreData.GetNhaCungCap())
@@ -114,8 +113,8 @@
                 </div>
             </div>
             <div href="@Url.Action(
-    "Create", "NhaCungCap",
-    new { modal = true, redirect = false })"
+                      "Create", "NhaCungCap",
+                      new { modal = true, redirect = false })"
                  class="nha-cung-cap add ui blue icon button">
                 <i class="add icon"></i>
             </div>
@@ -169,8 +168,8 @@
     <div class="add-property ui blue button">
         <i class="add icon"></i>
         @(string.Format("{0} {1}",
-    sharedLocalizer["Create"],
-    sharedLocalizer["Property"].Value.ToLower()))
+        sharedLocalizer["Create"],
+        sharedLocalizer["Property"].Value.ToLower()))
     </div>
 
     <div class="properties"></div>

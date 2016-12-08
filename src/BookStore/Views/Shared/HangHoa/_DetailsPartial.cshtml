@@ -1,0 +1,173 @@
+﻿@model HangHoa
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietHangHoa chiTietHangHoa = new ChiTietHangHoa();
+}
+
+
+<form id="HangHoa"
+      asp-action="DetailsConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
+    {
+        <h2 class="ui header">@ViewData["Action"]</h2>
+    }
+
+    <h2 class="ui dividing header">
+        @string.Format("{0} {1}",
+       sharedLocalizer["Details"],
+       sharedLocalizer["HangHoa"].Value.ToLower())
+    </h2>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="TenHangHoa"></label>
+            <input asp-for="TenHangHoa"
+                   readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
+        </div>
+        <div class="five field">
+            <label asp-for="NgayTao"></label>
+            <input type="date"
+                   readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
+                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayTao)">
+        </div>
+    </div>
+
+    <div class="three fields">
+        <div class="field">
+            <label asp-for="LoaiHangHoaId"></label>
+            <input asp-for="LoaiHangHoaId"
+                   readonly=""
+                   type="text"
+                   value="@Model.LoaiHangHoa.TenLoaiHangHoa">
+        </div>
+
+        <div class="field">
+            <label asp-for="NhanHieuId"></label>
+            <input asp-for="NhanHieuId"
+                   readonly=""
+                   type="text"
+                   value="@Model.NhanHieu.TenNhanHieu">
+        </div>
+
+        <div class="field">
+            <label asp-for="NhaCungCapId"></label>
+            <input asp-for="NhaCungCapId"
+                   readonly=""
+                   type="text"
+                   value="@Model.NhaCungCap.TenNhaCungCap">
+        </div>
+    </div>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["DefaultConstruct"]
+    </h2>
+
+    <div class="field">
+        <label asp-for="TonKho"></label>
+        <input asp-for="TonKho"
+               readonly=""
+               placeholder="@Html.DisplayNameFor(model => model.TonKho)">
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="GiaKhoiTao"></label>
+            <input asp-for="GiaKhoiTao"
+                   readonly=""
+                   type="number"
+                   value="@((int)Model.GiaKhoiTao)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaKhoiTao)">
+        </div>
+        <div class="field">
+            <label asp-for="GiaNhap"></label>
+            <input asp-for="GiaNhap"
+                   readonly=""
+                   type="number"
+                   value="@((int)Model.GiaNhap)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaNhap)">
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="GiaBanSi"></label>
+            <input asp-for="GiaBanSi"
+                   readonly=""
+                   type="number"
+                   value="@((int)Model.GiaBanSi)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaBanSi)">
+        </div>
+        <div class="field">
+            <label asp-for="GiaBanLe"></label>
+            <input asp-for="GiaBanLe"
+                   readonly=""
+                   type="number"
+                   value="@((int)Model.GiaBanLe)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaBanLe)">
+        </div>
+    </div>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["Options"]
+    </h2>
+
+    <div class="properties">
+        @{
+            var properties = (ChiTietHangHoa[])Model.ChiTietHangHoa;
+
+            for (int i = 0; i < properties.Count(); i++)
+            {
+        <div class="property three fields">
+            <div class="field">
+                <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
+                <input asp-for="@properties[i].ThuocTinh"
+                       id="properties[@i].ThuocTinh"
+                       name="properties[@i].ThuocTinh"
+                       readonly=""
+                       placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
+            </div>
+
+            <div class="field">
+                <label asp-for="@chiTietHangHoa.GiaTri"></label>
+                <input asp-for="@properties[i].GiaTri"
+                       id="properties[@i].GiaTri"
+                       name="properties[@i].GiaTri"
+                       readonly=""
+                       type="number"
+                       placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
+            </div>
+
+            <div class="field">
+                <label>&thinsp;</label>
+            </div>
+        </div>
+            }
+        }
+    </div>
+
+    <div class="action-buttons">
+        @if ((bool)ViewData["Modal"] == true)
+        {
+        <a class="action-button cancel ui basic button">
+            <i class="reply icon"></i>
+            @sharedLocalizer["Cancel"]
+        </a>
+        }
+        else
+        {
+        <a asp-action="Index"
+           class="action-button cancel ui basic button">
+            <i class="reply icon"></i>
+            @sharedLocalizer["Cancel"]
+        </a>
+        }
+    </div>
+</form>

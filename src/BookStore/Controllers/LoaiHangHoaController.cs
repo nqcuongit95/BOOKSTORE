@@ -31,6 +31,7 @@ namespace BookStore.Controllers
             _sharedLocalizer = sharedLocalizer;
         }
 
+        #region Index
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
@@ -47,6 +48,7 @@ namespace BookStore.Controllers
                 return NotFound();
             }
         }
+        #endregion
 
         #region Create
         [Route("Create")]
@@ -94,7 +96,7 @@ namespace BookStore.Controllers
                         message.Results["Current"] = new
                         {
                             value = loaiHangHoa.Id,
-                            name = loaiHangHoa.TenLoaiHangHoa
+                            text = loaiHangHoa.TenLoaiHangHoa
                         };
                 }
                 catch (Exception ex)

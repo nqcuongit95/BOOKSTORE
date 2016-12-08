@@ -13,12 +13,24 @@
 function initializeCRUDForm() {
     initializeValidationCRUDForm();
 
-    $('.crud-form .action-buttons .cancel.button').click(function (event) {
-        hideFormModal();
-    });
     $('.crud-form .add.button').each(function () {
-        $(this).click(function () {
-            onClickActionButton(this);
+        var button = $(this);
+
+        button.click(function () {
+            onClickActionButton(this, function (result) {
+                var dropdown = button.siblings('.ui.search.selection.dropdown');
+                var menu = dropdown.find('.menu');
+                var current = result.results['Current'];
+
+                if (dropdown !== undefined &&
+                    current !== undefined) {
+                    menu.append('<div class="item" data-value="' + current.value +
+                        '">' + current.text + '</div>');
+
+                    dropdown.dropdown('refresh');
+                    dropdown.dropdown('set selected', current.value);
+                }
+            });
         });
     });
     $('.crud-form .add-property.button').click(function () {
@@ -34,9 +46,8 @@ function initializeCRUDForm() {
     });
 }
 
-function crudFormSubmit(form) {
-    var form = $(form);
-    var dropdown = $(arguments[1]);
+function crudFormSubmit(form, fn) {
+    form = $(form);
 
     var url = form.closest('form').attr('action');
     var data = form.closest('form').serialize();
@@ -49,14 +60,14 @@ function crudFormSubmit(form) {
         type: 'post',
         data: data,
         success: function (result) {
-            if (typeof result !== undefined) {
+            if (result !== undefined) {
                 inactiveMessageLoader();
                 showMessage(result);
 
                 if (result.type !== 'error') {
                     activeMessageProgress();
 
-                    if (typeof result.results["Reload"] !== undefined &&
+                    if (result.results["Reload"] !== undefined &&
                         result.results["Reload"] === true) {
                         setTimeout(
                             function () {
@@ -67,13 +78,17 @@ function crudFormSubmit(form) {
                     else {
                         var redirect = result.results["RedirectUrl"];
 
-                        if (typeof redirect !== undefined) {
+                        if (redirect !== undefined) {
                             setTimeout(
                                 function () {
                                     location = redirect;
                                     message.modal('hide');
                                 }, timeout);
                         }
+                    }
+
+                    if (fn !== undefined) {
+                        fn(result);
                     }
                 }
             }
@@ -86,6 +101,28 @@ function crudFormSubmit(form) {
             inactiveMessageLoader();
             showDefaultErrorMessage();
         }
+    });
+}
+
+function initializeFormModal(fn) {
+    var form = $('#form-modal > .crud-form');
+
+    var fieldsRules = createFieldsRules(form);
+
+    form.form({
+        fields: fieldsRules,
+        inline: true,
+        on: 'blur'
+    });
+
+    form.submit(function (event) {
+        event.preventDefault();
+
+        crudFormSubmit(this, fn);
+    });
+
+    form.find('.cancel.button').click(function (event) {
+        hideFormModal();
     });
 }
 
@@ -106,7 +143,7 @@ function initializePropertyFieldset() {
 }
 
 function addPropertyForm(content) {
-    var content = $(content);
+    content = $(content);
     var field = $('#properties');
 
     content.append(field.html());
@@ -122,7 +159,7 @@ function updateProperties() {
     fields.each(function (index) {
         $(this).find('input').each(function () {
             var defaultName = $(this).attr('default-name');
-            if (typeof defaultName !== undefined) {
+            if (defaultName !== undefined) {
                 var name = 'properties[' + index + '].' +
                     defaultName;
 
@@ -132,8 +169,6 @@ function updateProperties() {
         });
 
         $(this).find('.ui.search').each(function () {
-            console.log($('#' + $(this).attr('for-id')).val());
-
             $(this).search({
                 minCharacters: 0,
                 apiSettings: {
@@ -147,6 +182,8 @@ function updateProperties() {
                 },
                 error: false
             });
+
+            $(this).search('clear cache');
         });
     });
 }
@@ -155,7 +192,9 @@ function initializeDataTable() {
     var table = $('.data-table');
 
     $('.data-table .action-buttons .item').click(function (event) {
-        onClickActionButton(this, event);
+        event.preventDefault();
+
+        onClickActionButton(this);
     });
 }
 
@@ -171,7 +210,7 @@ function initializeIndexPagination() {
     });
 }
 
-function onClickActionButton(element) {
+function onClickActionButton(element, fn) {
     element = $(element);
 
     var url = element.attr('href');
@@ -186,7 +225,7 @@ function onClickActionButton(element) {
             if (typeof result === 'string') {
                 formModal.html(result);
 
-                initializeCRUDForm();
+                initializeFormModal(fn);
 
                 inactiveMessageLoader();
                 formModal.modal('show');
@@ -225,7 +264,7 @@ function showDefaultErrorMessage() {
 }
 
 function showMessage(message) {
-    if (typeof message !== undefined) {
+    if (message !== undefined) {
         var element = $('#message');
         var title = $('#message>.header>.title');
         var content = $('#message>.content');
@@ -260,7 +299,10 @@ function inactiveMessageLoader() {
 function initializeMessageProgress(duration, total) {
     $('#message-progress').progress({
         duration: duration,
-        total: total
+        total: total,
+        onSuccess: function () {
+            inactiveMessageProgress();
+        }
     });
 }
 

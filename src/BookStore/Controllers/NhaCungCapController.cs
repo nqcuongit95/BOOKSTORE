@@ -98,7 +98,7 @@ namespace BookStore.Controllers
                         message.Results["Current"] = new
                         {
                             value = nhaCungCap.Id,
-                            name = nhaCungCap.TenNhaCungCap
+                            text = nhaCungCap.TenNhaCungCap
                         };
                 }
                 catch (Exception ex)

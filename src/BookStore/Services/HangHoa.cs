@@ -67,6 +67,11 @@ namespace BookStore.Services
         {
             var hangHoa = await _context.HangHoa
                 .SingleOrDefaultAsync(m => m.Id == id);
+
+            var properties= _context.ChiTietHangHoa
+                .Where(i => i.HangHoaId == hangHoa.Id);
+
+            _context.ChiTietHangHoa.RemoveRange(properties);
             _context.HangHoa.Remove(hangHoa);
 
             return await _context.SaveChangesAsync();

@@ -44,6 +44,15 @@ namespace BookStore.Services
         Task<int> DeleteThuocTinhHangHoa(int id);
         #endregion
 
+        #region ChiTietHangHoa
+        IQueryable<ChiTietHangHoa> GetChiTietHangHoa(int? hangHoaId);
+        bool ChiTietHangHoaExists(int? id);
+        Task<int> AddChiTietHangHoa(ChiTietHangHoa nhanHieu);
+        Task<ChiTietHangHoa> GetChiTietHangHoaById(int? id);
+        Task<int> UpdateChiTietHangHoa(ChiTietHangHoa nhanHieu);
+        Task<int> DeleteChiTietHangHoa(int id);
+        #endregion
+
         #region HangHoa
         IQueryable<HangHoa> GetHangHoa();
         bool HangHoaExists(int? id);
