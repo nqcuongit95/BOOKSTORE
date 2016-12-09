@@ -41,9 +41,9 @@ namespace BookStore.Controllers
             return View(model);
         }
 
-        public IActionResult SucceedMessage()
+        public IActionResult NotificationMessage(Notification model)
         {
-            return PartialView("_SucceedMessage");
+            return PartialView("_Message",model);
         }
         
         public IActionResult CreateRole()
@@ -69,10 +69,23 @@ namespace BookStore.Controllers
                     if (result.Succeeded)
                     {
                         status.Type = Result.Succeed;
-                        status.Url = Url.Action("SucceedMessage","Admin");
+                        var noti = new Notification
+                        {
+                            Title = "Thành Công",
+                            Content = "Thêm quyền thành công",
+                            Button = "Hoàn tất"
+                        };
+
+                        status.Url = Url.Action("NotificationMessage", "Admin",noti);
 
                         return Json(status);
                     }
+                }
+                else
+                {
+                    status.Type = Result.Error;
+                    status.Details = "Quyền đã có trước đó.";
+                    return Json(status);
                 }
             }
 
@@ -87,10 +100,56 @@ namespace BookStore.Controllers
 
         [HttpPost]
         public IActionResult CreateUser(RegisterUserViewModel model)
-        {
-            
+        {            
             return View();
         }
 
+        public async Task<IActionResult> ViewRole(int id)
+        {
+            var role =await  _roleManager.FindByIdAsync(id.ToString());
+            
+            return PartialView("_ViewRole",role);
+        }
+
+        public async Task<IActionResult> DeleteRole(int id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            return PartialView("_DeleteRole",role);
+        }
+
+        public async Task<IActionResult> ConfirmDeleteRole(int id)
+        {
+            var status = new Status();
+            Notification model;
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            var result = await _roleManager.DeleteAsync(role);
+
+            if (result.Succeeded)
+            {
+                model = new Notification
+                {
+                    Title = "Thành Công",
+                    Content = "Đã xóa quyền " + role.Name,
+                    Button = "Hoàn Tất"
+                };
+
+                return PartialView("_Message", model);
+
+            }
+
+            model = new Notification
+            {
+                Title = "Xảy Ra Lỗi",
+                Content = result.Errors.First().Description,
+                Button = "Hoàn Tất"
+            };
+
+            return PartialView("_Message", model);
+        }
+
+        public IActionResult EditRole(int id)
+        {
+            return View();
+        }
     }
 }

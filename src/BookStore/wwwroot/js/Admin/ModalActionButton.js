@@ -63,5 +63,12 @@
 
         elem.removeClass('loading');
     }
+
+    //callback after modal was hidden
+    $('.notify-modal').modal({
+        onHidden: function () {
+            location.reload();
+        }
+    });
     
 });

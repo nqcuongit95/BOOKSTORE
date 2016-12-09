@@ -16,5 +16,6 @@ namespace BookStore.Helper
     {
         public string Type;
         public string Url;
+        public string Details;
     }
 }

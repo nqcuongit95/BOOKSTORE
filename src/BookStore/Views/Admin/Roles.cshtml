@@ -37,22 +37,24 @@
                         <td>@role.Description</td>
                         <td class="right aligned">
                             <div class="ui compact menu">
-                                <a class="icon item view" 
+                                <div class="icon link item view"                                  
+                                   id="@role.Id" 
                                    data-title="Xem">
                                     <i class="unhide icon"></i>
-                                </a>
-                                <a class="icon item delete"
-                                   data-title="Xóa">
+                                </div>
+                                <div class="icon link item delete"
+                                   data-title="Xóa"                                   
+                                   id="@role.Id">
                                     <i class="remove icon"></i>
-                                </a>
-                                <a class="icon item update"
-                                   data-title="Sửa">
+                                </div>
+                                <div class="icon link item update"
+                                   data-title="Sửa"
+                                   id="@role.Id">
                                     <i class="edit icon"></i>
-                                </a>
+                                </div>
                             </div>
                         </td>
-                    </tr>
-                    
+                    </tr>                    
                 }
             </tbody>
         </table>
@@ -65,8 +67,23 @@
 <div class="ui tiny modal notify-modal">
 </div>
 
+<div class="ui tiny modal view-role-modal">
+</div>
+
+<div class="ui tiny modal delete-role-modal">
+</div>
+
+<div class="ui tiny modal update-role-modal">
+</div>
+
+
 <script>
-    var url = '@Url.Action("CreateRole", "Admin")';
+    var createRoleUrl = '@Url.Action("CreateRole", "Admin")';
+    var viewUrl = '@Url.Action("ViewRole","Admin")';
+    var deleteUrl = '@Url.Action("DeleteRole","Admin")';
+    var editUrl = '@Url.Action("EditRole","Admin")';
+    var confirmDeleteUrl = '@Url.Action("ConfirmDeleteRole","Admin")';
+
 </script>
 
 <script src="~/js/Admin/Role.js"></script>
