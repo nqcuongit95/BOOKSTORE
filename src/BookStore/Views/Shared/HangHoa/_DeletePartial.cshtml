@@ -13,7 +13,7 @@
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       asp-route-id="@Model.Id"
-      class="crud-form update ui form">
+      class="crud-form delete ui form">
     @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
     {
         <h2 class="ui header">@ViewData["Action"]</h2>

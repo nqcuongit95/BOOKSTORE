@@ -225,4 +225,7 @@
   <data name="Property" xml:space="preserve">
     <value>Thuộc tính</value>
   </data>
+  <data name="TrangThai" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
 </root>

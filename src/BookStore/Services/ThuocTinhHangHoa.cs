@@ -31,20 +31,21 @@ namespace BookStore.Services
 
         public async Task<ThuocTinhHangHoa> GetThuocTinhHangHoaById(int? id)
         {
-            return await _context.ThuocTinhHangHoa.SingleOrDefaultAsync(m => m.Id == id);
+            return await _context.ThuocTinhHangHoa
+                .SingleOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<int> AddThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu)
+        public async Task<int> AddThuocTinhHangHoa(ThuocTinhHangHoa thuocTinhHangHoa)
         {
-            await _context.ThuocTinhHangHoa.AddAsync(nhanHieu);
+            await _context.ThuocTinhHangHoa.AddAsync(thuocTinhHangHoa);
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu)
+        public async Task<int> UpdateThuocTinhHangHoa(ThuocTinhHangHoa thuocTinhHangHoa)
         {
-            _context.Entry(nhanHieu).State = EntityState.Modified;
-            _context.Entry(nhanHieu).Property("NgayLap").IsModified = false;
+            _context.Entry(thuocTinhHangHoa).State = EntityState.Modified;
+            _context.Entry(thuocTinhHangHoa).Property("NgayLap").IsModified = false;
 
             return await _context.SaveChangesAsync();
         }
@@ -56,9 +57,9 @@ namespace BookStore.Services
 
         public async Task<int> DeleteThuocTinhHangHoa(int id)
         {
-            var nhanHieu = await _context.ThuocTinhHangHoa
+            var thuocTinhHangHoa = await _context.ThuocTinhHangHoa
                 .SingleOrDefaultAsync(m => m.Id == id);
-            _context.ThuocTinhHangHoa.Remove(nhanHieu);
+            _context.ThuocTinhHangHoa.Remove(thuocTinhHangHoa);
 
             return await _context.SaveChangesAsync();
         }

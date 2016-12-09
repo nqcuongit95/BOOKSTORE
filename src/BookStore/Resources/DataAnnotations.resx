@@ -135,6 +135,9 @@
   <data name="GiaTri" xml:space="preserve">
     <value>Giá trị</value>
   </data>
+  <data name="Loai" xml:space="preserve">
+    <value>Loại</value>
+  </data>
   <data name="LoaiHangHoa" xml:space="preserve">
     <value>Loại hàng hóa</value>
   </data>
@@ -159,6 +162,9 @@
   <data name="TenNhanHieu" xml:space="preserve">
     <value>Tên nhãn hiệu</value>
   </data>
+  <data name="TenTrangThai" xml:space="preserve">
+    <value>Tên trạng thái</value>
+  </data>
   <data name="ThuocTinh" xml:space="preserve">
     <value>Thuộc tính</value>
   </data>
@@ -167,5 +173,8 @@
   </data>
   <data name="TrangThai" xml:space="preserve">
     <value>Trạng thái</value>
+  </data>
+  <data name="VietTat" xml:space="preserve">
+    <value>Viết tắt</value>
   </data>
 </root>

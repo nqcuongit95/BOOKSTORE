@@ -24,19 +24,27 @@
        sharedLocalizer["HangHoa"].Value.ToLower())
     </h2>
 
-    <div class="two fields">
+    <div class="three fields">
         <div class="field">
             <label asp-for="TenHangHoa"></label>
             <input asp-for="TenHangHoa"
                    readonly=""
                    placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
         </div>
-        <div class="five field">
+
+        <div class="field">
             <label asp-for="NgayTao"></label>
             <input type="date"
                    readonly=""
                    placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
                    value="@string.Format("{0:yyyy-MM-dd}", Model.NgayTao)">
+        </div>
+
+        <div class="field">
+            <label asp-for="TrangThai"></label>
+            <input readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.TrangThaiId)"
+                   value="@sharedLocalizer[Model.TrangThai.VietTat]">
         </div>
     </div>
 

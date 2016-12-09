@@ -84,7 +84,8 @@ namespace BookStore.Controllers
                     hangHoa.DaBan = 0;
                     hangHoa.TrangThai = new TrangThai()
                     {
-                        VietTat = "USE"
+                        VietTat = "USE",
+                        Loai = "HangHoa"
                     };
 
                     await _bookStoreData.AddHangHoa(hangHoa, properties);
@@ -156,7 +157,7 @@ namespace BookStore.Controllers
         [Route("EditConfirmed")]
         public async Task<IActionResult> EditConfirmed(
             int id,
-            [Bind("GiaBanLe,GiaBanSi,GiaKhoiTao,GiaNhap,LoaiHangHoaId,NhaCungCapId,NhanHieuId,TenHangHoa,TonKho")]
+            [Bind("Id,GiaBanLe,GiaBanSi,GiaKhoiTao,GiaNhap,LoaiHangHoaId,NhaCungCapId,NhanHieuId,TenHangHoa,TonKho,TrangThaiId")]
         HangHoa hangHoa,
             ICollection<ChiTietHangHoa> properties,
             bool? modal,
@@ -179,7 +180,13 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    await _bookStoreData.UpdateHangHoa(hangHoa);
+                    hangHoa.TrangThai =
+                        await _bookStoreData.GetTrangThaiById(hangHoa.TrangThaiId);
+
+                    if (hangHoa.TrangThai.Loai != "HangHoa")
+                        throw new Exception("Invalid");
+
+                    await _bookStoreData.UpdateHangHoa(hangHoa, properties);
 
                     message.Type = MessageType.Success;
                     message.Header = _sharedLocalizer["Success"];
@@ -294,6 +301,7 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
+
         private async Task<IActionResult> RUD(int? id, bool? modal, bool? redirect)
         {
             AddInfoToViewData();
@@ -323,7 +331,10 @@ namespace BookStore.Controllers
                     await _bookStoreData.GetNhaCungCapById(hangHoa.NhaCungCapId);
                 hangHoa.NhanHieu =
                     await _bookStoreData.GetNhanHieuById(hangHoa.NhanHieuId);
-                hangHoa.ChiTietHangHoa = await _bookStoreData.GetChiTietHangHoa(id).ToArrayAsync();
+                hangHoa.ChiTietHangHoa =
+                    await _bookStoreData.GetChiTietHangHoa(id).ToArrayAsync();
+                hangHoa.TrangThai =
+                    await _bookStoreData.GetTrangThaiById(hangHoa.TrangThaiId);
 
                 if (hangHoa == null)
                 {

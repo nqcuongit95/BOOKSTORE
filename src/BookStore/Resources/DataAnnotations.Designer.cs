@@ -114,6 +114,15 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Loại.
+        /// </summary>
+        public static string Loai {
+            get {
+                return ResourceManager.GetString("Loai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Loại hàng hóa.
         /// </summary>
         public static string LoaiHangHoa {
@@ -186,6 +195,15 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Tên trạng thái.
+        /// </summary>
+        public static string TenTrangThai {
+            get {
+                return ResourceManager.GetString("TenTrangThai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Thuộc tính.
         /// </summary>
         public static string ThuocTinh {
@@ -209,6 +227,15 @@ namespace BookStore.Resources {
         public static string TrangThai {
             get {
                 return ResourceManager.GetString("TrangThai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Viết tắt.
+        /// </summary>
+        public static string VietTat {
+            get {
+                return ResourceManager.GetString("VietTat", resourceCulture);
             }
         }
     }

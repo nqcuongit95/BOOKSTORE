@@ -79,6 +79,7 @@ namespace BookStore.Models
 
         [Display(Name = "TrangThai", ResourceType = typeof(
             Resources.DataAnnotations))]
+        [Required(ErrorMessage = "Bạn không được để trống trường này.")]
         public int TrangThaiId { get; set; }
 
         [Display(Name = "DaBan", ResourceType = typeof(

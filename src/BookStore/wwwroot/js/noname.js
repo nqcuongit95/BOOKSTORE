@@ -12,6 +12,8 @@
 
 function initializeCRUDForm() {
     initializeValidationCRUDForm();
+    updateProperties();
+    initializePropertyFieldset();
 
     $('.crud-form .add.button').each(function () {
         var button = $(this);
@@ -121,8 +123,27 @@ function initializeFormModal(fn) {
         crudFormSubmit(this, fn);
     });
 
+    updateProperties();
+    initializePropertyFieldset();
+
     form.find('.cancel.button').click(function (event) {
         hideFormModal();
+    });
+    $('#form-modal > .crud-form .add-property.button').click(function () {
+        addPropertyForm($('#form-modal > .crud-form .properties'));
+
+        var fieldsRules = createFieldsRules(form);
+
+        form.form({
+            fields: fieldsRules,
+            inline: true,
+            on: 'blur'
+        });
+    });
+    $('#form-modal > .crud-form .ui.dropdown').dropdown({
+        onChange: function () {
+            updateProperties();
+        }
     });
 }
 

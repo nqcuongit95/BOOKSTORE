@@ -42,7 +42,8 @@ namespace BookStore.Services
             ICollection<ChiTietHangHoa> properties)
         {
             hangHoa.TrangThai = await _context.TrangThai
-                .SingleOrDefaultAsync(m => m.VietTat == hangHoa.TrangThai.VietTat);
+                .SingleOrDefaultAsync(m => m.VietTat == hangHoa.TrangThai.VietTat
+                 && m.Loai == hangHoa.TrangThai.Loai);
             hangHoa.TrangThaiId = hangHoa.TrangThai.Id;
 
             await _context.HangHoa.AddAsync(hangHoa);
@@ -55,10 +56,20 @@ namespace BookStore.Services
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateHangHoa(HangHoa hangHoa)
+        public async Task<int> UpdateHangHoa(HangHoa hangHoa,
+            ICollection<ChiTietHangHoa> properties)
         {
             _context.Entry(hangHoa).State = EntityState.Modified;
             _context.Entry(hangHoa).Property("NgayTao").IsModified = false;
+
+
+
+            _context.ChiTietHangHoa.RemoveRange(await _context.ChiTietHangHoa
+                .Where(i => i.HangHoaId == hangHoa.Id).ToArrayAsync());
+
+            foreach (var property in properties)
+                property.HangHoaId = hangHoa.Id;
+            await _context.ChiTietHangHoa.AddRangeAsync(properties);
 
             return await _context.SaveChangesAsync();
         }
@@ -68,7 +79,7 @@ namespace BookStore.Services
             var hangHoa = await _context.HangHoa
                 .SingleOrDefaultAsync(m => m.Id == id);
 
-            var properties= _context.ChiTietHangHoa
+            var properties = _context.ChiTietHangHoa
                 .Where(i => i.HangHoaId == hangHoa.Id);
 
             _context.ChiTietHangHoa.RemoveRange(properties);

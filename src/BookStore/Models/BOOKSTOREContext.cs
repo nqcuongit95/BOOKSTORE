@@ -350,6 +350,10 @@ namespace BookStore.Models
                 entity.Property(e => e.TenTrangThai)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.Loai).HasMaxLength(20);
+
+                entity.Property(e => e.VietTat).HasMaxLength(20);
             });
         }
     }
