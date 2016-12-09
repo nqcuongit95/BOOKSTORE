@@ -16,6 +16,6 @@ namespace BookStore.Models
         public int NhanVienId { get; set; }
 
         public virtual ICollection<ChiTietPhieuKiemKho> ChiTietPhieuKiemKho { get; set; }
-        public virtual User NhanVien { get; set; }
+        public virtual Staff NhanVien { get; set; }
     }
 }

@@ -20,10 +20,10 @@ namespace BookStore.Controllers
         {
             _bookStoreData = bookStoreData;
         }
-
         public IActionResult Index()
         {
             return View();
         }
+
     }
 }

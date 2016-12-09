@@ -18,6 +18,6 @@ namespace BookStore.Services
         KhachHang GetKhachHang(int id);
         Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
         Task<StatisticsViewModel> GetStatisticsInformation();
-
+        
     }
 }

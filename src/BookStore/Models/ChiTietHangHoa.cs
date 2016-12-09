@@ -9,7 +9,6 @@ namespace BookStore.Models
         public int HangHoaId { get; set; }
         public string ThuocTinh { get; set; }
         public string GiaTri { get; set; }
-
         public virtual HangHoa HangHoa { get; set; }
     }
 }

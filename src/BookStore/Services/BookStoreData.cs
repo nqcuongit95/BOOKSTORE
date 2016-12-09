@@ -1,4 +1,5 @@
-﻿using BookStore.Models;
+﻿using BookStore.Entities;
+using BookStore.Models;
 using BookStore.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,7 +44,7 @@ namespace BookStore.Services
                             Email = customer.Email,
                             TenLoaiKhachHang = type.TenLoaiKhachHang,
                             NgayLap = customer.NgayLap,
-                            DiaChi= customer.DiaChi
+                            DiaChi = customer.DiaChi
                         };
 
             return query;
@@ -52,7 +53,7 @@ namespace BookStore.Services
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
         {
             return _context.LoaiKhachHang;
-        }        
+        }
 
         public KhachHang GetKhachHang(int id)
         {
@@ -62,19 +63,19 @@ namespace BookStore.Services
         public CustomerInfoViewModel GetKhachHangInfo(int id)
         {
             var query = from customer in _context.KhachHang
-                         where customer.Id == id
-                         join type in _context.LoaiKhachHang
-                         on customer.LoaiKhachHangId equals type.Id
-                         select new CustomerInfoViewModel
-                         {
-                             ID = customer.Id,
-                             TenKhachHang = customer.TenKhachHang,
-                             SoDienThoai = customer.SoDienThoai,
-                             Email = customer.Email,
-                             TenLoaiKhachHang = type.TenLoaiKhachHang,
-                             NgayLap = customer.NgayLap,
-                             DiaChi = customer.DiaChi
-                         };
+                        where customer.Id == id
+                        join type in _context.LoaiKhachHang
+                        on customer.LoaiKhachHangId equals type.Id
+                        select new CustomerInfoViewModel
+                        {
+                            ID = customer.Id,
+                            TenKhachHang = customer.TenKhachHang,
+                            SoDienThoai = customer.SoDienThoai,
+                            Email = customer.Email,
+                            TenLoaiKhachHang = type.TenLoaiKhachHang,
+                            NgayLap = customer.NgayLap,
+                            DiaChi = customer.DiaChi
+                        };
 
             return query.First();
         }
@@ -119,7 +120,7 @@ namespace BookStore.Services
 
             var totalCustomers = await _context.KhachHang.CountAsync();
             var totalGoods = await _context.HangHoa.CountAsync();
-            var totalTransactionValues = await _context.DonHang.SumAsync(i=>i.TongTien);
+            var totalTransactionValues = await _context.DonHang.SumAsync(i => i.TongTien);
 
             model.TotalCustomers = totalCustomers;
             model.ToTalGoods = totalGoods;

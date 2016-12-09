@@ -1,13 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using BookStore.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BookStore.Entities;
 
 namespace BookStore.Models
 {
-    public partial class BOOKSTOREContext : IdentityDbContext<User, IdentityRole<int>, int>
-    {        
+    public partial class BOOKSTOREContext : IdentityDbContext<Staff, Role, int>
+    {
+        public virtual DbSet<Staff> Staff { get; set; }
         public virtual DbSet<ChiTietDonHang> ChiTietDonHang { get; set; }
         public virtual DbSet<ChiTietHangHoa> ChiTietHangHoa { get; set; }
         public virtual DbSet<ChiTietPhieuKiemKho> ChiTietPhieuKiemKho { get; set; }
@@ -19,6 +20,7 @@ namespace BookStore.Models
         public virtual DbSet<KhachHang> KhachHang { get; set; }
         public virtual DbSet<LoaiHangHoa> LoaiHangHoa { get; set; }
         public virtual DbSet<LoaiKhachHang> LoaiKhachHang { get; set; }
+        public virtual DbSet<LoaiPhieu> LoaiPhieu { get; set; }
         public virtual DbSet<NhaCungCap> NhaCungCap { get; set; }
         public virtual DbSet<NhanHieu> NhanHieu { get; set; }
         public virtual DbSet<PhieuChi> PhieuChi { get; set; }
@@ -197,7 +199,7 @@ namespace BookStore.Models
                     .WithMany(p => p.DonHang)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_DonHang_User");
+                    .HasConstraintName("FK_DonHang_Staff");
 
                 entity.HasOne(d => d.TrangThai)
                     .WithMany(p => p.DonHang)
@@ -300,6 +302,19 @@ namespace BookStore.Models
                     .HasMaxLength(30);
             });
 
+            modelBuilder.Entity<LoaiPhieu>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Loai)
+                    .IsRequired()
+                    .HasColumnType("varchar(10)");
+
+                entity.Property(e => e.TenLoaiPhieu)
+                    .IsRequired()
+                    .HasMaxLength(80);
+            });
+
             modelBuilder.Entity<NhaCungCap>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -324,6 +339,8 @@ namespace BookStore.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.LoaiPhieuId).HasColumnName("LoaiPhieuID");
+
                 entity.Property(e => e.NgayLap).HasColumnType("datetime");
 
                 entity.Property(e => e.NhanVienId).HasColumnName("NhanVienID");
@@ -334,11 +351,17 @@ namespace BookStore.Models
 
                 entity.Property(e => e.TongTien).HasColumnType("money");
 
+                entity.HasOne(d => d.LoaiPhieu)
+                    .WithMany(p => p.PhieuChi)
+                    .HasForeignKey(d => d.LoaiPhieuId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_PhieuChi_LoaiPhieu");
+
                 entity.HasOne(d => d.NhanVien)
                     .WithMany(p => p.PhieuChi)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuChi_User");
+                    .HasConstraintName("FK_PhieuChi_Staff");
 
                 entity.HasOne(d => d.PhieuNhapHang)
                     .WithMany(p => p.PhieuChi)
@@ -363,7 +386,7 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuKiemKho)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuKiemKho_User");
+                    .HasConstraintName("FK_PhieuKiemKho_Staff");
             });
 
             modelBuilder.Entity<PhieuNhapHang>(entity =>
@@ -380,7 +403,7 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuNhapHang)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuNhapHang_User");
+                    .HasConstraintName("FK_PhieuNhapHang_Staff");
             });
 
             modelBuilder.Entity<PhieuThu>(entity =>
@@ -388,6 +411,8 @@ namespace BookStore.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.DonHangId).HasColumnName("DonHangID");
+
+                entity.Property(e => e.LoaiPhieuId).HasColumnName("LoaiPhieuID");
 
                 entity.Property(e => e.NgayLap).HasColumnType("datetime");
 
@@ -402,11 +427,17 @@ namespace BookStore.Models
                     .HasForeignKey(d => d.DonHangId)
                     .HasConstraintName("FK_PhieuThu_DonHang");
 
+                entity.HasOne(d => d.LoaiPhieu)
+                    .WithMany(p => p.PhieuThu)
+                    .HasForeignKey(d => d.LoaiPhieuId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_PhieuThu_LoaiPhieu");
+
                 entity.HasOne(d => d.NhanVien)
                     .WithMany(p => p.PhieuThu)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuThu_User");
+                    .HasConstraintName("FK_PhieuThu_Staff");
 
                 entity.HasOne(d => d.PhieuTraNhapHang)
                     .WithMany(p => p.PhieuThu)
@@ -446,7 +477,7 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuTraHang)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuTraHang_User");
+                    .HasConstraintName("FK_PhieuTraHang_Staff");
             });
 
             modelBuilder.Entity<PhieuTraNhapHang>(entity =>
@@ -465,7 +496,7 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuTraNhapHang)
                     .HasForeignKey(d => d.NhanVienId)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_PhieuTraNhapHang_User");
+                    .HasConstraintName("FK_PhieuTraNhapHang_Staff");
 
                 entity.HasOne(d => d.PhieuNhapHang)
                     .WithMany(p => p.PhieuTraNhapHang)

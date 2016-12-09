@@ -20,7 +20,7 @@ namespace BookStore.Models
 
         public virtual ICollection<ChiTietPhieuTraNhapHang> ChiTietPhieuTraNhapHang { get; set; }
         public virtual ICollection<PhieuThu> PhieuThu { get; set; }
-        public virtual User NhanVien { get; set; }
+        public virtual Staff NhanVien { get; set; }
         public virtual PhieuNhapHang PhieuNhapHang { get; set; }
     }
 }

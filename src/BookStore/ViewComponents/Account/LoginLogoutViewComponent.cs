@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookStore.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,25 @@ namespace BookStore.ViewComponents.Account
 {
     public class LoginLogoutViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        private UserManager<Staff> _userManager;
+        public LoginLogoutViewComponent(UserManager<Staff> userManager)
         {
-            return View();
+            _userManager = userManager;
         }
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            Staff staff;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                staff = await GetCurrentUserAsync();
+                return View("Default", staff.FullName);
+            }
+
+            return View("Default","");
+
+        }
+
+        private Task<Staff> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

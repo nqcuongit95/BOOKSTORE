@@ -49,7 +49,7 @@ namespace BookStore
 
             services.AddScoped<IBookStoreData, BookStoreData>();
 
-            services.AddIdentity<User, IdentityRole<int>>(
+            services.AddIdentity<Staff, Role>(
                     config =>
                     {
                         config.User.RequireUniqueEmail = false;

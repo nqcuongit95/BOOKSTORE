@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.Entities
 {
-    public class User : IdentityUser<int>
+    public class Staff : IdentityUser<int>
     {
-        public User()
+        public Staff()
         {
             DonHang = new HashSet<DonHang>();
             PhieuChi = new HashSet<PhieuChi>();

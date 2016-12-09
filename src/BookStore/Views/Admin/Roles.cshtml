@@ -1,0 +1,72 @@
+﻿@model List<Role>
+
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@Html.Partial("_AdminMenu");
+
+<link href="~/css/Admin.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="eleven wide column">
+        <div class="ui left floated header">Danh Sách Quyền</div>
+        <button class="ui primary mini button">
+            <i class="add user icon"></i>
+            Thêm Mới
+        </button>
+
+        <div class="ui clearing divider"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="eleven wide column">
+        <table class="ui very basic fixed table">
+            <thead>
+                <tr>
+                    <th>Quyền</th>
+                    <th>Mô Tả</th>
+                    <th class="right aligned">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>@role.Description</td>
+                        <td class="right aligned">
+                            <div class="ui compact menu">
+                                <a class="icon item view" 
+                                   data-title="Xem">
+                                    <i class="unhide icon"></i>
+                                </a>
+                                <a class="icon item delete"
+                                   data-title="Xóa">
+                                    <i class="remove icon"></i>
+                                </a>
+                                <a class="icon item update"
+                                   data-title="Sửa">
+                                    <i class="edit icon"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="ui tiny modal create-modal">
+</div>
+
+<div class="ui tiny modal notify-modal">
+</div>
+
+<script>
+    var url = '@Url.Action("CreateRole", "Admin")';
+</script>
+
+<script src="~/js/Admin/Role.js"></script>

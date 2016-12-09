@@ -8,11 +8,11 @@ namespace BookStore.Controllers
 {
     public class AccountController : Controller
     {
-        private SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
+        private SignInManager<Staff> _signInManager;
+        private UserManager<Staff> _userManager;
 
-        public AccountController(UserManager<User> userManager,
-                                 SignInManager<User> signInManager)
+        public AccountController(UserManager<Staff> userManager,
+                                 SignInManager<Staff> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -29,7 +29,7 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Username };
+                var user = new Staff { UserName = model.Username };
 
                 //other fields
                 user.FullName = model.FullName;
