@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using BookStore.ViewModels;
 using BookStore.Helper;
 using BookStore.Services;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
 {
-    
+    //[Authorize(Roles="Admin")]
     public class AdminController : Controller
     {
         private RoleManager<Role> _roleManager;
@@ -33,9 +34,11 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        public IActionResult Index()
+        public async  Task<IActionResult> Index()
         {
-            return View();        
+            var model = await _bookStoreData.GetListStaffs();
+
+            return View(model);        
         }
 
         public IActionResult Roles()

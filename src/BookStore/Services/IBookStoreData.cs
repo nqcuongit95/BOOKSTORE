@@ -20,6 +20,7 @@ namespace BookStore.Services
         Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
         Task<StatisticsViewModel> GetStatisticsInformation();
         Task<List<Role>> GetListRoles();
+        Task<List<Staff>> GetListStaffs();
         
     }
 }

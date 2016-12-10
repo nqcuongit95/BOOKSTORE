@@ -132,5 +132,9 @@ namespace BookStore.Services
         {
             return await _context.Roles.ToListAsync();
         }
+        public async Task<List<Staff>> GetListStaffs()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }

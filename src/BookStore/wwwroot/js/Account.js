@@ -3,30 +3,7 @@ $(document).ready(function () {
 
     $('.ui.radio.checkbox').checkbox();
     $('.ui.checkbox').checkbox();
-
-    $('.ui.form')
-       .form({
-           on: 'blur',
-           fields: {
-               user: {
-                   identifier: 'valid-user',
-                   rules: [{
-                       type: 'empty',
-                       prompt: 'Nhập tài khoản.'
-                   }]
-               },
-               password: {
-                   identifier: 'valid-password',
-                   rules: [
-                       {
-                           type: 'empty',
-                           prompt: 'Nhập mật khảu.'
-                       }
-                   ]
-               }
-           }
-       });
-
+    
     function activeLoading(element) {
         var elem = $(element);
         elem.addClass('loading');
@@ -137,7 +114,7 @@ $(document).ready(function () {
 
                     setTimeout(function () {
                         modal.modal('hide');
-                    }, 2000);
+                    }, 1500);
                 }
             },
             error: function (xhr, status, error) {
