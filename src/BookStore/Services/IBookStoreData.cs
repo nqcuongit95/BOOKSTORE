@@ -63,7 +63,7 @@ namespace BookStore.Services
         #endregion
 
         #region HangHoa
-        IQueryable<HangHoa> GetHangHoa();
+        IQueryable<HangHoa> GetHangHoa(string search, bool use);
         bool HangHoaExists(int? id);
         Task<int> AddHangHoa(HangHoa hangHoa,
             ICollection<ChiTietHangHoa> properties);
@@ -71,6 +71,26 @@ namespace BookStore.Services
         Task<int> UpdateHangHoa(HangHoa hangHoa,
            ICollection<ChiTietHangHoa> properties);
         Task<int> DeleteHangHoa(int id);
+        #endregion
+
+        #region PhieuNhapHang
+        IQueryable<PhieuNhapHang> GetPhieuNhapHang();
+        bool PhieuNhapHangExists(int? id);
+        Task<int> AddPhieuNhapHang(PhieuNhapHang phieuNhapHang,
+            ICollection<ChiTietPhieuNhapHang> properties);
+        Task<PhieuNhapHang> GetPhieuNhapHangById(int? id);
+        Task<int> UpdatePhieuNhapHang(PhieuNhapHang phieuNhapHang,
+           ICollection<ChiTietPhieuNhapHang> properties);
+        Task<int> DeletePhieuNhapHang(int id);
+        #endregion
+
+        #region ChiTietPhieuNhapHang
+        IQueryable<ChiTietPhieuNhapHang> GetChiTietPhieuNhapHang(int? phieuNhapHangId);
+        bool ChiTietPhieuNhapHangExists(int? id);
+        Task<int> AddChiTietPhieuNhapHang(ChiTietPhieuNhapHang nhanHieu);
+        Task<ChiTietPhieuNhapHang> GetChiTietPhieuNhapHangById(int? id);
+        Task<int> UpdateChiTietPhieuNhapHang(ChiTietPhieuNhapHang nhanHieu);
+        Task<int> DeleteChiTietPhieuNhapHang(int id);
         #endregion
     }
 }

@@ -168,6 +168,9 @@
   <data name="ThuocTinh" xml:space="preserve">
     <value>Thuộc tính</value>
   </data>
+  <data name="TongTien" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
   <data name="TonKho" xml:space="preserve">
     <value>Tồn kho</value>
   </data>
@@ -176,5 +179,8 @@
   </data>
   <data name="VietTat" xml:space="preserve">
     <value>Viết tắt</value>
+  </data>
+  <data name="SoLuong" xml:space="preserve">
+    <value>Số lượng</value>
   </data>
 </root>

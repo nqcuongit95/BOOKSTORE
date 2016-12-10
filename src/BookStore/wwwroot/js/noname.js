@@ -8,6 +8,22 @@
     initializeIndexPagination();
 
     initializeMessageProgress(0, 100);
+
+    $('.ui.search').each(function () {
+        $(this).search({
+            apiSettings: {
+                url: $(this).attr('href') + '?search={query}'
+            },
+            cache: false,
+            fields: {
+                results: 'results',
+                title: 'title',
+                description: 'description'
+            },
+            minCharacters: 0,
+            error: false
+        });
+    });
 });
 
 function initializeCRUDForm() {

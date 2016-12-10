@@ -1,0 +1,57 @@
+﻿@model PaginatedList<PhieuNhapHang>
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    PhieuNhapHang phieuNhapHang = new PhieuNhapHang();
+}
+
+<table class="hang-hoa data-table ui blue selectable sortable table">
+    <thead>
+        <tr>
+            <th class="ten wide">@Html.DisplayNameFor(p => phieuNhapHang.NgayLap)</th>
+            <th class="fine wide">@Html.DisplayNameFor(p => phieuNhapHang.TongTien)</th>
+            <th class="one wide">@sharedLocalizer["Operator"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayLap)
+                </td>
+                <td>
+                    @((int)item.TongTien)
+                </td>
+
+                <td class="action-buttons">
+                    <div class="ui floated menu">
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="details icon item">
+                            <i class="file text outline icon"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var paginated = new Paginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui modal">
+</div>

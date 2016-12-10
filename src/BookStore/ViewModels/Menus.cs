@@ -31,6 +31,12 @@ namespace BookStore.ViewModels
                 Controller = "HangHoa"
             });
 
+            Add("NhapHang", new MenuElement
+            {
+                Action = "Index",
+                Controller = "PhieuNhapHang"
+            });
+
             Add("LoaiHangHoa", new MenuElement
             {
                 Action = "Index",

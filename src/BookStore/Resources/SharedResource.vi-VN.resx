@@ -228,4 +228,19 @@
   <data name="TrangThai" xml:space="preserve">
     <value>Trạng thái</value>
   </data>
+  <data name="NhapHang" xml:space="preserve">
+    <value>Nhập hàng</value>
+  </data>
+  <data name="PhieuNhapHang" xml:space="preserve">
+    <value>Phiếu nhập hàng</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="Price: {0} Available: {1}" xml:space="preserve">
+    <value>Giá: {0} Có thể bán: {1}</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
 </root>

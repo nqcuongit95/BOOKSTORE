@@ -159,6 +159,15 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Số lượng.
+        /// </summary>
+        public static string SoLuong {
+            get {
+                return ResourceManager.GetString("SoLuong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Tên hàng hóa.
         /// </summary>
         public static string TenHangHoa {
@@ -209,6 +218,15 @@ namespace BookStore.Resources {
         public static string ThuocTinh {
             get {
                 return ResourceManager.GetString("ThuocTinh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tổng tiền.
+        /// </summary>
+        public static string TongTien {
+            get {
+                return ResourceManager.GetString("TongTien", resourceCulture);
             }
         }
         

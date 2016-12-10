@@ -39,13 +39,43 @@ namespace BookStore.Controllers
             try
             {
                 var result = await PaginatedList<HangHoa>.CreateAsync(
-                    _bookStoreData.GetHangHoa(), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetHangHoa(null, false), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
             catch (Exception ex)
             {
                 return NotFound();
+            }
+        }
+
+        [HttpGet, ActionName("SearchAPI")]
+        [Route("SearchAPI")]
+        public async Task<IActionResult> APISearch(string search)
+        {
+            try
+            {
+                RearchResult result = new RearchResult();
+                List<HangHoa> content = await _bookStoreData
+                    .GetHangHoa(search, true).ToListAsync();
+
+                foreach (var i in content)
+                    result.Results.Add(new
+                    {
+                        Title = i.TenHangHoa,
+                        Description = string.Format(
+                            _sharedLocalizer["Price: {0} Available: {1}"],
+                            (int)i.GiaBanLe, i.TonKho),
+                        Id = i.Id,
+                        TenHangHoa = i.TenHangHoa,
+                        GiaNhap = i.GiaNhap
+                    });
+
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
         #endregion

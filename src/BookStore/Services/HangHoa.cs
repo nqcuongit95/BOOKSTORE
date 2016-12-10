@@ -10,13 +10,19 @@ namespace BookStore.Services
     public partial class BookStoreData
     {
         #region HangHoa
-        public IQueryable<HangHoa> GetHangHoa()
+        public IQueryable<HangHoa> GetHangHoa(string search, bool use)
         {
             string sortOrder = null;
 
             IQueryable<HangHoa> result = _context.HangHoa
                 .Include(i => i.LoaiHangHoa)
                 .Include(i => i.TrangThai);
+
+            if (!String.IsNullOrEmpty(search))
+                result = result.Where(i => i.TenHangHoa.Contains(search));
+
+            if (use)
+                result = result.Where(i => i.TrangThai.VietTat == "USE");
 
             switch (sortOrder)
             {

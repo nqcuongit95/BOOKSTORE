@@ -87,6 +87,15 @@
         display: none;
     }
 
+#phieu-nhap-hang-header {
+    padding: 0 24px;
+    text-align: left;
+}
+
+#phieu-nhap-hang-header .ui.search .input {
+    min-width: 320px;
+}
+
 .crud-form {
     padding: 24px;
     text-align: left;

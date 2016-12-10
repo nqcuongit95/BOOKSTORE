@@ -10,7 +10,7 @@
             <a asp-controller="@item.Value.Controller"
                asp-action="@item.Value.Action"
                class="active item">
-                @sharedLocalizer[item.Value.Controller]
+                @sharedLocalizer[item.Key]
             </a>
         }
         else
@@ -18,7 +18,7 @@
             <a asp-controller="@item.Value.Controller"
                asp-action="@item.Value.Action"
                class="item">
-                @sharedLocalizer[item.Value.Controller]
+                @sharedLocalizer[item.Key]
             </a>
         }
     }

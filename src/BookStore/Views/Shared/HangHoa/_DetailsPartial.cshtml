@@ -133,30 +133,30 @@
 
             for (int i = 0; i < properties.Count(); i++)
             {
-        <div class="property three fields">
-            <div class="field">
-                <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
-                <input asp-for="@properties[i].ThuocTinh"
-                       id="properties[@i].ThuocTinh"
-                       name="properties[@i].ThuocTinh"
-                       readonly=""
-                       placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
-            </div>
+                <div class="property three fields">
+                    <div class="field">
+                        <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
+                        <input asp-for="@properties[i].ThuocTinh"
+                               id="properties[@i].ThuocTinh"
+                               name="properties[@i].ThuocTinh"
+                               readonly=""
+                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
+                    </div>
 
-            <div class="field">
-                <label asp-for="@chiTietHangHoa.GiaTri"></label>
-                <input asp-for="@properties[i].GiaTri"
-                       id="properties[@i].GiaTri"
-                       name="properties[@i].GiaTri"
-                       readonly=""
-                       type="number"
-                       placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
-            </div>
+                    <div class="field">
+                        <label asp-for="@chiTietHangHoa.GiaTri"></label>
+                        <input asp-for="@properties[i].GiaTri"
+                               id="properties[@i].GiaTri"
+                               name="properties[@i].GiaTri"
+                               readonly=""
+                               type="number"
+                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
+                    </div>
 
-            <div class="field">
-                <label>&thinsp;</label>
-            </div>
-        </div>
+                    <div class="field">
+                        <label>&thinsp;</label>
+                    </div>
+                </div>
             }
         }
     </div>

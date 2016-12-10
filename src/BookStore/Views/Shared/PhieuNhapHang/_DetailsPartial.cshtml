@@ -1,0 +1,70 @@
+﻿@model PhieuNhapHang
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
+}
+
+<form id="PhieuNhapHang"
+      asp-action="CreateConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
+    {
+        <h2 class="ui header">@ViewData["Action"]</h2>
+    }
+
+    <h3 class="header"
+        style="text-align:right">
+        @sharedLocalizer["TotalAmount"]:
+        <span id="totalAmount" style="display:inline-block;width:128px;">
+            @((int)(Model.TongTien))
+        </span>
+    </h3>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="seven wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)
+                </th>
+                <th class="three wide">@sharedLocalizer["Amount"]</th>
+            </tr>
+        </thead>
+
+        <tbody class="properties">
+            @{
+                var properties = (ChiTietPhieuNhapHang[])Model.ChiTietPhieuNhapHang;
+                for (int i = 0; i < properties.Count(); i++)
+                {
+                    <tr>
+                        <td class="TenHangHoa">
+                            @properties[i].HangHoa.TenHangHoa
+                        </td>
+                        <td class="SoLuong">
+                            @properties[i].SoLuong
+                        </td>
+                        <td class="GiaNhap">
+                            @((int)properties[i].GiaNhap)
+                        </td>
+                        <td class="Amount">
+                            @((int)(properties[i].SoLuong * properties[i].GiaNhap))
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
