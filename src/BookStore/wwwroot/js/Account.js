@@ -1,5 +1,7 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
+
+    $('.ui.radio.checkbox').checkbox();
     $('.ui.checkbox').checkbox();
 
     $('.ui.form')
@@ -19,21 +21,30 @@ $(document).ready(function () {
                        {
                            type: 'empty',
                            prompt: 'Nhập mật khảu.'
-                       }                       
+                       }
                    ]
-               }               
+               }
            }
        });
+
+    function activeLoading(element) {
+        var elem = $(element);
+        elem.addClass('loading');
+    }
+
+    function deactiveLoading(element) {
+        var elem = $(element);
+        elem.removeClass('loading');
+    }
 
     //register form input
     var input1 = $("form input:eq(0)");
     var input2 = $("form input:eq(1)");
     var input3 = $("form input:eq(2)");
     var input4 = $("form input:eq(3)");
+    var radioBtn = $(".ui.radio.checkbox").first().find('input');
 
     $('#register-form').form({
-        on: 'blur',
-        inline: true,
         fields: {
             fullname: {
                 identifier: 'valid-fullname',
@@ -84,9 +95,61 @@ $(document).ready(function () {
                     {
                         type: 'match[Password]',
                         prompt: input4.attr('data-val-equalto')
-                    }                    
+                    }
+                ]
+            },
+            role: {
+                identifier: 'AssignedRole',
+                rules: [
+                    {
+                        type: 'checked',
+                        prompt: radioBtn.attr('data-val-required')
+                    }
                 ]
             }
+        },
+        on: 'blur',
+        inline: true
+    });
+
+    
+    $('.ui.primary.button').click(function (event) {
+        
+        event.preventDefault();
+
+        var form = $('#register-form');
+        var url = $(this).attr('action');
+        var data = form.serialize();
+        var elem = $(this);
+        var modal = $('.notify-modal');
+
+        activeLoading(elem);
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'post',
+            success: function (result, status, xhr) {
+                if (status === 'success') {                    
+                    deactiveLoading(elem);
+                    modal.html(result);
+                    modal.modal('show');
+
+                    setTimeout(function () {
+                        modal.modal('hide');
+                    }, 2000);
+                }
+            },
+            error: function (xhr, status, error) {
+                deactiveLoading(elem);
+            }
+        });
+    });
+
+    $('.notify-modal').modal({
+        onHidden: function () {
+            location.replace(redirectUrl);
         }
     });
+
 });

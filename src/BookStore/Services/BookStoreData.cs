@@ -52,7 +52,7 @@ namespace BookStore.Services
 
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
         {
-            return _context.LoaiKhachHang;
+            return _context.LoaiKhachHang;            
         }
 
         public KhachHang GetKhachHang(int id)
@@ -116,8 +116,7 @@ namespace BookStore.Services
 
         public async Task<StatisticsViewModel> GetStatisticsInformation()
         {
-            var model = new StatisticsViewModel();
-
+            var model = new StatisticsViewModel();            
             var totalCustomers = await _context.KhachHang.CountAsync();
             var totalGoods = await _context.HangHoa.CountAsync();
             var totalTransactionValues = await _context.DonHang.SumAsync(i => i.TongTien);
@@ -127,6 +126,11 @@ namespace BookStore.Services
             model.TotalTransactionValues = totalTransactionValues;
 
             return model;
+        }
+
+        public async Task<List<Role>> GetListRoles()
+        {
+            return await _context.Roles.ToListAsync();
         }
     }
 }

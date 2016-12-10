@@ -6,8 +6,9 @@
 
     $('.ui.primary.mini.button').click(function (event) {
 
-        var elem = $(this);
         event.preventDefault();
+
+        var elem = $(this);
 
         activeLoading(elem);
 
@@ -71,6 +72,17 @@
 
     });
 
+    $('.item.update').click(function (event) {
+
+        var name = 'edit';
+        var elem = $(this);
+        _roleId = elem.attr('id');
+        activeLoader(elem, name);
+        var url = editUrl + "/" + _roleId;        
+        crud(url, ".update-role-modal", elem, name);
+
+    });
+
 
     function crud(url, type, elem, name) {
 
@@ -78,19 +90,23 @@
 
         $.ajax({
             url: url,
+            type: 'get',
             success: function (result, status, xhr) {
-                if (typeof result === 'string') {
-
+                
+                if (status === 'success') {
+                    
                     deactiveLoader(elem, name);
                     modal.html(result);
                     modal.modal('show');
+
+
                 }
                 else {
 
                 }
             },
             error: function (xhr, status, error) {
-                deactiveLoader(elem, 'unhide');
+                deactiveLoader(elem, name);
             }
         });
     }
@@ -107,9 +123,10 @@
         icon.addClass(str).removeClass('spinner').removeClass('loading')
     }
 
+    //delete role modal
     $('.delete-role-modal').modal({
         onDeny: function () {
-            var id = $('')
+
             var elem = $(this).find('.negative.button');
             activeLoading(elem);
             var modal = $('.notify-modal');
@@ -130,6 +147,42 @@
             });
         }
     });
+    
+    //update role modal
+    $('.update-role-modal').modal({
+        onApprove: function () {
+
+            activeLoading(elem);
+
+            var form = $(this).find('#updateForm');
+            var elem = $(this).find('.positive.button');
+            var data = form.serialize();
+
+            var modal = $('.notify-modal');
+
+            $.ajax({
+                url: editUrl + "/" + _roleId,
+                type: 'POST',
+                data: data,
+                success: function (result, status, xhr) {
+
+                    if (status === 'success') {
+                        deactiveLoading(elem);
+                        modal.html(result);
+                        modal.modal('show');
+                        
+                        setTimeout(function () {
+                            modal.modal('hide');
+                        }, 2000);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    deactiveLoading(elem);
+                }
+            });
+        }
+    });
+
 
     $('.notify-modal').modal({
         onHidden: function () {

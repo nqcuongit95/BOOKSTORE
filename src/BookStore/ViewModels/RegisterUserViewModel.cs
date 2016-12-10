@@ -28,5 +28,9 @@ namespace BookStore.ViewModels
         [Compare("Password",ErrorMessage ="Xác nhận mật khẩu không khớp.")]
         public string ConfirmPassword { get; set; }
 
+        [Required(ErrorMessage ="Cấp quyền cho tài khoản.")]        
+        public string AssignedRole { get; set; }
+        public List<string> Roles { get; set; }
+
     }
 }

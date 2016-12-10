@@ -1,4 +1,5 @@
-﻿using BookStore.Models;
+﻿using BookStore.Entities;
+using BookStore.Models;
 using BookStore.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace BookStore.Services
         KhachHang GetKhachHang(int id);
         Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
         Task<StatisticsViewModel> GetStatisticsInformation();
+        Task<List<Role>> GetListRoles();
         
     }
 }

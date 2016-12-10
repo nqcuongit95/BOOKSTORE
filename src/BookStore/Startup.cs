@@ -53,9 +53,11 @@ namespace BookStore
                     config =>
                     {
                         config.User.RequireUniqueEmail = false;
-                        config.Password.RequiredLength = 8;
+                        config.Password.RequiredLength = 6;
                         config.Password.RequireUppercase = false;
                         config.Password.RequireNonAlphanumeric = false;
+                        config.Password.RequireDigit = false;
+                        config.Password.RequireLowercase = false;
                     })
                     .AddEntityFrameworkStores<BOOKSTOREContext,int>();
         }

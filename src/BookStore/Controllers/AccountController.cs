@@ -30,11 +30,11 @@ namespace BookStore.Controllers
             if (ModelState.IsValid)
             {
                 var user = new Staff { UserName = model.Username };
-
+                
                 //other fields
                 user.FullName = model.FullName;
                 user.DateCreate = System.DateTime.Now;
-
+                
                 var createResult = await _userManager.CreateAsync(user, model.Password);
                 if (createResult.Succeeded)
                 {
