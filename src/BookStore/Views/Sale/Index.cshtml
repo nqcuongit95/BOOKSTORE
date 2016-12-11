@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "Bán Hàng";
+}
+
+<div class="row">
+
+    <div class="twelve wide column">
+        <div class="ui grid">
+            <!-- Mặt hàng-->
+            <div class="row center aligned">
+                <div class="sixteen wide column">
+                    <div class="ui secondary pointing menu top">
+                        <a class="active item" data-tab="edit"><i class="icon edit sign"></i>Edit</a>
+                        <a class="item" data-tab="summary">Summary</a>                        
+                    </div>
+                </div>
+            </div>
+            <!-- Hóa đơn -->
+            <div class="row">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="four wide column">
+        <div class="ui grid">
+            <!-- Khach hang -->
+            <div class="row">
+                <div class="column">
+                    <div class="ui dividing header">Khách hàng</div>
+                    <div class="ui fluid search">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" placeholder="Khách hàng...">
+                            <i class="search icon"></i>
+                        </div>
+                        <div class="results"></div>
+                    </div>
+                    <table class="ui very basic table">
+                        <tbody>
+                            <tr>
+                                <td>Điện thoại</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Địa chỉ</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Loại giá</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nhân viên</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Thanh toan -->
+            <div class="row">
+                <div class="column">
+                    <div class="ui dividing header">Thanh toán</div>
+                    <table class="ui very basic table">
+                        <tbody>
+                            <tr>
+                                <td>Tổng tiền</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Khách phải trả</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Tiền khách đưa</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Tiền thừa</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="full-width">
+                            <tr>
+                                <th colspan="2" class="right aligned">
+                                    <div class="ui positive button">Thanh toán</div>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var urlSearch = '@Url.Action("FindCustomer", "Sale")';
+</script>
+<script src="~/js/Sale.js"></script>

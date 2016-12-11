@@ -136,5 +136,33 @@ namespace BookStore.Services
         {
             return await _context.Users.ToListAsync();
         }
+
+        public async Task<CustomerResults> FindCustomer(string value)
+        {
+            if (value.All(char.IsDigit))
+            {
+                var query1 = from customer in _context.KhachHang
+                            where customer.SoDienThoai.Contains(value)
+                            select new FilterCustomerViewModel
+                            {
+                                Name = customer.TenKhachHang,
+                                Phone = customer.SoDienThoai
+                            };
+                var results1 = await query1.ToListAsync();
+                return new CustomerResults { Results = results1 };
+            }
+
+            var query2 = from customer in _context.KhachHang
+                        where customer.TenKhachHang.Contains(value)
+                        select new FilterCustomerViewModel
+                        {
+                            Name = customer.TenKhachHang,
+                            Phone = customer.SoDienThoai
+                        };
+
+            var results2 = await query2.ToListAsync();
+            return new CustomerResults { Results = results2 };
+
+        }
     }
 }
