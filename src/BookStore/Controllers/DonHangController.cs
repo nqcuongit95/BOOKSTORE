@@ -13,27 +13,18 @@ namespace BookStore.Controllers
     public class DonHangController : Controller
     {
         private IBookStoreData _bookStoreData;
-        readonly BOOKSTOREContext _context = new BOOKSTOREContext();
+        //readonly BOOKSTOREContext _context;
         // GET: /<controller>/
 
-        //public DonHangController(IBookStoreData bookStoreData)
-        //{
-        //    _bookStoreData = bookStoreData;
-        //}
-
-        public DonHangController()
+        public DonHangController(IBookStoreData bookStoreData)
         {
+            _bookStoreData = bookStoreData;
         }
 
         public IActionResult Index()
         {
             var model = _bookStoreData.GetDonHang();
-            //var viewmodel = new DonHangViewModels();
-            var viewmodel = _context.DonHang
-                .Include(i => i.KhachHang);
-                //.ToListAsync();
-            //ViewBag.listdh = _bookStoreData.GetAllDonHang();
-            return View(viewmodel);
+            return View(model);
         }
     }
 }

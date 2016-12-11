@@ -25,14 +25,9 @@ namespace BookStore.Services
 
         public IEnumerable<DonHang> GetDonHang()
         {
-            var viewmodel = _context.DonHang
-                .Include(i => i.KhachHang)
-                .AsNoTracking();
-            //return _context.DonHang
-            //    .Include(i => i.KhachHang)
-            //    .Include(j => j.TrangThai)
-            //    .AsNoTracking();
-            return viewmodel;
+            return _context.DonHang;
         }
+
+        //public lis
     }
 }

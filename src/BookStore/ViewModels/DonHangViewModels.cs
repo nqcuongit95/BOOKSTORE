@@ -14,7 +14,7 @@ namespace BookStore.ViewModels
         public TrangThai trangthai { get; set; }
         public DonHang donhang { get; set; }
 
-        public String MaDonHang { get; set; }
+        public int MaDonHang { get; set; }
         public String TenKhachHang { get; set; }
         public int KhachHangID { get; set; }
         public DateTime NgayLap { get; set; }

@@ -26,9 +26,10 @@ namespace BookStore.Models
         public virtual DbSet<ThuocTinhHangHoa> ThuocTinhHangHoa { get; set; }
         public virtual DbSet<TrangThai> TrangThai { get; set; }
 
+        //public BOOKSTOREContext() { }
         public BOOKSTOREContext(DbContextOptions<BOOKSTOREContext> options) : base(options)
         { }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChiTietDonHang>(entity =>

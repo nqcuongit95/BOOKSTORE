@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Don Hang";
-    //var model = ViewBag.listdh;
 }
 
 <div class="ui pointing secondary fluid menu" style="padding:0">
@@ -21,23 +20,16 @@
                 <th>Khách hàng</th>
                 <th>Trạng thái</th>
                 <th>Tổng tiền</th>
-                <th>Ngày lập</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var donhang in Model)
             {
                 <tr>
-                    @*<td>@donhang.Id</td>*@
-                    <td>@Html.DisplayFor(md => donhang.Id)</td>
-                    <td>@Html.DisplayFor(md => donhang.KhachHang.TenKhachHang)</td>
-                    @*<td>@Html.DisplayFor(md => donhang.TrangThai.TenTrangThai)</td>*@
-                    <td>@Html.DisplayFor(md => donhang.TongTien)</td>
-                    <td>@Html.DisplayFor(md => donhang.NgayLap)</td>
-                    @*<td>@donhang.KhachHang.TenKhachHang</td>
-                    <td>@donhang.TrangThai.TenTrangThai</td>
+                    <td>@donhang.Id</td>
+                    <td>@donhang.KhachHangId</td>
+                    <td>@donhang.TrangThaiId</td>
                     <td>@donhang.TongTien</td>
-                    <td>@donhang.NgayLap</td>*@
                 </tr>
             }
         </tbody>
