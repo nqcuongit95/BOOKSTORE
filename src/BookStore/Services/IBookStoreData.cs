@@ -21,7 +21,8 @@ namespace BookStore.Services
         Task<StatisticsViewModel> GetStatisticsInformation();
         Task<List<Role>> GetListRoles();
         Task<List<Staff>> GetListStaffs();
-        Task<CustomerResults> FindCustomer(string value);
+        Task<CustomerFilterResults> FindCustomer(string value);
+        Task<List<ProductFilterViewModel>> FindProduct(string val);
         
     }
 }

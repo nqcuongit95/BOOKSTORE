@@ -52,7 +52,7 @@ namespace BookStore.Services
 
         public IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang()
         {
-            return _context.LoaiKhachHang;            
+            return _context.LoaiKhachHang;
         }
 
         public KhachHang GetKhachHang(int id)
@@ -116,7 +116,7 @@ namespace BookStore.Services
 
         public async Task<StatisticsViewModel> GetStatisticsInformation()
         {
-            var model = new StatisticsViewModel();            
+            var model = new StatisticsViewModel();
             var totalCustomers = await _context.KhachHang.CountAsync();
             var totalGoods = await _context.HangHoa.CountAsync();
             var totalTransactionValues = await _context.DonHang.SumAsync(i => i.TongTien);
@@ -137,32 +137,66 @@ namespace BookStore.Services
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<CustomerResults> FindCustomer(string value)
+        public async Task<CustomerFilterResults> FindCustomer(string value)
         {
             if (value.All(char.IsDigit))
             {
                 var query1 = from customer in _context.KhachHang
-                            where customer.SoDienThoai.Contains(value)
-                            select new FilterCustomerViewModel
-                            {
-                                Name = customer.TenKhachHang,
-                                Phone = customer.SoDienThoai
-                            };
+                             where customer.SoDienThoai.Contains(value)
+                             select new CustomerFilterViewModel
+                             {
+                                 Name = customer.TenKhachHang,
+                                 Phone = customer.SoDienThoai,
+                                 Address = customer.DiaChi
+
+                             };
                 var results1 = await query1.ToListAsync();
-                return new CustomerResults { Results = results1 };
+                return new CustomerFilterResults { Results = results1 };
             }
 
             var query2 = from customer in _context.KhachHang
-                        where customer.TenKhachHang.Contains(value)
-                        select new FilterCustomerViewModel
-                        {
-                            Name = customer.TenKhachHang,
-                            Phone = customer.SoDienThoai
-                        };
+                         where customer.TenKhachHang.Contains(value)
+                         select new CustomerFilterViewModel
+                         {
+                             Name = customer.TenKhachHang,
+                             Phone = customer.SoDienThoai,
+                             Address = customer.DiaChi
+                         };
 
             var results2 = await query2.ToListAsync();
-            return new CustomerResults { Results = results2 };
+            return new CustomerFilterResults { Results = results2 };
 
+        }
+
+        public async Task<List<ProductFilterViewModel>> FindProduct(string val)
+        {
+            if (val.All(char.IsDigit))
+            {
+                var query1 = from product in _context.HangHoa
+                            where product.Id.ToString().Contains(val)
+                            select new ProductFilterViewModel
+                            {
+                                Id = product.Id,
+                                Name = product.TenHangHoa,
+                                Price = product.GiaBanLe !=null ? product.GiaBanLe.Value : 0,
+                                Available = product.TonKho
+                                
+                            };
+
+                return await query1.ToListAsync();
+            }
+
+            var query = from product in _context.HangHoa
+                        where product.TenHangHoa.Contains(val)
+                        select new ProductFilterViewModel
+                        {
+                            Id = product.Id,
+                            Name = product.TenHangHoa,
+                            Price = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
+                            Available = product.TonKho
+                        };
+
+            return await query.ToListAsync();
         }
     }
 }

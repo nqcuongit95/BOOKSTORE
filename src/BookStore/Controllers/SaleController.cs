@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
+using BookStore.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,6 +30,14 @@ namespace BookStore.Controllers
             var result =await _bookStoreData.FindCustomer(val);
 
             return Json(result);    
+        }
+
+        public async Task<IActionResult> FindProduct(string keyword)
+        {
+            var model = await _bookStoreData.FindProduct(keyword);
+
+            return Json(model);
+            //return PartialView("_ProductResults",model);
         }
     }
 }

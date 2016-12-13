@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 
 namespace BookStore.ViewModels
 {
-    public class FilterCustomerViewModel
+    public class CustomerFilterViewModel
     {
         public string Name { get; set; }
         public string Phone { get; set; }
+        public string Address { get; set; }
 
     }
 
-    public class CustomerResults
+    public class CustomerFilterResults
     {
-        public List<FilterCustomerViewModel> Results { get; set; }
+        public List<CustomerFilterViewModel> Results { get; set; }
     }
 
 }

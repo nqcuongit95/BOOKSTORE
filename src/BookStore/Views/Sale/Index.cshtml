@@ -8,17 +8,63 @@
     <div class="twelve wide column">
         <div class="ui grid">
             <!-- Mặt hàng-->
-            <div class="row center aligned">
+            <div class="row">
                 <div class="sixteen wide column">
-                    <div class="ui secondary pointing menu top">
-                        <a class="active item" data-tab="edit"><i class="icon edit sign"></i>Edit</a>
-                        <a class="item" data-tab="summary">Summary</a>                        
+                    <div class="ui top attached menu">
+                        <div class="header item">Hàng hóa</div>
+                        <a class="item" asp-action="Index">
+                            <i class="filter icon"></i>
+                            Lọc
+                        </a>
+                        <div class="right menu">
+                            <div class="ui search item" style="width: 300px;">
+                                <div class="ui transparent icon input">
+                                    <input class="prompt"
+                                           type="text"
+                                           placeholder="Tìm kiếm hàng hóa..."
+                                           id="product-input">
+                                    <i class="search link icon"></i>
+                                </div>
+                                <div class="results"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui bottom attached segment"
+                         style="height:160px;overflow-y:scroll;">
+                        <table class="ui very basic table" id="products-table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="eight wide">Tên hàng</th>
+                                    <th class="four wide">Đơn giá</th>
+                                    <th class="two wide">Có thể bán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-results">                               
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ui top attached tabular menu">
+                        <div class="active item">Đơn hàng 1</div>
+                    </div>
+                    <div class="ui bottom attached active tab segment"
+                         style="height:330px;">
+                        <table class="ui very basic table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="six wide">Tên hàng</th>
+                                    <th class="two wide">Số lượng</th>
+                                    <th class="two wide">Đơn giá</th>                                    
+                                    <th class="three wide">Thành tiền</th>
+                                    <th class="one wide"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoice-table">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <!-- Hóa đơn -->
-            <div class="row">
-
             </div>
         </div>
     </div>
@@ -36,23 +82,23 @@
                         </div>
                         <div class="results"></div>
                     </div>
-                    <table class="ui very basic table">
+                    <table class="ui very basic fixed single line table" id="customer-table">
                         <tbody>
                             <tr>
-                                <td>Điện thoại</td>
-                                <td></td>
+                                <td class="six wide">Điện thoại</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                             <tr>
-                                <td>Địa chỉ</td>
-                                <td></td>
+                                <td class="six wide">Địa chỉ</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                             <tr>
-                                <td>Loại giá</td>
-                                <td></td>
+                                <td class="six wide">Loại giá</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                             <tr>
-                                <td>Nhân viên</td>
-                                <td></td>
+                                <td class="six wide">Nhân viên</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -93,10 +139,10 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
+    var urlSearchProduct = '/Sale/FindProduct?keyword={value}';
 </script>
 <script src="~/js/Sale.js"></script>
