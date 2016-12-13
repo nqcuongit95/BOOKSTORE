@@ -1,8 +1,12 @@
 ﻿$(document).ready(function () {
 
-    var inputEvents = 'DOMAttrModified textInput input change keypress paste';
+    //define some global variable
+    var inputEvents = 'DOMAttrModified textInput input keypress paste';
+
     var recentlyAddedRow;
-    //define some controls
+
+    var totalMoneyToPay = 0;
+    
     var numberInput = "<div class=\"ui tiny input count-input\" style=\"max-width: 80px\">"
                        + "<input type=\"number\" name='count'>"
                         + "</div>"
@@ -131,6 +135,9 @@
                     var currentPrice = Number(currentPriceTd.val());
                     var value = count * currentPrice;
                     tdTotalMoney.text(value);
+
+                    //update payment
+                    updatePayment();
                 }
 
             }
@@ -152,6 +159,9 @@
                 invoice.find('tr:last td:eq(2) input').val('1');
                 //also set the price of product
                 invoice.find('tr:last td:eq(3) input').val(price);
+
+                //update payment
+                updatePayment();
 
                 //bind input event to count td;
                 invoice.find('tr:last').on(inputEvents, '.count-input input', function () {
@@ -192,7 +202,7 @@
         }
     })
 
-    //set total money function
+    //set total money
     function calculateTotalMoney(count, price, total) {
 
         var currentCountProducts = Number(count.val());
@@ -202,6 +212,44 @@
         var totalMoney = currentPrice * currentCountProducts;
 
         total.text(totalMoney);
+
+        //update payment
+        updatePayment();
+                
     }
+
+    function updatePayment() {
+
+        var total = 0;
+        $('#invoice-table tr').each(function () {
+            
+            var value = Number($(this).find('td:eq(4)').text());
+            
+            total += value;            
+        })
+
+        totalMoneyToPay = total;
+
+        $('#payment-table tr:eq(0) td:eq(1)').text(total);
+
+        $('#payment-table tr:eq(1) td:eq(1)').text(total);
+               
+    }
+
+    //handle customer pay
+    $('#paid-money').on(inputEvents, 'input', function () {
+                                
+            var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
+            var customerPay = Number($(this).val());
+            //alert(customerPay)
+            var customerChange = customerPay - totalMoneyToPay;
+            console.log(customerChange);
+            if (customerChange > 0) {
+                customerChangeTd.text(customerChange);
+            }
+            else {
+                customerChangeTd.text('0');
+            }                  
+    })
 
 });

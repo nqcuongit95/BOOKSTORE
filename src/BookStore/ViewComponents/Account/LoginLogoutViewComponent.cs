@@ -19,7 +19,7 @@ namespace BookStore.ViewComponents.Account
         public async Task<IViewComponentResult> InvokeAsync()
         {
             Staff staff;
-
+            
             if (User.Identity.IsAuthenticated)
             {
                 staff = await GetCurrentUserAsync();

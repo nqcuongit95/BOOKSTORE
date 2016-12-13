@@ -5,23 +5,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using BookStore.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
-{
+{   
+    [Authorize]
     public class SaleController : Controller
     {
         private IBookStoreData _bookStoreData;
+        private UserManager<Staff> _userManager;
 
-        public SaleController(IBookStoreData bookStoreData)
+        public SaleController(IBookStoreData bookStoreData,
+                              UserManager<Staff> userManager)
         {
             _bookStoreData = bookStoreData;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            return View("Index", user.FullName);
         }
 
         //find customers

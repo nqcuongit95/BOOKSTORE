@@ -1,4 +1,5 @@
-﻿
+﻿@model string
+
 @{
     ViewData["Title"] = "Bán Hàng";
 }
@@ -98,7 +99,9 @@
                             </tr>
                             <tr>
                                 <td class="six wide">Nhân viên</td>
-                                <td class="ten wide right aligned"></td>
+                                <td class="ten wide right aligned">
+                                    @Model
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -108,23 +111,30 @@
             <div class="row">
                 <div class="column">
                     <div class="ui dividing header">Thanh toán</div>
-                    <table class="ui very basic table">
+                    <table class="ui very basic table" id="payment-table">
                         <tbody>
                             <tr>
-                                <td>Tổng tiền</td>
-                                <td></td>
+                                <td class="six wide">Tổng tiền</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                             <tr>
-                                <td>Khách phải trả</td>
-                                <td></td>
+                                <td class="six wide">Khách phải trả</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                             <tr>
-                                <td>Tiền khách đưa</td>
-                                <td></td>
+                                <td class="seven wide">Tiền khách đưa</td>
+                                <td class="nine wide right aligned">
+                                    <div class="ui input" 
+                                         style="width: 140px;"
+                                         id="paid-money">
+                                        <input type="text"
+                                               style="text-align:right;"/>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Tiền thừa</td>
-                                <td></td>
+                                <td class="six wide">Tiền thừa</td>
+                                <td class="ten wide right aligned"></td>
                             </tr>
                         </tbody>
                         <tfoot class="full-width">
