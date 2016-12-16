@@ -48,5 +48,22 @@ namespace BookStore.Controllers
             return Json(model);
             //return PartialView("_ProductResults",model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePriceType(string[] productIds, int priceType)
+        {
+            List<ProductPriceViewModel> model = new List<ProductPriceViewModel>();
+
+            foreach (var id in productIds)
+            {
+                var result = await _bookStoreData.GetPrice(int.Parse(id), priceType);
+                if (result != null)
+                {
+                    model.Add(result);
+                }
+            }
+
+            return Json(model);
+        }
     }
 }

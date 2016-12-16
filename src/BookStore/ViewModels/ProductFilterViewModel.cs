@@ -10,7 +10,8 @@ namespace BookStore.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
+        public decimal RetailPrice { get; set; }
+        public decimal WholeSaleprice { get; set; }
         public int Available { get; set; }
         public string ImageUrl { get; set; }
 

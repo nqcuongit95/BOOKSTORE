@@ -178,7 +178,8 @@ namespace BookStore.Services
                             {
                                 Id = product.Id,
                                 Name = product.TenHangHoa,
-                                Price = product.GiaBanLe !=null ? product.GiaBanLe.Value : 0,
+                                RetailPrice = product.GiaBanLe !=null ? product.GiaBanLe.Value : 0,
+                                WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
                                 Available = product.TonKho
                                 
                             };
@@ -192,11 +193,28 @@ namespace BookStore.Services
                         {
                             Id = product.Id,
                             Name = product.TenHangHoa,
-                            Price = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
+                            RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
+                            WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
                             Available = product.TonKho
                         };
 
             return await query.ToListAsync();
+        }
+
+        public async Task<ProductPriceViewModel> GetPrice(int id, int type)
+        {
+            var query = from product in _context.HangHoa
+                        where product.Id == id
+                        select new ProductPriceViewModel
+                        {
+                            Id = product.Id,
+                            Price = type == (int)PriceType.Retail ?
+                            product.GiaBanLe != null ? product.GiaBanLe.Value : 0 :
+                            product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
+                            PriceType = (PriceType)type
+                        };
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

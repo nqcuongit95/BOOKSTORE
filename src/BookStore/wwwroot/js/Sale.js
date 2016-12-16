@@ -6,16 +6,73 @@
     var recentlyAddedRow;
 
     var totalMoneyToPay = 0;
-    
+
+    var priceType = 1;
+
     var numberInput = "<div class=\"ui tiny input count-input\" style=\"max-width: 80px\">"
-                       + "<input type=\"number\" name='count'>"
-                        + "</div>"
+                       + "<input type=\"number\" name='count' min='0'>"
+                        + "</div>";
 
     var normalInput = "<div class=\"ui tiny input price-input\" style=\"max-width: 100px\">"
                       + "<input type=\"text\">"
-                       + "</div>"
+                       + "</div>";
 
+    var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";
 
+    //controls
+    $(".ui.selection.dropdown").dropdown();           
+
+    //update when price-type change
+    $(".ui.selection.dropdown").dropdown({
+        onChange: function (value, text, choice) {
+
+            //set global pricetype value
+            priceType = value;
+
+            var allPriceTd = $("#invoice-table tr");            
+            var productIds = [];
+            console.log(value);
+
+            allPriceTd.each(function (index) {
+
+                var id = $(this).find('td:eq(0)').text();
+                productIds.push(id);
+                console.log(id);
+            })
+
+            updatePriceType(productIds, value);
+        }
+    });
+
+    function updatePriceType(productIds, priceType) {
+        $.ajax({
+            type: "POST",
+            url: urlPriceType ,
+            dataType: "json",
+            traditional: true,
+            data: {
+                productIds: productIds,
+                priceType: priceType
+            },
+            success: function (result, status, xhr) {
+                if (status === 'success') {
+                       
+                    $.each(result, function (index, value) {
+                                                    
+                       var productRow = $('#invoice-table').find('tr').filter(function () {
+                                return $(this).find('td:eq(0)').text() == value.id;
+                            })
+
+                       var priceInput = productRow.find("td:eq(3) input");
+                       priceInput.val(value.price);
+                       priceInput.trigger("textInput");
+
+                    })
+                }
+            }
+        });
+    }
+    
     $.fn.exists = function () {
         return this.length !== 0;
     }
@@ -50,7 +107,8 @@
 
     //search products
     $.fn.api.settings.api = {
-        'get products': urlSearchProduct
+        'get products': urlSearchProduct,
+        //'change price': urlChangePrice
     }
 
     $('#product-input').api({
@@ -89,7 +147,7 @@
 
     }
 
-    //handle table row click event
+    //handle table row click event for adding product to invoice
     $('#products-table').on('click', 'tbody tr', function () {
         //event.preventDefault();        
 
@@ -99,14 +157,15 @@
         //get the data
         var id = clickedRow.find('td:eq(0)').text();
         var name = clickedRow.find('td:eq(1)').text();
-        var price = clickedRow.find('td:eq(2)').text();
-        var availableProduct = clickedRow.find('td:eq(3)').text();
+        var price =  priceType == 1 ? clickedRow.find('td:eq(2)').text() :
+                                      clickedRow.find('td:eq(3)').text();
+
+        var availableProduct = clickedRow.find('td:eq(4)').text();
 
         //test if available product is in stock > 0
         if (availableProduct > 0) {
 
             //the key is to compare id of product and added product                                 
-
             var alreadyAdded = invoice.find('tr td').filter(function () {
                 return $(this).text() == id;
             })
@@ -138,6 +197,7 @@
 
                     //update payment
                     updatePayment();
+                    recalculateCustomerChange()
                 }
 
             }
@@ -150,7 +210,7 @@
                 row += "<td>" + numberInput + "</td>"
                 row += "<td>" + normalInput + "</td>";
                 row += "<td>" + price + "</td>"
-                row += "<td>Xóa</td>"
+                row += "<td>" + trashIcon + "</td>"
                 row += "</tr>";
 
                 invoice.append(row);
@@ -162,6 +222,17 @@
 
                 //update payment
                 updatePayment();
+
+                //bind event to remove icon
+                $(".trash.outline.link.icon").popup({
+                    offset: -12
+                });
+
+                $(".trash.outline.link.icon").on('click', function () {
+                    $(this).closest('tr').remove();
+                    updatePayment();
+                    recalculateCustomerChange();
+                })
 
                 //bind input event to count td;
                 invoice.find('tr:last').on(inputEvents, '.count-input input', function () {
@@ -175,12 +246,17 @@
                         inputTd.val(availableProduct);
                     }
 
+                    if (currentCount < 0) {
+                        alert("number of products must not be negative");
+                        inputTd.val(0);
+                    }
+
                     var countTd = $(this);
                     var currentPriceTd = countTd.closest('td').next().find('input');
                     var totalMoneyTd = currentPriceTd.closest('td').next();
 
                     calculateTotalMoney(countTd, currentPriceTd, totalMoneyTd);
-
+                    recalculateCustomerChange();
                 })
 
                 //bind input event to price td;
@@ -190,7 +266,13 @@
                     var totalMoneyTd = priceTd.closest('td').next();
                     var currentCountTd = priceTd.closest('td').prev().find('input');
 
+                    if (Number(priceTd.val()) < 0) {
+                        alert("price must not be negative");
+                        priceTd.val(0);
+                    }
+
                     calculateTotalMoney(currentCountTd, priceTd, totalMoneyTd);
+                    recalculateCustomerChange();
 
                 })
             }
@@ -215,17 +297,17 @@
 
         //update payment
         updatePayment();
-                
+
     }
 
     function updatePayment() {
 
         var total = 0;
         $('#invoice-table tr').each(function () {
-            
+
             var value = Number($(this).find('td:eq(4)').text());
-            
-            total += value;            
+
+            total += value;
         })
 
         totalMoneyToPay = total;
@@ -233,23 +315,44 @@
         $('#payment-table tr:eq(0) td:eq(1)').text(total);
 
         $('#payment-table tr:eq(1) td:eq(1)').text(total);
-               
+
     }
 
     //handle customer pay
     $('#paid-money').on(inputEvents, 'input', function () {
-                                
-            var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
-            var customerPay = Number($(this).val());
-            //alert(customerPay)
-            var customerChange = customerPay - totalMoneyToPay;
-            console.log(customerChange);
-            if (customerChange > 0) {
-                customerChangeTd.text(customerChange);
-            }
-            else {
-                customerChangeTd.text('0');
-            }                  
+
+        var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
+        var customerPay = Number($(this).val());
+        //alert(customerPay)
+        var customerChange = customerPay - totalMoneyToPay;
+        console.log(customerChange);
+        if (customerChange > 0) {
+            customerChangeTd.text(customerChange);
+        }
+        else {
+            customerChangeTd.text('0');
+        }
     })
+
+
+    function recalculateCustomerChange() {
+
+        totalMoneyToPay
+
+        var customerPayTd = $('#paid-money input');
+        var customerPay = Number(customerPayTd.val());
+
+        var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
+
+        var customerChange = customerPay - totalMoneyToPay;
+
+        if (customerChange > 0) {
+            customerChangeTd.text(customerChange)
+        }
+        else {
+            customerChangeTd.text(0);
+        }
+
+    }
 
 });

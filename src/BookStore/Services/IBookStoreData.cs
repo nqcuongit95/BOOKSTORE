@@ -23,6 +23,6 @@ namespace BookStore.Services
         Task<List<Staff>> GetListStaffs();
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<List<ProductFilterViewModel>> FindProduct(string val);
-        
+        Task<ProductPriceViewModel> GetPrice(int id, int type);
     }
 }

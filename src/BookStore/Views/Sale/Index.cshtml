@@ -32,17 +32,17 @@
                     </div>
                     <div class="ui bottom attached segment"
                          style="height:160px;overflow-y:scroll;">
-                        <table class="ui very basic table" id="products-table">
+                        <table class="ui very basic selectable table" id="products-table">
                             <thead>
                                 <tr>
                                     <th class="two wide">Mã hàng</th>
                                     <th class="eight wide">Tên hàng</th>
-                                    <th class="four wide">Đơn giá</th>
+                                    <th class="two wide">Giá lẻ</th>
+                                    <th class="two wide">Giá sỉ</th>                                    
                                     <th class="two wide">Có thể bán</th>
                                 </tr>
                             </thead>
-                            <tbody id="product-results">                               
-                            </tbody>
+                            <tbody id="product-results"></tbody>
                         </table>
                     </div>
                     <div class="ui top attached tabular menu">
@@ -50,20 +50,21 @@
                     </div>
                     <div class="ui bottom attached active tab segment"
                          style="height:330px;">
-                        <table class="ui very basic table">
-                            <thead>
-                                <tr>
-                                    <th class="two wide">Mã hàng</th>
-                                    <th class="six wide">Tên hàng</th>
-                                    <th class="two wide">Số lượng</th>
-                                    <th class="two wide">Đơn giá</th>                                    
-                                    <th class="three wide">Thành tiền</th>
-                                    <th class="one wide"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="invoice-table">
-                            </tbody>
-                        </table>
+                        <form id="invoice-form">
+                            <table class="ui very basic table">
+                                <thead>
+                                    <tr>
+                                        <th class="two wide">Mã hàng</th>
+                                        <th class="six wide">Tên hàng</th>
+                                        <th class="two wide">Số lượng</th>
+                                        <th class="two wide">Đơn giá</th>
+                                        <th class="three wide">Thành tiền</th>
+                                        <th class="one wide"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoice-table"></tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -71,88 +72,103 @@
     </div>
 
     <div class="four wide column">
-        <div class="ui grid">
-            <!-- Khach hang -->
-            <div class="row">
-                <div class="column">
-                    <div class="ui dividing header">Khách hàng</div>
-                    <div class="ui fluid search">
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="Khách hàng...">
-                            <i class="search icon"></i>
+        <form id="payment-form">
+            <div class="ui grid">
+                <!-- Khach hang -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Khách hàng</div>
+                        <div class="ui fluid search">
+                            <div class="ui icon input">
+                                <input class="prompt" type="text" placeholder="Khách hàng...">
+                                <i class="search icon"></i>
+                            </div>
+                            <div class="results"></div>
                         </div>
-                        <div class="results"></div>
+                        <table class="ui very basic fixed single line table" id="customer-table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Điện thoại</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Địa chỉ</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Loại giá</td>
+                                    <td class="ten wide right aligned" 
+                                        style="overflow:visible;">
+                                        <div class="ui compact selection dropdown" id="price-type">                                            
+                                            <input name="gender" type="hidden">
+                                            <div class="text">Bán lẻ</div>
+                                            <i class="dropdown icon"></i>
+                                            <div class="menu">
+                                                <div class="item" data-value="2">Bán sỉ</div>
+                                                <div class="item active selected" 
+                                                     data-value="1">Bán lẻ</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Nhân viên</td>
+                                    <td class="ten wide right aligned">
+                                        @Model
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="ui very basic fixed single line table" id="customer-table">
-                        <tbody>
-                            <tr>
-                                <td class="six wide">Điện thoại</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Địa chỉ</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Loại giá</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Nhân viên</td>
-                                <td class="ten wide right aligned">
-                                    @Model
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                </div>
+                <!-- Thanh toan -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Thanh toán</div>
+                        <table class="ui very basic table" id="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Tổng tiền</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Khách phải trả</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="seven wide">Tiền khách đưa</td>
+                                    <td class="nine wide right aligned">
+                                        <div class="ui input"
+                                             style="width: 140px;"
+                                             id="paid-money">
+                                            <input type="text"
+                                                   style="text-align:right;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Tiền thừa</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="full-width">
+                                <tr>
+                                    <th colspan="2" class="right aligned">
+                                        <div class="ui positive button">Thanh toán</div>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <!-- Thanh toan -->
-            <div class="row">
-                <div class="column">
-                    <div class="ui dividing header">Thanh toán</div>
-                    <table class="ui very basic table" id="payment-table">
-                        <tbody>
-                            <tr>
-                                <td class="six wide">Tổng tiền</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Khách phải trả</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                            <tr>
-                                <td class="seven wide">Tiền khách đưa</td>
-                                <td class="nine wide right aligned">
-                                    <div class="ui input" 
-                                         style="width: 140px;"
-                                         id="paid-money">
-                                        <input type="text"
-                                               style="text-align:right;"/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Tiền thừa</td>
-                                <td class="ten wide right aligned"></td>
-                            </tr>
-                        </tbody>
-                        <tfoot class="full-width">
-                            <tr>
-                                <th colspan="2" class="right aligned">
-                                    <div class="ui positive button">Thanh toán</div>
-                                </th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
     var urlSearchProduct = '/Sale/FindProduct?keyword={value}';
+    var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
 </script>
 <script src="~/js/Sale.js"></script>
