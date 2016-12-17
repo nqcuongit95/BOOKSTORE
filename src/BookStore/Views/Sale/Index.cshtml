@@ -18,15 +18,16 @@
                             Lọc
                         </a>
                         <div class="right menu">
-                            <div class="ui search item" style="width: 300px;">
+                             <div class="ui search item" 
+                                  style="width: 300px;"
+                                  id="product-input">
                                 <div class="ui transparent icon input">
                                     <input class="prompt"
                                            type="text"
-                                           placeholder="Tìm kiếm hàng hóa..."
-                                           id="product-input">
+                                           placeholder="Tìm kiếm hàng hóa...">
                                     <i class="search link icon"></i>
                                 </div>
-                                <div class="results"></div>
+                                <div class="results" style="text-overflow:ellipsis;"></div>
                             </div>
                         </div>
                     </div>
@@ -38,7 +39,7 @@
                                     <th class="two wide">Mã hàng</th>
                                     <th class="eight wide">Tên hàng</th>
                                     <th class="two wide">Giá lẻ</th>
-                                    <th class="two wide">Giá sỉ</th>                                    
+                                    <th class="two wide">Giá sỉ</th>
                                     <th class="two wide">Có thể bán</th>
                                 </tr>
                             </thead>
@@ -97,15 +98,15 @@
                                 </tr>
                                 <tr>
                                     <td class="six wide">Loại giá</td>
-                                    <td class="ten wide right aligned" 
+                                    <td class="ten wide right aligned"
                                         style="overflow:visible;">
-                                        <div class="ui compact selection dropdown" id="price-type">                                            
+                                        <div class="ui compact selection dropdown" id="price-type">
                                             <input name="gender" type="hidden">
                                             <div class="text">Bán lẻ</div>
                                             <i class="dropdown icon"></i>
                                             <div class="menu">
                                                 <div class="item" data-value="2">Bán sỉ</div>
-                                                <div class="item active selected" 
+                                                <div class="item active selected"
                                                      data-value="1">Bán lẻ</div>
                                             </div>
                                         </div>
@@ -168,7 +169,7 @@
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
-    var urlSearchProduct = '/Sale/FindProduct?keyword={value}';
+    var urlSearchProduct = '/Sale/FindProduct?keyword={query}';
     var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
 </script>
 <script src="~/js/Sale.js"></script>

@@ -17,7 +17,7 @@ namespace BookStore.ViewModels
 
     }
 
-    public class ProductFilterResult
+    public class ProductFilterResults
     {
         public List<ProductFilterViewModel> Results { get; set; }
     }

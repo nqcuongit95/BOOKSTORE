@@ -22,7 +22,7 @@ namespace BookStore.Services
         Task<List<Role>> GetListRoles();
         Task<List<Staff>> GetListStaffs();
         Task<CustomerFilterResults> FindCustomer(string value);
-        Task<List<ProductFilterViewModel>> FindProduct(string val);
+        Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
     }
 }

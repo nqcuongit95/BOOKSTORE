@@ -20,7 +20,10 @@
     var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";
 
     //controls
-    $(".ui.selection.dropdown").dropdown();           
+    $(".ui.selection.dropdown").dropdown();
+    $(".ui.search").on("click", 'input', function () {
+        $(this).select();
+    });
 
     //update when price-type change
     $(".ui.selection.dropdown").dropdown({
@@ -29,7 +32,7 @@
             //set global pricetype value
             priceType = value;
 
-            var allPriceTd = $("#invoice-table tr");            
+            var allPriceTd = $("#invoice-table tr");
             var productIds = [];
             console.log(value);
 
@@ -47,7 +50,7 @@
     function updatePriceType(productIds, priceType) {
         $.ajax({
             type: "POST",
-            url: urlPriceType ,
+            url: urlPriceType,
             dataType: "json",
             traditional: true,
             data: {
@@ -56,23 +59,23 @@
             },
             success: function (result, status, xhr) {
                 if (status === 'success') {
-                       
-                    $.each(result, function (index, value) {
-                                                    
-                       var productRow = $('#invoice-table').find('tr').filter(function () {
-                                return $(this).find('td:eq(0)').text() == value.id;
-                            })
 
-                       var priceInput = productRow.find("td:eq(3) input");
-                       priceInput.val(value.price);
-                       priceInput.trigger("textInput");
+                    $.each(result, function (index, value) {
+
+                        var productRow = $('#invoice-table').find('tr').filter(function () {
+                            return $(this).find('td:eq(0)').text() == value.id;
+                        })
+
+                        var priceInput = productRow.find("td:eq(3) input");
+                        priceInput.val(value.price);
+                        priceInput.trigger("textInput");
 
                     })
                 }
             }
         });
     }
-    
+
     $.fn.exists = function () {
         return this.length !== 0;
     }
@@ -111,27 +114,35 @@
         //'change price': urlChangePrice
     }
 
-    $('#product-input').api({
-        action: 'get products',
+    $('#product-input').search({
+        apiSettings: {
+            action: 'get products'
+        },
+        cache: false,
         throttle: 200,
-        onSuccess: function (response) {
+        fields: {
+            title: 'name',
+            price: 'retailPrice'
+        },
+        onResults: function (response) {            
             showProductsResult(response);
         },
-        onRequest: function () {
-            $('.transparent.icon.input').addClass('loading');
-        },
-        onComplete: function () {
-            $('.transparent.icon.input').removeClass('loading');
+        onSelect: function (result, response) {
+            
+            var tdId = $('#product-results').find('tr td:eq(0)').filter(function () {
+                return $(this).text() == result.id
+            });
+
+            tdId.closest('tr').trigger('click');
         }
-    })
+    })   
 
     function showProductsResult(response) {
-
+        
         var table = $('#product-results');
+        table.empty();       
 
-        table.empty();
-
-        $.each(response, function (index, value) {
+        $.each(response.results, function (index, value) {
 
             var data = '<tr>';
 
@@ -145,6 +156,7 @@
             table.append(data);
         })
 
+        return true;
     }
 
     //handle table row click event for adding product to invoice
@@ -157,7 +169,7 @@
         //get the data
         var id = clickedRow.find('td:eq(0)').text();
         var name = clickedRow.find('td:eq(1)').text();
-        var price =  priceType == 1 ? clickedRow.find('td:eq(2)').text() :
+        var price = priceType == 1 ? clickedRow.find('td:eq(2)').text() :
                                       clickedRow.find('td:eq(3)').text();
 
         var availableProduct = clickedRow.find('td:eq(4)').text();

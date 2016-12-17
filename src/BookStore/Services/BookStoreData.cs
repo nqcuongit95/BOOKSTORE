@@ -168,8 +168,9 @@ namespace BookStore.Services
 
         }
 
-        public async Task<List<ProductFilterViewModel>> FindProduct(string val)
+        public async Task<ProductFilterResults> FindProduct(string val)
         {
+            
             if (val.All(char.IsDigit))
             {
                 var query1 = from product in _context.HangHoa
@@ -183,8 +184,8 @@ namespace BookStore.Services
                                 Available = product.TonKho
                                 
                             };
-
-                return await query1.ToListAsync();
+                var result1 = await query1.ToListAsync();
+                return new ProductFilterResults { Results = result1 };
             }
 
             var query = from product in _context.HangHoa
@@ -198,7 +199,9 @@ namespace BookStore.Services
                             Available = product.TonKho
                         };
 
-            return await query.ToListAsync();
+            var result2 = await query.ToListAsync();
+
+            return new ProductFilterResults { Results = result2 };
         }
 
         public async Task<ProductPriceViewModel> GetPrice(int id, int type)

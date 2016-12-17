@@ -36,16 +36,16 @@ namespace BookStore.Controllers
         //find customers
         public async Task<IActionResult> FindCustomer(string val)
         {
-            var result =await _bookStoreData.FindCustomer(val);
+            var result = await _bookStoreData.FindCustomer(val);
 
             return Json(result);    
         }
 
         public async Task<IActionResult> FindProduct(string keyword)
-        {
-            var model = await _bookStoreData.FindProduct(keyword);
+        {           
+            var result = await _bookStoreData.FindProduct(keyword);
 
-            return Json(model);
+            return Json(result);
             //return PartialView("_ProductResults",model);
         }
 
