@@ -145,6 +145,7 @@ namespace BookStore.Services
                              where customer.SoDienThoai.Contains(value)
                              select new CustomerFilterViewModel
                              {
+                                 Id = customer.Id,
                                  Name = customer.TenKhachHang,
                                  Phone = customer.SoDienThoai,
                                  Address = customer.DiaChi
@@ -158,6 +159,7 @@ namespace BookStore.Services
                          where customer.TenKhachHang.Contains(value)
                          select new CustomerFilterViewModel
                          {
+                             Id = customer.Id,
                              Name = customer.TenKhachHang,
                              Phone = customer.SoDienThoai,
                              Address = customer.DiaChi
@@ -218,6 +220,47 @@ namespace BookStore.Services
                         };
 
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<int> AddInvoice(InvoiceViewModel invoice)
+        {
+            var userId = (from user in _context.Staff
+                          where user.UserName == invoice.Staff
+                          select user).First().Id;
+
+            //hard code id, edit later
+            var statusId = invoice.CustomerPaid >= invoice.TotalValue ? 2 : 3;
+
+            var invoice_ = new DonHang
+            {
+                KhachHangId = invoice.CustomerId,
+                NhanVienId = userId,
+                NgayLap = DateTime.Now,
+                TongTien = invoice.TotalValue,
+                TrangThaiId = statusId
+            };
+
+            await _context.DonHang.AddAsync(invoice_);
+            _context.SaveChanges();
+
+            return invoice_.Id;
+        }
+
+        public void AddProductDetail(List<ProductBuyingDetailsViewModel> productDetails, int invoiceId)
+        {
+            foreach (var product in productDetails)
+            {
+                var detail = new ChiTietDonHang
+                {
+                    DonHangId = invoiceId,
+                    HangHoaId = product.ProductId,
+                    SoLuong = product.Count,
+                    GiaBan = product.Price
+                };
+
+                _context.ChiTietDonHang.Add(detail);
+                _context.SaveChanges();
+            }
         }
     }
 }

@@ -104,3 +104,11 @@
 .ui.sticky.menu {
     transition: all 0.5s ease;
 }
+
+@media only screen and (min-width: 768px) {
+    .ui.tiny.modal {
+        width: 50%;
+        margin: 0em 0em 0em -25%;
+    }
+}
+

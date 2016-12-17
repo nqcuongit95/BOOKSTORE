@@ -4,6 +4,7 @@
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
 
     var recentlyAddedRow;
+    var invoiceDetail;
 
     var totalMoneyToPay = 0;
 
@@ -16,6 +17,8 @@
     var normalInput = "<div class=\"ui tiny input price-input\" style=\"max-width: 100px\">"
                       + "<input type=\"text\">"
                        + "</div>";
+
+    var hiddenInput = "<input type=\"hidden\" name=\"\" value=\"\" />";
 
     var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";
 
@@ -34,13 +37,13 @@
 
             var allPriceTd = $("#invoice-table tr");
             var productIds = [];
-            console.log(value);
+            //console.log(value);
 
             allPriceTd.each(function (index) {
 
                 var id = $(this).find('td:eq(0)').text();
                 productIds.push(id);
-                console.log(id);
+                //console.log(id);
             })
 
             updatePriceType(productIds, value);
@@ -58,7 +61,7 @@
                 priceType: priceType
             },
             success: function (result, status, xhr) {
-                if (status === 'success') {
+                if (status == 'success') {
 
                     $.each(result, function (index, value) {
 
@@ -95,6 +98,9 @@
         minCharacters: 3,
         onSelect: function (result, response) {
             updateCustomer(result);
+
+            //update value of input
+            $(this).find('input[type=hidden]').attr('value', result.id);
         }
     });
 
@@ -108,10 +114,10 @@
         address.text(result.address);
     }
 
-    //search products
+    //api setting
     $.fn.api.settings.api = {
         'get products': urlSearchProduct,
-        //'change price': urlChangePrice
+        'pay invoice': urlPayInvoice
     }
 
     $('#product-input').search({
@@ -124,30 +130,30 @@
             title: 'name',
             price: 'retailPrice'
         },
-        onResults: function (response) {            
+        onResults: function (response) {
             showProductsResult(response);
         },
         onSelect: function (result, response) {
-            
+
             var tdId = $('#product-results').find('tr td:eq(0)').filter(function () {
                 return $(this).text() == result.id
             });
 
             tdId.closest('tr').trigger('click');
         }
-    })   
+    })
 
     function showProductsResult(response) {
-        
+
         var table = $('#product-results');
-        table.empty();       
+        table.empty();
 
         $.each(response.results, function (index, value) {
 
             var data = '<tr>';
 
             $.each(value, function (key, value) {
-                if (value != null) {
+                if (value !== null) {
                     data += '<td>' + value + '</td>';
                 }
             })
@@ -324,7 +330,7 @@
 
         totalMoneyToPay = total;
 
-        $('#payment-table tr:eq(0) td:eq(1)').text(total);
+        $('#payment-table tr:eq(0) td:eq(1)').text(total).attr('value', total);
 
         $('#payment-table tr:eq(1) td:eq(1)').text(total);
 
@@ -335,9 +341,13 @@
 
         var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
         var customerPay = Number($(this).val());
+
+        //set value to attribute
+        $(this).attr('value', customerPay);
+
         //alert(customerPay)
         var customerChange = customerPay - totalMoneyToPay;
-        console.log(customerChange);
+        //console.log(customerChange);
         if (customerChange > 0) {
             customerChangeTd.text(customerChange);
         }
@@ -345,7 +355,6 @@
             customerChangeTd.text('0');
         }
     })
-
 
     function recalculateCustomerChange() {
 
@@ -367,4 +376,74 @@
 
     }
 
+
+    //gather invoice infomation
+    $('#pay').click(function (event) {
+
+        event.preventDefault();
+        var thisBtn = $(this);
+        thisBtn.addClass('loading');
+
+        var customerId = $('input[name=CustomerId]').val();
+        console.log(customerId);
+        var staff = $('input[name=StaffId]').val();
+        var totalValue = $('#payment-table tr:eq(0) td:eq(1)').text();
+        var customerPaid = $('input[name=CustomerPaid]').val();
+
+        var invoiceDetail = {
+            CustomerId: customerId,
+            Staff: staff,
+            TotalValue: totalValue,
+            CustomerPaid: customerPaid,
+            productDetails: []
+        }
+
+        $('#invoice-table tr').each(function (index, elem) {
+
+            var productId = $(elem).find('td:eq(0)').text();
+            var count = $(elem).find('td:eq(2) input').val();
+            var price = $(elem).find('td:eq(3) input').val();
+
+            var product = {
+                ProductId: productId,
+                Count: count,
+                Price: price
+            }
+
+            invoiceDetail.productDetails.push(product);
+
+        })              
+
+        var modal = $('#notify-modal');
+
+        $.ajax({
+            type: "post",
+            url: urlPayInvoice,                        
+            data: invoiceDetail,
+            success: function (result, status, xhr) {
+                
+                if (status === 'success') {
+
+                    thisBtn.removeClass('loading');
+                    modal.html(result);
+                    modal.modal('show');
+
+                    setTimeout(function () {
+                        modal.modal('hide');
+                    }, 2000);
+                }
+            },
+            error: function (xhr, status, error) {
+                thisBtn.removeClass('loading');
+            }
+        });
+
+    })
+
+    $('#notify-modal').modal({
+        onHidden: function () {
+            location.reload();
+        }
+    });
+   
 });

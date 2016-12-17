@@ -24,5 +24,7 @@ namespace BookStore.Services
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
+        Task<int> AddInvoice(InvoiceViewModel invoice);
+        void AddProductDetail(List<ProductBuyingDetailsViewModel> productDetails, int invoiceId);
     }
 }

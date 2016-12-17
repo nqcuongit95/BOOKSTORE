@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
-{   
+{
     [Authorize]
     public class SaleController : Controller
     {
@@ -38,11 +38,11 @@ namespace BookStore.Controllers
         {
             var result = await _bookStoreData.FindCustomer(val);
 
-            return Json(result);    
+            return Json(result);
         }
 
         public async Task<IActionResult> FindProduct(string keyword)
-        {           
+        {
             var result = await _bookStoreData.FindProduct(keyword);
 
             return Json(result);
@@ -64,6 +64,36 @@ namespace BookStore.Controllers
             }
 
             return Json(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PayInvoice(InvoiceViewModel invoice,
+                                        List<ProductBuyingDetailsViewModel> productDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                var id = await _bookStoreData.AddInvoice(invoice);
+
+                //add product details
+                _bookStoreData.AddProductDetail(productDetails, id);
+
+                var model1 = new Notification
+                {
+                    Title = "Thành Công",
+                    Content = "Thêm đơn hàng thành công",
+                    Button = "Hoàn tất"
+                };
+                return PartialView("_Notify", model1);
+            }
+
+            var model = new Notification
+            {
+                Title = "Thất bại",
+                Content = "Có lỗi xảy ra",
+                Button = "Quay slại"
+            };
+            return PartialView("_Notify", model);
+            
         }
     }
 }

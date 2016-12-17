@@ -18,9 +18,9 @@
                             Lọc
                         </a>
                         <div class="right menu">
-                             <div class="ui search item" 
-                                  style="width: 300px;"
-                                  id="product-input">
+                            <div class="ui search item"
+                                 style="width: 300px;"
+                                 id="product-input">
                                 <div class="ui transparent icon input">
                                     <input class="prompt"
                                            type="text"
@@ -81,7 +81,10 @@
                         <div class="ui dividing header">Khách hàng</div>
                         <div class="ui fluid search">
                             <div class="ui icon input">
-                                <input class="prompt" type="text" placeholder="Khách hàng...">
+                                <input class="prompt"                                       
+                                       type="text" 
+                                       placeholder="Khách hàng...">
+                                <input type="hidden" name="CustomerId" value="" />
                                 <i class="search icon"></i>
                             </div>
                             <div class="results"></div>
@@ -101,7 +104,7 @@
                                     <td class="ten wide right aligned"
                                         style="overflow:visible;">
                                         <div class="ui compact selection dropdown" id="price-type">
-                                            <input name="gender" type="hidden">
+                                            <input name="pricetype" type="hidden">
                                             <div class="text">Bán lẻ</div>
                                             <i class="dropdown icon"></i>
                                             <div class="menu">
@@ -115,7 +118,12 @@
                                 <tr>
                                     <td class="six wide">Nhân viên</td>
                                     <td class="ten wide right aligned">
-                                        @Model
+                                        <div class="ui basic large label">
+                                            @Model
+                                            <input type="hidden" 
+                                                   name="StaffId"
+                                                   value="@User.Identity.Name" />
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -130,7 +138,8 @@
                             <tbody>
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
-                                    <td class="ten wide right aligned"></td>
+                                    <td class="ten wide right aligned">                                        
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Khách phải trả</td>
@@ -143,6 +152,7 @@
                                              style="width: 140px;"
                                              id="paid-money">
                                             <input type="text"
+                                                   name="CustomerPaid"
                                                    style="text-align:right;" />
                                         </div>
                                     </td>
@@ -155,7 +165,7 @@
                             <tfoot class="full-width">
                                 <tr>
                                     <th colspan="2" class="right aligned">
-                                        <div class="ui positive button">Thanh toán</div>
+                                        <div class="ui positive button" id="pay">Thanh toán</div>
                                     </th>
                                 </tr>
                             </tfoot>
@@ -167,9 +177,14 @@
     </div>
 </div>
 
+<div class="ui tiny modal" id="notify-modal">
+</div>
+
+
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
     var urlSearchProduct = '/Sale/FindProduct?keyword={query}';
     var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
+    var urlPayInvoice = '@Url.Action("PayInvoice","Sale")';
 </script>
 <script src="~/js/Sale.js"></script>
