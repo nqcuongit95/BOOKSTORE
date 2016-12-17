@@ -14,6 +14,7 @@ namespace BookStore.Models
         public int Id { get; set; }
         public string TenTrangThai { get; set; }
         public string VietTat { get; set; }
+
         public virtual ICollection<DonHang> DonHang { get; set; }
         public virtual ICollection<HangHoa> HangHoa { get; set; }
     }
