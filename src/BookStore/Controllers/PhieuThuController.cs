@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
@@ -10,11 +8,10 @@ using BookStore.ViewModels;
 
 namespace BookStore.Controllers
 {
-    public class DonHangController : Controller
+    public class PhieuThuController : Controller
     {
-        // GET: /<controller>/
         private IBookStoreData _bookStoreData;
-        public DonHangController(IBookStoreData bookStoreData)
+        public PhieuThuController(IBookStoreData bookStoreData)
         {
             _bookStoreData = bookStoreData;
         }
@@ -40,12 +37,12 @@ namespace BookStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var customers = _bookStoreData.GetAllDonHang();
+            var customers = _bookStoreData.GetAllPhieuThu();
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                customers = customers.Where(c => c.TenKhachHang.Contains(searchString));
-            }
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    customers = customers.Where(c => c.TenKhachHang.Contains(searchString));
+            //}
 
             switch (sortOrder)
             {
@@ -68,10 +65,11 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-            return View(await PaginatedList<DonHangViewModel>.
+            return View(await PaginatedList<PhieuThuViewModel>.
                         CreateAsync(customers, page ?? 1, pageSize,
                                     numberOfDisplayPages,
                                     firstShowedPage, lastShowedPage));
         }
     }
 }
+

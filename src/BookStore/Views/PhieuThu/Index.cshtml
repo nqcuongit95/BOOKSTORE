@@ -1,16 +1,16 @@
-﻿@model PaginatedList<DonHangViewModel>
+﻿@model PaginatedList<PhieuThuViewModel>
 
 @{
-    ViewData["Title"] = "Đơn hàng";
+    ViewData["Title"] = "Phiếu Thu";
     var list = ViewBag._listdonhang;
 }
 
 @section menu{
     <div class="ui secondary pointing fluid three item menu" style="margin:0">
-        <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
+        <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
             Đơn Hàng
         </a>
-        <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+        <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
             Phiếu Thu
         </a>
         <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuchi">
@@ -19,15 +19,15 @@
     </div>
     <div class="ui secondary pointing fluid two item menu" style="margin-top:0">
         <a class="ui active item" asp-action="Index" id="donhang">
-            Danh Sách Đơn Hàng
+            Danh Sách Phiếu Thu
         </a>
         <a class="ui item" asp-action="Index" id="phieuthu">
-            Thêm Mới Đơn Hàng
+            Thêm Mới Phiếu Thu
         </a>
     </div>
 }
 
-<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Đơn Hàng</div>
+<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Phiếu Thu</div>
 
 <div class="row" id="context">
     <div class="sixteen wide column" style="padding:0">
@@ -43,6 +43,7 @@
                         </a>
                     </th>
                     <th>Mã Đơn Hàng</th>
+                    
                     <th>Tổng tiền</th>
                     <th>Loại Phiếu</th>
                     <th>
@@ -65,17 +66,17 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenKhachHang
-                            </a>
-                        </td>
-                        <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenTrangThai
+                                @customer.DonHangId
                             </a>
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
                                 @customer.TongTien
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenLoaiPhieu
                             </a>
                         </td>
                         <td class="selectable">
