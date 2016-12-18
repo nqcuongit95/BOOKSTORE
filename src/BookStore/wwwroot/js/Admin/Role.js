@@ -2,8 +2,7 @@
 
     var _roleId;
 
-    $('.icon.item').popup();
-
+    $('.icon.item').popup();   
     $('.ui.primary.mini.button').click(function (event) {
 
         event.preventDefault();
