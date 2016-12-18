@@ -1,10 +1,13 @@
 ﻿$(document).ready(function () {
 
-    //define some global variable
+    //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
 
-    var recentlyAddedRow;
-    var invoiceDetail;
+    //api setting
+    $.fn.api.settings.api = {
+        'get products': urlSearchProduct,
+        'pay invoice': urlPayInvoice
+    }
 
     var totalMoneyToPay = 0;
 
@@ -20,36 +23,129 @@
 
     var hiddenInput = "<input type=\"hidden\" name=\"\" value=\"\" />";
 
-    var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";
+    var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";    
 
-    //controls
-    $(".ui.selection.dropdown").dropdown();
-    $(".ui.search").on("click", 'input', function () {
-        $(this).select();
-    });
+    //*********************************global function*******************************
 
-    //update when price-type change
-    $(".ui.selection.dropdown").dropdown({
-        onChange: function (value, text, choice) {
+    $.fn.exists = function () {
+        return this.length !== 0;
+    }
 
-            //set global pricetype value
-            priceType = value;
+    function showPopup(elem, msg) {
+        var alertMsg = "<p style=\"color:red;font-weight:bold\">";
 
-            var allPriceTd = $("#invoice-table tr");
-            var productIds = [];
-            //console.log(value);
+        alertMsg += msg + "</p>";
 
-            allPriceTd.each(function (index) {
+        $(elem).attr('data-html', alertMsg);
+        $(elem).popup({
+            transition: 'scale',
+            distanceAway: -15,
+            onHidden: function () {
+                $(elem).popup('destroy');
+            }
+        }).popup('show');
 
-                var id = $(this).find('td:eq(0)').text();
-                productIds.push(id);
-                //console.log(id);
+
+    }
+
+    //update customer information when using search box
+    function updateCustomer(result) {
+        var table = $("#customer-table");
+
+        var phone = table.find("tr:eq(0)").find("td:eq(1)");
+        var address = table.find("tr:eq(1)").find("td:eq(1)");
+
+        if (jQuery.isEmptyObject(result)) {
+
+            phone.empty();
+            address.empty();
+            return;
+        }
+
+        phone.text(result.phone);
+        address.text(result.address);
+    }
+
+    //add product result to table when using search box
+    function showProductsResult(response) {
+
+        var table = $('#product-results');
+        table.empty();
+
+        $.each(response.results, function (index, value) {
+
+            var data = '<tr>';
+
+            $.each(value, function (key, value) {
+                if (value !== null) {
+                    data += '<td>' + value + '</td>';
+                }
             })
 
-            updatePriceType(productIds, value);
-        }
-    });
+            data += '</tr>';
+            table.append(data);
+        })
 
+        return true;
+    }
+
+    //set total money
+    function calculateTotalMoney(count, price, total) {
+
+        var currentCountProducts = Number(count.val());
+
+        var currentPrice = Number(price.val());
+
+        var totalMoney = currentPrice * currentCountProducts;
+
+        total.text(totalMoney);
+
+        //update payment
+        updatePayment();
+
+    }
+
+    //update payment information
+    function updatePayment() {
+
+        var total = 0;
+        $('#invoice-table tr').each(function () {
+
+            var value = Number($(this).find('td:eq(4)').text());
+
+            total += value;
+        })
+
+        totalMoneyToPay = total;
+
+        $('#payment-table tr:eq(0) td:eq(1)').text(total).attr('value', total);
+
+        $('#payment-table tr:eq(1) td:eq(1)').text(total);
+
+    }
+
+    //update customer change
+    function recalculateCustomerChange() {
+
+        totalMoneyToPay
+
+        var customerPayTd = $('#paid-money input');
+        var customerPay = Number(customerPayTd.val());
+
+        var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
+
+        var customerChange = customerPay - totalMoneyToPay;
+
+        if (customerChange > 0) {
+            customerChangeTd.text(customerChange)
+        }
+        else {
+            customerChangeTd.text(0);
+        }
+
+    }
+
+    //update price when user change price type
     function updatePriceType(productIds, priceType) {
         $.ajax({
             type: "POST",
@@ -79,15 +175,49 @@
         });
     }
 
-    $.fn.exists = function () {
-        return this.length !== 0;
-    }
-
-    var g_productTable = $('.ui.bottom.attached.segment');
-
+    //*************************** ui controls *************************************
+    $(".ui.selection.dropdown").dropdown();
+    $(".ui.search").on("click", 'input', function () {
+        $(this).select();
+    });
     $('.top.menu .item').tab();
 
+    //update customer when search input was cleared
+    $('.ui.fluid.search').on(inputEvents, 'input', function () {
+
+        if (!$(this).val()) {
+            var obj = {};
+            updateCustomer(obj);
+
+            //todo: update value for traveller (khách vãng like)
+        }
+    });
+
+    //update when price-type change
+    $(".ui.selection.dropdown").dropdown({
+        onChange: function (value, text, choice) {
+
+            //set global pricetype value
+            priceType = value;
+
+            var allPriceTd = $("#invoice-table tr");
+            var productIds = [];
+            //console.log(value);
+
+            allPriceTd.each(function (index) {
+
+                var id = $(this).find('td:eq(0)').text();
+                productIds.push(id);
+                //console.log(id);
+            })
+
+            updatePriceType(productIds, value);
+        }
+    });                
+
+    //customer search box
     $('.ui.fluid.search').search({
+        cache: true,
         apiSettings: {
             url: urlSearch + "?val={query}"
         },
@@ -101,25 +231,14 @@
 
             //update value of input
             $(this).find('input[type=hidden]').attr('value', result.id);
+        },
+        onResults: function (response) {
+            updateCustomer(response.results)
+            //todo: update value for traveller (khách vãng like)
         }
-    });
+    });    
 
-    function updateCustomer(result) {
-        var table = $("#customer-table");
-
-        var phone = table.find("tr:eq(0)").find("td:eq(1)");
-        var address = table.find("tr:eq(1)").find("td:eq(1)");
-
-        phone.text(result.phone);
-        address.text(result.address);
-    }
-
-    //api setting
-    $.fn.api.settings.api = {
-        'get products': urlSearchProduct,
-        'pay invoice': urlPayInvoice
-    }
-
+    //product search box
     $('#product-input').search({
         apiSettings: {
             action: 'get products'
@@ -143,27 +262,6 @@
         }
     })
 
-    function showProductsResult(response) {
-
-        var table = $('#product-results');
-        table.empty();
-
-        $.each(response.results, function (index, value) {
-
-            var data = '<tr>';
-
-            $.each(value, function (key, value) {
-                if (value !== null) {
-                    data += '<td>' + value + '</td>';
-                }
-            })
-
-            data += '</tr>';
-            table.append(data);
-        })
-
-        return true;
-    }
 
     //handle table row click event for adding product to invoice
     $('#products-table').on('click', 'tbody tr', function () {
@@ -265,8 +363,14 @@
                     }
 
                     if (currentCount < 0) {
-                        alert("number of products must not be negative");
+
+                        //show popup when user enter negative value
+                        var msg = "Số lượng không được nhỏ hơn 0";
+
+                        showPopup(inputTd, msg);
+
                         inputTd.val(0);
+
                     }
 
                     var countTd = $(this);
@@ -284,8 +388,14 @@
                     var totalMoneyTd = priceTd.closest('td').next();
                     var currentCountTd = priceTd.closest('td').prev().find('input');
 
+                    //show popup when user enter negative price value
                     if (Number(priceTd.val()) < 0) {
-                        alert("price must not be negative");
+                        //alert("price must not be negative");
+
+                        var msg = "Đơn giá không được nhỏ hơn 0";
+
+                        showPopup(priceTd, msg);
+
                         priceTd.val(0);
                     }
 
@@ -297,46 +407,11 @@
 
         }
         else {
-
-
+            //todo: show message indicate that no available products
         }
     })
 
-    //set total money
-    function calculateTotalMoney(count, price, total) {
-
-        var currentCountProducts = Number(count.val());
-
-        var currentPrice = Number(price.val());
-
-        var totalMoney = currentPrice * currentCountProducts;
-
-        total.text(totalMoney);
-
-        //update payment
-        updatePayment();
-
-    }
-
-    function updatePayment() {
-
-        var total = 0;
-        $('#invoice-table tr').each(function () {
-
-            var value = Number($(this).find('td:eq(4)').text());
-
-            total += value;
-        })
-
-        totalMoneyToPay = total;
-
-        $('#payment-table tr:eq(0) td:eq(1)').text(total).attr('value', total);
-
-        $('#payment-table tr:eq(1) td:eq(1)').text(total);
-
-    }
-
-    //handle customer pay
+    //update customer pay
     $('#paid-money').on(inputEvents, 'input', function () {
 
         var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
@@ -356,28 +431,8 @@
         }
     })
 
-    function recalculateCustomerChange() {
 
-        totalMoneyToPay
-
-        var customerPayTd = $('#paid-money input');
-        var customerPay = Number(customerPayTd.val());
-
-        var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
-
-        var customerChange = customerPay - totalMoneyToPay;
-
-        if (customerChange > 0) {
-            customerChangeTd.text(customerChange)
-        }
-        else {
-            customerChangeTd.text(0);
-        }
-
-    }
-
-
-    //gather invoice infomation
+    //create invoice
     $('#pay').click(function (event) {
 
         event.preventDefault();
@@ -385,10 +440,17 @@
         thisBtn.addClass('loading');
 
         var customerId = $('input[name=CustomerId]').val();
-        console.log(customerId);
         var staff = $('input[name=StaffId]').val();
         var totalValue = $('#payment-table tr:eq(0) td:eq(1)').text();
         var customerPaid = $('input[name=CustomerPaid]').val();
+
+        if (Number(totalValue) <= 0) {
+
+            $('#invoice-modal').modal('show');
+            thisBtn.removeClass('loading');
+            return;
+        }
+
 
         var invoiceDetail = {
             CustomerId: customerId,
@@ -412,16 +474,16 @@
 
             invoiceDetail.productDetails.push(product);
 
-        })              
+        })
 
         var modal = $('#notify-modal');
 
         $.ajax({
             type: "post",
-            url: urlPayInvoice,                        
+            url: urlPayInvoice,
             data: invoiceDetail,
             success: function (result, status, xhr) {
-                
+
                 if (status === 'success') {
 
                     thisBtn.removeClass('loading');
@@ -440,10 +502,11 @@
 
     })
 
+    //reload page when model was hidden
     $('#notify-modal').modal({
         onHidden: function () {
             location.reload();
         }
     });
-   
+
 });
