@@ -72,28 +72,28 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var id = await _bookStoreData.AddInvoice(invoice);
+                var success = await _bookStoreData.AddInvoice(invoice, productDetails);
 
-                //add product details
-                _bookStoreData.AddProductDetail(productDetails, id);
-
-                var model1 = new Notification
+                if (success)
                 {
-                    Title = "Thành Công",
-                    Content = "Thêm đơn hàng thành công",
-                    Button = "Hoàn tất"
-                };
-                return PartialView("_Notify", model1);
+                    var model1 = new Notification
+                    {
+                        Title = "Thành Công",
+                        Content = "Thêm đơn hàng thành công",
+                        Button = "Hoàn tất"
+                    };
+                    return PartialView("_Notify", model1);
+                }
             }
 
             var model = new Notification
             {
                 Title = "Thất bại",
                 Content = "Có lỗi xảy ra",
-                Button = "Quay slại"
+                Button = "Quay lại"
             };
             return PartialView("_Notify", model);
-            
+
         }
     }
 }

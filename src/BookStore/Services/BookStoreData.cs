@@ -172,20 +172,20 @@ namespace BookStore.Services
 
         public async Task<ProductFilterResults> FindProduct(string val)
         {
-            
+
             if (val.All(char.IsDigit))
             {
                 var query1 = from product in _context.HangHoa
-                            where product.Id.ToString().Contains(val)
-                            select new ProductFilterViewModel
-                            {
-                                Id = product.Id,
-                                Name = product.TenHangHoa,
-                                RetailPrice = product.GiaBanLe !=null ? product.GiaBanLe.Value : 0,
-                                WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
-                                Available = product.TonKho
-                                
-                            };
+                             where product.Id.ToString().Contains(val)
+                             select new ProductFilterViewModel
+                             {
+                                 Id = product.Id,
+                                 Name = product.TenHangHoa,
+                                 RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
+                                 WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
+                                 Available = product.TonKho
+
+                             };
                 var result1 = await query1.ToListAsync();
                 return new ProductFilterResults { Results = result1 };
             }
@@ -222,45 +222,61 @@ namespace BookStore.Services
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<int> AddInvoice(InvoiceViewModel invoice)
+        public async Task<bool> AddInvoice(InvoiceViewModel invoice,
+            List<ProductBuyingDetailsViewModel> productDetails)
         {
-            var userId = (from user in _context.Staff
-                          where user.UserName == invoice.Staff
-                          select user).First().Id;
-
-            //hard code id, edit later
-            var statusId = invoice.CustomerPaid >= invoice.TotalValue ? 2 : 3;
-
-            var invoice_ = new DonHang
+            try
             {
-                KhachHangId = invoice.CustomerId,
-                NhanVienId = userId,
-                NgayLap = DateTime.Now,
-                TongTien = invoice.TotalValue,
-                TrangThaiId = statusId
-            };
+                //add invoice
+                var userId = (from user in _context.Staff
+                              where user.UserName == invoice.Staff
+                              select user).First().Id;
 
-            await _context.DonHang.AddAsync(invoice_);
-            _context.SaveChanges();
+                //hard code id, edit later
+                var statusId = invoice.CustomerPaid >= invoice.TotalValue ? 2 : 3;
 
-            return invoice_.Id;
-        }
-
-        public void AddProductDetail(List<ProductBuyingDetailsViewModel> productDetails, int invoiceId)
-        {
-            foreach (var product in productDetails)
-            {
-                var detail = new ChiTietDonHang
+                var invoice_ = new DonHang
                 {
-                    DonHangId = invoiceId,
-                    HangHoaId = product.ProductId,
-                    SoLuong = product.Count,
-                    GiaBan = product.Price
+                    KhachHangId = invoice.CustomerId,
+                    NhanVienId = userId,
+                    NgayLap = DateTime.Now,
+                    TongTien = invoice.TotalValue,
+                    TrangThaiId = statusId
                 };
 
-                _context.ChiTietDonHang.Add(detail);
+                await _context.DonHang.AddAsync(invoice_);
+
+                //add related product
+                foreach (var product in productDetails)
+                {
+                    var detail = new ChiTietDonHang
+                    {
+                        DonHangId = invoice_.Id,
+                        HangHoaId = product.ProductId,
+                        SoLuong = product.Count,
+                        GiaBan = product.Price
+                    };
+
+                    invoice_.ChiTietDonHang.Add(detail);
+
+                    //also update product count
+                    var boughtProduct = await (from bought in _context.HangHoa
+                                               where bought.Id == product.ProductId
+                                               select bought).FirstAsync();
+
+                    boughtProduct.TonKho -= product.Count;
+
+                }
+
                 _context.SaveChanges();
+                return true;
             }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
         }
     }
 }
