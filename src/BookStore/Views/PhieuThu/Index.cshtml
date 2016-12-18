@@ -13,7 +13,7 @@
         <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
             Phiếu Thu
         </a>
-        <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuchi">
+        <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
             Phiếu Chi
         </a>
     </div>
@@ -39,7 +39,7 @@
                            asp-route-sortOrder="@ViewData["NameSortParm"]"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]">
                             ID
-                            <i class="caret @ViewData["SortDirection"] icon"></i>
+                            @*<i class="caret @ViewData["SortDirection"] icon"></i>*@
                         </a>
                     </th>
                     <th>Mã Đơn Hàng</th>

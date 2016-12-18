@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
 
+
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
 {
-    public class PhieuThuController : Controller
+    public class PhieuChiController : Controller
     {
         private IBookStoreData _bookStoreData;
-        public PhieuThuController(IBookStoreData bookStoreData)
+        public PhieuChiController(IBookStoreData bookStoreData)
         {
             _bookStoreData = bookStoreData;
         }
@@ -37,7 +38,7 @@ namespace BookStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var customers = _bookStoreData.GetAllPhieuThu();
+            var customers = _bookStoreData.GetAllPhieuChi();
 
             //if (!string.IsNullOrEmpty(searchString))
             //{
@@ -65,14 +66,10 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-            return View(await PaginatedList<PhieuThuViewModel>.
+            return View(await PaginatedList<PhieuChiViewModel>.
                         CreateAsync(customers, page ?? 1, pageSize,
                                     numberOfDisplayPages,
                                     firstShowedPage, lastShowedPage));
         }
-
-
-
     }
 }
-

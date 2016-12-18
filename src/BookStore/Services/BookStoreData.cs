@@ -38,12 +38,70 @@ namespace BookStore.Services
             return query;
         }
 
+        public IQueryable<LoaiPhieu> GetAllLoaiPhieu()
+        {
+            var query = from donhang in _context.DonHang
+                        join kh in _context.KhachHang
+                        on donhang.KhachHangId equals kh.Id
+                        join trangthai in _context.TrangThai
+                        on donhang.TrangThaiId equals trangthai.Id
+                        select new LoaiPhieu
+                        {
+                            //ID = donhang.Id,
+                            //TenKhachHang = kh.TenKhachHang,
+                            //NgayLap = donhang.NgayLap,
+                            //KhachHangId = kh.Id,
+                            //TrangThaiId = trangthai.Id,
+                            //TenTrangThai = trangthai.TenTrangThai,
+                            //TongTien = donhang.TongTien,
+
+                        };
+
+            return query;
+        }
+        public IQueryable<PhieuTraNhapHang> GetAllPhieuTraNhapHang()
+        {
+            var query = from donhang in _context.DonHang
+                        join kh in _context.KhachHang
+                        on donhang.KhachHangId equals kh.Id
+                        join trangthai in _context.TrangThai
+                        on donhang.TrangThaiId equals trangthai.Id
+                        select new PhieuTraNhapHang
+                        {
+                            //ID = donhang.Id,
+                            //TenKhachHang = kh.TenKhachHang,
+                            //NgayLap = donhang.NgayLap,
+                            //KhachHangId = kh.Id,
+                            //TrangThaiId = trangthai.Id,
+                            //TenTrangThai = trangthai.TenTrangThai,
+                            //TongTien = donhang.TongTien,
+
+                        };
+
+            return query;
+        }
         public int TaoDonHang(DonHang donhang)
         {
             _context.Add(donhang);
             _context.SaveChanges();
 
             return donhang.Id;
+        }
+
+        public int TaoPhieuThu(PhieuThu phieuthu)
+        {
+            _context.Add(phieuthu);
+            _context.SaveChanges();
+
+            return phieuthu.Id;
+        }
+
+        public int TaoPhieuChi(PhieuChi phieuchi)
+        {
+            _context.Add(phieuchi);
+            _context.SaveChanges();
+
+            return phieuchi.Id;
         }
 
         public IQueryable<PhieuThuViewModel> GetAllPhieuThu()
@@ -69,25 +127,26 @@ namespace BookStore.Services
                         };
             return query;
         }
-        public IQueryable<DonHangViewModel> GetAllPhieuChi()
+        public IQueryable<PhieuChiViewModel> GetAllPhieuChi()
         {
-            var query = from donhang in _context.DonHang
-                        join kh in _context.KhachHang
-                        on donhang.KhachHangId equals kh.Id
-                        join trangthai in _context.TrangThai
-                        on donhang.TrangThaiId equals trangthai.Id
-                        select new DonHangViewModel
+            var query = from phieuchi in _context.PhieuChi
+                        join trahang in _context.PhieuTraHang
+                        on phieuchi.PhieuTraHangId equals trahang.Id
+                        join phieunhap in _context.PhieuNhapHang
+                        on phieuchi.PhieuNhapHangId equals phieunhap.Id
+                        join loaiphieu in _context.LoaiPhieu
+                        on phieuchi.LoaiPhieuId equals loaiphieu.Id
+                        join khachhang in _context.KhachHang
+                        on trahang.KhachHangId equals khachhang.Id
+                        select new PhieuChiViewModel
                         {
-                            ID = donhang.Id,
-                            TenKhachHang = kh.TenKhachHang,
-                            NgayLap = donhang.NgayLap,
-                            KhachHangId = kh.Id,
-                            TrangThaiId = trangthai.Id,
-                            TenTrangThai = trangthai.TenTrangThai,
-                            TongTien = donhang.TongTien,
-
+                            ID = phieuchi.Id,
+                            NgayLap = phieuchi.NgayLap,
+                            PhieuNhapHangId = phieuchi.PhieuNhapHangId,
+                            TongTien = phieuchi.TongTien,
+                            LoaiPhieuId = phieuchi.LoaiPhieuId,
+                            TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
                         };
-
             return query;
         }
     }

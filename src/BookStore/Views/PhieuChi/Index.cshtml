@@ -1,33 +1,33 @@
-﻿@model PaginatedList<DonHangViewModel>
+﻿@model PaginatedList<PhieuChiViewModel>
 
 @{
-    ViewData["Title"] = "Đơn hàng";
+    ViewData["Title"] = "Phiếu Chi";
     var list = ViewBag._listdonhang;
 }
 
 @section menu{
     <div class="ui secondary pointing fluid three item menu" style="margin:0">
-        <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
+        <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
             Đơn Hàng
         </a>
         <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
             Phiếu Thu
         </a>
-        <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+        <a class="ui active item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
             Phiếu Chi
         </a>
     </div>
     <div class="ui secondary pointing fluid two item menu" style="margin-top:0">
         <a class="ui active item" asp-action="Index" id="donhang">
-            Danh Sách Đơn Hàng
+            Danh Sách Phiếu Chi
         </a>
         <a class="ui item" asp-action="Index" id="phieuthu">
-            Thêm Mới Đơn Hàng
+            Thêm Mới Phiếu Chi
         </a>
     </div>
 }
 
-<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Đơn Hàng</div>
+<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Phiếu Chi</div>
 
 <div class="row" id="context">
     <div class="sixteen wide column" style="padding:0">
@@ -42,10 +42,10 @@
                             @*<i class="caret @ViewData["SortDirection"] icon"></i>*@
                         </a>
                     </th>
-                    <th>Khách Hàng</th>
-                    <th>Trạng Thái</th>
+                    <th>Mã Phiếu Trả Hàng</th>
+                    
                     <th>Tổng tiền</th>
-                    @*<th>Loại Phiếu</th>*@
+                    <th>Loại Phiếu</th>
                     <th>
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewData["DateSortParm"]"
@@ -66,12 +66,7 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenKhachHang
-                            </a>
-                        </td>
-                        <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenTrangThai
+                                @customer.PhieuTraHangId
                             </a>
                         </td>
                         <td class="selectable">
@@ -79,7 +74,11 @@
                                 @customer.TongTien
                             </a>
                         </td>
-                        
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenLoaiPhieu
+                            </a>
+                        </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
                                 @customer.NgayLap

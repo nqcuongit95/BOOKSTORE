@@ -11,7 +11,11 @@ namespace BookStore.Services
     {
         IQueryable<DonHangViewModel> GetAllDonHang();
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
-        IQueryable<DonHangViewModel> GetAllPhieuChi();
+        IQueryable<PhieuChiViewModel> GetAllPhieuChi();
+        IQueryable<LoaiPhieu> GetAllLoaiPhieu();
+        IQueryable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         int TaoDonHang(DonHang donhang);
+        int TaoPhieuThu(PhieuThu phieuthu);
+        int TaoPhieuChi(PhieuChi phieuchi);
     }
 }
