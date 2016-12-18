@@ -38,7 +38,7 @@ namespace BookStore.Controllers
 
             try
             {
-                var result = await PaginatedList<NhaCungCap>.CreateAsync(
+                var result = await NonamePaginatedList<NhaCungCap>.CreateAsync(
                     _bookStoreData.GetNhaCungCap(), page ?? 1, pageSize ?? 10);
 
                 return View(result);

@@ -38,7 +38,7 @@ namespace BookStore.Controllers
 
             try
             {
-                var result = await PaginatedList<PhieuNhapHang>.CreateAsync(
+                var result = await NonamePaginatedList<PhieuNhapHang>.CreateAsync(
                     _bookStoreData.GetPhieuNhapHang(), page ?? 1, pageSize ?? 10);
 
                 return View(result);

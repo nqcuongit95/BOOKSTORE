@@ -38,7 +38,7 @@ namespace BookStore.Controllers
 
             try
             {
-                var result = await PaginatedList<HangHoa>.CreateAsync(
+                var result = await NonamePaginatedList<HangHoa>.CreateAsync(
                     _bookStoreData.GetHangHoa(null, false), page ?? 1, pageSize ?? 10);
 
                 return View(result);

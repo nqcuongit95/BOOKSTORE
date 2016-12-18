@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore
 {
-    public class Paginated
+    public class NonamePaginated
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 
-        public Paginated(int pageIndex, int totalPages)
+        public NonamePaginated(int pageIndex, int totalPages)
         {
             PageIndex = pageIndex;
             TotalPages = totalPages;
@@ -34,12 +34,12 @@ namespace BookStore
         }
     }
 
-    public class PaginatedList<T> : List<T>
+    public class NonamePaginatedList<T> : List<T>
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 
-        private PaginatedList(List<T> items, int count, int pageIndex, int totalPages)
+        private NonamePaginatedList(List<T> items, int count, int pageIndex, int totalPages)
         {
             PageIndex = pageIndex;
             TotalPages = totalPages;
@@ -50,7 +50,7 @@ namespace BookStore
             this.AddRange(items);
         }
 
-        public static async Task<PaginatedList<T>> CreateAsync(
+        public static async Task<NonamePaginatedList<T>> CreateAsync(
             IQueryable<T> source, int pageIndex, int pageSize)
         {
             if (pageSize < 1)
@@ -75,7 +75,7 @@ namespace BookStore
 
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return new PaginatedList<T>(items, count, pageIndex, totalPages);
+            return new NonamePaginatedList<T>(items, count, pageIndex, totalPages);
         }
     }
 }
