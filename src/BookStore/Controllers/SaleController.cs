@@ -8,6 +8,7 @@ using BookStore.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,17 +37,60 @@ namespace BookStore.Controllers
         //find customers
         public async Task<IActionResult> FindCustomer(string val)
         {
-            var result = await _bookStoreData.FindCustomer(val);
+            //add action: create new customer
+            UrlHelper urlHelper = new UrlHelper(this.ControllerContext);
+            string url = urlHelper.Action("Sale", "CreateCustomer");
 
-            return Json(result);
+            var addCustomerAction = new BookStore.ViewModels.Action
+            {
+                Text = "Thêm mới khách hàng",
+                Url = url
+            };
+
+            if (val == null)
+            {
+
+                var result1 = new List<CustomerFilterViewModel>();
+                result1.Add(new CustomerFilterViewModel
+                {
+                    Name = "Khách Vãng Lai",
+                    Phone = "",
+                    Id = 1   //hard code id for simplicity sake                  
+                });
+
+                var model1 = new CustomerFilterResults { Results = result1 };
+                model1.NewCustomer = addCustomerAction;
+
+                return Json(model1);
+            }
+
+            var model = await _bookStoreData.FindCustomer(val);
+            model.NewCustomer = addCustomerAction;
+
+            return Json(model);
         }
 
         public async Task<IActionResult> FindProduct(string keyword)
         {
+
+            if (keyword == null)
+            {
+                var model = await _bookStoreData.GetBestSellingGoods(4, DateTime.Now);
+
+                var result1 = new ProductFilterResults { Results = model };
+
+                return Json(result1);
+            }
+
             var result = await _bookStoreData.FindProduct(keyword);
 
             return Json(result);
             //return PartialView("_ProductResults",model);
+        }
+
+        public IActionResult CreateCustomer()
+        {
+            return PartialView("_CreateCustomer");
         }
 
         [HttpPost]

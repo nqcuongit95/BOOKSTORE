@@ -13,17 +13,90 @@
 
     var priceType = 1;
 
-    var numberInput = "<div class=\"ui tiny input count-input\" style=\"max-width: 80px\">"
-                       + "<input type=\"number\" name='count' min='0'>"
-                        + "</div>";
+    var numberInput = '<div class="ui tiny input count-input" style="max-width: 80px">'
+                       + '<input type="number" name="count" min="0">'
+                       + '</div>';
 
-    var normalInput = "<div class=\"ui tiny input price-input\" style=\"max-width: 100px\">"
-                      + "<input type=\"text\">"
-                       + "</div>";
+    var normalInput = '<div class="ui tiny input price-input" style="max-width: 100px">'
+                      + '<input type="text">'
+                      + '</div>';
 
-    var hiddenInput = "<input type=\"hidden\" name=\"\" value=\"\" />";
+    var hiddenInput = '<input type="hidden" name="" value="" />';
 
-    var trashIcon = "<i class=\"trash outline link icon\" data-content=\"xóa\"></i>";    
+    var trashIcon = '<i class="trash outline link icon" data-content="xóa"></i>';
+
+    //define custom search template
+    $.fn.search.settings.templates.message = function(message, type) {
+        var
+          html = ''
+        ;
+        if(message !== undefined && type !== undefined) {
+            html +=  ''
+              + '<div class="message ' + type + '">'
+            ;
+            // message type
+            if(type == 'empty') {
+                html += ''
+                  + '<div class="header">Không kết quả</div class="header">'
+                  + '<div class="description">' + message + '</div class="description">'
+                ;
+            }
+            else {
+                html += ' <div class="description">' + message + '</div>';
+            }
+            html += '</div>';
+        }
+        return html;
+    }
+
+    //search customer result template
+    $.fn.search.settings.templates.customerSearchTemplate = function (response) {
+
+        var html = '';
+
+        //add new customer action
+        html +=  '<a class="action" href="" id="newCustomer">'
+                +'<h4 class="ui teal action header">'
+                + '<i class="add user icon"></i>'
+                + '<div class="content">'
+                + response.newCustomer.text
+                + '</div></h4></a>';
+
+        $.each(response.results, function (index, customer) {
+            html += '<a class="result">';
+            html += '<div class="content">';
+            html += '<div class="title">' + customer.name + '</div>';
+            if (customer.phone !== "") {
+                html += '<div class="meta">'
+                html += '<i class="call icon"></i>' + customer.phone
+                html += '</div>'
+            }
+            html += '</div>'
+            html += '</a>'
+        })
+
+        return html;
+    };
+        
+    //search product result template
+    $.fn.search.settings.templates.productSearchTemplate = function (response) {
+
+        var html = '';        
+
+        $.each(response.results, function (index, product) {
+            html += '<a class="result">';            
+            html += '<div class="content">';
+            html += '<div class="title">' + product.name + '</div>';
+            html += '<div class="description">' + "Có thể bán: " + product.available + '</div>'
+            html += '<div class="ui divider" style="margin: 4px 0 4px 0;"></div>'
+            html += '<div class="ui orange tag label price">' + product.retailPrice + '</div>'
+            html += '<div class="ui label">' + "Mã SP: " + product.id + '</div>'            
+            html += '</div>'            
+            html += '</a>'
+        })
+
+        return html;
+    };
 
     //*********************************global function*******************************
 
@@ -72,12 +145,18 @@
         var table = $('#product-results');
         table.empty();
 
-        $.each(response.results, function (index, value) {
+        $.each(response.results, function (index, result) {
 
             var data = '<tr>';
 
-            $.each(value, function (key, value) {
+            $.each(result, function (key, value) {
                 if (value !== null) {
+
+                    //dont show the total sold data
+                    if (value == result.totalSold) {
+                        return;
+                    }
+
                     data += '<td>' + value + '</td>';
                 }
             })
@@ -183,7 +262,7 @@
     $('.top.menu .item').tab();
 
     //update customer when search input was cleared
-    $('.ui.fluid.search').on(inputEvents, 'input', function () {
+    $('#customer-search').on(inputEvents, 'input', function () {
 
         if (!$(this).val()) {
             var obj = {};
@@ -213,19 +292,20 @@
 
             updatePriceType(productIds, value);
         }
-    });                
+    });
 
     //customer search box
-    $('.ui.fluid.search').search({
+    $('#customer-search').search({
         cache: true,
+        showNoResults: true,
+        type: 'customerSearchTemplate',
         apiSettings: {
             url: urlSearch + "?val={query}"
+        },        
+        minCharacters: 0,
+        error: {
+            noResults: 'Không tìm thấy khách hàng.'            
         },
-        fields: {
-            title: 'name',
-            description: 'phone'
-        },
-        minCharacters: 3,
         onSelect: function (result, response) {
             updateCustomer(result);
 
@@ -236,37 +316,39 @@
             updateCustomer(response.results)
             //todo: update value for traveller (khách vãng like)
         }
-    });    
+    });
 
     //product search box
     $('#product-input').search({
         apiSettings: {
             action: 'get products'
         },
+        minCharacters: 0,
         cache: false,
-        throttle: 200,
-        fields: {
-            title: 'name',
-            price: 'retailPrice'
+        type: 'productSearchTemplate',
+        error: {
+            noResults: 'Không tìm thấy sản phẩm.'
         },
+        throttle: 200,        
         onResults: function (response) {
             showProductsResult(response);
         },
         onSelect: function (result, response) {
-
-            var tdId = $('#product-results').find('tr td:eq(0)').filter(function () {
-                return $(this).text() == result.id
-            });
-
+                                     
+            var tdId = $('#product-results > tr > td').filter(function (index) {
+                                
+                return $(this).eq(0).text() == result.id                
+            });                        
             tdId.closest('tr').trigger('click');
-        }
+            $('#product-input').find('input').val('');
+        },        
     })
 
 
     //handle table row click event for adding product to invoice
     $('#products-table').on('click', 'tbody tr', function () {
         //event.preventDefault();        
-
+        
         var invoice = $('#invoice-table');
         var clickedRow = $(this);
 
@@ -431,6 +513,32 @@
         }
     })
 
+    //bind event for create new customer action in search box product
+    $('#customer-results').on('click','#newCustomer', function (event) {
+
+        event.preventDefault();
+        console.log('click')
+        var modal = $('#create-modal');
+
+        $.ajax({
+            type: "get",
+            url: urlCreateCustomer,
+            success: function (result, status, xhr) {
+
+                if (status === 'success') {
+                    
+                    modal.html(result);
+                    modal.modal('show');
+
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+            }
+        })
+
+    })
 
     //create invoice
     $('#pay').click(function (event) {

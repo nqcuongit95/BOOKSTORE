@@ -13,6 +13,7 @@ namespace BookStore.ViewModels
         public decimal RetailPrice { get; set; }
         public decimal WholeSaleprice { get; set; }
         public int Available { get; set; }
+        public int TotalSold { get; set; }
         public string ImageUrl { get; set; }
 
     }

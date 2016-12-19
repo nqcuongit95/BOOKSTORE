@@ -27,7 +27,7 @@
                                            placeholder="Tìm kiếm hàng hóa...">
                                     <i class="search link icon"></i>
                                 </div>
-                                <div class="results" style="text-overflow:ellipsis;"></div>
+                                <div class="results"></div>
                             </div>
                         </div>
                     </div>
@@ -79,15 +79,15 @@
                 <div class="row">
                     <div class="column">
                         <div class="ui dividing header">Khách hàng</div>
-                        <div class="ui fluid search">
+                        <div class="ui search" id="customer-search">
                             <div class="ui icon input">
                                 <input class="prompt"                                       
                                        type="text" 
-                                       placeholder="Vãng Lai">
-                                <input type="hidden" name="CustomerId" value="" />
+                                       placeholder="Khách hàng...">
+                                <input type="hidden" name="CustomerId" value="1" />
                                 <i class="search icon"></i>
                             </div>
-                            <div class="results"></div>
+                            <div class="results" id="customer-results"></div>
                         </div>
                         <table class="ui very basic fixed single line table" id="customer-table">
                             <tbody>
@@ -190,11 +190,15 @@
     </div>
 </div>
 
+<div class="ui small modal" id="create-modal">
+</div>
+
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
     var urlSearchProduct = '/Sale/FindProduct?keyword={query}';
     var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
     var urlPayInvoice = '@Url.Action("PayInvoice","Sale")';
+    var urlCreateCustomer = '@Url.Action("CreateCustomer","Sale")';
 </script>
 <script src="~/js/Sale.js"></script>

@@ -1,4 +1,5 @@
 ﻿using BookStore.Entities;
+using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -138,10 +139,10 @@ namespace BookStore.Services
         }
 
         public async Task<CustomerFilterResults> FindCustomer(string value)
-        {
+        {            
             if (value.All(char.IsDigit))
             {
-                var query1 = from customer in _context.KhachHang
+                var query2 = from customer in _context.KhachHang
                              where customer.SoDienThoai.Contains(value)
                              select new CustomerFilterViewModel
                              {
@@ -151,11 +152,11 @@ namespace BookStore.Services
                                  Address = customer.DiaChi
 
                              };
-                var results1 = await query1.ToListAsync();
-                return new CustomerFilterResults { Results = results1 };
+                var results2 = await query2.ToListAsync();
+                return new CustomerFilterResults { Results = results2 };
             }
 
-            var query2 = from customer in _context.KhachHang
+            var query3 = from customer in _context.KhachHang
                          where customer.TenKhachHang.Contains(value)
                          select new CustomerFilterViewModel
                          {
@@ -165,8 +166,8 @@ namespace BookStore.Services
                              Address = customer.DiaChi
                          };
 
-            var results2 = await query2.ToListAsync();
-            return new CustomerFilterResults { Results = results2 };
+            var results3 = await query3.ToListAsync();
+            return new CustomerFilterResults { Results = results3 };
 
         }
 
@@ -266,6 +267,9 @@ namespace BookStore.Services
 
                     boughtProduct.TonKho -= product.Count;
 
+                    //and number of products sold as well
+                    boughtProduct.DaBan += product.Count;
+
                 }
 
                 _context.SaveChanges();
@@ -277,6 +281,45 @@ namespace BookStore.Services
                 return false;
             }
 
+        }
+
+        public async Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, DateTime when)
+        {
+
+            DateTime start = when.Date.AddDays(-(int)when.DayOfWeek), // prev sunday 00:00
+                     end = start.AddDays(7); // next sunday 00:00
+
+            var query = from invoice in _context.DonHang
+                        where invoice.NgayLap >= start && invoice.NgayLap < end
+                        join detail in _context.ChiTietDonHang
+                        on invoice.Id equals detail.DonHangId
+                        group detail by detail.HangHoaId;
+
+
+            var invoicesInAWeek = await query.ToListAsync();
+
+            var query2 = invoicesInAWeek.Select((g) =>
+            {
+                var statistic = g.Aggregate(new ProductStatistics(),
+                                            (acc, c) => acc.Accumulate(c),
+                                            acc => acc.Compute());
+
+                var product = (from pro in _context.HangHoa
+                              where pro.Id == g.Key
+                              select pro).First();
+
+                return new ProductFilterViewModel
+                {
+                    Id = g.Key,
+                    TotalSold = statistic.TotalSold,
+                    Name = product.TenHangHoa,
+                    Available = product.TonKho,
+                    RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
+                    WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0
+                };
+            }).OrderByDescending(i=>i.TotalSold).Take(take).ToList();
+
+            return query2;
         }
     }
 }
