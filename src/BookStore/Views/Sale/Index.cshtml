@@ -180,17 +180,24 @@
 <div class="ui tiny modal" id="notify-modal">
 </div>
 
-<div class="ui tiny modal" id="invoice-modal">
-    <div class="header"> Không tạo được đơn hàng </div>
-    <div class="content"> Giá trị đơn hàng phải lớn hơn 0 </div>
+<div class="ui tiny modal" id="invoice-modal">    
+    <div class="header"> Không Tạo Được Đơn Hàng </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Giá trị đơn hàng phải lớn hơn 0.
+            </div>            
+        </div>
+    </div>
     <div class="actions">
-        <div class="ui blue labeled icon cancel button">
-            <i class="share icon"></i> Quay lại
+        <div class="ui blue cancel button">
+            Quay lại
         </div>
     </div>
 </div>
 
-<div class="ui small modal" id="create-modal">
+<div class="ui tiny modal" id="create-modal">
 </div>
 
 
@@ -200,5 +207,8 @@
     var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
     var urlPayInvoice = '@Url.Action("PayInvoice","Sale")';
     var urlCreateCustomer = '@Url.Action("CreateCustomer","Sale")';
+    var urlCustomerCreatedInfo = '@Url.Action("LastCreatedCustomer", "Sale")';
 </script>
+
 <script src="~/js/Sale.js"></script>
+

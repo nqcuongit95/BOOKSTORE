@@ -56,7 +56,7 @@
 
         //add new customer action
         html +=  '<a class="action" href="" id="newCustomer">'
-                +'<h4 class="ui teal action header">'
+                +'<h4 class="ui blue action header">'
                 + '<i class="add user icon"></i>'
                 + '<div class="content">'
                 + response.newCustomer.text
@@ -258,7 +258,7 @@
     $(".ui.selection.dropdown").dropdown();
     $(".ui.search").on("click", 'input', function () {
         $(this).select();
-    });
+    });    
     $('.top.menu .item').tab();
 
     //update customer when search input was cleared
@@ -296,8 +296,7 @@
 
     //customer search box
     $('#customer-search').search({
-        cache: true,
-        showNoResults: true,
+        cache: true,        
         type: 'customerSearchTemplate',
         apiSettings: {
             url: urlSearch + "?val={query}"
@@ -527,11 +526,10 @@
 
                 if (status === 'success') {
                     
-                    modal.html(result);
-                    modal.modal('show');
+                    modal.html(result);                   
+                    modal.modal('setting', 'closable', false).modal('show');
 
                 }
-
             },
             error: function (xhr, status, error) {
 
@@ -613,7 +611,7 @@
     //reload page when model was hidden
     $('#notify-modal').modal({
         onHidden: function () {
-            location.reload();
+            //location.reload();
         }
     });
 

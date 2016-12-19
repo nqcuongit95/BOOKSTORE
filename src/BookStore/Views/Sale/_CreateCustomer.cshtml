@@ -1,7 +1,61 @@
-﻿<div class="header"> Không tạo được đơn hàng </div>
-<div class="content"> Giá trị đơn hàng phải lớn hơn 0 </div>
+﻿@model KhachHangViewModel
+
+<div class="header">Thêm Mới Khách Hàng</div>
+<div class="content">    
+    <form class="ui form" id="create-customer">
+        <div class="fields">
+            <div class="required six wide field">
+                <label>Tên Khách Hàng</label>
+                <input type="text"
+                       asp-for="@Model.KhachHang.TenKhachHang"
+                       placeholder="Tên"
+                       data-validate="valid-name">
+
+            </div>
+            <div class="required four wide field">
+                <label>Loại Khách Hàng</label>
+                <select class="ui fluid dropdown"
+                        asp-for="@Model.KhachHang.LoaiKhachHangId"
+                        asp-items="@Model.LoaiKhachHang"
+                        data-validate="valid-customer-type"></select>
+            </div>
+            <div class="six wide field">
+                <label>Email</label>
+                <input type="text"
+                       asp-for="@Model.KhachHang.Email"
+                       placeholder="Email"
+                       data-validate="valid-email">
+            </div>
+        </div>
+        <div class="fields">
+            <div class="required six wide field">
+                <label>Số Điện Thoại</label>
+                <input type="text"
+                       asp-for="@Model.KhachHang.SoDienThoai"
+                       placeholder="Số điện thoại"
+                       data-validate="valid-phone">
+            </div>
+            <div class="ten wide field">
+                <label>Địa Chỉ</label>
+                <input type="text"
+                       asp-for="@Model.KhachHang.DiaChi"
+                       placeholder="Địa chỉ"
+                       data-validate="valid-address">
+            </div>
+        </div>
+        <div class="ui error message" id="error-message"></div>
+    </form>
+
+</div>
 <div class="actions">
-    <div class="ui blue labeled icon cancel button">
-        <i class="share icon"></i> Quay lại
+    <div class="ui green labeled icon submit button" id="submit-btn">
+        <i class="add user icon"></i> Thêm
+    </div>
+    <div class="ui cancel button">
+        Hủy
     </div>
 </div>
+
+<script src="~/js/Sale/CreateCustomer.js"></script>
+<link href="~/css/Admin.css" rel="stylesheet" />
+

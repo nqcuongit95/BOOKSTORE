@@ -9,6 +9,7 @@
 /// <reference path="js/KhachHang.js" />
 /// <reference path="js/loginform.js" />
 /// <reference path="js/sale.js" />
+/// <reference path="js/sale/createcustomer.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />
 /// <reference path="lib/jquery-validation/dist/jquery.validate.js" />

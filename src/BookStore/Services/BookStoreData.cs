@@ -321,5 +321,20 @@ namespace BookStore.Services
 
             return query2;
         }
+
+        public async Task<CustomerFilterViewModel> GetCustomerById(int id)
+        {
+            var result = await (from customer in _context.KhachHang
+                                where customer.Id == id
+                               select new CustomerFilterViewModel
+                               {
+                                   Id= customer.Id,
+                                   Name= customer.TenKhachHang,
+                                   Address = customer.DiaChi,
+                                   Phone = customer.SoDienThoai
+                               }).FirstOrDefaultAsync();
+
+            return result;
+        }
     }
 }

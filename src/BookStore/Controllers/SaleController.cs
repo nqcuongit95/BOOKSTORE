@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using BookStore.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,12 +20,15 @@ namespace BookStore.Controllers
     {
         private IBookStoreData _bookStoreData;
         private UserManager<Staff> _userManager;
+        private IViewRenderService _viewRenderService;
 
         public SaleController(IBookStoreData bookStoreData,
-                              UserManager<Staff> userManager)
+                              UserManager<Staff> userManager,
+                              IViewRenderService viewRenderService)
         {
             _bookStoreData = bookStoreData;
             _userManager = userManager;
+            _viewRenderService = viewRenderService;
         }
 
         public async Task<IActionResult> Index()
@@ -88,9 +92,60 @@ namespace BookStore.Controllers
             //return PartialView("_ProductResults",model);
         }
 
+        [HttpGet]
         public IActionResult CreateCustomer()
         {
-            return PartialView("_CreateCustomer");
+            var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
+            var model = new KhachHangViewModel();
+            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang", 3);
+            
+            return PartialView("_CreateCustomer", model);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> CreateCustomer(KhachHangViewModel model)
+        {
+            Notification notify;
+            string modalAsString;
+            if (ModelState.IsValid)
+            {
+                model.KhachHang.NgayLap = DateTime.Now;
+                var id = _bookStoreData.CreateCustomer(model.KhachHang);
+
+                notify = new Notification
+                {
+                    Icon = "checkmark",
+                    Title = "Thành Công",
+                    Content = "Thêm mới khách hàng thành công",
+                    MessageType ="positive",
+                    Button = "Hoàn tất"
+                    
+                };
+
+                modalAsString = await _viewRenderService.RenderToStringAsync("Sale/_Notify", notify);
+                return Json(new { modal = modalAsString, id = id });                
+                
+            }
+
+            notify = new Notification
+            {
+                Icon = "remove",
+                Title = "Thất bại",
+                Content = "Có lỗi xảy ra, vui lòng thử lại",
+                MessageType = "negative",
+                Button = "Quay lại"
+            };
+
+            modalAsString = await _viewRenderService.RenderToStringAsync("_Notify", notify);
+            return Json(new { modal = modalAsString});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LastCreatedCustomer(int id)
+        {
+            var model = await _bookStoreData.GetCustomerById(id);
+
+            return Json(model);
         }
 
         [HttpPost]
