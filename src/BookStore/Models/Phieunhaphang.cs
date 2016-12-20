@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookStore.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,9 @@ namespace BookStore.Models
         public PhieuNhapHang()
         {
             ChiTietPhieuNhapHang = new HashSet<ChiTietPhieuNhapHang>();
+            PhieuChi = new HashSet<PhieuChi>();
+            PhieuNhanHang = new HashSet<PhieuNhanHang>();
+            PhieuTraNhapHang = new HashSet<PhieuTraNhapHang>();
         }
 
         public int Id { get; set; }
@@ -21,7 +25,16 @@ namespace BookStore.Models
         [Display(Name = "TongTien", ResourceType = typeof(Resources.DataAnnotations))]
         [DataType(DataType.Currency)]
         public decimal TongTien { get; set; }
+        public int NhanVienId { get; set; }
+        public int TrangThaiId { get; set; }
+        public int NhaCungCapId { get; set; }
 
         public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
+        public virtual ICollection<PhieuChi> PhieuChi { get; set; }
+        public virtual ICollection<PhieuNhanHang> PhieuNhanHang { get; set; }
+        public virtual ICollection<PhieuTraNhapHang> PhieuTraNhapHang { get; set; }
+        public virtual NhaCungCap NhaCungCap { get; set; }
+        public virtual Staff NhanVien { get; set; }
+        public virtual TrangThai TrangThai { get; set; }
     }
 }

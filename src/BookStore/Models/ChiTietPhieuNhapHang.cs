@@ -6,6 +6,11 @@ namespace BookStore.Models
 {
     public partial class ChiTietPhieuNhapHang
     {
+        public ChiTietPhieuNhapHang()
+        {
+            ChiTietPhieuTraNhapHang = new HashSet<ChiTietPhieuTraNhapHang>();
+        }
+
         public int Id { get; set; }
         public int PhieuNhapHangId { get; set; }
         public int HangHoaId { get; set; }
@@ -25,13 +30,8 @@ namespace BookStore.Models
             ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public decimal GiaNhap { get; set; }
 
-        [Display(Name = "NhaCungCap", ResourceType = typeof(
-            Resources.DataAnnotations))]
-        [Required(ErrorMessage = "Bạn không được để trống trường này.")]
-        public int NhaCungCapId { get; set; }
-
+        public virtual ICollection<ChiTietPhieuTraNhapHang> ChiTietPhieuTraNhapHang { get; set; }
         public virtual HangHoa HangHoa { get; set; }
-        public virtual NhaCungCap NhaCungCap { get; set; }
         public virtual PhieuNhapHang PhieuNhapHang { get; set; }
     }
 }

@@ -1,0 +1,66 @@
+﻿@model CustomerDetailsViewModel
+
+@{
+    ViewData["Title"] = "Thông Tin Khách Hàng";
+}
+
+@section menu{    
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@Model.Name</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui active item" asp-action="Index">
+                Danh Sách
+            </a>
+            <a class="ui item" asp-action="Create">
+                Thêm Mới
+            </a>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="sixteen wide column">
+        <div class="ui secondary menu four item">
+            <a class="@ViewData["Details"] item" asp-action="Details"
+               asp-route-id="@Model.ID"
+               asp-route-section="Details">
+                <i class="info icon"></i>
+                Thông Tin
+            </a>
+            <a class="@ViewData["Edit"] item"
+               asp-route-id="@Model.ID"
+               asp-route-section="Edit">
+                <i class="edit icon"></i>
+                Cập Nhật
+            </a>
+            <a class="@ViewData["Transaction"] item"
+               asp-route-id="@Model.ID"
+               asp-route-section="Transaction">
+                .
+                <i class="history icon"></i>
+                Lịch Sử Giao Dịch
+            </a>
+            <a class="@ViewData["Liabilities"] item"
+               asp-route-id="@Model.ID"
+               asp-route-section="Liabilities">
+                <i class="money icon"></i>
+                Công Nợ
+            </a>
+        </div>
+    </div>
+
+</div>
+<div class="sixteen wide column">
+
+    @await Component.InvokeAsync(Model.Section, new { id = Model.ID })   
+</div>
+
+<script src="~/js/KhachHang.js"></script>

@@ -1,0 +1,90 @@
+﻿@model List<Role>
+
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@Html.Partial("_AdminMenu");
+
+<link href="~/css/Admin.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="eleven wide column">
+        <div class="ui left floated header">Danh Sách Quyền</div>
+        <button class="ui primary mini button" id="cuck">
+            <i class="add user icon"></i>
+            Thêm Mới
+        </button>
+
+        <div class="ui clearing divider"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="eleven wide column">
+        <table class="ui very basic fixed table">
+            <thead>
+                <tr>
+                    <th>Quyền</th>
+                    <th>Mô Tả</th>
+                    <th class="right aligned">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>@role.Description</td>
+                        <td class="right aligned">
+                            <div class="ui compact menu">
+                                <div class="icon link item view"                                  
+                                   id="@role.Id" 
+                                   data-title="Xem">
+                                    <i class="unhide icon"></i>
+                                </div>
+                                <div class="icon link item delete"
+                                   data-title="Xóa"                                   
+                                   id="@role.Id">
+                                    <i class="remove icon"></i>
+                                </div>
+                                <div class="icon link item update"
+                                   data-title="Sửa"
+                                   id="@role.Id">
+                                    <i class="edit icon"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>                    
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="ui tiny modal create-modal">
+</div>
+
+<div class="ui tiny modal notify-modal">
+</div>
+
+<div class="ui tiny modal view-role-modal">
+</div>
+
+<div class="ui tiny modal delete-role-modal">
+</div>
+
+<div class="ui tiny modal update-role-modal">
+</div>
+
+
+<script>
+
+    var createRoleUrl = '@Url.Action("CreateRole", "Admin")';
+    var viewUrl = '@Url.Action("ViewRole","Admin")';
+    var deleteUrl = '@Url.Action("DeleteRole","Admin")';
+    var editUrl = '@Url.Action("EditRole","Admin")';
+    var confirmDeleteUrl = '@Url.Action("ConfirmDeleteRole","Admin")';
+
+</script>
+
+<script src="~/js/Admin/Role.js"></script>

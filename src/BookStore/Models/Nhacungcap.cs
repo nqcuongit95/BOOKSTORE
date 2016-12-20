@@ -10,8 +10,8 @@ namespace BookStore.Models
     {
         public NhaCungCap()
         {
-            ChiTietPhieuNhapHang = new HashSet<ChiTietPhieuNhapHang>();
             HangHoa = new HashSet<HangHoa>();
+            PhieuNhapHang = new HashSet<PhieuNhapHang>();
         }
 
         public int Id { get; set; }
@@ -28,7 +28,7 @@ namespace BookStore.Models
         [DisplayFormat(DataFormatString = @"{0:dd/MM/yyyy}")]
         public DateTime NgayLap { get; set; }
 
-        public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
         public virtual ICollection<HangHoa> HangHoa { get; set; }
+        public virtual ICollection<PhieuNhapHang> PhieuNhapHang { get; set; }
     }
 }

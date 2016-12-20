@@ -1,0 +1,113 @@
+﻿@model PaginatedList<CustomerInfoViewModel>
+
+@{
+    ViewData["Title"] = "Khách hàng";
+
+}
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Khách Hàng</h2>
+
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui active item" asp-action="Index">
+                Danh Sách
+            </a>
+            <a class="ui item" asp-action="Create">
+                Thêm Mới
+            </a>            
+        </div>
+    </div>
+}
+
+<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Khách Hàng</div>
+
+<div class="row" id="context">
+    <div class="sixteen wide column">
+        <table class="ui teal table">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Tên Khách Hàng
+                            <i class="caret @ViewData["SortDirection"] icon"></i>
+                        </a>
+                    </th>
+                    <th>Số Điện Thoại</th>
+                    <th>Email</th>
+                    <th>Loại Khách Hàng</th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["DateSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Ngày Lập
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenKhachHang
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.SoDienThoai
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.Email
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenLoaiKhachHang
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.NgayLap
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        @Html.Partial("_Paginated", Model)
+        
+    </div>
+</div>
+
+<script src="~/js/KhachHang.js"></script>
+<script type="text/javascript">
+
+    //handle enter key for search input
+    $('.search-input').keypress(function (event) {
+
+        if (event.which == 13) {
+
+            var keyword = $(this).val();
+            var url = '@Url.Action("Index","Customer")';
+
+            window.location = url + "?searchString=" + keyword;
+        }
+    });
+
+</script>

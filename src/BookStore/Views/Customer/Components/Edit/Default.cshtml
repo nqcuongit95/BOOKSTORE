@@ -1,0 +1,79 @@
+﻿@model KhachHangViewModel
+
+<form class="ui form" method="post" asp-action="Edit" asp-route-id="@Model.KhachHang.Id">
+    <h3 class="ui dividing teal header">CẬP NHẬT THÔNG TIN</h3>
+    <div class="ui hidden divider"></div>
+    <div class="two fields">
+        <div class="required field">
+            <label class="form-label">Tên Khách Hàng</label>
+            <div class="ui transparent input">
+                <input type="text"
+                       asp-for="KhachHang.TenKhachHang"
+                       value="@Model.KhachHang.TenKhachHang"
+                       data-validate="valid-name">
+            </div>
+            <div class="ui divider"></div>
+        </div>
+        <div class="required field">
+            <label class="form-label">Nhóm Khách Hàng</label>
+            <div class="ui fluid dropdown" style="display:inline-block;">
+                <i class="dropdown icon"></i>
+                <select asp-for="KhachHang.LoaiKhachHangId"
+                        asp-items="@Model.LoaiKhachHang"
+                        data-validate="valid-customer-type"></select>
+                @{
+                    var text = Model.LoaiKhachHang.First(i => i.Selected).Text;
+                    <div class="text">text</div>
+                }
+
+                <div class="menu" tabindex="-1">
+                    @foreach (var item in Model.LoaiKhachHang)
+                    {
+                        var selected = item.Selected ? "active selected" : "";
+                        <div class="item @selected" data-value="@item.Value">@item.Text</div>
+                    }
+                </div>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+
+    </div>
+
+    <div class="two fields">
+        <div class="required field">
+            <label class="form-label">Số Điện Thoại</label>
+            <div class="ui transparent input">
+                <input type="text"
+                       asp-for="KhachHang.SoDienThoai"
+                       value="@Model.KhachHang.SoDienThoai"
+                       data-validate="valid-phone">
+            </div>
+            <div class="ui divider"></div>
+        </div>
+        <div class="field">
+            <label class="form-label">Email</label>
+            <div class="ui transparent input">
+                <input type="text"
+                       asp-for="KhachHang.Email"
+                       value="@Model.KhachHang.Email">
+            </div>
+            <div class="ui divider"></div>
+        </div>
+    </div>
+    <div class="required field">
+        <label class="form-label">Địa Chỉ</label>
+        <div class="ui transparent input">
+            <input type="text"
+                   asp-for="KhachHang.DiaChi"
+                   value="@Model.KhachHang.DiaChi"
+                   data-validate="valid-address">
+        </div>
+        <div class="ui divider"></div>
+    </div>
+
+    <button class="ui primary tiny submit button" type="submit">Cập Nhật</button>
+    <div class="ui reset tiny button">Mặc Định</div>
+    <div class="ui error message"></div>
+</form>
+
+<script src="~/js/KhachHang.js"></script>

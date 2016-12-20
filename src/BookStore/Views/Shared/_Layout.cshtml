@@ -4,13 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BookStore</title>
-
+    
     <environment names="Development">
         <link rel="stylesheet" href="~/css/site.min.css" />
         <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />        
+        <link rel="stylesheet" href="~/css/KhachHang.css" />
         <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="~/lib/semantic/dist/semantic.min.js"></script>
         <script src="~/js/site.js"></script>
+        
     </environment>
     <environment names="Staging,Production">
         <!--stating environment-->
@@ -23,11 +26,7 @@
     <!--Responsive sidebar menu-->
     <div class="ui sidebar inverted vertical menu">
         <div class="item">
-            <div class="header">Hello, Cuong!</div>
-            <div class="menu">
-                <a class="item" asp-controller="" asp-action="">Account</a>
-                <a class="item" asp-controller="" asp-action="">Sign out</a>
-            </div>
+            @await Component.InvokeAsync("LoginLogout")
         </div>
         <a class="active gray item" asp-controller="" asp-action="">
             Tổng Quan
@@ -48,7 +47,7 @@
         </a>
         <a class="item" asp-controller="" asp-action="">
             Báo Cáo
-        </a>
+        </a>        
     </div>
 
 
@@ -56,16 +55,12 @@
         <div class="ui grid container">
             <div class="ui left fixed vertical menu">
                 <div class="item">
-                    <div class="header">Hello, Cuong!</div>
-                    <div class="menu">
-                        <a class="item" asp-controller="" asp-action="">Account</a>
-                        <a class="item" asp-controller="" asp-action="">Sign out</a>
-                    </div>
+                    @await Component.InvokeAsync("LoginLogout")
                 </div>
-                <a class="active gray item" asp-controller="" asp-action="">
+                <a class="active gray item" asp-controller="Dashboard" asp-action="Index">
                     Tổng Quan
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="Sale" asp-action="Index">
                     Bán Hàng
                     <div class="ui label">11</div>
                 </a>
@@ -73,7 +68,7 @@
                     Đơn Hàng
                     <div class="ui label">22</div>
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="Customer" asp-action="Index">
                     Khách Hàng
                 </a>
                 <a class="item" asp-controller="HangHoa" asp-action="Index">
@@ -82,12 +77,15 @@
                 <a class="item" asp-controller="" asp-action="">
                     Báo Cáo
                 </a>
+                <a class="item" asp-controller="Admin" asp-action="Index">
+                    Admin
+                </a>
             </div>
 
-            <div class="ui main centered grid">
+            <div class="ui main centered stackable grid">
 
                 <!-- Responsive top menu -->
-                <div class="ui fixed inverted main menu">
+                <div class="ui fixed inverted main menu responsive">
                     <div class="ui container">
                         <a class="launch icon item sidebar-toggle">
                             <i class="sidebar icon"></i>
@@ -95,7 +93,7 @@
                     </div>
                 </div>
 
-                @RenderSection(@"menu", false)
+                @RenderSection("menu",false)
                 @RenderBody()
 
             </div>
