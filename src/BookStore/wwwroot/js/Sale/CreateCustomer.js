@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
-    $(".ui.dropdown").dropdown();      
+    $("#customer-type").dropdown();
 
-    $('.ui.form')
+    $('form#create-customer')
        .form({
            on: 'blur',
            fields: {
@@ -44,7 +44,7 @@
                 type: "post",
                 url: urlCreateCustomer,
                 data: data,
-                dataType: 'json',
+                dataType: 'json',                
                 success: function (result, status, xhr) {
 
                     if (status === 'success') {
@@ -57,7 +57,7 @@
 
                         //update last created customer
                         $.ajax({
-                            type: "post",
+                            type: "post",                            
                             url: urlCustomerCreatedInfo,
                             data: customerId,
                             dataType: 'json',
@@ -67,7 +67,7 @@
                                 }
                             },
                             error: function (xhr, status, error) {
-                                
+                                //go the the fucking hell
                             }
                         })
 
@@ -86,7 +86,7 @@
 
     function updateLastCreatedCustomer(result)
     {
-        //set search box to customer name
+        //update last created customer
         $('#customer-search').search('set value', result.name);
         $('#customer-table tr').eq(0).find('td').eq(1).text(result.phone);
         $('#customer-table tr').eq(1).find('td').eq(1).text(result.address);

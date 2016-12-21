@@ -1,5 +1,38 @@
 ﻿$(document).ready(function () {
 
+    class Payment {
+        constructor() {
+            this.id = 1;
+            this.name = "";
+            this.phone = "";
+            this.address = "";
+            this.priceType = 1;
+            this.totalValue = 0;
+            this.totalToPay = 0;
+            this.customerPaid = 0;
+            this.invoiceDataTab = "";
+        }
+    }
+
+    var saleControl = {
+
+        invoiceTable: $('.active.tab.segment tbody'),
+
+        customerSegment: {
+            table: $("#customer-table"),
+            phone: $("#customer-table").find("tr:eq(0)").find("td:eq(1)"),
+            address: $("#customer-table").find("tr:eq(1)").find("td:eq(1)"),
+        },
+
+        paymentSegment: {
+            table: $('#payment-table'),
+            totalValue: $('#payment-table tr').eq(0).find('td').eq(1),
+            customerToPlay: $('#payment-table tr').eq(1).find('td').eq(1),
+            customerPaid: $('input[name=CustomerPaid]'),
+        },
+    }
+
+
     //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
 
@@ -9,9 +42,20 @@
         'pay invoice': urlPayInvoice
     }
 
-    var totalMoneyToPay = 0;
+    var invoiceObject = [];
 
+    //add default invoice payment
+    var firstPayment = new Payment();
+    firstPayment.invoiceDataTab = "invoice1";
+    var visibleDataTab = 'invoice1';
+    invoiceObject.push(firstPayment);
+    loadDataTab(firstPayment);
+
+    var totalMoneyToPay = 0;
+    var currentInvoiceCount = 1;
     var priceType = 1;
+    var invoiceTableBody = saleControl.invoiceTable;
+    
 
     var numberInput = '<div class="ui tiny input count-input" style="max-width: 80px">'
                        + '<input type="number" name="count" min="0">'
@@ -25,17 +69,39 @@
 
     var trashIcon = '<i class="trash outline link icon" data-content="xóa"></i>';
 
+    var tabMenu = '<div class="active item" data-tab="">'
+                  + '<a class="ui grey right corner mini label close-tab">'
+                  + '<i class="remove icon"></i>'
+                  + '</a>'
+                  + '</div>';
+
+    var tabSegment = '<div class="ui bottom attached active tab segment"'
+                      + 'data-tab=""'
+                      + 'style="height:330px;margin: 0;overflow-y: scroll;">'
+                      + '<table class="ui very basic table">'
+                      + '<thead>'
+                      + '<tr>'
+                      + '<th class="two wide">Mã hàng</th>'
+                      + '<th class="six wide">Tên hàng</th>'
+                      + '<th class="two wide">Số lượng</th>'
+                      + '<th class="two wide">Đơn giá</th>'
+                      + '<th class="three wide">Thành tiền</th>'
+                      + '<th class="one wide"></th>'
+                      + '</tr>'
+                      + '</thead>'
+                      + '<tbody></tbody>'
+                      + '</div>';
+
     //define custom search template
-    $.fn.search.settings.templates.message = function(message, type) {
+    $.fn.search.settings.templates.message = function (message, type) {
         var
-          html = ''
-        ;
-        if(message !== undefined && type !== undefined) {
-            html +=  ''
+          html = '';
+        if (message !== undefined && type !== undefined) {
+            html += ''
               + '<div class="message ' + type + '">'
             ;
             // message type
-            if(type == 'empty') {
+            if (type == 'empty') {
                 html += ''
                   + '<div class="header">Không kết quả</div class="header">'
                   + '<div class="description">' + message + '</div class="description">'
@@ -55,8 +121,8 @@
         var html = '';
 
         //add new customer action
-        html +=  '<a class="action" href="" id="newCustomer">'
-                +'<h4 class="ui blue action header">'
+        html += '<a class="action" href="" id="newCustomer">'
+                + '<h4 class="ui blue action header">'
                 + '<i class="add user icon"></i>'
                 + '<div class="content">'
                 + response.newCustomer.text
@@ -77,21 +143,21 @@
 
         return html;
     };
-        
+
     //search product result template
     $.fn.search.settings.templates.productSearchTemplate = function (response) {
 
-        var html = '';        
+        var html = '';
 
         $.each(response.results, function (index, product) {
-            html += '<a class="result">';            
+            html += '<a class="result">';
             html += '<div class="content">';
             html += '<div class="title">' + product.name + '</div>';
             html += '<div class="description">' + "Có thể bán: " + product.available + '</div>'
             html += '<div class="ui divider" style="margin: 4px 0 4px 0;"></div>'
             html += '<div class="ui orange tag label price">' + product.retailPrice + '</div>'
-            html += '<div class="ui label">' + "Mã SP: " + product.id + '</div>'            
-            html += '</div>'            
+            html += '<div class="ui label">' + "Mã SP: " + product.id + '</div>'
+            html += '</div>'
             html += '</a>'
         })
 
@@ -118,7 +184,13 @@
             }
         }).popup('show');
 
+    }
 
+    function getCurrentPaymentObjectIndex(dataTab) {        
+
+        return invoiceObject.findIndex(function (elem) {
+            return elem.invoiceDataTab == dataTab;
+        })
     }
 
     //update customer information when using search box
@@ -128,15 +200,33 @@
         var phone = table.find("tr:eq(0)").find("td:eq(1)");
         var address = table.find("tr:eq(1)").find("td:eq(1)");
 
+        //get current payment infomation
+                
+        var index = getCurrentPaymentObjectIndex(visibleDataTab);
+
         if (jQuery.isEmptyObject(result)) {
 
             phone.empty();
             address.empty();
+            $('#customer-search input[name=CustomerId]').attr('value', 1);
+
+            invoiceObject[index].name = "";
+            invoiceObject[index].phone = "";
+            invoiceObject[index].id = 1;
+            invoiceObject[index].address = "";
+
             return;
         }
 
-        phone.text(result.phone);
-        address.text(result.address);
+        saleControl.customerSegment.phone.text(result.phone);
+        saleControl.customerSegment.address.text(result.address);
+        $('#customer-search input[name=CustomerId]').attr('value', result.id);
+
+        invoiceObject[index].name = result.name;
+        invoiceObject[index].phone = result.phone;
+        invoiceObject[index].id = result.id;
+        invoiceObject[index].address = result.address;
+
     }
 
     //add product result to table when using search box
@@ -177,7 +267,7 @@
 
         var totalMoney = currentPrice * currentCountProducts;
 
-        total.text(totalMoney);
+        total.text(totalMoney);        
 
         //update payment
         updatePayment();
@@ -188,7 +278,8 @@
     function updatePayment() {
 
         var total = 0;
-        $('#invoice-table tr').each(function () {
+
+        invoiceTableBody.find('tr').each(function () {
 
             var value = Number($(this).find('td:eq(4)').text());
 
@@ -196,6 +287,11 @@
         })
 
         totalMoneyToPay = total;
+
+        //also update current invoice tab
+        var index = getCurrentPaymentObjectIndex(visibleDataTab);
+        invoiceObject[index].totalValue = totalMoneyToPay;
+        invoiceObject[index].totalToPay = totalMoneyToPay;
 
         $('#payment-table tr:eq(0) td:eq(1)').text(total).attr('value', total);
 
@@ -206,10 +302,8 @@
     //update customer change
     function recalculateCustomerChange() {
 
-        totalMoneyToPay
-
         var customerPayTd = $('#paid-money input');
-        var customerPay = Number(customerPayTd.val());
+        var customerPay = Number(customerPayTd.val());        
 
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
@@ -224,10 +318,39 @@
 
     }
 
+    //load data tab
+    function loadDataTab(payment) {
+        console.log(payment);
+        //load customer              
+        var table = $("#customer-table");
+        var phone = table.find("tr:eq(0)").find("td:eq(1)");
+        var address = table.find("tr:eq(1)").find("td:eq(1)");
+
+        phone.text(payment.phone);
+        address.text(payment.address);
+
+        $('#customer-search').search('set value', payment.name);
+        $('input[name=CustomerId]').attr('value', payment.id);
+
+        //load payment                
+        $('#payment-table tr:eq(0) td:eq(1)').text(payment.totalValue)
+                                             .attr('value', payment.totalValue);
+        $('#payment-table tr:eq(1) td:eq(1)').text(payment.totalValue);
+        $('#payment-table tr:eq(2) td:eq(1) input').val(payment.customerPaid);
+
+        //price type               
+        $('#price-type').dropdown('set selected', payment.priceType);
+        
+        //also load customer change
+        recalculateCustomerChange()
+
+    }
+
+
     //update price when user change price type
     function updatePriceType(productIds, priceType) {
         $.ajax({
-            type: "POST",
+            type: "post",
             url: urlPriceType,
             dataType: "json",
             traditional: true,
@@ -236,11 +359,11 @@
                 priceType: priceType
             },
             success: function (result, status, xhr) {
-                if (status == 'success') {
+                if (status === 'success') {
 
                     $.each(result, function (index, value) {
 
-                        var productRow = $('#invoice-table').find('tr').filter(function () {
+                        var productRow = invoiceTableBody.find('tr').filter(function () {
                             return $(this).find('td:eq(0)').text() == value.id;
                         })
 
@@ -256,10 +379,12 @@
 
     //*************************** ui controls *************************************
     $(".ui.selection.dropdown").dropdown();
-    $(".ui.search").on("click", 'input', function () {
+    
+    $(".ui.input").on("click",'input', function () {
         $(this).select();
     });    
-    $('.top.menu .item').tab();
+
+    $('.top.tabular.menu .item').tab();
 
     //update customer when search input was cleared
     $('#customer-search').on(inputEvents, 'input', function () {
@@ -272,22 +397,22 @@
         }
     });
 
-    //update when price-type change
-    $(".ui.selection.dropdown").dropdown({
+    //update when price type change
+    $("#price-type").dropdown({
         onChange: function (value, text, choice) {
 
-            //set global pricetype value
-            priceType = value;
+            //set global pricetype value            
+            var index = getCurrentPaymentObjectIndex(visibleDataTab);            
+            invoiceObject[index].priceType = value;            
+            priceType = invoiceObject[index].priceType;
 
-            var allPriceTd = $("#invoice-table tr");
-            var productIds = [];
-            //console.log(value);
+            var allPriceTd = invoiceTableBody.find('tr');
+            var productIds = [];            
 
             allPriceTd.each(function (index) {
 
                 var id = $(this).find('td:eq(0)').text();
-                productIds.push(id);
-                //console.log(id);
+                productIds.push(id);               
             })
 
             updatePriceType(productIds, value);
@@ -296,14 +421,14 @@
 
     //customer search box
     $('#customer-search').search({
-        cache: true,        
+        cache: true,
         type: 'customerSearchTemplate',
         apiSettings: {
             url: urlSearch + "?val={query}"
-        },        
+        },
         minCharacters: 0,
         error: {
-            noResults: 'Không tìm thấy khách hàng.'            
+            noResults: 'Không tìm thấy khách hàng.'
         },
         onSelect: function (result, response) {
             updateCustomer(result);
@@ -328,27 +453,26 @@
         error: {
             noResults: 'Không tìm thấy sản phẩm.'
         },
-        throttle: 200,        
+        throttle: 200,
         onResults: function (response) {
             showProductsResult(response);
         },
         onSelect: function (result, response) {
-                                     
+
             var tdId = $('#product-results > tr > td').filter(function (index) {
-                                
-                return $(this).eq(0).text() == result.id                
-            });                        
+
+                return $(this).eq(0).text() == result.id
+            });
             tdId.closest('tr').trigger('click');
             $('#product-input').find('input').val('');
-        },        
+        },
     })
-
 
     //handle table row click event for adding product to invoice
     $('#products-table').on('click', 'tbody tr', function () {
         //event.preventDefault();        
-        
-        var invoice = $('#invoice-table');
+
+        var invoice = invoiceTableBody
         var clickedRow = $(this);
 
         //get the data
@@ -390,7 +514,7 @@
                     var currentPriceTd = alreadyAdded.closest('tr').find('td:eq(3) input');
                     var currentPrice = Number(currentPriceTd.val());
                     var value = count * currentPrice;
-                    tdTotalMoney.text(value);
+                    tdTotalMoney.text(value);                    
 
                     //update payment
                     updatePayment();
@@ -419,6 +543,7 @@
 
                 //update payment
                 updatePayment();
+                recalculateCustomerChange();
 
                 //bind event to remove icon
                 $(".trash.outline.link.icon").popup({
@@ -501,9 +626,13 @@
         //set value to attribute
         $(this).attr('value', customerPay);
 
+        //update for current tab        
+        var index = getCurrentPaymentObjectIndex(visibleDataTab);        
+        invoiceObject[index].customerPaid = customerPay;
+
         //alert(customerPay)
         var customerChange = customerPay - totalMoneyToPay;
-        //console.log(customerChange);
+        
         if (customerChange > 0) {
             customerChangeTd.text(customerChange);
         }
@@ -513,10 +642,10 @@
     })
 
     //bind event for create new customer action in search box product
-    $('#customer-results').on('click','#newCustomer', function (event) {
+    $('#customer-results').on('click', '#newCustomer', function (event) {
 
         event.preventDefault();
-        console.log('click')
+
         var modal = $('#create-modal');
 
         $.ajax({
@@ -525,8 +654,8 @@
             success: function (result, status, xhr) {
 
                 if (status === 'success') {
-                    
-                    modal.html(result);                   
+
+                    modal.html(result);
                     modal.modal('setting', 'closable', false).modal('show');
 
                 }
@@ -566,7 +695,7 @@
             productDetails: []
         }
 
-        $('#invoice-table tr').each(function (index, elem) {
+        invoiceTableBody.find('tr').each(function (index, elem) {
 
             var productId = $(elem).find('td:eq(0)').text();
             var count = $(elem).find('td:eq(2) input').val();
@@ -608,11 +737,114 @@
 
     })
 
-    //reload page when model was hidden
+    //reload page when model was hidden (temporarily solution)
     $('#notify-modal').modal({
         onHidden: function () {
             //location.reload();
         }
     });
+
+    //bind click event to close tab
+    $('.top.tabular.menu').on('click', '.label.close-tab', function (event) {
+        event.preventDefault();
+        //alert('click')
+
+        var thisTab = $(this).closest('.item');
+
+        //switching to closest tab, if thisTab is the one left then create new tab
+        var closestTab = null;
+
+        if (thisTab.next('.item[data-tab]').exists()) {
+
+            closestTab = thisTab.next()
+        }
+        else if (thisTab.prev('.item[data-tab]').exists()) {
+            closestTab = thisTab.prev('.item[data-tab]');
+        }
+        else {
+            
+            //create new one
+            $('#newInvoice').trigger('click');
+            //then close the previous
+            closeTab(thisTab);
+            return;
+        }
+        closeTab(thisTab);
+        selectTab(closestTab);
+    })
+
+    //helpter function to click on tab
+    function selectTab(tab) {
+        $(tab).click();
+    }
+
+    //helper function to close tab
+    function closeTab(tab) {
+        var dataTab = tab.attr('data-tab');
+
+        //remove tab
+        tab.remove();
+
+        //also remove attached table       
+        var attachedTable = $('.tab.segment[data-tab=' + dataTab + ']').remove();
+    }
+
+    //bind event to add new tab
+    $('#newInvoice').on('click', function () {
+
+        var dataTab = "invoice";
+        var dataText = "Đơn hàng ";
+        currentInvoiceCount += 1;
+
+        dataTab += currentInvoiceCount;
+        dataText += currentInvoiceCount;
+
+        //set global variable
+        visibleDataTab = dataTab;
+
+        //add tab menu
+        $('.tabular.menu .active.item').removeClass('active');
+        $('.tabular.menu .item[data-tab]').filter(':last').after(tabMenu);
+        $('.tabular.menu .active.item').attr('data-tab', dataTab).append(dataText);
+
+        //add tab segment
+        $('.active.tab.segment').removeClass('active');
+        $('.tab.segment').filter(':last').after(tabSegment);
+
+        var tabSegmentAdded = $('.tab.segment').filter(':last');
+        tabSegmentAdded.attr('data-tab', dataTab);
+
+        //hold the customer info, payment for this tabs
+        var payment = new Payment();
+        payment.invoiceDataTab = dataTab;
+
+        //save payment info for this tab
+        invoiceObject.push(payment);
+
+        //reupdate global variable
+        invoiceTableBody = $('.active.tab.segment tbody');
+        updatePayment();
+        loadDataTab(payment);
+
+        //todo: update ui when switching tab
+        $('.top.tabular.menu .item').tab({
+            onVisible: function (tabpath) {                
+                //reupdate global variable, payment
+                visibleDataTab = tabpath;
+                invoiceTableBody = $('.active.tab.segment tbody');
+                
+                updatePayment();
+
+                //load data               
+                var paymentArr = $.grep(invoiceObject, function (e) {
+                    return e.invoiceDataTab == tabpath;
+                });
+                //var test = $(this).tab('get path');
+                
+                loadDataTab(paymentArr[0])
+            }
+        });
+        
+    })
 
 });

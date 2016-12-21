@@ -47,25 +47,35 @@
                         </table>
                     </div>
                     <div class="ui top attached tabular menu">
-                        <div class="active item">Đơn hàng 1</div>
+                        <div class="active item" data-tab="invoice1">
+                            <a class="ui grey right corner mini label close-tab"
+                               style="padding:0 ;margin: 0;">
+                                <i class="remove icon"></i>
+                            </a>
+                            Đơn hàng 1                            
+                        </div>
+                        <div class="item" id="newInvoice">
+                            <div class="ui basic icon button">
+                                <i class="add icon"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="ui bottom attached active tab segment"
-                         style="height:330px;">
-                        <form id="invoice-form">
-                            <table class="ui very basic table">
-                                <thead>
-                                    <tr>
-                                        <th class="two wide">Mã hàng</th>
-                                        <th class="six wide">Tên hàng</th>
-                                        <th class="two wide">Số lượng</th>
-                                        <th class="two wide">Đơn giá</th>
-                                        <th class="three wide">Thành tiền</th>
-                                        <th class="one wide"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="invoice-table"></tbody>
-                            </table>
-                        </form>
+                         data-tab="invoice1"
+                         style="height:330px;margin: 0; overflow-y: scroll;">
+                        <table class="ui very basic table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="six wide">Tên hàng</th>
+                                    <th class="two wide">Số lượng</th>
+                                    <th class="two wide">Đơn giá</th>
+                                    <th class="three wide">Thành tiền</th>
+                                    <th class="one wide"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -81,8 +91,8 @@
                         <div class="ui dividing header">Khách hàng</div>
                         <div class="ui search" id="customer-search">
                             <div class="ui icon input">
-                                <input class="prompt"                                       
-                                       type="text" 
+                                <input class="prompt"
+                                       type="text"
                                        placeholder="Khách hàng...">
                                 <input type="hidden" name="CustomerId" value="1" />
                                 <i class="search icon"></i>
@@ -120,7 +130,7 @@
                                     <td class="ten wide right aligned">
                                         <div class="ui basic large label">
                                             @Model
-                                            <input type="hidden" 
+                                            <input type="hidden"
                                                    name="StaffId"
                                                    value="@User.Identity.Name" />
                                         </div>
@@ -138,8 +148,7 @@
                             <tbody>
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
-                                    <td class="ten wide right aligned">                                        
-                                    </td>
+                                    <td class="ten wide right aligned"></td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Khách phải trả</td>
@@ -180,14 +189,14 @@
 <div class="ui tiny modal" id="notify-modal">
 </div>
 
-<div class="ui tiny modal" id="invoice-modal">    
+<div class="ui tiny modal" id="invoice-modal">
     <div class="header"> Không Tạo Được Đơn Hàng </div>
     <div class="content">
         <div class="ui warning icon message">
             <i class="warning icon"></i>
             <div class="header">
                 Giá trị đơn hàng phải lớn hơn 0.
-            </div>            
+            </div>
         </div>
     </div>
     <div class="actions">
@@ -210,5 +219,4 @@
     var urlCustomerCreatedInfo = '@Url.Action("LastCreatedCustomer", "Sale")';
 </script>
 
-<script src="~/js/Sale.js"></script>
-
+<script src="~/js/Sale/Sale.js"></script>

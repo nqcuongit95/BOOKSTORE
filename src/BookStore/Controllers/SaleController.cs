@@ -136,7 +136,7 @@ namespace BookStore.Controllers
                 Button = "Quay lại"
             };
 
-            modalAsString = await _viewRenderService.RenderToStringAsync("_Notify", notify);
+            modalAsString = await _viewRenderService.RenderToStringAsync("Sale/_Notify", notify);
             return Json(new { modal = modalAsString});
         }
 

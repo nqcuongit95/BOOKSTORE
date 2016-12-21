@@ -14,7 +14,7 @@
             </div>
             <div class="required four wide field">
                 <label>Loại Khách Hàng</label>
-                <select class="ui fluid dropdown"
+                <select class="ui fluid dropdown" id="customer-type"
                         asp-for="@Model.KhachHang.LoaiKhachHangId"
                         asp-items="@Model.LoaiKhachHang"
                         data-validate="valid-customer-type"></select>
@@ -56,6 +56,9 @@
     </div>
 </div>
 
-<script src="~/js/Sale/CreateCustomer.js"></script>
+<script>        
+    jQuery.getScript('/js/Sale/CreateCustomer.js')
+</script>
+
 <link href="~/css/Admin.css" rel="stylesheet" />
 
