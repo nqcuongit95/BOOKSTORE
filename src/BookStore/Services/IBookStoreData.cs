@@ -28,5 +28,6 @@ namespace BookStore.Services
             List<ProductBuyingDetailsViewModel> productDetails);
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, DateTime when);
         Task<CustomerFilterViewModel> GetCustomerById(int id);
+        
     }
 }

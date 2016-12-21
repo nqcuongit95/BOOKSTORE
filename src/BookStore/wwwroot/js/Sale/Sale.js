@@ -3,14 +3,14 @@
     class Payment {
         constructor() {
             this.id = 1;
-            this.name = "";
-            this.phone = "";
-            this.address = "";
+            this.name = '';
+            this.phone = '';
+            this.address = '';
             this.priceType = 1;
             this.totalValue = 0;
             this.totalToPay = 0;
             this.customerPaid = 0;
-            this.invoiceDataTab = "";
+            this.invoiceDataTab = '';
         }
     }
 
@@ -42,8 +42,6 @@
         'pay invoice': urlPayInvoice
     }
 
-    var invoiceObject = [];
-
     //add default invoice payment
     var firstPayment = new Payment();
     firstPayment.invoiceDataTab = "invoice1";
@@ -55,7 +53,7 @@
     var currentInvoiceCount = 1;
     var priceType = 1;
     var invoiceTableBody = saleControl.invoiceTable;
-    
+
 
     var numberInput = '<div class="ui tiny input count-input" style="max-width: 80px">'
                        + '<input type="number" name="count" min="0">'
@@ -70,9 +68,9 @@
     var trashIcon = '<i class="trash outline link icon" data-content="xóa"></i>';
 
     var tabMenu = '<div class="active item" data-tab="">'
-                  + '<a class="ui grey right corner mini label close-tab">'
-                  + '<i class="remove icon"></i>'
-                  + '</a>'
+                  + '<div class="ui grey right corner mini label close-tab">'
+                  + '<i class="remove link icon"></i>'
+                  + '</div>'
                   + '</div>';
 
     var tabSegment = '<div class="ui bottom attached active tab segment"'
@@ -186,7 +184,7 @@
 
     }
 
-    function getCurrentPaymentObjectIndex(dataTab) {        
+    function getCurrentPaymentObjectIndex(dataTab) {
 
         return invoiceObject.findIndex(function (elem) {
             return elem.invoiceDataTab == dataTab;
@@ -201,7 +199,7 @@
         var address = table.find("tr:eq(1)").find("td:eq(1)");
 
         //get current payment infomation
-                
+
         var index = getCurrentPaymentObjectIndex(visibleDataTab);
 
         if (jQuery.isEmptyObject(result)) {
@@ -237,13 +235,14 @@
 
         $.each(response.results, function (index, result) {
 
+            var count = 0;
             var data = '<tr>';
 
             $.each(result, function (key, value) {
                 if (value !== null) {
-
+                    count++;
                     //dont show the total sold data
-                    if (value == result.totalSold) {
+                    if (count == 6) {
                         return;
                     }
 
@@ -267,7 +266,7 @@
 
         var totalMoney = currentPrice * currentCountProducts;
 
-        total.text(totalMoney);        
+        total.text(totalMoney);
 
         //update payment
         updatePayment();
@@ -303,7 +302,7 @@
     function recalculateCustomerChange() {
 
         var customerPayTd = $('#paid-money input');
-        var customerPay = Number(customerPayTd.val());        
+        var customerPay = Number(customerPayTd.val());
 
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
@@ -340,7 +339,7 @@
 
         //price type               
         $('#price-type').dropdown('set selected', payment.priceType);
-        
+
         //also load customer change
         recalculateCustomerChange()
 
@@ -379,10 +378,10 @@
 
     //*************************** ui controls *************************************
     $(".ui.selection.dropdown").dropdown();
-    
-    $(".ui.input").on("click",'input', function () {
+
+    $(".ui.input").on("click", 'input', function () {
         $(this).select();
-    });    
+    });
 
     $('.top.tabular.menu .item').tab();
 
@@ -402,17 +401,17 @@
         onChange: function (value, text, choice) {
 
             //set global pricetype value            
-            var index = getCurrentPaymentObjectIndex(visibleDataTab);            
-            invoiceObject[index].priceType = value;            
+            var index = getCurrentPaymentObjectIndex(visibleDataTab);
+            invoiceObject[index].priceType = value;
             priceType = invoiceObject[index].priceType;
 
             var allPriceTd = invoiceTableBody.find('tr');
-            var productIds = [];            
+            var productIds = [];
 
             allPriceTd.each(function (index) {
 
                 var id = $(this).find('td:eq(0)').text();
-                productIds.push(id);               
+                productIds.push(id);
             })
 
             updatePriceType(productIds, value);
@@ -514,7 +513,7 @@
                     var currentPriceTd = alreadyAdded.closest('tr').find('td:eq(3) input');
                     var currentPrice = Number(currentPriceTd.val());
                     var value = count * currentPrice;
-                    tdTotalMoney.text(value);                    
+                    tdTotalMoney.text(value);
 
                     //update payment
                     updatePayment();
@@ -627,12 +626,12 @@
         $(this).attr('value', customerPay);
 
         //update for current tab        
-        var index = getCurrentPaymentObjectIndex(visibleDataTab);        
+        var index = getCurrentPaymentObjectIndex(visibleDataTab);
         invoiceObject[index].customerPaid = customerPay;
 
         //alert(customerPay)
         var customerChange = customerPay - totalMoneyToPay;
-        
+
         if (customerChange > 0) {
             customerChangeTd.text(customerChange);
         }
@@ -725,6 +724,10 @@
                     modal.html(result);
                     modal.modal('show');
 
+                    //close this tab
+                    var tab = $('.tabular.menu .item[data-tab=' + visibleDataTab + ']');
+                    tab.find('.label.close-tab .icon').trigger('click');
+
                     setTimeout(function () {
                         modal.modal('hide');
                     }, 2000);
@@ -745,7 +748,7 @@
     });
 
     //bind click event to close tab
-    $('.top.tabular.menu').on('click', '.label.close-tab', function (event) {
+    $('.top.tabular.menu').on('click', '.label.close-tab .icon', function (event) {
         event.preventDefault();
         //alert('click')
 
@@ -762,7 +765,7 @@
             closestTab = thisTab.prev('.item[data-tab]');
         }
         else {
-            
+
             //create new one
             $('#newInvoice').trigger('click');
             //then close the previous
@@ -787,6 +790,11 @@
 
         //also remove attached table       
         var attachedTable = $('.tab.segment[data-tab=' + dataTab + ']').remove();
+
+        //remove payment data object from global array
+        invoiceObject = jQuery.grep(invoiceObject, function (value) {
+            return value.invoiceDataTab != dataTab;
+        })        
     }
 
     //bind event to add new tab
@@ -826,13 +834,16 @@
         updatePayment();
         loadDataTab(payment);
 
+        updateTabCloseIcon()
+
         //todo: update ui when switching tab
         $('.top.tabular.menu .item').tab({
             onVisible: function (tabpath) {                
+
                 //reupdate global variable, payment
                 visibleDataTab = tabpath;
                 invoiceTableBody = $('.active.tab.segment tbody');
-                
+                updateTabCloseIcon()
                 updatePayment();
 
                 //load data               
@@ -840,11 +851,23 @@
                     return e.invoiceDataTab == tabpath;
                 });
                 //var test = $(this).tab('get path');
-                
+
                 loadDataTab(paymentArr[0])
             }
         });
-        
+
     })
+
+    function updateTabCloseIcon() {
+
+        $('.top.tabular.menu .item[data-tab]').not('.item[data-tab=' + visibleDataTab + ']')
+            .each(function (index, elem) {
+
+                $(elem).find('.close-tab').css('display', 'none');
+            })
+        
+        $('.top.tabular.menu .item[data-tab=' + visibleDataTab + ']').
+            find('.close-tab').css('display', 'inline-block');
+    }
 
 });

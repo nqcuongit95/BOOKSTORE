@@ -48,10 +48,10 @@
                     </div>
                     <div class="ui top attached tabular menu">
                         <div class="active item" data-tab="invoice1">
-                            <a class="ui grey right corner mini label close-tab"
+                            <div class="ui grey right corner mini label close-tab"
                                style="padding:0 ;margin: 0;">
-                                <i class="remove icon"></i>
-                            </a>
+                                <i class="remove link icon"></i>
+                            </div>
                             Đơn hàng 1                            
                         </div>
                         <div class="item" id="newInvoice">
@@ -217,6 +217,8 @@
     var urlPayInvoice = '@Url.Action("PayInvoice","Sale")';
     var urlCreateCustomer = '@Url.Action("CreateCustomer","Sale")';
     var urlCustomerCreatedInfo = '@Url.Action("LastCreatedCustomer", "Sale")';
+
+    var invoiceObject = [];
 </script>
 
 <script src="~/js/Sale/Sale.js"></script>

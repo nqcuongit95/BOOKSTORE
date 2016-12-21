@@ -50,7 +50,7 @@ namespace BookStore.Controllers
                 Text = "Thêm mới khách hàng",
                 Url = url
             };
-
+            
             if (val == null)
             {
 
@@ -70,7 +70,7 @@ namespace BookStore.Controllers
 
             var model = await _bookStoreData.FindCustomer(val);
             model.NewCustomer = addCustomerAction;
-
+            
             return Json(model);
         }
 

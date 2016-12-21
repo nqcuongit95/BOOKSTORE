@@ -63,7 +63,7 @@
                             dataType: 'json',
                             success: function (result, status, xhr) {
                                 if (status === 'success') {                                                                      
-                                    updateLastCreatedCustomer(result)
+                                    updateCustomer(result);
                                 }
                             },
                             error: function (xhr, status, error) {
@@ -91,6 +91,32 @@
         $('#customer-table tr').eq(0).find('td').eq(1).text(result.phone);
         $('#customer-table tr').eq(1).find('td').eq(1).text(result.address);
         $('#customer-search input[name=CustomerId]').attr('value', result.id);
+
+    }
+
+    function updateCustomer(result) {
+
+        var table = $("#customer-table");
+        var phone = table.find("tr:eq(0)").find("td:eq(1)");
+        var address = table.find("tr:eq(1)").find("td:eq(1)");
+
+        $('#customer-search').search('set value', result.name);        
+
+        var dataTab = $('.tabular.menu .active.item').attr('data-tab');
+        console.log(dataTab);
+
+        var index = invoiceObject.findIndex(function (elem) {
+            return elem.invoiceDataTab == dataTab;
+        });
+             
+        phone.text(result.phone);
+        address.text(result.address);
+        $('#customer-search input[name=CustomerId]').attr('value', result.id);
+
+        invoiceObject[index].name = result.name;
+        invoiceObject[index].phone = result.phone;
+        invoiceObject[index].id = result.id;
+        invoiceObject[index].address = result.address;
 
     }
 });
