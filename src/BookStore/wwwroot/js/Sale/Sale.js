@@ -1,5 +1,28 @@
 ﻿$(document).ready(function () {
 
+    //fortmat input    
+    numeral.register('locale', 'vn', {
+        delimiters: {
+            thousands: ',',
+            decimal: '.',            
+        },
+        abbreviations: {
+            thousand: 'k',
+            million: 'm',
+            billion: 'b',
+            trillion: 't'
+        },
+        ordinal: function (number) {
+            return '';
+        },
+        currency: {
+            symbol: '₫'
+        }
+    });
+
+    numeral.locale('vn');
+        
+
     class Payment {
         constructor() {
             this.id = 1;
@@ -31,8 +54,7 @@
             customerPaid: $('input[name=CustomerPaid]'),
         },
     }
-
-
+    
     //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
 
@@ -148,12 +170,15 @@
         var html = '';
 
         $.each(response.results, function (index, product) {
+
+            var formatedRetailPrice = numeral(product.retailPrice).format('0,0 $');
+
             html += '<a class="result">';
             html += '<div class="content">';
             html += '<div class="title">' + product.name + '</div>';
             html += '<div class="description">' + "Có thể bán: " + product.available + '</div>'
             html += '<div class="ui divider" style="margin: 4px 0 4px 0;"></div>'
-            html += '<div class="ui orange tag label price">' + product.retailPrice + '</div>'
+            html += '<div class="ui orange tag label price">' + formatedRetailPrice + '</div>'
             html += '<div class="ui label">' + "Mã SP: " + product.id + '</div>'
             html += '</div>'
             html += '</a>'
@@ -246,6 +271,14 @@
                         return;
                     }
 
+                    //format value for price
+                    if (count == 3 || count == 4) {
+
+                        var formatedValue = numeral(value).format('0,0 $');
+                        data += '<td>' + formatedValue + '</td>';
+                        return;
+                    }
+
                     data += '<td>' + value + '</td>';
                 }
             })
@@ -258,15 +291,17 @@
     }
 
     //set total money
-    function calculateTotalMoney(count, price, total) {
-
-        var currentCountProducts = Number(count.val());
-
-        var currentPrice = Number(price.val());
-
+    function calculateTotalMoney(countInput, priceInput, totalTd) {
+        
+        //get raw value
+        var currentCountProducts = numeral(countInput.val()).value();
+        var currentPrice = numeral(priceInput.val()).value();
+               
         var totalMoney = currentPrice * currentCountProducts;
 
-        total.text(totalMoney);
+        var formatedTotalMoney = numeral(totalMoney).format('0,0 $');
+
+        totalTd.text(formatedTotalMoney);
 
         //update payment
         updatePayment();
@@ -280,9 +315,10 @@
 
         invoiceTableBody.find('tr').each(function () {
 
-            var value = Number($(this).find('td:eq(4)').text());
+            var formatedValue = $(this).find('td:eq(4)').text();
+            var rawValue = numeral(formatedValue).value();
 
-            total += value;
+            total += rawValue;
         })
 
         totalMoneyToPay = total;
@@ -292,9 +328,10 @@
         invoiceObject[index].totalValue = totalMoneyToPay;
         invoiceObject[index].totalToPay = totalMoneyToPay;
 
-        $('#payment-table tr:eq(0) td:eq(1)').text(total).attr('value', total);
+        var formatedTotal = numeral(total).format('0,0 $');
+        $('#payment-table tr:eq(0) td:eq(1)').text(formatedTotal).attr('value', total);
 
-        $('#payment-table tr:eq(1) td:eq(1)').text(total);
+        $('#payment-table tr:eq(1) td:eq(1)').text(formatedTotal);
 
     }
 
@@ -302,17 +339,22 @@
     function recalculateCustomerChange() {
 
         var customerPayTd = $('#paid-money input');
-        var customerPay = Number(customerPayTd.val());
-
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
-        var customerChange = customerPay - totalMoneyToPay;
-
+        var customerPayValue = customerPayTd.val();
+        console.log(customerPayValue)
+        var customerPayRawValue = numeral(customerPayValue).value();
+        
+        var customerChange = customerPayRawValue - totalMoneyToPay;
+        console.log(customerChange)
+        //var customerChange = customerPay - totalMoneyToPay;
+        var formatedCustomerChange = numeral(customerChange).format('0,0 $');
         if (customerChange > 0) {
-            customerChangeTd.text(customerChange)
+            customerChangeTd.text(formatedCustomerChange)
         }
         else {
-            customerChangeTd.text(0);
+            var formatedZeroChange = numeral(0).format('0,0 $');
+            customerChangeTd.text(formatedZeroChange);
         }
 
     }
@@ -331,10 +373,13 @@
         $('#customer-search').search('set value', payment.name);
         $('input[name=CustomerId]').attr('value', payment.id);
 
-        //load payment                
-        $('#payment-table tr:eq(0) td:eq(1)').text(payment.totalValue)
+        //load payment       
+
+        var formatedTotalValue = numeral(payment.totalValue).format('0,0 $');
+
+        $('#payment-table tr:eq(0) td:eq(1)').text(formatedTotalValue)
                                              .attr('value', payment.totalValue);
-        $('#payment-table tr:eq(1) td:eq(1)').text(payment.totalValue);
+        $('#payment-table tr:eq(1) td:eq(1)').text(formatedTotalValue);
         $('#payment-table tr:eq(2) td:eq(1) input').val(payment.customerPaid);
 
         //price type               
@@ -507,38 +552,43 @@
                 else {
 
                     tdInputCount.val(count);
-
-                    //recalculating the total money
-                    var tdTotalMoney = alreadyAdded.closest('tr').find('td:eq(4)');
-                    var currentPriceTd = alreadyAdded.closest('tr').find('td:eq(3) input');
-                    var currentPrice = Number(currentPriceTd.val());
-                    var value = count * currentPrice;
-                    tdTotalMoney.text(value);
-
-                    //update payment
-                    updatePayment();
-                    recalculateCustomerChange()
+                    tdInputCount.trigger('textInput');                    
                 }
 
             }
             else {
                 //it's the first added product
 
+                var formatedPrice = numeral(price).format('0,0 $');
+
                 var row = "<tr>";
                 row += "<td>" + id + "</td>";
                 row += "<td>" + name + "</td>";
                 row += "<td>" + numberInput + "</td>"
                 row += "<td>" + normalInput + "</td>";
-                row += "<td>" + price + "</td>"
+                row += "<td>" + formatedPrice + "</td>"
                 row += "<td>" + trashIcon + "</td>"
                 row += "</tr>";
 
                 invoice.append(row);
 
                 //it's the first time added product, so the count equal to 1
-                invoice.find('tr:last td:eq(2) input').val('1');
+                invoice.find('tr:last td:eq(2) input').val(1);
                 //also set the price of product
                 invoice.find('tr:last td:eq(3) input').val(price);
+
+                var countInput = invoice.find('tr:last td:eq(2) input')
+                var priceInput = invoice.find('tr:last td:eq(3) input')
+
+                new Cleave(countInput, {
+                    numeral: true,
+                    numeralThousandsGroupStyle: 'thousand',
+                })
+
+                new Cleave(priceInput, {
+                    numeral: true,
+                    numeralThousandsGroupStyle: 'thousand',
+                })
 
                 //update payment
                 updatePayment();
@@ -554,12 +604,11 @@
                     updatePayment();
                     recalculateCustomerChange();
                 })
-
+                
                 //bind input event to count td;
                 invoice.find('tr:last').on(inputEvents, '.count-input input', function () {
-
+                    
                     var inputTd = $(this);
-
                     var currentCount = Number(inputTd.val());
 
                     if (currentCount > availableProduct) {
@@ -614,26 +663,29 @@
         else {
             //todo: show message indicate that no available products
         }
-    })
+    })    
 
     //update customer pay
     $('#paid-money').on(inputEvents, 'input', function () {
 
         var customerChangeTd = $(this).closest('tr').next().find('td:eq(1)');
-        var customerPay = Number($(this).val());
+        var customerPaid = $(this).val();
+
+        var customerPaidRawValue = numeral(customerPaid).value();
 
         //set value to attribute
-        $(this).attr('value', customerPay);
+        //$(this).attr('value', customerPay);
 
         //update for current tab        
         var index = getCurrentPaymentObjectIndex(visibleDataTab);
-        invoiceObject[index].customerPaid = customerPay;
+        invoiceObject[index].customerPaid = customerPaidRawValue;
 
         //alert(customerPay)
-        var customerChange = customerPay - totalMoneyToPay;
+        var customerChange = customerPaidRawValue - totalMoneyToPay;
+        var customerChangeFormated = numeral(customerChange).format('0,0 $');
 
         if (customerChange > 0) {
-            customerChangeTd.text(customerChange);
+            customerChangeTd.text(customerChangeFormated);
         }
         else {
             customerChangeTd.text('0');
@@ -678,7 +730,10 @@
         var totalValue = $('#payment-table tr:eq(0) td:eq(1)').text();
         var customerPaid = $('input[name=CustomerPaid]').val();
 
-        if (Number(totalValue) <= 0) {
+        var rawTotalValue = numeral(totalValue).value();
+        var rawCustomerPaid = numeral(customerPaid).value();
+
+        if (rawTotalValue <= 0) {
 
             $('#invoice-modal').modal('show');
             thisBtn.removeClass('loading');
@@ -689,8 +744,8 @@
         var invoiceDetail = {
             CustomerId: customerId,
             Staff: staff,
-            TotalValue: totalValue,
-            CustomerPaid: customerPaid,
+            TotalValue: rawTotalValue,
+            CustomerPaid: rawCustomerPaid,
             productDetails: []
         }
 
@@ -700,10 +755,14 @@
             var count = $(elem).find('td:eq(2) input').val();
             var price = $(elem).find('td:eq(3) input').val();
 
+
+            var rawCount = numeral(count).value();
+            var rawPrice = numeral(price).value();
+
             var product = {
                 ProductId: productId,
-                Count: count,
-                Price: price
+                Count: rawCount,
+                Price: rawPrice
             }
 
             invoiceDetail.productDetails.push(product);
@@ -740,7 +799,7 @@
 
     })
 
-    //reload page when model was hidden (temporarily solution)
+    //reload page when modal was hidden (temporarily solution)
     $('#notify-modal').modal({
         onHidden: function () {
             //location.reload();
@@ -870,4 +929,14 @@
             find('.close-tab').css('display', 'inline-block');
     }
 
+    
+    //**********************************format input**********************************
+    //customer paid input
+
+    var customerPaidInput = new Cleave('input[name=CustomerPaid]', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+               
+    });
+           
 });
