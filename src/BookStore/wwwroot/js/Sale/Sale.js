@@ -140,7 +140,7 @@
 
         //add new customer action
         html += '<a class="action" href="" id="newCustomer">'
-                + '<h4 class="ui blue action header">'
+                + '<h4 class="ui violet action header">'
                 + '<i class="add user icon"></i>'
                 + '<div class="content">'
                 + response.newCustomer.text
@@ -511,6 +511,7 @@
             action: 'get products'
         },
         minCharacters: 0,
+        maxResults: 4,
         cache: false,
         type: 'productSearchTemplate',
         error: {
@@ -522,18 +523,18 @@
         },
         onSelect: function (result, response) {
 
+            //trigger click event on product results row
             var tdId = $('#product-results > tr > td').filter(function (index) {
 
                 return $(this).eq(0).text() == result.id
             });
-            tdId.closest('tr').trigger('click');
-            $('#product-input').find('input').val('');
+            tdId.closest('tr').trigger('click');                        
         },
     })
 
     //handle table row click event for adding product to invoice
     $('#products-table').on('click', 'tbody tr', function () {
-        //event.preventDefault();        
+        //event.preventDefault();               
 
         var invoice = invoiceTableBody
         var clickedRow = $(this);
@@ -796,9 +797,11 @@
             url: urlPayInvoice,
             data: invoiceDetail,
             success: function (result, status, xhr) {
+                
+                //active dimmer
+                activeProductResultsDimmer()
 
                 if (status === 'success') {
-
                     thisBtn.removeClass('loading');
                     modal.html(result);
                     modal.modal('show');
@@ -806,6 +809,9 @@
                     //close this tab
                     var tab = $('.tabular.menu .item[data-tab=' + visibleDataTab + ']');
                     tab.find('.label.close-tab .icon').trigger('click');
+                    
+                    //update product results when success add invoice
+                    updateProductResult();
 
                     setTimeout(function () {
                         modal.modal('hide');
@@ -814,6 +820,8 @@
             },
             error: function (xhr, status, error) {
                 thisBtn.removeClass('loading');
+                //inactive dimmer
+                inactiveProductResultsDimmer()
             }
         });
 
@@ -948,7 +956,38 @@
             find('.close-tab').css('display', 'inline-block');
     }
 
-    
+    //reload product result table 
+    function updateProductResult() {
+        $.ajax({
+            type: "post",
+            url: urlUpdateSearchProduct,
+            data: '',
+            success: function (result, status, xhr) {
+
+                if (status === 'success') {
+
+                    //todo: show status bar                   
+                    showProductsResult(result);
+                    //inactive dimmer
+                    inactiveProductResultsDimmer()
+                }
+            },
+            error: function (xhr, status, error) {
+                //idk what to do right here
+                //inactive dimmer
+                inactiveProductResultsDimmer()
+            }
+        });
+    }
+
+    // active/remove dimmer for product results table
+    function activeProductResultsDimmer() {
+        $('.ui.inverted.dimmer').addClass('active');
+    }
+    function inactiveProductResultsDimmer() {
+        $('.ui.inverted.dimmer').removeClass('active');
+    }
+
     //**********************************format input**********************************
     //customer paid input
 
