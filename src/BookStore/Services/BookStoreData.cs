@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Services
 {
-    public class BookStoreData : IBookStoreData
+    public partial class BookStoreData : IBookStoreData
     {
         private BOOKSTOREContext _context;
 
@@ -295,11 +295,24 @@ namespace BookStore.Services
             }
         }
 
-        public async Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, DateTime when)
+        public async Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time)
         {
+            
+            var now = DateTime.Now;
+            DateTime start = now, end = now;
 
-            DateTime start = when.Date.AddDays(-(int)when.DayOfWeek), // prev sunday 00:00
-                     end = start.AddDays(7); // next sunday 00:00
+            if (time == TimeEnum.Week)
+            {
+                start = now.Date.AddDays(-(int)now.DayOfWeek); // prev sunday 00:00
+                end = start.AddDays(7); // next sunday 00:00
+            }
+            else if (time == TimeEnum.Month)
+            {
+                //start and end day of this month
+                start = new DateTime(now.Year, now.Month, 1);
+                end = start.AddMonths(1).AddDays(-1);
+            }
+
 
             var query = from invoice in _context.DonHang
                         where invoice.NgayLap >= start && invoice.NgayLap < end

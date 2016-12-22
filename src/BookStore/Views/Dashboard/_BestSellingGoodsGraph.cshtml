@@ -1,0 +1,12 @@
+﻿@model List<ProductFilterViewModel>
+
+
+<canvas id="bestSellingGoods" height="200"></canvas>
+
+<script>
+
+    var products = @Html.Raw(Json.Serialize(Model.Select(i => i.Name)));
+    var solds = @Html.Raw(Json.Serialize(Model.Select(i => i.TotalSold)));
+
+</script>
+<script src="~/js/Dashboard/BestSellingGoodsGraph.js"></script>

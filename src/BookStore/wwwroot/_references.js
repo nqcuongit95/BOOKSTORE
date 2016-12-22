@@ -5,6 +5,7 @@
 /// <reference path="js/admin/validation.js" />
 /// <reference path="js/chart.js/Chart.bundle.js" />
 /// <reference path="js/cleave.js/cleave.min.js" />
+/// <reference path="js/dashboard/bestsellinggoodsgraph.js" />
 /// <reference path="js/Dashboard/CustomerGraph.js" />
 /// <reference path="js/Dashboard/Dashboard.js" />
 /// <reference path="js/KhachHang.js" />

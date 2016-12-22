@@ -1,0 +1,12 @@
+﻿@model List<NumberOfCustomersByMonthViewModel>
+
+
+<canvas id="customerChart" height="200"></canvas>
+
+<script>
+
+    var month = @Html.Raw(Json.Serialize(Model.Select(i => i.Month)));
+    var data = @Html.Raw(Json.Serialize(Model.Select(i => i.Total)));
+    
+</script>
+<script src="~/js/Dashboard/CustomerGraph.js"></script>

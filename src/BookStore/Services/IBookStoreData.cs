@@ -1,4 +1,5 @@
 ﻿using BookStore.Entities;
+using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
 using System;
@@ -26,7 +27,7 @@ namespace BookStore.Services
         Task<ProductPriceViewModel> GetPrice(int id, int type);
         Task<bool> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);       
-        Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, DateTime when);
+        Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time);
         Task<CustomerFilterViewModel> GetCustomerById(int id);
         
     }

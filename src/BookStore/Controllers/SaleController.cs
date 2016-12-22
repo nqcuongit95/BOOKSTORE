@@ -80,7 +80,7 @@ namespace BookStore.Controllers
 
             if (keyword == null)
             {
-                var model = await _bookStoreData.GetBestSellingGoods(4, DateTime.Now);
+                var model = await _bookStoreData.GetBestSellingGoods(4, Helper.TimeEnum.Week);
 
                 var result1 = new ProductFilterResults { Results = model };
 
