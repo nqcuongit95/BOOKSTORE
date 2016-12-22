@@ -141,18 +141,24 @@
                     </div>
                 </div>
                 <!-- Thanh toan -->
-                <div class="row">
+                <div class="row" style="padding-top: 0;">
                     <div class="column">
                         <div class="ui dividing header">Thanh toán</div>
                         <table class="ui very basic table" id="payment-table">
                             <tbody>
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
-                                    <td class="ten wide right aligned"></td>
+                                    <td class="ten wide right aligned total-value">                                         
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Chiết khấu</td>
+                                    <td class="ten wide right aligned discount-value"></td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Khách phải trả</td>
-                                    <td class="ten wide right aligned"></td>
+                                    <td class="ten wide right aligned paid-value">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="seven wide">Tiền khách đưa</td>
@@ -221,6 +227,7 @@
     var invoiceObject = [];
 </script>
 
+<link href="~/css/sale.css" rel="stylesheet" />
 <script src="~/js/Numeral-js/numeral.min.js"></script>
 <script src="~/js/cleave.js/cleave.min.js"></script>
 <script src="~/js/Sale/Sale.js"></script>

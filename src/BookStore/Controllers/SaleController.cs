@@ -59,6 +59,7 @@ namespace BookStore.Controllers
                 {
                     Name = "Khách Vãng Lai",
                     Phone = "",
+                    Address="",                    
                     Id = 1   //hard code id for simplicity sake                  
                 });
 
@@ -171,9 +172,9 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var success = await _bookStoreData.AddInvoice(invoice, productDetails);
-
-                if (success)
+                var status = await _bookStoreData.AddInvoice(invoice, productDetails);
+                
+                if (status)
                 {
                     var model1 = new Notification
                     {

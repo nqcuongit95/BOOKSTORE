@@ -22,7 +22,6 @@
 
     numeral.locale('vn');
         
-
     class Payment {
         constructor() {
             this.id = 1;
@@ -50,7 +49,7 @@
         paymentSegment: {
             table: $('#payment-table'),
             totalValue: $('#payment-table tr').eq(0).find('td').eq(1),
-            customerToPlay: $('#payment-table tr').eq(1).find('td').eq(1),
+            customerToPay: $('#payment-table tr').eq(2).find('td').eq(1),
             customerPaid: $('input[name=CustomerPaid]'),
         },
     }
@@ -75,7 +74,6 @@
     var currentInvoiceCount = 1;
     var priceType = 1;
     var invoiceTableBody = saleControl.invoiceTable;
-
 
     var numberInput = '<div class="ui tiny input count-input" style="max-width: 80px">'
                        + '<input type="number" name="count" min="0">'
@@ -178,7 +176,7 @@
             html += '<div class="title">' + product.name + '</div>';
             html += '<div class="description">' + "Có thể bán: " + product.available + '</div>'
             html += '<div class="ui divider" style="margin: 4px 0 4px 0;"></div>'
-            html += '<div class="ui orange tag label price">' + formatedRetailPrice + '</div>'
+            html += '<div class="ui teal tag label price">' + formatedRetailPrice + '</div>'
             html += '<div class="ui label">' + "Mã SP: " + product.id + '</div>'
             html += '</div>'
             html += '</a>'
@@ -258,30 +256,42 @@
         var table = $('#product-results');
         table.empty();
 
-        $.each(response.results, function (index, result) {
-
-            var count = 0;
+        $.each(response.results, function (index, result) {                        
             var data = '<tr>';
 
-            $.each(result, function (key, value) {
-                if (value !== null) {
-                    count++;
-                    //dont show the total sold data
-                    if (count == 6) {
-                        return;
-                    }
+            //id            
+            data += '<td>';
+            data += '<div class="ui label">';
+            data += result.id + '</div>';           
+            data += '</td>';
 
-                    //format value for price
-                    if (count == 3 || count == 4) {
+            //name
+            data += '<td>';
+            data += result.name;
+            data += '</td>';
 
-                        var formatedValue = numeral(value).format('0,0 $');
-                        data += '<td>' + formatedValue + '</td>';
-                        return;
-                    }
+            var formatedValue;
 
-                    data += '<td>' + value + '</td>';
-                }
-            })
+            //retail price
+            formatedValue = numeral(result.retailPrice).format('0,0 $');
+            data += '<td>';
+            data += '<div class="ui teal label">';
+            data += formatedValue + '</div>';
+            data += '</td>'
+
+            //wholesale price
+            formatedValue = numeral(result.wholeSaleprice).format('0,0 $');
+            data += '<td>';
+            data += '<div class="ui yellow label">';
+            data += formatedValue + '</div>';
+            data += '</td>'            
+
+            //available
+            formatedValue = numeral(result.available).format('0,0');
+            data += '<td class="center aligned">';
+            data += '<div class="ui grey label">';
+            data += formatedValue + '</div>';
+            data += '</td>'            
 
             data += '</tr>';
             table.append(data);
@@ -329,15 +339,17 @@
         invoiceObject[index].totalToPay = totalMoneyToPay;
 
         var formatedTotal = numeral(total).format('0,0 $');
-        $('#payment-table tr:eq(0) td:eq(1)').text(formatedTotal).attr('value', total);
-
-        $('#payment-table tr:eq(1) td:eq(1)').text(formatedTotal);
+        
+        saleControl.paymentSegment.totalValue.text(formatedTotal);
+        //$('#payment-table tr:eq(0) td:eq(1)').text(formatedTotal).attr('value', total);
+        saleControl.paymentSegment.customerToPay.text(formatedTotal);
+        //$('#payment-table tr:eq(1) td:eq(1)').text(formatedTotal);
 
     }
 
     //update customer change
     function recalculateCustomerChange() {
-
+        console.log('lul')
         var customerPayTd = $('#paid-money input');
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
@@ -377,10 +389,14 @@
 
         var formatedTotalValue = numeral(payment.totalValue).format('0,0 $');
 
-        $('#payment-table tr:eq(0) td:eq(1)').text(formatedTotalValue)
-                                             .attr('value', payment.totalValue);
-        $('#payment-table tr:eq(1) td:eq(1)').text(formatedTotalValue);
-        $('#payment-table tr:eq(2) td:eq(1) input').val(payment.customerPaid);
+        saleControl.paymentSegment.totalValue.text(formatedTotalValue);        
+        saleControl.paymentSegment.customerToPay.text(formatedTotalValue);
+        saleControl.paymentSegment.customerPaid.val(payment.customerPaid);
+
+        //$('#payment-table tr:eq(0) td:eq(1)').text(formatedTotalValue)
+        //.attr('value', payment.totalValue);
+        //$('#payment-table tr:eq(1) td:eq(1)').text(formatedTotalValue);
+        //$('#payment-table tr:eq(2) td:eq(1) input').val(payment.customerPaid);
 
         //price type               
         $('#price-type').dropdown('set selected', payment.priceType);
@@ -481,7 +497,10 @@
             $(this).find('input[type=hidden]').attr('value', result.id);
         },
         onResults: function (response) {
-            updateCustomer(response.results)
+            //warning: this callback may cause bug
+            console.log('on results: ');
+            console.log(response.results);
+            //updateCustomer(response.results)
             //todo: update value for traveller (khách vãng like)
         }
     });
@@ -561,14 +580,14 @@
 
                 var formatedPrice = numeral(price).format('0,0 $');
 
-                var row = "<tr>";
-                row += "<td>" + id + "</td>";
-                row += "<td>" + name + "</td>";
-                row += "<td>" + numberInput + "</td>"
-                row += "<td>" + normalInput + "</td>";
-                row += "<td>" + formatedPrice + "</td>"
-                row += "<td>" + trashIcon + "</td>"
-                row += "</tr>";
+                var row = '<tr>';
+                row += '<td>' + id + '</td>';
+                row += '<td>' + name + '</td>';
+                row += '<td>' + numberInput + '</td>'
+                row += '<td>' + normalInput + '</td>';
+                row += '<td style="font-weight:bold;">' + formatedPrice + '</td>'
+                row += '<td>' + trashIcon + '</td>'
+                row += '</tr>';
 
                 invoice.append(row);
 
@@ -688,7 +707,8 @@
             customerChangeTd.text(customerChangeFormated);
         }
         else {
-            customerChangeTd.text('0');
+            var formatedZeroChange = numeral(0).format('0,0 $');
+            customerChangeTd.text(formatedZeroChange);
         }
     })
 
@@ -835,7 +855,7 @@
         selectTab(closestTab);
     })
 
-    //helpter function to click on tab
+    //helper function to click on tab
     function selectTab(tab) {
         $(tab).click();
     }
@@ -893,12 +913,12 @@
         updatePayment();
         loadDataTab(payment);
 
-        updateTabCloseIcon()
+        updateTabCloseIcon();
 
         //todo: update ui when switching tab
         $('.top.tabular.menu .item').tab({
             onVisible: function (tabpath) {                
-
+                
                 //reupdate global variable, payment
                 visibleDataTab = tabpath;
                 invoiceTableBody = $('.active.tab.segment tbody');
@@ -908,8 +928,7 @@
                 //load data               
                 var paymentArr = $.grep(invoiceObject, function (e) {
                     return e.invoiceDataTab == tabpath;
-                });
-                //var test = $(this).tab('get path');
+                });                
 
                 loadDataTab(paymentArr[0])
             }

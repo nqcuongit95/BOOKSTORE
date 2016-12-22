@@ -252,7 +252,7 @@ namespace BookStore.Services
                 {
                     var detail = new ChiTietDonHang
                     {
-                        DonHangId = invoice_.Id,
+                        //DonHangId = invoice_.Id,
                         HangHoaId = product.ProductId,
                         SoLuong = product.Count,
                         GiaBan = product.Price
@@ -267,12 +267,25 @@ namespace BookStore.Services
 
                     boughtProduct.TonKho -= product.Count;
 
-                    //and number of products sold as well
+                    //update number of products sold
                     boughtProduct.DaBan += product.Count;
-
+       
                 }
 
+                //finally, add receipt voucher
+                var receiptVoucher = new PhieuThu
+                {
+                    NgayLap = DateTime.Now,
+                    NhanVienId = invoice_.NhanVienId,
+                    TongTien = invoice.CustomerPaid >= invoice.TotalValue ?
+                                   invoice.TotalValue : invoice.CustomerPaid,
+                    LoaiPhieuId = 2 //hard code for tesing, edit later
+                };
+                invoice_.PhieuThu.Add(receiptVoucher);
+
+                //commit transaction
                 _context.SaveChanges();
+
                 return true;
             }
             catch (Exception)
@@ -280,7 +293,6 @@ namespace BookStore.Services
 
                 return false;
             }
-
         }
 
         public async Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, DateTime when)
@@ -336,6 +348,6 @@ namespace BookStore.Services
 
             return result;
         }
-        
+       
     }
 }

@@ -1,0 +1,17 @@
+﻿.total-value, .discount-value{
+    font-weight: bold;    
+}
+
+.paid-value{
+    font-weight:bold;
+    font-size:medium;    
+    color: green;
+}
+
+#payment-table td{
+    padding-bottom: 7px;
+}
+
+#customer-table td{
+    padding-bottom: 7px;
+}
