@@ -46,7 +46,7 @@ namespace BookStore.Controllers
             var model = await selectResult.ToListAsync();
 
             return PartialView("_CustomerRegisterGraph", model);
-            
+
         }
 
         public async Task<IActionResult> BestSellingGoodsGraph()
@@ -55,6 +55,18 @@ namespace BookStore.Controllers
 
             return PartialView("_BestSellingGoodsGraph", model);
 
+        }
+
+        public async Task<IActionResult> LastestActivity()
+        {
+            var model = await _bookStoreData.GetFeeds(8);
+            return PartialView("_LastestActivity",model);
+        }
+
+        public async Task<IActionResult> RevenueStatistic()
+        {
+            var model = await _bookStoreData.GetRevenueStatistics(5, Helper.TimeEnum.Week);
+            return PartialView("_RevenueStatisticsGraph", model);
         }
 
     }

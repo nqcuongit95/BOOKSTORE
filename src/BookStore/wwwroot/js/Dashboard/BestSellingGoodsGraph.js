@@ -1,22 +1,32 @@
 ﻿
-Chart.defaults.global.defaultFontSize = 16;
+Chart.defaults.global.defaultFontSize = 14;
 
 var ctx = document.getElementById("bestSellingGoods");
 
+var formatedProducts = [];
+var maxWidth = 20;
+
+$.each(products, function (index, value) {
+
+    var str = formatLabel(value, 36);
+    formatedProducts.push(str);
+
+})
+
 var myChart = new Chart(ctx, {
     type: 'bar',
-    data: {        
-        labels: products,
+    data: {
+        labels: formatedProducts,
         datasets: [
         {
-            label: "Mặt Hàng",
+            label: "Đã bán",
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 0.9)',
+                'rgba(54, 162, 235, 0.9)',
+                'rgba(255, 206, 86, 0.9)',
+                'rgba(75, 192, 192, 0.9)',
+                'rgba(153, 102, 255, 0.9)',
+                'rgba(255, 159, 64, 0.9)'
             ],
             borderColor: [
                 'rgba(255,99,132,1)',
@@ -38,11 +48,11 @@ var myChart = new Chart(ctx, {
             text: "Mặt Hàng Bán Chạy"
         },
         legend: {
-            position: 'bottom'
+            display: false
         },
         scales: {
             xAxes: [{
-                display: true,
+                display: false,
             }],
             yAxes: [{
                 display: true,
@@ -51,7 +61,7 @@ var myChart = new Chart(ctx, {
         },
         tooltips: {
             mode: 'nearest',
-            intersect: false
+            intersect: true
         }
     }
 });

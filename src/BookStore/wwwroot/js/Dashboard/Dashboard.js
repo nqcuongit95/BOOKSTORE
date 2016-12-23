@@ -18,6 +18,7 @@
         },
         error: function (xhr, status, error) {
             //go the the fucking hell
+            customerRegisterChartSegment.removeClass('loading');
         }
     })
     
@@ -39,6 +40,47 @@
         },
         error: function (xhr, status, error) {
             //go the the fucking hell
+            bestSellingGoodsChartSegment.removeClass('loading');
+        }
+    })
+
+    //get latest activity
+    var latestActivity = $('#latest-activity');
+    $.ajax({
+        type: "post",
+        url: urlLastedActivity,
+        data: '',
+        //dataType: 'json',
+        success: function (result, status, xhr) {
+            if (status === 'success') {
+
+                latestActivity.removeClass('loading');
+                latestActivity.html(result);
+            }
+        },
+        error: function (xhr, status, error) {
+            //go the the fucking hell
+            latestActivity.removeClass('loading');
+        }
+    })
+
+    //render revenue chart
+    var revenueChart = $('#revenue-statistic-chart');
+    $.ajax({
+        type: "post",
+        url: urlRevenueChart,
+        data: '',
+        //dataType: 'json',
+        success: function (result, status, xhr) {
+            if (status === 'success') {
+
+                revenueChart.removeClass('loading');
+                revenueChart.html(result);
+            }
+        },
+        error: function (xhr, status, error) {
+            //go the the fucking hell
+            revenueChart.removeClass('loading');
         }
     })
 });

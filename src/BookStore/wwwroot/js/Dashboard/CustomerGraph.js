@@ -1,5 +1,5 @@
 ﻿
-Chart.defaults.global.defaultFontSize = 16;
+//Chart.defaults.global.defaultFontSize = 16;
 
 var ctx = document.getElementById("customerChart");
 var myChart = new Chart(ctx, {

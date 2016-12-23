@@ -8,5 +8,6 @@
     var month = @Html.Raw(Json.Serialize(Model.Select(i => i.Month)));
     var data = @Html.Raw(Json.Serialize(Model.Select(i => i.Total)));
     
+    jQuery.getScript('/js/Dashboard/CustomerGraph.js');
 </script>
-<script src="~/js/Dashboard/CustomerGraph.js"></script>
+

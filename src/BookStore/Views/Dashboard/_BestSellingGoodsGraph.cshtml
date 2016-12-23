@@ -8,5 +8,9 @@
     var products = @Html.Raw(Json.Serialize(Model.Select(i => i.Name)));
     var solds = @Html.Raw(Json.Serialize(Model.Select(i => i.TotalSold)));
 
+    //jQuery.getScript('/js/Dashboard/FormatLabel.js');
+    //jQuery.getScript('/js/Dashboard/BestSellingGoodsGraph.js');
 </script>
+
+<script src="~/js/Dashboard/FormatLabel.js"></script>
 <script src="~/js/Dashboard/BestSellingGoodsGraph.js"></script>

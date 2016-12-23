@@ -1,5 +1,4 @@
 ﻿<link href="~/css/Dashboard.css" rel="stylesheet" />
-<script src="~/js/chart.js/Chart.bundle.js"></script>
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -68,9 +67,44 @@
 
 </div>
 
+<div class="row">
+    <div class="five wide column">
+        <div class="ui secondary pointing fluid menu">
+            <h4 class="ui header">Hoạt động gần đây</h4>            
+        </div>
+        <div class="ui loading segment"
+             style="height: 460px;"
+             id="latest-activity">
+
+        </div>
+    </div>
+    <div class="eleven wide column">
+        <div class="ui secondary pointing fluid menu">
+            <h4 class="ui header">Doanh thu</h4>
+
+            <div class="right menu">
+                <a class="ui active item" asp-action="Index">
+                    Tuần
+                </a>
+                <a class="ui item" asp-action="Create">
+                    Tháng
+                </a>
+            </div>
+        </div>
+        <div class="ui loading segment"
+             style="height: 460px;"
+             id="revenue-statistic-chart">
+
+        </div>
+    </div>
+</div>
+
 <script>
     var urlCustomerRegisterChart = '@Url.Action("CustomerRegisterGraph", "Dashboard")';
     var urlBestSellingGoodsChart = '@Url.Action("BestSellingGoodsGraph", "Dashboard")';
+    var urlLastedActivity = '@Url.Action("LastestActivity", "Dashboard")';
+    var urlRevenueChart = '@Url.Action("RevenueStatistic", "Dashboard")';
 </script>
 
 <script src="~/js/Dashboard/Dashboard.js"></script>
+<script src="~/js/chart.js/Chart.bundle.js"></script>

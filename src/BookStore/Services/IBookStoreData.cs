@@ -2,6 +2,7 @@
 using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
+using BookStore.ViewModels.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace BookStore.Services
             List<ProductBuyingDetailsViewModel> productDetails);       
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time);
         Task<CustomerFilterViewModel> GetCustomerById(int id);
-        
+        Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
+        Task<List<FeedsViewModel>> GetFeeds(int take);
     }
 }
