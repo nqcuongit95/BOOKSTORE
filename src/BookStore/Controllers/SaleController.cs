@@ -10,6 +10,7 @@ using BookStore.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BookStore.Helper;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -80,7 +81,7 @@ namespace BookStore.Controllers
 
             if (keyword == null)
             {
-                var model = await _bookStoreData.GetBestSellingGoods(4, Helper.TimeEnum.Week);
+                var model = await _bookStoreData.GetBestSellingGoods(4, Helper.TimeEnum.Week,ProductType.Both);
 
                 var result1 = new ProductFilterResults { Results = model };
 

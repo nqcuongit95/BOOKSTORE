@@ -1,24 +1,25 @@
 ﻿$(document).ready(function () {
 
-    ////fortmat input    
-    //numeral.register('locale', 'vn', {
-    //    delimiters: {
-    //        thousands: ',',
-    //        decimal: '.',            
-    //    },
-    //    abbreviations: {
-    //        thousand: 'k',
-    //        million: 'm',
-    //        billion: 'b',
-    //        trillion: 't'
-    //    },
-    //    ordinal: function (number) {
-    //        return '';
-    //    },
-    //    currency: {
-    //        symbol: '₫'
-    //    }
-    //});
+    //preload some products
+    $.ajax({
+        type: "post",
+        url: urlUpdateSearchProduct,
+        data: '',
+        success: function (result, status, xhr) {
+
+            if (status === 'success') {                
+                //todo: show status bar                   
+                showProductsResult(result);
+                //inactive dimmer
+                inactiveProductResultsDimmer()
+            }
+        },
+        error: function (xhr, status, error) {
+            //idk what to do right here
+            //inactive dimmer
+            inactiveProductResultsDimmer()
+        }
+    });
 
     //numeral.locale('vn');
         
@@ -957,7 +958,7 @@
     }
 
     //reload product result table 
-    function updateProductResult() {
+    function updateProductResult() {        
         $.ajax({
             type: "post",
             url: urlUpdateSearchProduct,

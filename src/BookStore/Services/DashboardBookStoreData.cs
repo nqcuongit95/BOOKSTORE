@@ -66,7 +66,7 @@ namespace BookStore.Services
                          {
                              Id = item.Id,
                              FeedType = FeedType.NewCustomer,
-                             Content = Content.NewCustomer,                             
+                             Content = Content.NewCustomer,
                              Icon = "add user blue",
                              Time = item.NgayLap
                          };
@@ -94,7 +94,7 @@ namespace BookStore.Services
                              FeedType = FeedType.ReceiptVoucher,
                              Content = Content.ReceiptVoucher,
                              Icon = "dollar yellow",
-                             Value= item.TongTien,
+                             Value = item.TongTien,
                              Time = item.NgayLap
                          };
             var lastestReceiptVoucher = await query4.Take(take).ToListAsync();
@@ -128,7 +128,7 @@ namespace BookStore.Services
 
             return feeds;
         }
-
+        //helper function
         public string GetTimeline(DateTime time)
         {
             bool isYesterday = DateTime.Today - time.Date == TimeSpan.FromDays(1);
@@ -139,11 +139,11 @@ namespace BookStore.Services
             }
             else if (time.Date == DateTime.Today)
             {
-                bool lessThanTwoHours = time.ToUniversalTime().AddHours(2) >= DateTime.UtcNow;                
+                bool lessThanTwoHours = time.ToUniversalTime().AddHours(2) >= DateTime.UtcNow;
                 //just hard code...
                 if (lessThanTwoHours)
                 {
-                    var justNow =  DateTime.UtcNow - time.ToUniversalTime();
+                    var justNow = DateTime.UtcNow - time.ToUniversalTime();
 
                     if (justNow.Minutes <= 3 && justNow.Hours == 0)
                     {
@@ -155,13 +155,127 @@ namespace BookStore.Services
                     formated += justNow.Minutes != 0 ? justNow.Minutes + " phút" : "";
 
                     return formated;
-                }                
+                }
 
                 return TimelineDescriptor.Today + time.ToString("HH:mm");
             }
-            
+
             return time.ToString("MM/dd/yyyy HH:mm",
                                 CultureInfo.InvariantCulture);
         }
+        public string FormatDecimalValue(decimal val)
+        {
+            return val.ToString("N0") + " đ";
+        }
+        public async Task<TransactionStatisticsViewModel> GetTransactionStatistics()
+        {
+            var statistics = new TransactionStatisticsViewModel();
+
+            var totalTransactionValues = await _context.DonHang.SumAsync(i => i.TongTien);
+            statistics.TotalTransactionValues = totalTransactionValues.ToString("N0");
+
+            //today transaction
+            var todayTransaction = await _context.DonHang.Where(i => i.NgayLap.Date == DateTime.Today)
+                                                         .SumAsync(i => i.TongTien);
+            statistics.TodayTransactionValues = FormatDecimalValue(todayTransaction);
+
+            //today revenue
+            var todayRevenue = await _context.PhieuThu.Where(r => r.NgayLap.Date == DateTime.Today)
+                                                      .SumAsync(r => r.TongTien);
+            statistics.TodayRevenue = FormatDecimalValue(todayRevenue);
+
+            return statistics;
+        }
+
+        public async Task<CustomerStatisticsViewModel> GetCustomerStatistics()
+        {
+            var statistics = new CustomerStatisticsViewModel();
+
+            //total customer
+            var totalCustomer = await _context.KhachHang.CountAsync();
+            statistics.TotalCustomers = totalCustomer;
+
+            //number of new customers
+            var now = DateTime.Now;
+            DateTime start, end;
+            start = now.Date.AddDays(-(int)now.DayOfWeek); // prev sunday 00:00
+            end = start.AddDays(7); // next sunday 00:00
+
+            var newThisWeek = await _context.KhachHang
+                             .CountAsync(c => c.NgayLap >= start && c.NgayLap < end);
+
+            statistics.TotalNewCumstomers = newThisWeek;
+
+            //total liabilities
+            //var query = await (from receiptVoucher in _context.PhieuThu
+            //                   group receiptVoucher by receiptVoucher.DonHangId).ToListAsync();
+
+            var query = await (from invoice in _context.DonHang
+                               join receiptVoucher in _context.PhieuThu
+                               on invoice.Id equals receiptVoucher.DonHangId into joined
+                               from j in joined.DefaultIfEmpty()
+                               group j by invoice.Id).ToListAsync();            
+
+            var totalLiabilities = query.Select((r) =>
+           {
+               var receiptStatistic = r.Aggregate(new ReceiptVoucherStatistics(),
+                                                   (acc, c) => acc.Accumulate(c),
+                                                   acc => acc.Compute());
+
+               var invoice = _context.DonHang.FirstOrDefault(i => i.Id == r.Key);
+
+               return new
+               {
+                   Id = r.Key,
+                   Liabilities = invoice.TongTien - receiptStatistic.TotalValue
+               };
+
+           }).Sum(o => o.Liabilities);
+
+            statistics.CustomerLiabilities = FormatDecimalValue(totalLiabilities);
+
+            return statistics;
+        }
+
+        public async Task<ProductStatisticViewModel> GetProductStatistics()
+        {
+            var statistics = new ProductStatisticViewModel();
+
+            //count product
+            var query = from product in _context.HangHoa
+                        group product by product.LoaiHangHoaId
+                        into grProduct
+                        select new
+                        {
+                            Id = grProduct.Key,
+                            Total = grProduct.Count()
+                        };
+
+            var countProducts = await query.ToListAsync();
+            if (countProducts.ElementAtOrDefault(0) != null)
+            {
+                statistics.TotalBooks = countProducts[0].Total;
+            }
+
+            if (countProducts.ElementAtOrDefault(1) != null)
+            {
+                statistics.TotalStationerys = countProducts[1].Total;
+            }
+
+            //best selling book right now
+            var bestSellingBook = await GetBestSellingGoods(1, TimeEnum.Week, ProductType.Book);
+            statistics.BestSellingBook = new BestSellingProduct
+            {
+                Id = bestSellingBook.First().Id,
+                Name = bestSellingBook.First().Name,
+                Solds = bestSellingBook.First().TotalSold
+            };
+
+            //number of return products
+
+
+            return statistics;
+        }
+
     }
 }

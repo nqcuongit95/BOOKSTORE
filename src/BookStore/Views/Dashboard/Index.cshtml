@@ -17,8 +17,16 @@
 </div>
 
 
-@await Component.InvokeAsync("Statistics")
-
+@*@await Component.InvokeAsync("Statistics")*@
+<div class="row">
+    <div class="column">
+        <div class="ui three cards">
+            @await Component.InvokeAsync("ProductStatistics")
+            @await Component.InvokeAsync("TransactionStatistics")            
+            @await Component.InvokeAsync("CustomerStatistics")
+        </div>
+    </div>
+</div>
 <div class="two column row">
 
     @*@await Component.InvokeAsync("CustomerGraph")
@@ -37,7 +45,7 @@
             </div>
         </div>
         <!--chart go here-->
-        <div class="ui loading segment" 
+        <div class="ui loading segment"
              style="height: 360px;"
              id="customer-register-chart">
 
@@ -70,7 +78,7 @@
 <div class="row">
     <div class="five wide column">
         <div class="ui secondary pointing fluid menu">
-            <h4 class="ui header">Hoạt động gần đây</h4>            
+            <h4 class="ui header">Hoạt động gần đây</h4>
         </div>
         <div class="ui loading segment"
              style="height: 460px;"

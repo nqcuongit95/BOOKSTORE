@@ -138,9 +138,8 @@ namespace BookStore.Services
         {
             return await _context.Users.ToListAsync();
         }
-
         public async Task<CustomerFilterResults> FindCustomer(string value)
-        {            
+        {
             if (value.All(char.IsDigit))
             {
                 var query2 = from customer in _context.KhachHang
@@ -229,6 +228,17 @@ namespace BookStore.Services
         {
             try
             {
+                //check if product details is valid
+                foreach (var details in productDetails)
+                {
+                    var product = await _context.HangHoa.Where(p => p.Id == details.ProductId).FirstOrDefaultAsync();
+
+                    if (product == null || (details.Count > product.TonKho))
+                    {
+                        return false;
+                    }
+                }
+
                 //add invoice
                 var userId = (from user in _context.Staff
                               where user.UserName == invoice.Staff
@@ -270,20 +280,22 @@ namespace BookStore.Services
 
                     //update number of products sold
                     boughtProduct.DaBan += product.Count;
-       
+
                 }
 
                 //finally, add receipt voucher
-                var receiptVoucher = new PhieuThu
+                if (invoice.CustomerPaid > 0)
                 {
-                    NgayLap = DateTime.Now,
-                    NhanVienId = invoice_.NhanVienId,
-                    TongTien = invoice.CustomerPaid >= invoice.TotalValue ?
-                                   invoice.TotalValue : invoice.CustomerPaid,
-                    LoaiPhieuId = 2 //hard code for tesing, edit later
-                };
-                invoice_.PhieuThu.Add(receiptVoucher);
-
+                    var receiptVoucher = new PhieuThu
+                    {
+                        NgayLap = DateTime.Now,
+                        NhanVienId = invoice_.NhanVienId,
+                        TongTien = invoice.CustomerPaid >= invoice.TotalValue ?
+                                       invoice.TotalValue : invoice.CustomerPaid,
+                        LoaiPhieuId = 2 //hard code for tesing, edit later
+                    };
+                    invoice_.PhieuThu.Add(receiptVoucher);
+                }
                 //commit transaction
                 _context.SaveChanges();
 
@@ -296,9 +308,9 @@ namespace BookStore.Services
             }
         }
 
-        public async Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time)
+        public async Task<List<ProductFilterViewModel>>
+            GetBestSellingGoods(int take, TimeEnum time, ProductType type)
         {
-            
             var now = DateTime.Now;
             DateTime start = now, end = now;
 
@@ -313,7 +325,6 @@ namespace BookStore.Services
                 start = new DateTime(now.Year, now.Month, 1);
                 end = start.AddMonths(1).AddDays(-1);
             }
-
 
             var query = from invoice in _context.DonHang
                         where invoice.NgayLap >= start && invoice.NgayLap < end
@@ -331,37 +342,47 @@ namespace BookStore.Services
                                             acc => acc.Compute());
 
                 var product = (from pro in _context.HangHoa
-                              where pro.Id == g.Key
-                              select pro).First();
+                               where pro.Id == g.Key
+                               select pro).First();
 
                 return new ProductFilterViewModel
                 {
                     Id = g.Key,
+                    ProductTypeId = product.LoaiHangHoaId,
                     TotalSold = statistic.TotalSold,
                     Name = product.TenHangHoa,
                     Available = product.TonKho,
                     RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
                     WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0
                 };
-            }).OrderByDescending(i=>i.TotalSold).Take(take).ToList();
+            }).OrderByDescending(i => i.TotalSold);
 
-            return query2;
+            List<ProductFilterViewModel> results;
+
+            if (type == ProductType.Both)
+            {
+                results = query2.Take(take).ToList();
+                return results;
+            }
+
+            results = query2.Where(f => f.ProductTypeId == (int)type).Take(take).ToList();
+
+            return results;
         }
 
         public async Task<CustomerFilterViewModel> GetCustomerById(int id)
         {
             var result = await (from customer in _context.KhachHang
                                 where customer.Id == id
-                               select new CustomerFilterViewModel
-                               {
-                                   Id= customer.Id,
-                                   Name= customer.TenKhachHang,
-                                   Address = customer.DiaChi,
-                                   Phone = customer.SoDienThoai
-                               }).FirstOrDefaultAsync();
+                                select new CustomerFilterViewModel
+                                {
+                                    Id = customer.Id,
+                                    Name = customer.TenKhachHang,
+                                    Address = customer.DiaChi,
+                                    Phone = customer.SoDienThoai
+                                }).FirstOrDefaultAsync();
 
             return result;
         }
-        
     }
 }

@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 
 namespace BookStore.ViewComponents.Dashboard
 {
-    public class RevenueGraphViewComponent : ViewComponent
+    public class ProductStatisticsViewComponent : ViewComponent
     {
         private IBookStoreData _bookStoreData;
 
-        public RevenueGraphViewComponent(IBookStoreData bookStoreData)
+        public ProductStatisticsViewComponent(IBookStoreData bookStoreData)
         {
             _bookStoreData = bookStoreData;
         }
 
-        public IViewComponentResult Invoke()
-        {            
-            return View();
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var model = await _bookStoreData.GetProductStatistics();
+
+            return View("Default", model);
         }
 
     }

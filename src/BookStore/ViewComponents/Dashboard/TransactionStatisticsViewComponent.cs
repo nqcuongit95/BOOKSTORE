@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace BookStore.ViewComponents.Dashboard
 {
-    public class StatisticsViewComponent : ViewComponent
+    public class TransactionStatisticsViewComponent : ViewComponent
     {
         private IBookStoreData _bookStoreData;
 
-        public StatisticsViewComponent(IBookStoreData bookStoreData)
+        public TransactionStatisticsViewComponent(IBookStoreData bookStoreData)
         {
             _bookStoreData = bookStoreData;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _bookStoreData.GetStatisticsInformation();
+            var model = await _bookStoreData.GetTransactionStatistics();
 
-            return View("Default", model);
+            return View("Default",model);
         }
     }
 }

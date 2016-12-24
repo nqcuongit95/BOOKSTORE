@@ -51,12 +51,11 @@ namespace BookStore.Controllers
 
         public async Task<IActionResult> BestSellingGoodsGraph()
         {
-            var model = await _bookStoreData.GetBestSellingGoods(6, Helper.TimeEnum.Week);
+            var model = await _bookStoreData.GetBestSellingGoods(6, Helper.TimeEnum.Week,Helper.ProductType.Both);
 
             return PartialView("_BestSellingGoodsGraph", model);
 
         }
-
         public async Task<IActionResult> LastestActivity()
         {
             var model = await _bookStoreData.GetFeeds(8);

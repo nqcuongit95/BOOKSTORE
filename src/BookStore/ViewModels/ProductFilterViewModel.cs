@@ -9,6 +9,7 @@ namespace BookStore.ViewModels
     public class ProductFilterViewModel
     {
         public int Id { get; set; }
+        public int ProductTypeId { get; set; }
         public string Name { get; set; }
         public decimal RetailPrice { get; set; }
         public decimal WholeSaleprice { get; set; }
