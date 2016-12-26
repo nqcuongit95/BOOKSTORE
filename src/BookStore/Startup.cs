@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Services;
+using BookStore.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BookStore
 {
@@ -46,6 +48,18 @@ namespace BookStore
                 options => options.UseSqlServer(Configuration.GetConnectionString("BookStore")));
 
             services.AddScoped<IBookStoreData, BookStoreData>();
+
+            services.AddIdentity<Staff, Role>(
+                    config =>
+                    {
+                        config.User.RequireUniqueEmail = false;
+                        config.Password.RequiredLength = 6;
+                        config.Password.RequireUppercase = false;
+                        config.Password.RequireNonAlphanumeric = false;
+                        config.Password.RequireDigit = false;
+                        config.Password.RequireLowercase = false;
+                    })
+                    .AddEntityFrameworkStores<BOOKSTOREContext,int>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +83,8 @@ namespace BookStore
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

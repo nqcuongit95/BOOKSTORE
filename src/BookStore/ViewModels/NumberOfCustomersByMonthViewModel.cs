@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.ViewModels
 {
-    public class Class
+    public class NumberOfCustomersByMonthViewModel
     {
+        public string Month { get; set; }
+        public int Total { get; set; }
     }
 }

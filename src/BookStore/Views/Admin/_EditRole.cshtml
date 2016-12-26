@@ -1,0 +1,48 @@
+﻿@model RoleViewModel
+
+<div class="header">
+    Sửa Quyền
+</div>
+<div class="content">
+    <div class="ui centered grid">
+        <div class="ten wide column">
+            <form class="ui form"
+                  method="post"                  
+                  asp-antiforgery="true"
+                  id="updateForm">
+
+                <div class="field">
+                    <label asp-for="Name"></label>
+                    <div class="ui left icon labeled input">
+                        <input type="text" asp-for="Name"                               
+                               value="@Model.Name"
+                               data-validate="valid-role">
+
+                        <i class="unlock icon"></i>
+                        <div class="ui corner label">
+                            <i class="asterisk icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label asp-for="Description"></label>
+                    <div class="ui left icon labeled input">
+                        <textarea type="textarea"
+                                  asp-for="Description"
+                                  value="@Model.Description"
+                                  rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="ui message" asp-validation-summary="ModelOnly"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="actions">
+    <button class="ui positive right labeled icon button">
+        Cập Nhật
+        <i class="checkmark icon"></i>
+    </button>
+    <button class="ui cancel button" id="testbtn">Hủy Bỏ</button>
+</div>

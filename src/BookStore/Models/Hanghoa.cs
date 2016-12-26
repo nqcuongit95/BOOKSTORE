@@ -14,7 +14,7 @@ namespace BookStore.Models
         }
 
         public int Id { get; set; }
-        public DateTime? NgayTao { get; set; }
+        public DateTime? NgayLap { get; set; }
         public string TenHangHoa { get; set; }
         public int LoaiHangHoaId { get; set; }
         public int TonKho { get; set; }

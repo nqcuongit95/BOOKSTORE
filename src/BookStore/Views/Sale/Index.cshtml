@@ -1,0 +1,200 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Bán Hàng";
+}
+
+<div class="row">
+
+    <div class="twelve wide column">
+        <div class="ui grid">
+            <!-- Mặt hàng-->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui top attached menu">
+                        <div class="header item">Hàng hóa</div>
+                        <a class="item" asp-action="Index">
+                            <i class="filter icon"></i>
+                            Lọc
+                        </a>
+                        <div class="right menu">
+                            <div class="ui search item"
+                                 style="width: 300px;"
+                                 id="product-input">
+                                <div class="ui transparent icon input">
+                                    <input class="prompt"
+                                           type="text"
+                                           placeholder="Tìm kiếm hàng hóa...">
+                                    <i class="search link icon"></i>
+                                </div>
+                                <div class="results" style="text-overflow:ellipsis;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui bottom attached segment"
+                         style="height:160px;overflow-y:scroll;">
+                        <table class="ui very basic selectable table" id="products-table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="eight wide">Tên hàng</th>
+                                    <th class="two wide">Giá lẻ</th>
+                                    <th class="two wide">Giá sỉ</th>
+                                    <th class="two wide">Có thể bán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-results"></tbody>
+                        </table>
+                    </div>
+                    <div class="ui top attached tabular menu">
+                        <div class="active item">Đơn hàng 1</div>
+                    </div>
+                    <div class="ui bottom attached active tab segment"
+                         style="height:330px;">
+                        <form id="invoice-form">
+                            <table class="ui very basic table">
+                                <thead>
+                                    <tr>
+                                        <th class="two wide">Mã hàng</th>
+                                        <th class="six wide">Tên hàng</th>
+                                        <th class="two wide">Số lượng</th>
+                                        <th class="two wide">Đơn giá</th>
+                                        <th class="three wide">Thành tiền</th>
+                                        <th class="one wide"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoice-table"></tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four wide column">
+        <form id="payment-form">
+            <div class="ui grid">
+                <!-- Khach hang -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Khách hàng</div>
+                        <div class="ui fluid search">
+                            <div class="ui icon input">
+                                <input class="prompt"                                       
+                                       type="text" 
+                                       placeholder="Vãng Lai">
+                                <input type="hidden" name="CustomerId" value="" />
+                                <i class="search icon"></i>
+                            </div>
+                            <div class="results"></div>
+                        </div>
+                        <table class="ui very basic fixed single line table" id="customer-table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Điện thoại</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Địa chỉ</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Loại giá</td>
+                                    <td class="ten wide right aligned"
+                                        style="overflow:visible;">
+                                        <div class="ui compact selection dropdown" id="price-type">
+                                            <input name="pricetype" type="hidden">
+                                            <div class="text">Bán lẻ</div>
+                                            <i class="dropdown icon"></i>
+                                            <div class="menu">
+                                                <div class="item" data-value="2">Bán sỉ</div>
+                                                <div class="item active selected"
+                                                     data-value="1">Bán lẻ</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Nhân viên</td>
+                                    <td class="ten wide right aligned">
+                                        <div class="ui basic large label">
+                                            @Model
+                                            <input type="hidden" 
+                                                   name="StaffId"
+                                                   value="@User.Identity.Name" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Thanh toan -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Thanh toán</div>
+                        <table class="ui very basic table" id="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Tổng tiền</td>
+                                    <td class="ten wide right aligned">                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Khách phải trả</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="seven wide">Tiền khách đưa</td>
+                                    <td class="nine wide right aligned">
+                                        <div class="ui input"
+                                             style="width: 140px;"
+                                             id="paid-money">
+                                            <input type="text"
+                                                   name="CustomerPaid"
+                                                   style="text-align:right;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Tiền thừa</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="full-width">
+                                <tr>
+                                    <th colspan="2" class="right aligned">
+                                        <div class="ui positive button" id="pay">Thanh toán</div>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ui tiny modal" id="notify-modal">
+</div>
+
+<div class="ui tiny modal" id="invoice-modal">
+    <div class="header"> Không tạo được đơn hàng </div>
+    <div class="content"> Giá trị đơn hàng phải lớn hơn 0 </div>
+    <div class="actions">
+        <div class="ui blue labeled icon cancel button">
+            <i class="share icon"></i> Quay lại
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var urlSearch = '@Url.Action("FindCustomer", "Sale")';
+    var urlSearchProduct = '/Sale/FindProduct?keyword={query}';
+    var urlPriceType = '@Url.Action("UpdatePriceType", "Sale")';
+    var urlPayInvoice = '@Url.Action("PayInvoice","Sale")';
+</script>
+<script src="~/js/Sale.js"></script>

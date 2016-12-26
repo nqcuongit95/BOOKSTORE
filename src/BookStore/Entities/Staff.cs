@@ -19,6 +19,7 @@ namespace BookStore.Entities
             PhieuThu = new HashSet<PhieuThu>();
             PhieuTraHang = new HashSet<PhieuTraHang>();
             PhieuTraNhapHang = new HashSet<PhieuTraNhapHang>();
+            PhieuNhanHang = new HashSet<PhieuNhanHang>();
         }
         public string FullName { get; set; }
         public DateTime? DateCreate { get; set; }
@@ -29,6 +30,6 @@ namespace BookStore.Entities
         public virtual ICollection<PhieuKiemKho> PhieuKiemKho { get; set; }
         public virtual ICollection<PhieuNhapHang> PhieuNhapHang { get; set; }
         public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }        
-
+        public virtual ICollection<PhieuNhanHang> PhieuNhanHang { get; set; }
     }
 }

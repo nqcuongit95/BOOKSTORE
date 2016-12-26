@@ -1,0 +1,28 @@
+﻿<link href="~/css/Dashboard.css" rel="stylesheet" />
+<script src="~/js/chart.js/Chart.bundle.js"></script>
+
+@{
+    ViewData["Title"] = "Dashboard";
+    
+}
+
+<div class="row equal width">
+    <div class="column">
+        <h2 class="ui header">Tổng Quan</h2>
+    </div>
+    
+    <div class="column">
+        
+    </div>
+
+</div>
+
+
+@await Component.InvokeAsync("Statistics")
+
+<div class="two column row">
+
+    @await Component.InvokeAsync("CustomerGraph")
+    @await Component.InvokeAsync("RevenueGraph")
+
+</div>

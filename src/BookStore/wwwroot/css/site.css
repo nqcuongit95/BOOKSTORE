@@ -17,12 +17,12 @@
 }*/
 
 .ui.main.grid {
-    left: 18.75%;
+    left: 10.5%;
     position: relative;
-    width: 81.25%;
+    width: 100%;
 }
 
-.ui.fixed.main.menu {
+.ui.fixed.main.menu.responsive {
     display: none;
 }
 
@@ -44,7 +44,7 @@
         display: none;
     }
 
-    .ui.fixed.main.menu {
+    .ui.fixed.main.menu.responsive {
         display: block;
     }
 
@@ -69,7 +69,7 @@
         display: none;
     }
 
-    .ui.fixed.main.menu {
+    .ui.fixed.main.menu.responsive {
         display: block;
     }
 
@@ -85,7 +85,7 @@
 /*PC Only*/
 
 @media only screen and (min-width: 992px) {
-    .ui.fixed.main.menu {
+    .ui.fixed.main.menu.responsive {
         display: none;
     }
 
@@ -93,3 +93,22 @@
         display: block;
     }
 }
+
+
+.ui.fixed.top.menu {
+    background-color: #FFFFFF;
+    padding-top: 10px;
+    transition: all 0.5s ease;
+}
+
+.ui.sticky.menu {
+    transition: all 0.5s ease;
+}
+
+@media only screen and (min-width: 768px) {
+    .ui.tiny.modal {
+        width: 50%;
+        margin: 0em 0em 0em -25%;
+    }
+}
+

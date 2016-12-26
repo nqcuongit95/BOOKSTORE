@@ -1,0 +1,17 @@
+﻿.sub.header{
+    font-size:small !important;
+}
+
+.form-label{
+    font-size:small !important;    
+    float: right !important;
+}
+
+.icon.disabled.item{
+    pointer-events: none;
+}
+
+#infoi {
+  
+}
+

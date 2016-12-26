@@ -1,0 +1,72 @@
+﻿@model RegisterUserViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+
+<div class="six wide column">
+    <form class="ui large form" method="post" 
+          asp-action="Register" 
+          asp-antiforgery="true"
+          id="register-form">
+        <h3 class="ui dividing center aligned header">Tạo Tài Khoản</h3>
+        <div class="field">
+            <label asp-for="@Model.FullName"></label>
+            <div class="ui left icon labeled input">
+                <input type="text" asp-for="@Model.FullName" 
+                       placeholder="Họ tên"
+                       data-validate="valid-fullname">
+                <i class="student icon"></i>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="@Model.Username"></label>
+            <div class="ui left icon labeled input">                
+                <input type="text" asp-for="@Model.Username" 
+                       placeholder="Tài khoản"
+                       data-validate="valid-username">
+                <i class="user icon"></i>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="@Model.Password"></label>
+            <div class="ui left icon labeled input">                
+                <input type="password" 
+                       asp-for="@Model.Password" 
+                       placeholder="Mật khẩu"
+                       data-validate="valid-password">
+                <i class="lock icon"></i>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="@Model.ConfirmPassword"></label>
+            <div class="ui left icon labeled input">                
+                <input type="password" 
+                       asp-for="@Model.ConfirmPassword" 
+                       placeholder="Xác nhận mật khẩu"
+                       data-validate="valid-confirm-password">
+                <i class="lock icon"></i>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="ui horizontal divider">
+            <button class="ui primary submit button centered">Đăng Ký</button>
+        </div>        
+        <div class="ui message" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+<script src="~/js/Account.js"></script>

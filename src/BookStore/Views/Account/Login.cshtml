@@ -1,0 +1,54 @@
+﻿@model LoginViewModel
+
+@{
+    ViewBag.Title = "Đăng Nhập";
+
+}
+
+<h4 class="ui horizontal divider">
+    Đăng Nhập Để Tiếp Tục
+</h4>
+<div class="seven wide column" >
+    <div class="ui segment">
+        <h3 class="ui dividing center aligned header">Đăng Nhập</h3>
+        <form class="ui large form" id="loginForm" 
+              asp-action="Login"           
+              asp-antiforgery="true">
+            <div class="required field">
+                <label>Tài Khoản</label>
+                <div class="ui left icon input">
+                    <input placeholder="Tài khoản" asp-for="@Model.Username"
+                           type="text"
+                           data-validate="valid-user">
+                    <i class="user icon"></i>                    
+                </div>                
+            </div>
+            <div class="required field">
+                <label>Mật Khẩu</label>
+                <div class="ui left icon input">
+                    <input placeholder="Mật khẩu" asp-for="@Model.Password"
+                           type="password"
+                           data-validate="valid-password">
+                    <i class="lock icon"></i>                    
+                </div>                
+            </div>
+            <div class="inline field">
+                <div class="ui checkbox">
+                    <input type="checkbox" asp-for="@Model.RememberMe">
+                    <label asp-for="@Model.RememberMe"></label>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+
+            <button class="ui primary fluid submit button" type="submit">Login</button>
+            <div class="ui error message" id="error-message"></div>
+
+            <div class="ui message" 
+                 asp-validation-summary="ModelOnly">
+            </div>
+        </form>
+    </div>    
+</div>
+
+<script src="~/js/LoginForm.js"></script>
+

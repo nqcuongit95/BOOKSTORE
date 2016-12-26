@@ -1,0 +1,84 @@
+﻿@model KhachHangViewModel
+
+@{
+    ViewData["Title"] = "Thêm Khách Hàng";
+}
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Khách Hàng</h2>
+
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+            <a class="ui item" asp-action="Index">
+                Danh Sách
+            </a>
+            <a class="ui active item" asp-action="Create">
+                Thêm Mới
+            </a>
+
+        </div>
+    </div>
+}
+
+<div class="row right aligned">
+    <div class="ui header">
+        Thêm Mới Khách Hàng
+    </div>
+</div>
+<div class="ui ten wide column">
+
+    <form class="ui form" asp-action="Create" id="create-customer">
+        <div class="two fields">
+            <div class="required field">
+                <label>Tên Khách Hàng</label>
+                <input type="text"
+                       asp-for="@Model.KhachHang.TenKhachHang"
+                       placeholder="Tên"
+                       data-validate="valid-name">
+
+            </div>
+            <div class="required field">
+                <label>Loại Khách Hàng</label>
+                <select class="ui fluid dropdown"
+                        asp-for="@Model.KhachHang.LoaiKhachHangId"
+                        asp-items="@Model.LoaiKhachHang"
+                        data-validate="valid-customer-type"></select>
+            </div>
+        </div>
+        <div class="required field">
+            <label>Số Điện Thoại</label>
+            <input type="text"
+                   asp-for="@Model.KhachHang.SoDienThoai"
+                   placeholder="Số điện thoại"
+                   data-validate="valid-phone">
+        </div>
+        <div class="required field">
+            <label>Địa Chỉ</label>
+            <input type="text"
+                   asp-for="@Model.KhachHang.DiaChi"
+                   placeholder="Địa chỉ"
+                   data-validate="valid-address">
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <input type="text"
+                   asp-for="@Model.KhachHang.Email"
+                   placeholder="Email"
+                   data-validate="valid-email">
+        </div>
+        <button class="ui primary submit button" type="submit">Thêm</button>
+        <div class="ui reset button">Xóa</div>
+
+        <div class="ui error message" id="error-message"></div>
+        
+    </form>
+</div>
+
+<script src="~/js/KhachHang.js"></script>
+

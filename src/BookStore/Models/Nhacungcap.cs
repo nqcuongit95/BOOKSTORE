@@ -7,15 +7,15 @@ namespace BookStore.Models
     {
         public NhaCungCap()
         {
-            ChiTietPhieuNhapHang = new HashSet<ChiTietPhieuNhapHang>();
             HangHoa = new HashSet<HangHoa>();
+            PhieuNhapHang = new HashSet<PhieuNhapHang>();
         }
 
         public int Id { get; set; }
         public string TenNhaCungCap { get; set; }
         public DateTime NgayLap { get; set; }
 
-        public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
         public virtual ICollection<HangHoa> HangHoa { get; set; }
+        public virtual ICollection<PhieuNhapHang> PhieuNhapHang { get; set; }
     }
 }
