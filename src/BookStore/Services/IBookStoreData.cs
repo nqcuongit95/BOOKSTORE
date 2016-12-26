@@ -35,5 +35,6 @@ namespace BookStore.Services
         Task<TransactionStatisticsViewModel> GetTransactionStatistics();
         Task<CustomerStatisticsViewModel> GetCustomerStatistics();
         Task<ProductStatisticViewModel> GetProductStatistics();
+        Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
     }
 }

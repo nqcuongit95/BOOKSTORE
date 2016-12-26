@@ -29,29 +29,19 @@ namespace BookStore.Controllers
             return View();
         }
 
-        public async Task<IActionResult> CustomerRegisterGraph()
+        public async Task<IActionResult> CustomerRegisterGraph(int when = 3)
         {
-
-            var query = _bookStoreData.GetAllKhachHang();
-
-            var selectResult = from customer in query
-                               group customer by customer.NgayLap.Month
-                    into groupCustomer
-                               select new NumberOfCustomersByMonthViewModel
-                               {
-                                   Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(groupCustomer.Key),
-                                   Total = groupCustomer.Count()
-                               };
-
-            var model = await selectResult.ToListAsync();
+            var timeline = (Helper.TimeEnum)when;
+            var model = await _bookStoreData.GetCustomerRegisterStatistics();  
 
             return PartialView("_CustomerRegisterGraph", model);
 
         }
-
-        public async Task<IActionResult> BestSellingGoodsGraph()
+        public async Task<IActionResult> BestSellingGoodsGraph(int when = 3)
         {
-            var model = await _bookStoreData.GetBestSellingGoods(6, Helper.TimeEnum.Week,Helper.ProductType.Both);
+            var timeline = (Helper.TimeEnum)when;
+
+            var model = await _bookStoreData.GetBestSellingGoods(6, timeline, Helper.ProductType.Both);
 
             return PartialView("_BestSellingGoodsGraph", model);
 
@@ -59,14 +49,15 @@ namespace BookStore.Controllers
         public async Task<IActionResult> LastestActivity()
         {
             var model = await _bookStoreData.GetFeeds(8);
-            return PartialView("_LastestActivity",model);
+            return PartialView("_LastestActivity", model);
         }
 
-        public async Task<IActionResult> RevenueStatistic()
+        public async Task<IActionResult> RevenueStatistic(int when = 2)
         {
-            var model = await _bookStoreData.GetRevenueStatistics(5, Helper.TimeEnum.Week);
+            var timeline = (Helper.TimeEnum)when;
+            var model = await _bookStoreData.GetRevenueStatistics(5, timeline);
             return PartialView("_RevenueStatisticsGraph", model);
         }
-
+        
     }
 }

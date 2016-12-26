@@ -83,4 +83,39 @@
             revenueChart.removeClass('loading');
         }
     })
+
+    //handle view by week, month
+    //customer chart
+    $('#best-selling-item a').on('click', function (event) {
+
+        event.preventDefault();
+
+        menuItem = $(this);        
+        menuItem.siblings().removeClass('active');
+        menuItem.addClass('active');
+
+        bestSellingGoodsChartSegment.empty();
+        bestSellingGoodsChartSegment.addClass('loading');
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            type: "post",
+            url: url,
+            data: '',
+            //dataType: 'json',
+            success: function (result, status, xhr) {
+                if (status === 'success') {
+
+                    bestSellingGoodsChartSegment.removeClass('loading');
+                    bestSellingGoodsChartSegment.html(result);
+                }
+            },
+            error: function (xhr, status, error) {
+                //go the the fucking hell
+                bestSellingGoodsChartSegment.removeClass('loading');
+            }
+        })
+    })
+
 });

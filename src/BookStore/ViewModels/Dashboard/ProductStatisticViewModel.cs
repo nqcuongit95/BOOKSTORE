@@ -10,7 +10,7 @@ namespace BookStore.ViewModels.Dashboard
     {
         public int TotalBooks { get; set; }
         public int TotalStationerys { get; set; }
-        public int TotalReturnToday { get; set; }
+        public int TotalReturnThisWeek { get; set; }
         public BestSellingProduct BestSellingBook { get; set; }        
 
     }
@@ -20,8 +20,6 @@ namespace BookStore.ViewModels.Dashboard
         public int Id { get; set; }
         public string Name { get; set; }
         public int Solds { get; set; }
-
-
     }
     
 }

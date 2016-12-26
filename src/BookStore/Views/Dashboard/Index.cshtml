@@ -13,7 +13,6 @@
     <div class="column">
 
     </div>
-
 </div>
 
 
@@ -36,16 +35,20 @@
         <div class="ui secondary pointing fluid menu">
             <h4 class="ui header">Khách Hàng</h4>
             <div class="right menu">
-                <a class="ui active item" asp-action="Index">
+                <a class="ui active item" 
+                   asp-action="CustomerRegisterGraph"
+                   asp-route-when="2">
                     Tuần
                 </a>
-                <a class="ui item" asp-action="Create">
+                <a class="ui item" 
+                   asp-action="CustomerRegisterGraph" 
+                   asp-route-when="3">
                     Tháng
                 </a>
             </div>
         </div>
         <!--chart go here-->
-        <div class="ui loading segment"
+        <div class="ui loading pink segment"
              style="height: 360px;"
              id="customer-register-chart">
 
@@ -53,20 +56,24 @@
     </div>
 
     <div class="column">
-        <div class="ui secondary pointing fluid menu">
+        <div class="ui secondary pointing fluid menu"
+              id="best-selling-item">
             <h4 class="ui header">Mặt hàng bán chạy</h4>
-
             <div class="right menu">
-                <a class="ui active item" asp-action="Index">
+                <a class="ui item" 
+                   asp-action="BestSellingGoodsGraph"
+                   asp-route-when="2">
                     Tuần
                 </a>
-                <a class="ui item" asp-action="Create">
+                <a class="ui active item" 
+                   asp-action="BestSellingGoodsGraph"
+                   asp-route-when="3">
                     Tháng
                 </a>
             </div>
         </div>
         <!--chart go here-->
-        <div class="ui loading segment"
+        <div class="ui loading yellow segment"
              style="height: 360px;"
              id="best-selling-chart">
 
@@ -80,7 +87,7 @@
         <div class="ui secondary pointing fluid menu">
             <h4 class="ui header">Hoạt động gần đây</h4>
         </div>
-        <div class="ui loading segment"
+        <div class="ui loading green segment"
              style="height: 460px;"
              id="latest-activity">
 
@@ -91,18 +98,21 @@
             <h4 class="ui header">Doanh thu</h4>
 
             <div class="right menu">
-                <a class="ui active item" asp-action="Index">
+                <a class="ui active item"
+                   asp-action="RevenueStatistic"
+                   asp-route-when="2">
                     Tuần
                 </a>
-                <a class="ui item" asp-action="Create">
+                <a class="ui item"
+                   asp-action="RevenueStatistic"
+                   asp-route-when="3">
                     Tháng
                 </a>
             </div>
         </div>
-        <div class="ui loading segment"
+        <div class="ui loading orange segment"
              style="height: 460px;"
              id="revenue-statistic-chart">
-
         </div>
     </div>
 </div>

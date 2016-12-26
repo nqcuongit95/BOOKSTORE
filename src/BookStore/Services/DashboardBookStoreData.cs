@@ -1,4 +1,5 @@
 ﻿using BookStore.Helper;
+using BookStore.ViewModels;
 using BookStore.ViewModels.Dashboard;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,14 +15,14 @@ namespace BookStore.Services
     {
         public async Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time)
         {
-
             var now = DateTime.Now;
             DateTime start = now, end = now;
 
             if (time == TimeEnum.Week)
             {
-                start = now.Date.AddDays(-(int)now.DayOfWeek); // prev sunday 00:00
-                end = start.AddDays(7); // next sunday 00:00
+                start = now.Date.AddDays(-7); // prev sunday 00:00
+                //end = start.AddDays(7); // next sunday 00:00
+                end = now;
             }
             else if (time == TimeEnum.Month)
             {
@@ -186,7 +187,6 @@ namespace BookStore.Services
 
             return statistics;
         }
-
         public async Task<CustomerStatisticsViewModel> GetCustomerStatistics()
         {
             var statistics = new CustomerStatisticsViewModel();
@@ -214,7 +214,7 @@ namespace BookStore.Services
                                join receiptVoucher in _context.PhieuThu
                                on invoice.Id equals receiptVoucher.DonHangId into joined
                                from j in joined.DefaultIfEmpty()
-                               group j by invoice.Id).ToListAsync();            
+                               group j by invoice.Id).ToListAsync();
 
             var totalLiabilities = query.Select((r) =>
            {
@@ -236,7 +236,6 @@ namespace BookStore.Services
 
             return statistics;
         }
-
         public async Task<ProductStatisticViewModel> GetProductStatistics()
         {
             var statistics = new ProductStatisticViewModel();
@@ -264,18 +263,60 @@ namespace BookStore.Services
 
             //best selling book right now
             var bestSellingBook = await GetBestSellingGoods(1, TimeEnum.Week, ProductType.Book);
-            statistics.BestSellingBook = new BestSellingProduct
+
+            if (bestSellingBook.Count != 0)
             {
-                Id = bestSellingBook.First().Id,
-                Name = bestSellingBook.First().Name,
-                Solds = bestSellingBook.First().TotalSold
-            };
+                statistics.BestSellingBook = new BestSellingProduct
+                {
+                    Id = bestSellingBook.FirstOrDefault().Id,
+                    Name = bestSellingBook.FirstOrDefault().Name,
+                    Solds = bestSellingBook.FirstOrDefault().TotalSold
+                };
+            }
+            else
+            {
+                statistics.BestSellingBook = new BestSellingProduct
+                {
+                    Id = -1,
+                    Name = "",
+                    Solds = 0
+                };
+            }
 
-            //number of return products
+            //number of return products: in this week
+            var now = DateTime.Now;
+            DateTime start, end;
+            start = now.Date.AddDays(-(int)now.DayOfWeek); // prev sunday 00:00
+            end = start.AddDays(7); // next sunday 00:00
 
+            var numberOfProductsReturn = await (from ret in _context.PhieuTraHang
+                                      where ret.NgayLap >= start && ret.NgayLap < end
+                                      join detail in _context.ChiTietPhieuTraHang
+                                      on ret.Id equals detail.PhieuTraHangId
+                                      select detail).SumAsync(d => d.SoLuong);
+            statistics.TotalReturnThisWeek = numberOfProductsReturn;
 
             return statistics;
         }
+        public async Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics()
+        {
+            var query = GetAllKhachHang();
 
+            var selectResult = from customer in query
+                               group customer by customer.NgayLap.Month
+                               into groupCustomer
+                               select new NumberOfCustomersByMonthViewModel
+                               {
+                                   Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(groupCustomer.Key),
+                                   Total = groupCustomer.Count(),
+                                   MonthValue = groupCustomer.Key
+                               } into model
+                               orderby model.MonthValue descending
+                               select model;
+
+            var result = await selectResult.Take(5).ToListAsync();
+
+            return result.OrderBy(m => m.MonthValue).ToList();
+        }
     }
 }
