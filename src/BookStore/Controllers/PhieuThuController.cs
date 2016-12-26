@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
+using BookStore.Models;
+using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,11 +42,6 @@ namespace BookStore.Controllers
 
             var customers = _bookStoreData.GetAllPhieuThu();
 
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    customers = customers.Where(c => c.TenKhachHang.Contains(searchString));
-            //}
-
             switch (sortOrder)
             {
                 case "name_desc":
@@ -65,14 +63,115 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-            return View(await PaginatedList<PhieuThuViewModel>.
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    customers = customers.Where(c => c.TenLoaiPhieu.Contains(searchString));
+            //}
+
+            var result = await PaginatedList<PhieuThuViewModel>.
                         CreateAsync(customers, page ?? 1, pageSize,
                                     numberOfDisplayPages,
-                                    firstShowedPage, lastShowedPage));
+                                    firstShowedPage, lastShowedPage);
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i].DonHangId.HasValue)
+                {
+                    result[i].DoiTuong = "Khách hàng";
+                }
+                else
+                {
+                    result[i].DoiTuong = "Nhà cung cấp";
+                }
+            }
+
+
+            return View(result);
+
         }
 
 
+        public IActionResult Create()
+        {
+            var loaiphieu = _bookStoreData.GetAllLoaiPhieu();
+            var model = new PhieuThuViewModel();
+            model.LoaiPhieu = new SelectList(loaiphieu, "Id", "TenLoaiPhieu", 1);
+            return View(model);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(PhieuThuViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                PhieuThu phieu = new PhieuThu();
+                phieu.NgayLap = DateTime.Now;
+                phieu.NhanVienId = _bookStoreData.findUserId(User.Identity.Name);
+                phieu.PhieuTraNhapHangId = model.PhieuNhapHangId;
+                phieu.TongTien = model.TongTien;
+                phieu.LoaiPhieuId = model.LoaiPhieuId;
+
+                if (model.KhachHangId!=null)
+                {
+                    phieu.DonHangId = _bookStoreData.findDonHangByCustomer(model.KhachHangId);
+                    _bookStoreData.TaoPhieuThu(phieu);
+                    _bookStoreData.UpdateDonHang(phieu.DonHangId);
+                    return RedirectToAction("Index");
+                }
+                if (model.NCCId != null)
+                {
+                    phieu.PhieuTraNhapHangId = _bookStoreData.findPhieuTraNhapHang(model.NCCId);
+                    _bookStoreData.TaoPhieuThu(phieu);
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> FindCustomer(string val)
+        {
+            var result = await _bookStoreData.FindCustomer(val);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> FindProvider(string val)
+        {
+            var result = await _bookStoreData.FindProvider(val);
+
+            return Json(result);
+        }
+
+        public IActionResult Details(int id)
+        {
+            //render the success message
+            //ViewData["message"] = message;
+
+            //ActiveItemHelperFunction(section);
+
+            var phieu = _bookStoreData.findPhieuThu(id);
+
+            if (phieu.DonHangId.HasValue)
+            {
+                var khachhang = _bookStoreData.findCustomerByDonhang((int)phieu.DonHangId);
+                phieu.DoiTuong = "Khách Hàng";
+                phieu.TenKhachHang = khachhang.TenKhachHang;
+            }
+            else
+            {
+                var ncc = _bookStoreData.findProviderByPhieuTra((int)phieu.PhieuNhapHangId);
+                phieu.TenNhaCungCap = ncc.TenNhaCungCap;
+                phieu.DoiTuong = "Nhà Cung Cấp";
+            }
+            //var model = new PhieuThuViewModel
+            //{
+            //    ID = customer.ID,
+            //    Name = customer.TenKhachHang,
+            //    //Section = string.IsNullOrEmpty(section) ? "Details" :
+                
+            //};
+
+            return View(phieu);
+        }
     }
 }
 

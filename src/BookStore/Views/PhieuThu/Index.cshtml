@@ -2,32 +2,50 @@
 
 @{
     ViewData["Title"] = "Phiếu Thu";
-    var list = ViewBag._listdonhang;
 }
 
 @section menu{
-    <div class="ui secondary pointing fluid three item menu" style="margin:0">
-        <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
-            Đơn Hàng
-        </a>
-        <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
-            Phiếu Thu
-        </a>
-        <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
-            Phiếu Chi
-        </a>
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Phiếu Thu</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+        </div>
     </div>
-    <div class="ui secondary pointing fluid two item menu" style="margin-top:0">
-        <a class="ui active item" asp-action="Index" id="donhang">
-            Danh Sách Phiếu Thu
-        </a>
-        <a class="ui item" asp-action="Index" id="phieuthu">
-            Thêm Mới Phiếu Thu
-        </a>
+    <div class="row">
+    <div class="sixteen wide column">
+        <div class="ui secondary menu four item">
+            <a class="active item"
+               asp-controller="PhieuThu"
+               asp-action="Index">
+                <i class="list layout icon"></i>
+                Danh sách phiếu thu
+            </a>
+            <a class="item"
+               asp-controller="PhieuThu"
+               asp-action="Create">
+                <i class="add square icon"></i>
+                Thêm mới phiếu thu
+            </a>
+        </div>
     </div>
+</div>
 }
-
-<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Phiếu Thu</div>
 
 <div class="row" id="context">
     <div class="sixteen wide column" style="padding:0">
@@ -38,14 +56,21 @@
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewData["NameSortParm"]"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]">
-                            ID
-                            @*<i class="caret @ViewData["SortDirection"] icon"></i>*@
+                            Mã phiếu
                         </a>
                     </th>
-                    <th>Mã Đơn Hàng</th>
-                    
-                    <th>Tổng tiền</th>
-                    <th>Loại Phiếu</th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Đối tượng
+                        </a>
+                    </th>
+                    <th>
+                        Loại Phiếu
+                    </th>
+                    <th>Người tạo</th>
+                    <th>Số tiền thu</th>
                     <th>
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewData["DateSortParm"]"
@@ -66,17 +91,22 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.DonHangId
-                            </a>
-                        </td>
-                        <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TongTien
+                                @customer.DoiTuong
                             </a>
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
                                 @customer.TenLoaiPhieu
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TenNhanVien
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.ID">
+                                @customer.TongTien
                             </a>
                         </td>
                         <td class="selectable">
@@ -94,9 +124,3 @@
 
     </div>
 </div>
-
-<script>
-    $("#phieuthu").click(function () {
-        document.getElementById("head").innerHTML = "Phiếu Thu";
-    });
-</script>

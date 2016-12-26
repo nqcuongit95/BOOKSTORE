@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
+using BookStore.Models;
 
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -66,10 +67,22 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-            return View(await PaginatedList<PhieuChiViewModel>.
+            var result = await PaginatedList<PhieuChiViewModel>.
                         CreateAsync(customers, page ?? 1, pageSize,
                                     numberOfDisplayPages,
-                                    firstShowedPage, lastShowedPage));
+                                    firstShowedPage, lastShowedPage);
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i].PhieuTraHangId.HasValue)
+                {
+                    result[i].DoiTuong = "Khách hàng";
+                }
+                else
+                {
+                    result[i].DoiTuong = "Nhà cung cấp";
+                }
+            }
+            return View(result);
         }
     }
 }

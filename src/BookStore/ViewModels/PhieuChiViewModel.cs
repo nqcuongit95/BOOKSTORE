@@ -9,12 +9,14 @@ namespace BookStore.ViewModels
     {
         public int ID { get; set; }
         public DateTime NgayLap { get; set; }
-        public int PhieuTraHangId { get; set; }
+        public int? PhieuTraHangId { get; set; }
         public int? PhieuNhapHangId { get; set; }
         public decimal TongTien { get; set; }
         public int LoaiPhieuId { get; set; }
         public string TenLoaiPhieu { get; set; }
         public int NhanVienId { get; set; }
+        public string TenNhanVien { get; set; }
+        public string DoiTuong { get; set; }
         public int KhachHangId { get; set; }
         public string TenKhachHang { get; set; }
     }

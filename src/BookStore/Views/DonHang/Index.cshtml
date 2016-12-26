@@ -1,33 +1,49 @@
-﻿@model PaginatedList<DonHangViewModel>
+﻿@model PaginatedList<DonHang>
 
 @{
     ViewData["Title"] = "Đơn hàng";
-    var list = ViewBag._listdonhang;
 }
 
 @section menu{
-    <div class="ui secondary pointing fluid three item menu" style="margin:0">
-        <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
-            Đơn Hàng
-        </a>
-        <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
-            Phiếu Thu
-        </a>
-        <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
-            Phiếu Chi
-        </a>
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Đơn Hàng</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+        </div>
     </div>
-    <div class="ui secondary pointing fluid two item menu" style="margin-top:0">
-        <a class="ui active item" asp-action="Index" id="donhang">
-            Danh Sách Đơn Hàng
-        </a>
-        <a class="ui item" asp-action="Index" id="phieuthu">
-            Thêm Mới Đơn Hàng
-        </a>
+
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui secondary menu four item">
+                <a class="active item">
+                    <i class="list layout icon"></i>
+                    Danh sách đơn hàng
+                </a>
+                <a class="item">
+                    <i class="add square icon"></i>
+                    Thêm mới đơn hàng
+                </a>
+            </div>
+        </div>
     </div>
 }
 
-<div class="ui header" id="list-customer" style="margin:6px;">Danh Sách Đơn Hàng</div>
 
 <div class="row" id="context">
     <div class="sixteen wide column" style="padding:0">
@@ -36,16 +52,32 @@
                 <tr>
                     <th>
                         <a asp-action="Index"
-                           asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-sortOrder="@ViewData["IDSortParm"]"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]">
                             ID
-                            @*<i class="caret @ViewData["SortDirection"] icon"></i>*@
                         </a>
                     </th>
-                    <th>Khách Hàng</th>
-                    <th>Trạng Thái</th>
-                    <th>Tổng tiền</th>
-                    @*<th>Loại Phiếu</th>*@
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Khách Hàng
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["StatusSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Trạng Thái
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["MoneySortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Tổng Tiền
+                        </a>
+                    </th>
                     <th>
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewData["DateSortParm"]"
@@ -60,28 +92,28 @@
                 {
                     <tr>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.ID
+                            <a asp-action="Details" asp-route-id="@customer.Id">
+                                @customer.Id
+                                                        </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Details" asp-route-id="@customer.Id">
+                                @customer.KhachHang.TenKhachHang
                             </a>
                         </td>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenKhachHang
+                            <a asp-action="Details" asp-route-id="@customer.Id">
+                                @customer.TrangThai.TenTrangThai
                             </a>
                         </td>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TenTrangThai
-                            </a>
-                        </td>
-                        <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
+                            <a asp-action="Details" asp-route-id="@customer.Id">
                                 @customer.TongTien
                             </a>
                         </td>
-                        
+
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.ID">
+                            <a asp-action="Details" asp-route-id="@customer.Id">
                                 @customer.NgayLap
                             </a>
                         </td>

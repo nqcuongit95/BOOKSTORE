@@ -55,7 +55,19 @@ namespace BookStore.Services
         {
             return _context.LoaiKhachHang;
         }
+        public IEnumerable<LoaiPhieu> GetAllLoaiPhieu()
+        {
+            var query = from loaiphieu in _context.LoaiPhieu
+                        select loaiphieu;
+            return _context.LoaiPhieu;
+        }
+        public IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang()
+        {
+            var query = from phieu in _context.PhieuTraNhapHang
+                        select phieu;
 
+            return _context.PhieuTraNhapHang;
+        }
         public KhachHang GetKhachHang(int id)
         {
             return _context.KhachHang.First(c => c.Id == id);
@@ -138,6 +150,48 @@ namespace BookStore.Services
             return await _context.Users.ToListAsync();
         }
 
+        public PhieuThuViewModel findPhieuThu(int phieuID)
+        {
+            var re = from phieuthu in _context.PhieuThu
+                     join loaiphieu in _context.LoaiPhieu
+                     on phieuthu.LoaiPhieuId equals loaiphieu.Id
+                     join nv in _context.Staff
+                     on phieuthu.NhanVienId equals nv.Id
+                     where phieuthu.Id == phieuID
+                     select new PhieuThuViewModel
+                     {
+                         ID = phieuthu.Id,
+                         NgayLap = phieuthu.NgayLap,
+                         DonHangId = phieuthu.DonHangId,
+                         PhieuNhapHangId = phieuthu.PhieuTraNhapHangId,
+                         NhanVienId = phieuthu.NhanVienId,
+                         TongTien = phieuthu.TongTien,
+                         LoaiPhieuId = phieuthu.LoaiPhieuId,
+                         TenNhanVien = nv.FullName,
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                     };
+            return re.First();
+        }
+        public KhachHang findCustomerByDonhang(int donhangId)
+        {
+            var query = from khachhang in _context.KhachHang
+                        join don in _context.DonHang
+                        on khachhang.Id equals don.KhachHangId
+                        where don.Id == donhangId
+                        select khachhang;
+            return query.First();
+        }
+        public NhaCungCap findProviderByPhieuTra(int phieuID)
+        {
+            var query = from ncc in _context.NhaCungCap
+                        join phieu in _context.PhieuNhapHang
+                        on ncc.Id equals phieu.NhaCungCapId
+                        join phieutra in _context.PhieuTraNhapHang
+                        on phieu.Id equals phieutra.PhieuNhapHangId
+                        where phieutra.Id == phieuID
+                        select ncc;
+            return query.First();
+        }
         public async Task<CustomerFilterResults> FindCustomer(string value)
         {
             if (value.All(char.IsDigit))
@@ -168,6 +222,44 @@ namespace BookStore.Services
 
             var results2 = await query2.ToListAsync();
             return new CustomerFilterResults { Results = results2 };
+
+        }
+        public async Task<ProviderFilterResults> FindProvider(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                var query = from customer in _context.NhaCungCap
+                            select new ProviderViewModel
+                            {
+                                Id = customer.Id,
+                                Name = customer.TenNhaCungCap,
+                            };
+                var queryRe = await query.ToListAsync();
+                return new ProviderFilterResults { Results = queryRe };
+            }
+            if (value.All(char.IsDigit))
+            {
+                var query1 = from customer in _context.NhaCungCap
+                             where customer.Id.ToString().Contains(value)
+                             select new ProviderViewModel
+                             {
+                                 Id = customer.Id,
+                                 Name = customer.TenNhaCungCap,
+                             };
+                var results1 = await query1.ToListAsync();
+                return new ProviderFilterResults { Results = results1 };
+            }
+
+            var query2 = from customer in _context.NhaCungCap
+                         where customer.TenNhaCungCap.Contains(value)
+                         select new ProviderViewModel
+                         {
+                             Id = customer.Id,
+                             Name = customer.TenNhaCungCap,
+                         };
+
+            var results2 = await query2.ToListAsync();
+            return new ProviderFilterResults { Results = results2 };
 
         }
 
@@ -280,70 +372,36 @@ namespace BookStore.Services
 
         }
 
-        public IQueryable<DonHangViewModel> GetAllDonHang()
+        //public IQueryable<DonHangViewModel> GetAllDonHang()
+        //{
+        //    var query = from donhang in _context.DonHang
+        //                join kh in _context.KhachHang
+        //                on donhang.KhachHangId equals kh.Id
+        //                join trangthai in _context.TrangThai
+        //                on donhang.TrangThaiId equals trangthai.Id
+        //                select new DonHangViewModel
+        //                {
+        //                    ID = donhang.Id,
+        //                    TenKhachHang = kh.TenKhachHang,
+        //                    NgayLap = donhang.NgayLap,
+        //                    KhachHangId = kh.Id,
+        //                    TrangThaiId = trangthai.Id,
+        //                    TenTrangThai = trangthai.TenTrangThai,
+        //                    TongTien = donhang.TongTien,
+
+        //                };
+
+        //    return query;
+        //}
+
+        public IQueryable<DonHang> GetAllDonHang()
         {
-            var query = from donhang in _context.DonHang
-                        join kh in _context.KhachHang
-                        on donhang.KhachHangId equals kh.Id
-                        join trangthai in _context.TrangThai
-                        on donhang.TrangThaiId equals trangthai.Id
-                        select new DonHangViewModel
-                        {
-                            ID = donhang.Id,
-                            TenKhachHang = kh.TenKhachHang,
-                            NgayLap = donhang.NgayLap,
-                            KhachHangId = kh.Id,
-                            TrangThaiId = trangthai.Id,
-                            TenTrangThai = trangthai.TenTrangThai,
-                            TongTien = donhang.TongTien,
-
-                        };
-
+            var query = _context.DonHang.Include(m => m.KhachHang)
+                .Include(m => m.TrangThai);
             return query;
         }
 
-        public IQueryable<LoaiPhieu> GetAllLoaiPhieu()
-        {
-            var query = from donhang in _context.DonHang
-                        join kh in _context.KhachHang
-                        on donhang.KhachHangId equals kh.Id
-                        join trangthai in _context.TrangThai
-                        on donhang.TrangThaiId equals trangthai.Id
-                        select new LoaiPhieu
-                        {
-                            //ID = donhang.Id,
-                            //TenKhachHang = kh.TenKhachHang,
-                            //NgayLap = donhang.NgayLap,
-                            //KhachHangId = kh.Id,
-                            //TrangThaiId = trangthai.Id,
-                            //TenTrangThai = trangthai.TenTrangThai,
-                            //TongTien = donhang.TongTien,
 
-                        };
-
-            return query;
-        }
-        public IQueryable<PhieuTraNhapHang> GetAllPhieuTraNhapHang()
-        {
-            var query = from donhang in _context.DonHang
-                        join kh in _context.KhachHang
-                        on donhang.KhachHangId equals kh.Id
-                        join trangthai in _context.TrangThai
-                        on donhang.TrangThaiId equals trangthai.Id
-                        select new PhieuTraNhapHang
-                        {
-                            //ID = donhang.Id,
-                            //TenKhachHang = kh.TenKhachHang,
-                            //NgayLap = donhang.NgayLap,
-                            //KhachHangId = kh.Id,
-                            //TrangThaiId = trangthai.Id,
-                            //TenTrangThai = trangthai.TenTrangThai,
-                            //TongTien = donhang.TongTien,
-
-                        };
-
-            return query;
-        }
         public int TaoDonHang(DonHang donhang)
         {
             _context.Add(donhang);
@@ -352,12 +410,58 @@ namespace BookStore.Services
             return donhang.Id;
         }
 
-        public int TaoPhieuThu(PhieuThu phieuthu)
+        public void  UpdateDonHang(int? id)
         {
-            _context.Add(phieuthu);
+            decimal totalValue = 0;
+            var donhang = _context.DonHang.Where(m => m.Id == id).FirstOrDefault();
+            var listPhieuthu = _context.PhieuThu.Where(m => m.DonHangId == donhang.Id).ToList();
+            for (int i = 0; i < listPhieuthu.Count; i++)
+            {
+                totalValue += listPhieuthu[i].TongTien;
+            }
+            if(totalValue >= donhang.TongTien)
+            {
+                donhang.TrangThaiId = 2;
+            }
+            else
+            {
+                donhang.TrangThaiId = 3;
+            }
             _context.SaveChanges();
-
-            return phieuthu.Id;
+        }
+        public int findDonHangByCustomer(int? customerID)
+        {
+            var donhangList = from donhang in _context.DonHang
+                              join khachhang in _context.KhachHang
+                              on donhang.KhachHangId equals khachhang.Id
+                              where customerID == khachhang.Id
+                              orderby donhang.NgayLap descending
+                              select donhang;
+            var result = donhangList.FirstOrDefault();
+            return result.Id;
+        }
+        public int findPhieuTraNhapHang(int? providerID)
+        {
+            var donhangList = from phieu in _context.PhieuTraNhapHang
+                              join phieunhap in _context.PhieuNhapHang
+                              on phieu.PhieuNhapHangId equals phieunhap.Id
+                              join ncc in _context.NhaCungCap
+                              on phieunhap.NhaCungCapId equals ncc.Id
+                              where providerID == ncc.Id
+                              orderby phieu.NgayLap descending
+                              select phieu;
+            var result = donhangList.FirstOrDefault();
+            return result.Id;
+        }
+        public int findUserId(String name)
+        {
+            var user = _context.Staff.Where(m => m.UserName == name).FirstOrDefault();
+            return user.Id;
+        }
+        public void TaoPhieuThu(PhieuThu phieuthu)
+        {
+            _context.PhieuThu.Add(phieuthu);
+             _context.SaveChanges();
         }
 
         public int TaoPhieuChi(PhieuChi phieuchi)
@@ -370,48 +474,45 @@ namespace BookStore.Services
 
         public IQueryable<PhieuThuViewModel> GetAllPhieuThu()
         {
-            var query = from phieuthu in _context.PhieuThu
-                        join donhang in _context.DonHang
-                        on phieuthu.DonHangId equals donhang.Id
-                        join phieunhap in _context.PhieuTraNhapHang
-                        on phieuthu.PhieuTraNhapHangId equals phieunhap.Id
-                        join loaiphieu in _context.LoaiPhieu
-                        on phieuthu.LoaiPhieuId equals loaiphieu.Id
-                        join khachhang in _context.KhachHang
-                        on donhang.KhachHangId equals khachhang.Id
-                        select new PhieuThuViewModel
-                        {
-                            ID = phieuthu.Id,
-                           NgayLap = phieuthu.NgayLap,
-                           DonHangId = donhang.Id,
-                           PhieuNhapHangId = phieuthu.PhieuTraNhapHangId,
-                           TongTien = phieuthu.TongTien,
-                           LoaiPhieuId = phieuthu.LoaiPhieuId,
-                           TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
-                        };
-            return query;
+            var re = from phieuthu in _context.PhieuThu
+                     join loaiphieu in _context.LoaiPhieu
+                     on phieuthu.LoaiPhieuId equals loaiphieu.Id
+                     join nv in _context.Staff
+                     on phieuthu.NhanVienId equals nv.Id
+                     select new PhieuThuViewModel
+                     {
+                         ID = phieuthu.Id,
+                         NgayLap = phieuthu.NgayLap,
+                         DonHangId = phieuthu.DonHangId,
+                         PhieuNhapHangId = phieuthu.PhieuTraNhapHangId,
+                         NhanVienId = phieuthu.NhanVienId,
+                         TongTien = phieuthu.TongTien,
+                         LoaiPhieuId = phieuthu.LoaiPhieuId,
+                         TenNhanVien = nv.FullName,
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                     };
+            return re;
         }
         public IQueryable<PhieuChiViewModel> GetAllPhieuChi()
         {
-            var query = from phieuchi in _context.PhieuChi
-                        join trahang in _context.PhieuTraHang
-                        on phieuchi.PhieuTraHangId equals trahang.Id
-                        join phieunhap in _context.PhieuNhapHang
-                        on phieuchi.PhieuNhapHangId equals phieunhap.Id
-                        join loaiphieu in _context.LoaiPhieu
-                        on phieuchi.LoaiPhieuId equals loaiphieu.Id
-                        join khachhang in _context.KhachHang
-                        on trahang.KhachHangId equals khachhang.Id
-                        select new PhieuChiViewModel
-                        {
-                            ID = phieuchi.Id,
-                            NgayLap = phieuchi.NgayLap,
-                            PhieuNhapHangId = phieuchi.PhieuNhapHangId,
-                            TongTien = phieuchi.TongTien,
-                            LoaiPhieuId = phieuchi.LoaiPhieuId,
-                            TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
-                        };
-            return query;
+            var re = from phieuchi in _context.PhieuChi
+                     join loaiphieu in _context.LoaiPhieu
+                     on phieuchi.LoaiPhieuId equals loaiphieu.Id
+                     join nv in _context.Staff
+                     on phieuchi.NhanVienId equals nv.Id
+                     select new PhieuChiViewModel
+                     {
+                         ID = phieuchi.Id,
+                         NgayLap = phieuchi.NgayLap,
+                         PhieuTraHangId = phieuchi.PhieuTraHangId,
+                         PhieuNhapHangId = phieuchi.PhieuNhapHangId,
+                         NhanVienId = phieuchi.NhanVienId,
+                         TongTien = phieuchi.TongTien,
+                         LoaiPhieuId = phieuchi.LoaiPhieuId,
+                         TenNhanVien = nv.FullName,
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                     };
+            return re;
         }
     }
 }

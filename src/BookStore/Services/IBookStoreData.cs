@@ -22,17 +22,25 @@ namespace BookStore.Services
         Task<List<Role>> GetListRoles();
         Task<List<Staff>> GetListStaffs();
         Task<CustomerFilterResults> FindCustomer(string value);
+        Task<ProviderFilterResults> FindProvider(string value);
         Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
         Task<bool> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);        
-        IQueryable<DonHangViewModel> GetAllDonHang();
+        IQueryable<DonHang> GetAllDonHang();
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
         IQueryable<PhieuChiViewModel> GetAllPhieuChi();
-        IQueryable<LoaiPhieu> GetAllLoaiPhieu();
-        IQueryable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
+        IEnumerable<LoaiPhieu> GetAllLoaiPhieu();
+        IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         int TaoDonHang(DonHang donhang);
-        int TaoPhieuThu(PhieuThu phieuthu);
+        void TaoPhieuThu(PhieuThu phieuthu);
         int TaoPhieuChi(PhieuChi phieuchi);
+        void UpdateDonHang(int? id);
+        int findDonHangByCustomer(int? customerID);
+        int findUserId(String name);
+        int findPhieuTraNhapHang(int? providerID);
+        PhieuThuViewModel findPhieuThu(int phieuID);
+        KhachHang findCustomerByDonhang(int donhangId);
+        NhaCungCap findProviderByPhieuTra(int phieuID);
     }
 }

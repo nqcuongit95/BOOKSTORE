@@ -117,7 +117,8 @@ namespace BookStore.Controllers
             {
                 ID = customer.ID,
                 Name = customer.TenKhachHang,
-                Section = string.IsNullOrEmpty(section) ? "Details" : section
+                Section = string.IsNullOrEmpty(section) ? "Details" :
+                section
             };
 
             return View(model);

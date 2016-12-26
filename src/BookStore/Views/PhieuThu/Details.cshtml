@@ -1,0 +1,104 @@
+﻿
+@model PhieuThuViewModel
+@{
+    ViewData["Title"] = "Thêm Phiếu Thu";
+}
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Phiếu Thu</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui secondary menu four item">
+                <a class="item"
+                   asp-controller="PhieuThu"
+                   asp-action="Index">
+                    <i class="list layout icon"></i>
+                    Danh sách phiếu thu
+                </a>
+                <a class="item"
+                   asp-controller="PhieuThu"
+                   asp-action="Create">
+                    <i class="add square icon"></i>
+                    Thêm mới phiếu thu
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="ui ten wide column">
+    <form class="ui form" asp-controller="PhieuThu" asp-action="Create">
+
+        <div class="field">
+            <label>Đối Tượng 111</label>
+            <div class="ui disabled input">
+                <input type="text"
+                       id="doituong"
+                       value="@Model.DoiTuong">
+            </div>
+        </div>
+        <div class="field" id="tenkhachhang">
+            <label>Khách Hàng</label>
+            <div class="ui disabled input">
+                <input type="text"
+                       value="@Model.TenKhachHang">
+            </div>
+        </div>
+        <div class="field" id="tenncc">
+            <label>Nhà Cung Cấp</label>
+            <div class="ui disabled input">
+                <input type="text"
+                       value="@Model.TenNhaCungCap">
+            </div>
+        </div>
+        <div class="field">
+            <label>Loại phiếu</label>
+            <div class="ui disabled input">
+                <input type="text"
+                       value="@Model.TenLoaiPhieu">
+            </div>
+        </div>
+        <div class="field">
+            <label>Số tiền thu</label>
+            <div class="ui disabled input">
+                <input type="text"
+                       value="@Model.TongTien">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if ($("#doituong").val() == "Khách Hàng") {
+            $("#tenkhachhang").show();
+            $("#tenncc").hide();
+        }
+        else {
+            $("#tenkhachhang").hide();
+            $("#tenncc").show();
+        }
+    })
+
+</script>
