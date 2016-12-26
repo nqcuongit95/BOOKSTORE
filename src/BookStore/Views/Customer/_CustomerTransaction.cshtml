@@ -2,8 +2,7 @@
 
 <h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
 
-
-<div class="ui equal width internally celled grid">
+<div class="ui equal width internally celled grid">    
     <div class="row">
         <div class="column center aligned">
             <div class="ui mini horizontal grey statistic">
@@ -18,7 +17,7 @@
         <div class="column center aligned">
             <div class="ui mini horizontal grey statistic">
                 <div class="value">
-                    @Model.TotalValues
+                    @Model.TotalValuesFormated
                 </div>
                 <div class="label">
                     (VND) TỔNG GIÁ TRỊ GIAO DỊCH
@@ -40,7 +39,7 @@
     </thead>
     <tbody>
 
-        @foreach (var invoice in Model.Invoices)
+        @foreach (var invoice in Model.InvoicesPage)
             {
             <tr>
                 <td>
@@ -53,10 +52,11 @@
                     @invoice.Status
                 </td>
                 <td>
-                    @invoice.TotalValues
+                    @invoice.TotalValuesFormated    
                 </td>
             </tr>
         }
-
     </tbody>
 </table>
+
+@Html.Partial("_PaginatedTransaction", Model.InvoicesPage)

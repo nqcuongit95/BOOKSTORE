@@ -1,6 +1,6 @@
 ﻿@model CustomerInfoViewModel
 
-<div class="ui centered grid equal width">
+<div class="ui centered grid equal width">    
     <div class="sixteen wide column">
         <h3 class="ui dividing teal header">THÔNG TIN KHÁCH HÀNG</h3>
     </div>
@@ -50,10 +50,10 @@
     </div>
 
     @{
-        if (ViewData["message"]!= null)
+        if (ViewData["message"] != null)
         {
             @await Html.PartialAsync(ViewData["message"].ToString());
         }
     }
-    
+
 </div>

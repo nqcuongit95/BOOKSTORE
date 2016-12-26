@@ -128,6 +128,7 @@ namespace BookStore.Controllers
         public IActionResult Edit(int id, KhachHangViewModel model)
         {
             var customer = _bookStoreData.GetKhachHang(id);
+            Notification notify;
 
             if (ModelState.IsValid)
             {
@@ -139,10 +140,27 @@ namespace BookStore.Controllers
 
                 _bookStoreData.Commit();
 
-                return RedirectToAction("Details",new { id = id, message = "_UpdateMessage" });
-                }
+                notify = new Notification
+                {
+                    Icon = "checkmark",
+                    Title = "Thành Công",
+                    Content = "Cập nhật thông tin khách hàng thành công",
+                    MessageType = "positive",
+                    Button = "Hoàn tất"
 
-            return View("Details", new { id = id, section = "Edit" });            
+                };
+
+                return PartialView("_Notify", notify);                
+            }
+
+            notify = new Notification
+            {
+                Title = "Thất bại",
+                Content = "Có lỗi xảy ra",
+                Button = "Quay lại"
+            };
+
+            return PartialView("_Notify", notify);
         }
 
         void ActiveItemHelperFunction(string section)
@@ -160,6 +178,41 @@ namespace BookStore.Controllers
             {
                 ViewData[section] = "active";
             }
+        }
+
+        public IActionResult CustomerDetails(int id)
+        {
+            var model = _bookStoreData.GetKhachHangInfo(id);
+
+            return PartialView("_CustomerDetails", model);
+        }
+
+        public IActionResult CustomerEdit(int id)
+        {
+            var customer = _bookStoreData.GetKhachHang(id);
+            var customerTypes = _bookStoreData.GetAllLoaiKhachHang();
+
+            var model = new KhachHangViewModel();
+
+            model.KhachHang = customer;
+            model.LoaiKhachHang = new SelectList(customerTypes, "Id", "TenLoaiKhachHang", customer.LoaiKhachHangId);
+
+            return PartialView("_CustomerEdit", model);
+        }
+
+        public async Task<IActionResult> CustomerTransaction(int id, int? page,
+                                               int? firstShowedPage, int? lastShowedPage)
+        {
+            var model = await _bookStoreData.GetCustomerTransactionsDetails(id);
+            model.InvoicesPage = await PaginatedList<InvoiceDetailsViewModel>
+                                 .CreateAsync(model.Invoices,page ?? 1, 5, 5, firstShowedPage, lastShowedPage);
+
+            return PartialView("_CustomerTransaction",model);
+        }
+
+        public async Task<IActionResult> CustomerLiabilites()
+        {
+            return View();
         }
     }
 }

@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('.ui.sticky').sticky({
         context: '#context'
     });
-    
+
     $('.ui.form')
        .form({
            on: 'blur',
@@ -53,8 +53,64 @@ $(document).ready(function () {
               .closest('.message')
               .transition('fade');
         });
-     
+
     setTimeout(function () {
         $('.ui.success.message').slideDown('fast').delay(2000).fadeOut('slow');
     }, 400);
+
+    //helper function
+    function activeDimmer() {
+        $('#dimmer').addClass('active');
+
+    }
+
+    function deactiveDimmer() {
+        $('#dimmer').removeClass('active');
+
+    }
+
+    //submit form
+    var form = $('.ui.form');
+    $('#submit-form').on('click', function (event) {
+        event.preventDefault();
+        activeDimmer()
+
+        form.form('validate form');
+        var modal = $('#notify-modal');
+
+        if (form.form('is valid')) {
+
+            var url = form.attr('action');
+            var data = form.serialize();
+
+            $.ajax({
+                type: "post",
+                url: url,
+                data: data,
+                //dataType: 'json',
+                success: function (result, status, xhr) {
+                    if (status === 'success') {
+                        console.log('success')
+                        deactiveDimmer()
+                        modal.html(result);
+                        modal.modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    //go the the fucking hell
+                    deactiveDimmer()
+                }
+            })
+        }
+        else {
+            deactiveDimmer();
+        }
+    });
+
+    $('#notify-modal').modal({
+        onHidden: function () {
+            window.location.reload();
+        }
+    })
+
 });

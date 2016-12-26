@@ -1,6 +1,7 @@
 ﻿@model KhachHangViewModel
 
-<form class="ui form" method="post" asp-action="Edit" asp-route-id="@Model.KhachHang.Id">
+
+<form class="ui form" method="post" asp-action="Edit" asp-route-id="@Model.KhachHang.Id">    
     <h3 class="ui dividing teal header">CẬP NHẬT THÔNG TIN</h3>
     <div class="ui hidden divider"></div>
     <div class="two fields">
@@ -71,9 +72,13 @@
         <div class="ui divider"></div>
     </div>
 
-    <button class="ui primary tiny submit button" type="submit">Cập Nhật</button>
+    <button class="ui primary tiny button" 
+            id="submit-form">Cập Nhật</button>
     <div class="ui reset tiny button">Mặc Định</div>
     <div class="ui error message"></div>
 </form>
+
+<div class="ui tiny modal" id="notify-modal">
+</div>
 
 <script src="~/js/KhachHang.js"></script>

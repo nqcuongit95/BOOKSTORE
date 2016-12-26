@@ -102,16 +102,18 @@ namespace BookStore.Services
                             ID = invoice.Id,
                             Date = invoice.NgayLap,
                             Status = status.TenTrangThai,
-                            TotalValues = invoice.TongTien
+                            TotalValues = invoice.TongTien,
+                            TotalValuesFormated = FormatDecimalValue(invoice.TongTien)
                         };
 
             var invoices = await query.ToListAsync();
             var totalInvoices = await query.CountAsync();
             var totalValues = await query.SumAsync(inv => inv.TotalValues);
 
-            model.Invoices = invoices;
+            model.Invoices = query.OrderByDescending(i=>i.Date);
             model.TotalInvoices = totalInvoices;
             model.TotalValues = totalValues;
+            model.TotalValuesFormated = totalValues.ToString("N0");        
 
             return model;
         }

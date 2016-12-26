@@ -4,7 +4,7 @@
     ViewData["Title"] = "Thông Tin Khách Hàng";
 }
 
-@section menu{    
+@section menu{
     <div class="ui secondary pointing fluid menu">
         <h2 class="ui header">@Model.Name</h2>
         <div class="right menu">
@@ -29,38 +29,45 @@
 <div class="row">
     <div class="sixteen wide column">
         <div class="ui secondary menu four item">
-            <a class="@ViewData["Details"] item" asp-action="Details"
+            <a class="active item"
+               asp-action="CustomerDetails"
                asp-route-id="@Model.ID"
-               asp-route-section="Details">
+               id="customer-details">
                 <i class="info icon"></i>
                 Thông Tin
             </a>
             <a class="@ViewData["Edit"] item"
+               asp-action="CustomerEdit"
                asp-route-id="@Model.ID"
-               asp-route-section="Edit">
+               id="customer-edit">
                 <i class="edit icon"></i>
                 Cập Nhật
             </a>
             <a class="@ViewData["Transaction"] item"
+               asp-action="CustomerTransaction"
                asp-route-id="@Model.ID"
-               asp-route-section="Transaction">
-                .
+               id="customer-transaction">
                 <i class="history icon"></i>
                 Lịch Sử Giao Dịch
             </a>
             <a class="@ViewData["Liabilities"] item"
                asp-route-id="@Model.ID"
-               asp-route-section="Liabilities">
+               id="customer-liabilities">
                 <i class="money icon"></i>
                 Công Nợ
             </a>
         </div>
     </div>
-
 </div>
-<div class="sixteen wide column">
-
-    @await Component.InvokeAsync(Model.Section, new { id = Model.ID })   
+<div class="sixteen wide column" >
+    @*@await Component.InvokeAsync(Model.Section, new { id = Model.ID })*@
+    <div class="ui inverted dimmer" id="dimmer">
+        <div class="ui loader"></div>
+    </div>
+    <div id="customer-action">
+    
+    </div>
 </div>
 
 <script src="~/js/KhachHang.js"></script>
+<script src="~/js/Customer/CustomerActions.js"></script>
