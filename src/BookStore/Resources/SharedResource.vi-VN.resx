@@ -121,7 +121,7 @@
     <value>Trở về</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Thêm</value>
+    <value>Thêm mới</value>
   </data>
   <data name="CreateConfirmed" xml:space="preserve">
     <value>Đã thêm</value>
@@ -171,7 +171,7 @@
   <data name="NotFound" xml:space="preserve">
     <value>Không tìm thấy, vui lòng kiểm tra lại hoặc tải lại trang.</value>
   </data>
-  <data name="NOTUSE" xml:space="preserve">
+  <data name="NotUse" xml:space="preserve">
     <value>Ngưng sử dụng</value>
   </data>
   <data name="OK" xml:space="preserve">
@@ -189,7 +189,7 @@
   <data name="System.Data.SqlClient.SqlException" xml:space="preserve">
     <value>Không kết nối được với cơ sở dữ liệu.</value>
   </data>
-  <data name="USE" xml:space="preserve">
+  <data name="Use" xml:space="preserve">
     <value>Đang sử dụng</value>
   </data>
   <data name="Operator" xml:space="preserve">
@@ -242,5 +242,35 @@
   </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>Tổng tiền</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Đã thanh toán(chưa nhận hàng)</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Đang chờ</value>
+  </data>
+  <data name="Pay" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="NhanVien" xml:space="preserve">
+    <value>Nhân viên</value>
+  </data>
+  <data name="PhieuKiemKho" xml:space="preserve">
+    <value>Phiếu kiểm kho</value>
+  </data>
+  <data name="PhieuNhanHang" xml:space="preserve">
+    <value>Phiếu nhận hàng</value>
+  </data>
+  <data name="RecieveProduct" xml:space="preserve">
+    <value>Nhận hàng</value>
+  </data>
+  <data name="PaidRecived" xml:space="preserve">
+    <value>Đã thanh toán và nhận hàng</value>
+  </data>
+  <data name="Recived" xml:space="preserve">
+    <value>Đã nhận hàng(chưa thanh toán)</value>
+  </data>
+  <data name="PhieuChiNhapHang" xml:space="preserve">
+    <value>Phiếu chi nhập hàng</value>
   </data>
 </root>

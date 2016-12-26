@@ -1,4 +1,4 @@
-﻿@model PaginatedList<NhaCungCap>
+﻿@model NonamePaginatedList<NhaCungCap>
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
@@ -14,15 +14,24 @@
 <table class="nha-cung-cap data-table ui blue selectable sortable table">
     <thead>
         <tr>
+            <th class="one wide">@Html.DisplayNameFor(p => nhaCungCap.Id)</th>
             <th class="twelve wide">@Html.DisplayNameFor(p => nhaCungCap.TenNhaCungCap)</th>
             <th class="two wide">@Html.DisplayNameFor(p => nhaCungCap.NgayLap)</th>
-            <th class="two wide">@sharedLocalizer["Operator"]</th>
+            <th class="one wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    <span class="ui label black" style="width:100%">
+                        @string.Format(
+                       "{0}{1}",
+                       sharedLocalizer["NCC"],
+                       item.Id)
+                    </span>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TenNhaCungCap)
                 </td>
@@ -54,7 +63,7 @@
 </table>
 
 @{
-    var paginated = new Paginated(
+    var paginated = new NonamePaginated(
         Model.PageIndex,
         Model.TotalPages
         );

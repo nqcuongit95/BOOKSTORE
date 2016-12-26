@@ -8,10 +8,11 @@
           asp-route-modal="@ViewData["Modal"]"
           asp-route-redirect="@ViewData["Redirect"]"
           class="crud-form update ui form">
-        @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-        {
-            <h2 class="ui header">@ViewData["Action"]</h2>
-        }
+        <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+        <h2 class="ui dividing header">
+            @sharedLocalizer["NhaCungCap"]
+        </h2>
 
         <div class="field">
             <label asp-for="TenNhaCungCap"></label>

@@ -7,21 +7,21 @@
     ChiTietHangHoa chiTietHangHoa = new ChiTietHangHoa();
 }
 
-
 <form id="HangHoa"
       asp-action="DetailsConfirmed"
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       class="crud-form create ui form">
-    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-    {
-        <h2 class="ui header">@ViewData["Action"]</h2>
-    }
+
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
 
     <h2 class="ui dividing header">
-        @string.Format("{0} {1}",
-       sharedLocalizer["Details"],
-       sharedLocalizer["HangHoa"].Value.ToLower())
+        @sharedLocalizer["HangHoa"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["HH"],
+           Model.Id)
+        </span>
     </h2>
 
     <div class="three fields">
@@ -33,15 +33,15 @@
         </div>
 
         <div class="field">
-            <label asp-for="NgayTao"></label>
+            <label asp-for="NgayLap"></label>
             <input type="date"
                    readonly=""
-                   placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
-                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayTao)">
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
+                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
         </div>
 
         <div class="field">
-            <label asp-for="TrangThai"></label>
+            <label asp-for="TrangThaiId"></label>
             <input readonly=""
                    placeholder="@Html.DisplayNameFor(model => model.TrangThaiId)"
                    value="@sharedLocalizer[Model.TrangThai.VietTat]">

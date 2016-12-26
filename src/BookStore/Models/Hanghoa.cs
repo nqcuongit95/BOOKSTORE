@@ -14,7 +14,14 @@ namespace BookStore.Models
             ChiTietPhieuNhapHang = new HashSet<ChiTietPhieuNhapHang>();
         }
 
+        [Display(Name = "Id",
+            ResourceType = typeof(Resources.DataAnnotations))]
         public int Id { get; set; }
+
+        [Display(Name = "TenHangHoa",
+            ResourceType = typeof(Resources.DataAnnotations))]
+        [Required(ErrorMessage = "Bạn không được để trống trường này.")]
+        [MaxLength(50, ErrorMessage = "{0} tối đa {1} ký tự.")]
         public string TenHangHoa { get; set; }
 
         [Display(Name = "NgayLap", ResourceType = typeof(Resources.DataAnnotations))]

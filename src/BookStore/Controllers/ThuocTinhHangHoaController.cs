@@ -29,13 +29,13 @@ namespace BookStore.Controllers
         }
 
         #region Index
-        [HttpGet, ActionName("SearchAPI")]
-        [Route("SearchAPI")]
+        [HttpGet, ActionName("APISearch")]
+        [Route("APISearch")]
         public IActionResult APISearch(int? loaiHangHoaId)
         {
             try
             {
-                RearchResult result = new RearchResult();
+                SearchResult result = new SearchResult();
                 var content = _bookStoreData.GetThuocTinhHangHoa(loaiHangHoaId);
 
                 foreach (var i in content)

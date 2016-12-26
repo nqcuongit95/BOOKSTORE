@@ -11,7 +11,7 @@ namespace BookStore.ViewModels
         public string Controller;
     }
 
-    public class RearchResult
+    public class SearchResult
     {
         public List<object> Results = new List<object>();
     }
@@ -31,10 +31,28 @@ namespace BookStore.ViewModels
                 Controller = "HangHoa"
             });
 
-            Add("NhapHang", new MenuElement
+            Add("PhieuNhapHang", new MenuElement
             {
                 Action = "Index",
                 Controller = "PhieuNhapHang"
+            });
+
+            Add("PhieuChiNhapHang", new MenuElement
+            {
+                Action = "Index",
+                Controller = "PhieuChiNhapHang"
+            });
+
+            Add("PhieuNhanHang", new MenuElement
+            {
+                Action = "Index",
+                Controller = "PhieuNhanHang"
+            });
+
+            Add("PhieuKiemKho", new MenuElement
+            {
+                Action = "Index",
+                Controller = "PhieuKiemKho"
             });
 
             Add("LoaiHangHoa", new MenuElement
@@ -75,6 +93,18 @@ namespace BookStore.ViewModels
             });
 
             SelectedKey = selectedKey;
+        }
+    }
+
+    public class PhieuChiNhapHangActionMenu : Menu
+    {
+        public PhieuChiNhapHangActionMenu(string selectedKey, string controller)
+        {
+            Add("Index", new MenuElement
+            {
+                Action = "Index",
+                Controller = controller
+            });
         }
     }
 }

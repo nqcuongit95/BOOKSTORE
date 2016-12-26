@@ -12,15 +12,10 @@
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       class="crud-form create ui form">
-    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-    {
-        <h2 class="ui header">@ViewData["Action"]</h2>
-    }
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
 
     <h2 class="ui dividing header">
-        @string.Format("{0} {1}",
-       sharedLocalizer["Details"],
-       sharedLocalizer["HangHoa"].Value.ToLower())
+        @sharedLocalizer["HangHoa"]
     </h2>
 
     <div class="two fields">
@@ -30,10 +25,10 @@
                    placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
         </div>
         <div class="five field">
-            <label asp-for="NgayTao"></label>
+            <label asp-for="NgayLap"></label>
             <input type="date"
                    readonly=""
-                   placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
                    value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)">
         </div>
     </div>
@@ -203,7 +198,7 @@
             <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
 
             <div class="ui search"
-                 href="@Url.Action("SearchAPI","ThuocTinhHangHoa")"
+                 href="@Url.Action("APISearch","ThuocTinhHangHoa")"
                  for-id="LoaiHangHoaId">
                 <div class="ui icon input">
                     <input class="prompt"

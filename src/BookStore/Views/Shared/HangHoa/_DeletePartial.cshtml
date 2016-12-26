@@ -14,15 +14,15 @@
       asp-route-redirect="@ViewData["Redirect"]"
       asp-route-id="@Model.Id"
       class="crud-form delete ui form">
-    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-    {
-        <h2 class="ui header">@ViewData["Action"]</h2>
-    }
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
 
     <h2 class="ui dividing header">
-        @string.Format("{0} {1}",
-       sharedLocalizer["Details"],
-       sharedLocalizer["HangHoa"].Value.ToLower())
+        @sharedLocalizer["HangHoa"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["HH"],
+           Model.Id)
+        </span>
     </h2>
 
     <div class="two fields">
@@ -33,11 +33,11 @@
                    placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
         </div>
         <div class="five field">
-            <label asp-for="NgayTao"></label>
+            <label asp-for="NgayLap"></label>
             <input type="date"
                    readonly=""
-                   placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
-                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayTao)">
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
+                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
         </div>
     </div>
 

@@ -87,14 +87,14 @@
         display: none;
     }
 
-#phieu-nhap-hang-header {
-    padding: 0 24px;
+#phieu-nhap-hang-header, #phieu-kiem-kho-header {
     text-align: left;
 }
 
-#phieu-nhap-hang-header .ui.search .input {
-    min-width: 320px;
-}
+    #phieu-nhap-hang-header .ui.search .input,
+    #phieu-kiem-kho-header .ui.search .input {
+        min-width: 320px;
+    }
 
 .crud-form {
     padding: 24px;

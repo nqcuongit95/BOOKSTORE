@@ -1,0 +1,112 @@
+﻿@model PhieuKiemKho
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuKiemKho chiTietPhieuKiemKho = new ChiTietPhieuKiemKho();
+}
+
+<form id="PhieuKiemKho"
+      asp-action="CreateConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["PhieuKiemKho"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["PKK"],
+           Model.Id)
+        </span>
+    </h2>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="seven wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKho)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKhoThucTe)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.LyDo)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="properties">
+            @foreach (var item in Model.ChiTietPhieuKiemKho)
+            {
+                <tr>
+                    <td class="TenHangHoa">
+                        @item.HangHoa.TenHangHoa
+                    </td>
+                    <td class="TonKho">
+                        @item.TonKho
+                    </td>
+                    <td class="TonKhoThucTe">
+                        @item.TonKhoThucTe
+                    </td>
+                    <td class="LyDo">
+                        @item.LyDo
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="action-buttons">
+        @if ((bool)ViewData["Modal"] == true)
+        {
+            <a class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index"
+               class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+    </div>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<table id="properties" class="hidden">
+    <tbody>
+        <tr>
+            <td class="TenHangHoa">
+                <input type="hidden" default-name="HangHoaId" />
+            </td>
+            <td class="TonKho"></td>
+            <td class="TonKhoThucTe">
+                <input asp-for="@chiTietPhieuKiemKho.TonKhoThucTe"
+                       type="number"
+                       default-name="TonKhoThucTe"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKhoThucTe)">
+            </td>
+            <td class="LyDo">
+                <input asp-for="@chiTietPhieuKiemKho.LyDo"
+                       default-name="LyDo"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuKiemKho.LyDo)">
+            </td>
+            <td>
+                <div class="ui remove red icon button">
+                    <i class="remove icon"></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

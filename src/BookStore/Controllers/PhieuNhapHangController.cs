@@ -11,10 +11,12 @@ using BookStore.ViewModels;
 using Microsoft.AspNetCore.Mvc.Localization;
 using BookStore.Resources;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
-    [Route("HangHoa/NhapHang")]
+    [Route("HangHoa/PhieuNhapHang")]
+    [Authorize]
     public class PhieuNhapHangController : Controller
     {
         private readonly IBookStoreData _bookStoreData = null;
@@ -39,13 +41,38 @@ namespace BookStore.Controllers
             try
             {
                 var result = await NonamePaginatedList<PhieuNhapHang>.CreateAsync(
-                    _bookStoreData.GetPhieuNhapHang(), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetPhieuNhapHang(null), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
             catch (Exception ex)
             {
                 return NotFound();
+            }
+        }
+
+        [Route("APIGetPhieuNhapHang")]
+        public async Task<IActionResult> APIGetPhieuNhapHang(int id)
+        {
+            try
+            {
+                List<object> result = new List<object>();
+                PhieuNhapHang content = await _bookStoreData
+                    .GetPhieuNhapHangById(id);
+
+                foreach (var item in content.ChiTietPhieuNhapHang)
+                    result.Add(new {
+                        HangHoaId = item.HangHoaId,
+                        TenHangHoa = item.HangHoa.TenHangHoa,
+                        GiaNhap = (int)item.GiaNhap,
+                        SoLuong = item.SoLuong
+                    });
+
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
         #endregion
@@ -61,6 +88,7 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         [Route("CreateConfirmed")]
         public async Task<IActionResult> CreateConfirmed(
+            [Bind("NhaCungCapId")] PhieuNhapHang phieuNhapHang,
             ICollection<ChiTietPhieuNhapHang> properties,
             bool? modal, bool? redirect)
         {
@@ -69,7 +97,6 @@ namespace BookStore.Controllers
             bool isModal = modal ?? false;
             bool isRedirect = redirect ?? true;
 
-            PhieuNhapHang phieuNhapHang = new PhieuNhapHang();
             Message message = new Message();
 
             if (ModelState.IsValid)
@@ -77,6 +104,10 @@ namespace BookStore.Controllers
                 try
                 {
                     phieuNhapHang.NgayLap = DateTime.Now;
+
+                    phieuNhapHang.NhanVien = await _bookStoreData
+                        .GetStaffByUserName(User.Identity.Name);
+                    phieuNhapHang.NhanVienId = phieuNhapHang.NhanVien.Id;
 
                     await _bookStoreData.AddPhieuNhapHang(phieuNhapHang, properties);
 
@@ -108,6 +139,12 @@ namespace BookStore.Controllers
                     message.Content = _sharedLocalizer[ex.GetType().FullName];
                 }
             }
+            else
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer["Invalid"];
+            }
 
             return Json(message);
         }
@@ -129,6 +166,55 @@ namespace BookStore.Controllers
         #endregion
 
         #region Other
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Pay")]
+        public async Task<IActionResult> Pay(int id,
+            bool? modal, bool? redirect)
+        {
+            AddInfoToViewData();
+
+            bool isModal = modal ?? false;
+            bool isRedirect = redirect ?? true;
+
+            Message message = new Message();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _bookStoreData.PayPhieuNhapHang(id);
+
+                    message.Type = MessageType.Success;
+                    message.Header = _sharedLocalizer["Success"];
+                    message.Content = string.Format(
+                        "{0} {1}",
+                        _sharedLocalizer[action],
+                        _sharedLocalizer[controller].Value.ToLower());
+
+                    message.Results["Reload"] = true;
+
+                    if (isRedirect)
+                        message.Results["RedirectUrl"] = Url.Action(
+                            "Details",
+                            new { id = id });
+                    else
+                        message.Results["Current"] = new
+                        {
+                            value = id
+                        };
+                }
+                catch (Exception ex)
+                {
+                    message.Type = MessageType.Error;
+                    message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                    message.Content = _sharedLocalizer[ex.GetType().FullName];
+                }
+            }
+
+            return Json(message);
+        }
+
         private IActionResult C(bool? modal, bool? redirect)
         {
             AddInfoToViewData();
@@ -183,6 +269,8 @@ namespace BookStore.Controllers
 
                 phieuNhapHang.ChiTietPhieuNhapHang =
                    await _bookStoreData.GetChiTietPhieuNhapHang(id).ToArrayAsync();
+                phieuNhapHang.TrangThai =
+                    await _bookStoreData.GetTrangThaiById(phieuNhapHang.TrangThaiId);
 
                 if (phieuNhapHang == null)
                 {

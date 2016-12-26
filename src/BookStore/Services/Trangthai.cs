@@ -10,11 +10,14 @@ namespace BookStore.Services
     public partial class BookStoreData
     {
         #region TrangThai
-        public IQueryable<TrangThai> GetTrangThai(string loai)
+        public IQueryable<TrangThai> GetTrangThai(string vietTat, string loai)
         {
             string sortOrder = null;
 
             IQueryable<TrangThai> result = _context.TrangThai;
+
+            if (vietTat != null)
+                result = result.Where(i => i.VietTat == vietTat);
 
             if (loai != null)
                 result = result.Where(i => i.Loai == loai);

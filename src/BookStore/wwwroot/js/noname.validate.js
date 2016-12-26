@@ -16,12 +16,6 @@
                 crudFormSubmit(this);
             }
         });
-
-        //form.submit(function (event) {
-        //    event.preventDefault();
-
-        //    crudFormSubmit(this);
-        //});
     });
 }
 

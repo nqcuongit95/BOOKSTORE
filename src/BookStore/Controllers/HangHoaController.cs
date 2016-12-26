@@ -49,13 +49,13 @@ namespace BookStore.Controllers
             }
         }
 
-        [HttpGet, ActionName("SearchAPI")]
-        [Route("SearchAPI")]
+        [HttpGet, ActionName("APISearch")]
+        [Route("APISearch")]
         public async Task<IActionResult> APISearch(string search)
         {
             try
             {
-                RearchResult result = new RearchResult();
+                SearchResult result = new SearchResult();
                 List<HangHoa> content = await _bookStoreData
                     .GetHangHoa(search, true).ToListAsync();
 
@@ -68,6 +68,7 @@ namespace BookStore.Controllers
                             (int)i.GiaBanLe, i.TonKho),
                         Id = i.Id,
                         TenHangHoa = i.TenHangHoa,
+                        TonKho = i.TonKho,
                         GiaNhap = i.GiaNhap
                     });
 
@@ -107,14 +108,14 @@ namespace BookStore.Controllers
             {
                 try
                 {
-                    hangHoa.NgayTao = DateTime.Now;
+                    hangHoa.NgayLap = DateTime.Now;
                     hangHoa.GiaNhap = hangHoa.GiaNhap ?? 0;
                     hangHoa.GiaBanSi = hangHoa.GiaBanSi ?? 0;
                     hangHoa.GiaBanLe = hangHoa.GiaBanLe ?? 0;
                     hangHoa.DaBan = 0;
                     hangHoa.TrangThai = new TrangThai()
                     {
-                        VietTat = "USE",
+                        VietTat = "Use",
                         Loai = "HangHoa"
                     };
 

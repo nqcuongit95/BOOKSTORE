@@ -10,11 +10,9 @@
 
 @await Html.PartialAsync("_HeaderMenuPartial", headermenu)
 
-<div class="page-container ui grid">
-    <div class="sixteen wide column">
-        @await Html.PartialAsync("_MenuPartial", menu)
-    </div>
+@await Html.PartialAsync("_MenuPartial", menu)
 
+<div class="page-container ui grid">
     <div class="sixteen wide column">
         @RenderBody()
     </div>

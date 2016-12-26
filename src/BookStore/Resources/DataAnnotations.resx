@@ -183,4 +183,28 @@
   <data name="SoLuong" xml:space="preserve">
     <value>Số lượng</value>
   </data>
+  <data name="LyDo" xml:space="preserve">
+    <value>Lý do</value>
+  </data>
+  <data name="NhanVien" xml:space="preserve">
+    <value>Nhân viên</value>
+  </data>
+  <data name="TonKhoThucTe" xml:space="preserve">
+    <value>Tồn kho thực tế</value>
+  </data>
+  <data name="HangHoa" xml:space="preserve">
+    <value>Hàng Hóa</value>
+  </data>
+  <data name="PhieuNhapHang" xml:space="preserve">
+    <value>Phiếu nhập hàng</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="PhieuTraHang" xml:space="preserve">
+    <value>Phiếu trả hàng</value>
+  </data>
+  <data name="LoaiPhieu" xml:space="preserve">
+    <value>Loại phiếu</value>
+  </data>
 </root>

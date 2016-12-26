@@ -1,0 +1,101 @@
+﻿@model PhieuNhanHang
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
+}
+
+<form id="PhieuKiemKho"
+      class="crud-form create ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["PhieuChiNhapHang"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["PCNH"],
+           Model.Id)
+        </span>
+    </h2>
+
+    <div class="field">
+        <label asp-for="PhieuNhapHangId"></label>
+        <input value="@(sharedLocalizer["PNH"] + Model.Id)" readonly="" />
+    </div>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="one wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.Id)
+                </th>
+                <th class="nine wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="properties">
+            @foreach (var item in Model.PhieuNhapHang.ChiTietPhieuNhapHang)
+            {
+                <tr>
+                    <td class="HangHoaId">
+                        <span class="ui label black">
+                            @(sharedLocalizer["PNH"] + item.HangHoaId)
+                        </span>
+                    </td>
+                    <td class="TenHangHoa">
+                        @(sharedLocalizer["PNH"] + item.HangHoa.TenHangHoa)
+                    </td>
+                    <td class="GiaNhap">
+                        <span class="ui label yellow money">
+                            @item.GiaNhap.ToString().Replace(",", ".")
+                        </span>
+                    </td>
+                    <td class="SoLuong">@item.SoLuong</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="action-buttons">
+        @if ((bool)ViewData["Modal"] == true)
+        {
+            <a class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index"
+               class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+    </div>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' đ');
+        });
+    });
+</script>

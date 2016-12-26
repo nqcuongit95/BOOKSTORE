@@ -12,18 +12,18 @@
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       class="crud-form edit ui form">
-    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-    {
-        <h2 class="ui header">@ViewData["Action"]</h2>
-    }
-
-    <input type="hidden" asp-for="Id" />
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
 
     <h2 class="ui dividing header">
-        @string.Format("{0} {1}",
-       sharedLocalizer["Details"],
-       sharedLocalizer["HangHoa"].Value.ToLower())
+        @sharedLocalizer["HangHoa"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["HH"],
+           Model.Id)
+        </span>
     </h2>
+
+    <input type="hidden" asp-for="Id" />
 
     <div class="three fields">
         <div class="field">
@@ -33,10 +33,10 @@
         </div>
 
         <div class="field">
-            <label asp-for="NgayTao"></label>
+            <label asp-for="NgayLap"></label>
             <input type="date"
                    readonly=""
-                   placeholder="@Html.DisplayNameFor(model => model.NgayTao)"
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
                    value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)">
         </div>
 
@@ -51,7 +51,7 @@
                    sharedLocalizer["TrangThai"].Value.ToLower())
                 </div>
                 <div class="menu">
-                    @foreach (var trangThai in bookStoreData.GetTrangThai("HangHoa"))
+                    @foreach (var trangThai in bookStoreData.GetTrangThai(null, "HangHoa"))
                     {
                         <div class="item" data-value="@trangThai.Id">
                             @sharedLocalizer[trangThai.VietTat]
@@ -264,7 +264,7 @@
             <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
 
             <div class="ui search"
-                 href="@Url.Action("SearchAPI","ThuocTinhHangHoa")"
+                 href="@Url.Action("APISearch","ThuocTinhHangHoa")"
                  for-id="LoaiHangHoaId">
                 <div class="ui icon input">
                     <input class="prompt"

@@ -24,6 +24,14 @@
             error: false
         });
     });
+
+    $('.money').each(function (index) {
+        numeral.defaultFormat('0,0');
+
+        var text = $(this).text();
+
+        $(this).text(numeral(text).format() + ' đ');
+    });
 });
 
 function initializeCRUDForm() {
@@ -241,8 +249,9 @@ function initializeIndexPagination() {
     dropdown.dropdown('set selected', $('#page-index').val());
 
     dropdown.dropdown({
-        onChange: function (value, text, $selectedItem) {
-            location.search({ page: value });
+        onChange: function (value, text) {
+            console.log('onChange');
+            location.search = '?page=' + value;
         }
     });
 }

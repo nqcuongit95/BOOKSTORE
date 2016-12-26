@@ -15,14 +15,16 @@ namespace BookStore.Services
             string sortOrder = null;
 
             IQueryable<HangHoa> result = _context.HangHoa
-                .Include(i => i.LoaiHangHoa)
-                .Include(i => i.TrangThai);
+                .Include(m => m.LoaiHangHoa)
+                .Include(m => m.ChiTietHangHoa)
+                .Include(m => m.TrangThai)
+                .Where(m => m.TrangThai.Loai == "HangHoa");
 
             if (!String.IsNullOrEmpty(search))
                 result = result.Where(i => i.TenHangHoa.Contains(search));
 
             if (use)
-                result = result.Where(i => i.TrangThai.VietTat == "USE");
+                result = result.Where(i => i.TrangThai.VietTat == "Use");
 
             switch (sortOrder)
             {
@@ -36,7 +38,12 @@ namespace BookStore.Services
 
         public async Task<HangHoa> GetHangHoaById(int? id)
         {
-            return await _context.HangHoa.SingleOrDefaultAsync(m => m.Id == id);
+            return await _context.HangHoa
+                .Include(m => m.LoaiHangHoa)
+                .Include(m => m.ChiTietHangHoa)
+                .Include(m => m.TrangThai)
+                .Where(m => m.TrangThai.Loai == "HangHoa")
+                .SingleOrDefaultAsync(m => m.Id == id);
         }
 
         public bool HangHoaExists(int? id)
@@ -66,9 +73,7 @@ namespace BookStore.Services
             ICollection<ChiTietHangHoa> properties)
         {
             _context.Entry(hangHoa).State = EntityState.Modified;
-            _context.Entry(hangHoa).Property("NgayTao").IsModified = false;
-
-
+            _context.Entry(hangHoa).Property("NgayLap").IsModified = false;
 
             _context.ChiTietHangHoa.RemoveRange(await _context.ChiTietHangHoa
                 .Where(i => i.HangHoaId == hangHoa.Id).ToArrayAsync());

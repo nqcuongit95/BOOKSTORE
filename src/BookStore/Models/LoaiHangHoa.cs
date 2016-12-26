@@ -12,6 +12,8 @@ namespace BookStore.Models
             ThuocTinhHangHoa = new HashSet<ThuocTinhHangHoa>();
         }
 
+        [Display(Name = "Id",
+            ResourceType = typeof(Resources.DataAnnotations))]
         public int Id { get; set; }
 
         [Display(Name = "TenLoaiHangHoa",

@@ -31,7 +31,6 @@ namespace BookStore.Models
         [Required(ErrorMessage = "Bạn không được để trống trường này.")]
         [MaxLength(20, ErrorMessage = "{0} tối đa {1} ký tự.")]
         public string VietTat { get; set; }
-        public string Loai { get; set; }
 
         public virtual ICollection<DonHang> DonHang { get; set; }
         public virtual ICollection<HangHoa> HangHoa { get; set; }

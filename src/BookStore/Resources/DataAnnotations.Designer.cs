@@ -114,6 +114,24 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Hàng Hóa.
+        /// </summary>
+        public static string HangHoa {
+            get {
+                return ResourceManager.GetString("HangHoa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Mã.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Loại.
         /// </summary>
         public static string Loai {
@@ -128,6 +146,24 @@ namespace BookStore.Resources {
         public static string LoaiHangHoa {
             get {
                 return ResourceManager.GetString("LoaiHangHoa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Loại phiếu.
+        /// </summary>
+        public static string LoaiPhieu {
+            get {
+                return ResourceManager.GetString("LoaiPhieu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Lý do.
+        /// </summary>
+        public static string LyDo {
+            get {
+                return ResourceManager.GetString("LyDo", resourceCulture);
             }
         }
         
@@ -155,6 +191,33 @@ namespace BookStore.Resources {
         public static string NhanHieu {
             get {
                 return ResourceManager.GetString("NhanHieu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Nhân viên.
+        /// </summary>
+        public static string NhanVien {
+            get {
+                return ResourceManager.GetString("NhanVien", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Phiếu nhập hàng.
+        /// </summary>
+        public static string PhieuNhapHang {
+            get {
+                return ResourceManager.GetString("PhieuNhapHang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Phiếu trả hàng.
+        /// </summary>
+        public static string PhieuTraHang {
+            get {
+                return ResourceManager.GetString("PhieuTraHang", resourceCulture);
             }
         }
         
@@ -236,6 +299,15 @@ namespace BookStore.Resources {
         public static string TonKho {
             get {
                 return ResourceManager.GetString("TonKho", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tồn kho thực tế.
+        /// </summary>
+        public static string TonKhoThucTe {
+            get {
+                return ResourceManager.GetString("TonKhoThucTe", resourceCulture);
             }
         }
         

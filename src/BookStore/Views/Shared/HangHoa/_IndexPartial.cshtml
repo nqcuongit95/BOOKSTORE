@@ -1,4 +1,4 @@
-﻿@model PaginatedList<HangHoa>
+﻿@model NonamePaginatedList<HangHoa>
 
 @inject IStringLocalizer<SharedResource> sharedLocalizer
 
@@ -14,13 +14,14 @@
 <table class="hang-hoa data-table ui blue selectable sortable table">
     <thead>
         <tr>
-            <th class="three wide">@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
-            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.NgayTao)</th>
+            <th class="one wide">@Html.DisplayNameFor(p => hangHoa.Id)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.NgayLap)</th>
             <th class="three wide">@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
             <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
             <th class="two wide">@Html.DisplayNameFor(p => hangHoa.DaBan)</th>
-            <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TrangThaiId)</th>
-            <th class="two wide">@sharedLocalizer["Operator"]</th>
+            <th class="three wide">@Html.DisplayNameFor(p => hangHoa.TrangThaiId)</th>
+            <th class="one wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
     <tbody>
@@ -31,12 +32,12 @@
 
             switch (item.TrangThai.VietTat)
             {
-                case "NOTUSE":
+                case "NotUse":
                     rowState = "negative";
                     iconState = "<i class=\"large icon close\"></i>";
                     break;
 
-                case "USE":
+                case "Use":
                     iconState = "<i class=\"large green checkmark icon\"></i>";
                     break;
 
@@ -46,10 +47,18 @@
 
             <tr class="@rowState">
                 <td>
-                    @Html.DisplayFor(modelItem => item.TenHangHoa)
+                    <span class="ui label black" style="width:100%">
+                        @string.Format(
+                       "{0}{1}",
+                       sharedLocalizer["HH"],
+                       item.Id)
+                    </span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NgayTao)
+                    @item.TenHangHoa
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayLap)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LoaiHangHoa.TenLoaiHangHoa)
@@ -71,7 +80,6 @@
                     <div class="ui floated menu">
                         <a asp-action="Edit"
                            asp-route-id="@item.Id"
-                           asp-route-modal="@false"
                            class="edit icon item">
                             <i class="edit icon"></i>
                         </a>
@@ -93,7 +101,7 @@
 </table>
 
 @{
-    var paginated = new Paginated(
+    var paginated = new NonamePaginated(
         Model.PageIndex,
         Model.TotalPages
         );

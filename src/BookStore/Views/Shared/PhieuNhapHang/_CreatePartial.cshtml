@@ -7,43 +7,62 @@
     ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
 }
 
-<div id="phieu-nhap-hang-header">
-    <div class="ui search"
-         href="@Url.Action("SearchAPI","HangHoa")"
-         style="display:inline-block;">
-        <div class="ui icon input">
-            <input class="prompt"
-                   default-name="ThuocTinh"
-                   placeholder="@sharedLocalizer["HangHoa"]">
-            <i class="search icon"></i>
-        </div>
-        <div class="results"></div>
-    </div>
-
-    <button id="phieu-nhap-hang-create"
-            class="action-button ui basic button"
-            style="float:right;"
-            onclick="PhieuNhapHangSubmit()">
-        <i class="add icon"></i>
-        @sharedLocalizer["Create"]
-    </button>
-
-    <h3 class="header"
-        style="text-align:right">
-        @sharedLocalizer["TotalAmount"]:
-        <span id="totalAmount" style="display:inline-block;width:128px;"> 0</span>
-    </h3>
-</div>
-
 <form id="PhieuNhapHang"
       asp-action="CreateConfirmed"
       asp-route-modal="@ViewData["Modal"]"
       asp-route-redirect="@ViewData["Redirect"]"
       class="crud-form create ui form">
-    @if (ViewData["Modal"] != null && (bool)ViewData["Modal"] == true)
-    {
-        <h2 class="ui header">@ViewData["Action"]</h2>
-    }
+
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <div id="phieu-nhap-hang-header">
+        <div class="ui search"
+             href="@Url.Action("APISearch","HangHoa")"
+             style="display:inline-block;">
+            <div class="ui icon input">
+                <input class="prompt"
+                       default-name="ThuocTinh"
+                       placeholder="@sharedLocalizer["HangHoa"]">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+        </div>
+
+        <div id="phieu-nhap-hang-create"
+             class="action-button ui basic button"
+             style="float:right;"
+             onclick="PhieuNhapHangSubmit()">
+            <i class="add icon"></i>
+            @sharedLocalizer["Create"]
+        </div>
+
+        <h3 class="header"
+            style="text-align:right">
+            @sharedLocalizer["TotalAmount"]:
+            <span id="totalAmount" style="display:inline-block;width:128px;"> 0</span>
+        </h3>
+    </div>
+
+    <div class="field">
+        <label asp-for="NhaCungCapId"></label>
+        <div class="ui search selection dropdown">
+            <input asp-for="NhaCungCapId" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">
+                @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhaCungCap"].Value.ToLower())
+            </div>
+            <div class="menu">
+                @foreach (var nhaCungCap in bookStoreData.GetNhaCungCap())
+                {
+                    <div class="item" data-value="@nhaCungCap.Id">
+                        @sharedLocalizer[nhaCungCap.TenNhaCungCap]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 
     <table class="data-table ui blue selectable sortable table">
         <thead>
@@ -76,15 +95,15 @@
                 <input type="hidden" default-name="HangHoaId" />
             </td>
             <td class="SoLuong">
-                <input asp-for="@chiTietPhieuNhapHang.GiaNhap"
-                       type="number"
-                       default-name="GiaNhap"
-                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)">
-            </td>
-            <td class="GiaNhap">
                 <input asp-for="@chiTietPhieuNhapHang.SoLuong"
                        type="number"
                        default-name="SoLuong"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)">
+            </td>
+            <td class="GiaNhap">
+                <input asp-for="@chiTietPhieuNhapHang.GiaNhap"
+                       type="number"
+                       default-name="GiaNhap"
                        placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)">
             </td>
             <td class="Amount"></td>
@@ -103,61 +122,70 @@
     var rowHTML = $('#properties tbody').html();
 
     function PhieuNhapHangSubmit() {
-        var url = form.attr('action');
-        var data = form.serialize();
-        var timeout = 1000;
-        var rows = form.find('tr');
-        console.log(data);
+        if (form.form("is valid")) {
+            var url = form.attr('action');
+            var data = form.serialize();
+            var timeout = 1000;
+            var rows = form.find('tr');
+            console.log(data);
 
-        if (rows.length > 0) {
-            activeMessageLoader();
+            if (rows.length > 0) {
+                activeMessageLoader();
 
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: data,
-                success: function (result) {
-                    if (result !== undefined) {
-                        inactiveMessageLoader();
-                        showMessage(result);
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data,
+                    success: function (result) {
+                        if (result !== undefined) {
+                            inactiveMessageLoader();
+                            showMessage(result);
 
-                        if (result.type !== 'error') {
-                            activeMessageProgress();
+                            if (result.type !== 'error') {
+                                activeMessageProgress();
 
-                            if (result.results["Reload"] !== undefined &&
-                                result.results["Reload"] === true) {
-                                setTimeout(
-                                    function () {
-                                        location.reload();
-                                        message.modal('hide');
-                                    }, timeout);
-                            }
-                            else {
-                                var redirect = result.results["RedirectUrl"];
-
-                                if (redirect !== undefined) {
+                                if (result.results["Reload"] !== undefined &&
+                                    result.results["Reload"] === true) {
                                     setTimeout(
                                         function () {
-                                            location = redirect;
+                                            location.reload();
                                             message.modal('hide');
                                         }, timeout);
                                 }
-                            }
+                                else {
+                                    var redirect = result.results["RedirectUrl"];
 
-                            if (fn !== undefined) {
-                                fn(result);
+                                    if (redirect !== undefined) {
+                                        setTimeout(
+                                            function () {
+                                                location = redirect;
+                                                message.modal('hide');
+                                            }, timeout);
+                                    }
+                                }
+
+                                if (fn !== undefined) {
+                                    fn(result);
+                                }
                             }
                         }
-                    }
-                    else {
+                        else {
+                            inactiveMessageLoader();
+                            showDefaultErrorMessage();
+                        }
+                    },
+                    error: function (xhr, status, error) {
                         inactiveMessageLoader();
                         showDefaultErrorMessage();
                     }
-                },
-                error: function (xhr, status, error) {
-                    inactiveMessageLoader();
-                    showDefaultErrorMessage();
-                }
+                });
+            }
+
+            $('.money').each(function (index) {
+                numeral.defaultFormat('0,0');
+
+                $(this).text(numeral(text).format() + ' đ');
+                console.log($(this).text());
             });
         }
     }

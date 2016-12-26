@@ -12,9 +12,7 @@
                 if (Model.SelectedKey == item.Key)
                 {
                     <a class="active item">
-                        @(string.Format("{0} {1}",
-                        sharedLocalizer[item.Value.Action].Value,
-                        sharedLocalizer[item.Value.Controller].Value.ToLower()))
+                        @sharedLocalizer[item.Value.Action].Value
                     </a>
                 }
                 else
@@ -22,16 +20,10 @@
                     <a asp-controller="@item.Value.Controller"
                        asp-action="@item.Value.Action"
                        class="item">
-                        @(string.Format("{0} {1}",
-                        sharedLocalizer[item.Value.Action].Value,
-                        sharedLocalizer[item.Value.Controller].Value.ToLower()))
+                        @sharedLocalizer[item.Value.Action].Value
                     </a>
                 }
             }
         </div>
     </div>
-
-    <h2 class="action-title ui right aligned header">
-        @ViewData["Action"]
-    </h2>
 </div>
