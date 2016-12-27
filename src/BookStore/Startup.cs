@@ -71,12 +71,6 @@ namespace BookStore
                     uiCulture: "vi-VN");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
-
-                options.RequestCultureProviders.Insert(
-                    0, new CustomRequestCultureProvider(async context =>
-                {
-                    return new ProviderCultureResult("vi");
-                }));
             });
 
             services.AddScoped<IBookStoreData, BookStoreData>();
