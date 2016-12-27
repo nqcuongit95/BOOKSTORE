@@ -11,5 +11,6 @@ namespace BookStore.ViewModels
         public string Status { get; set; }
         public DateTime Date { get; set; }
         public decimal TotalValues { get; set; }
+        public string TotalValuesFormated { get; set; }
     }
 }

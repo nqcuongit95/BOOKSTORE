@@ -1,0 +1,44 @@
+﻿@model CustomerLiabilitesViewModel
+
+<h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
+
+<table class="ui very basic table">
+    <thead>
+        <tr>
+            <th class="four wide">Mã Phiếu</th>
+            <th class="four wide">Người Tạo</th>
+            <th class="four wide">Ngày Tạo</th>
+            <th class="four wide">Ghi Chú</th>
+            <th class="four wide">Giá Trị</th>
+            <th class="four wide">Công Nợ</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var debt in Model.Debts )
+            {
+            <tr>
+                <td>
+                    @debt.Id
+                </td>
+                <td>
+                    @debt.Staff   
+                </td>
+                <td>
+                    @debt.DateCreate
+                </td>
+                <td>
+                    @debt.Note
+                </td>
+                <td>
+                    @debt.Value
+                </td>
+                <td>
+                    @debt.Debt
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("_PaginatedTransaction", Model.Debts)

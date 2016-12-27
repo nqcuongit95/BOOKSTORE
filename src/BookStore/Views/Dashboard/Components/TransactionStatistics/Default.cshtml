@@ -1,0 +1,46 @@
+﻿@model TransactionStatisticsViewModel
+
+<div class="ui orange card">
+    <div class="content">
+        <div class="ui right floated header">@DateTime.Now.ToString("dd/MM/yyyy")</div>
+        <div class="ui left floated header">Giao dịch</div>
+    </div>
+    <div class="content">
+        <h4 class="ui sub header">Activity</h4>
+        <div class="ui feed">
+            <div class="event">
+                <div class="content">
+                    <div class="summary">                       
+                        <div class="ui green horizontal label">@Model.TodayTransactionValues</div>
+                        Tổng giá trị giao dịch hôm nay
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">                        
+                        <div class="ui olive horizontal label">@Model.TodayRevenue</div>
+                        Tổng doanh thu hôm nay
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">
+                        <a>Helen Troy</a> added two pictures
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra content center aligned">
+        <div class="ui orange statistic">
+            <div class="value">
+                @Model.TotalTransactionValues
+            </div>
+            <div class="label">
+                Tổng giá trị giao dịch
+            </div>
+        </div>
+    </div>
+</div>
