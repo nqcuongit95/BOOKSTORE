@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Models;
 
 namespace BookStore.ViewModels
 {
@@ -15,7 +16,8 @@ namespace BookStore.ViewModels
         public string TenTrangThai { get; set; }
         public decimal TongTien { get; set; }
         public int NhanVienId { get; set; }
-        public int TenNhanVien { get; set; }
-
+        public string TenNhanVien { get; set; }
+        public List<CTDonHang> details;
+        public CustomerInfoViewModel khachhang;
     }
 }

@@ -157,7 +157,46 @@ namespace BookStore.Services
         {
             return await _context.Users.ToListAsync();
         }
-
+        public CustomerInfoViewModel findCustomerById(int customerId)
+        {
+            var query = from khachhang in _context.KhachHang
+                        join loai in _context.LoaiKhachHang
+                        on khachhang.LoaiKhachHangId equals loai.Id
+                        where khachhang.Id == customerId
+                        select new CustomerInfoViewModel{
+                            ID = khachhang.Id,
+                            TenKhachHang = khachhang.TenKhachHang,
+                            SoDienThoai = khachhang.SoDienThoai,
+                            DiaChi = khachhang.DiaChi,
+                            Email = khachhang.Email,
+                            TenLoaiKhachHang = loai.TenLoaiKhachHang,
+                            NgayLap = khachhang.NgayLap
+                        };
+            return query.First();
+        }
+        public DonHangViewModel findDonHangById(int donhangID)
+        {
+            var re = from donhang in _context.DonHang
+                     join khachhang in _context.KhachHang
+                     on donhang.KhachHangId equals khachhang.Id
+                     join trangthai in _context.TrangThai
+                     on donhang.TrangThaiId equals trangthai.Id
+                     join nv in _context.Staff
+                     on donhang.NhanVienId equals nv.Id
+                     where donhang.Id == donhangID
+                     select new DonHangViewModel
+                     {
+                         ID = donhang.Id,
+                         NgayLap = donhang.NgayLap,
+                         KhachHangId = khachhang.Id,
+                         TenKhachHang = khachhang.TenKhachHang,
+                         TrangThaiId = trangthai.Id,
+                         TenTrangThai = trangthai.TenTrangThai,
+                         NhanVienId = nv.Id,
+                         TenNhanVien = nv.FullName
+                     };
+            return re.First();
+        }
         public PhieuThuViewModel findPhieuThu(int phieuID)
         {
             var re = from phieuthu in _context.PhieuThu
@@ -542,7 +581,23 @@ namespace BookStore.Services
 
             return phieuchi.Id;
         }
-
+        public IQueryable<CTDonHang> GetCTDonHang(int donhangID)
+        {
+            var re = from cthang in _context.ChiTietDonHang
+                     join hanghoa in _context.HangHoa
+                     on cthang.HangHoaId equals hanghoa.Id
+                     where cthang.DonHangId == donhangID
+                     select new CTDonHang
+                     {
+                         ID = cthang.Id,
+                         DonHangId = donhangID,
+                         HangHoaId = hanghoa.Id,
+                         TenHangHoa = hanghoa.TenHangHoa,
+                         SoLuong = cthang.SoLuong,
+                         GiaBan = cthang.GiaBan
+                     };
+            return re;
+        }
         public IQueryable<PhieuThuViewModel> GetAllPhieuThu()
         {
             var re = from phieuthu in _context.PhieuThu

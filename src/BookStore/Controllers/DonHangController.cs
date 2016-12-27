@@ -110,5 +110,16 @@ namespace BookStore.Controllers
                                     firstShowedPage, lastShowedPage));
             }
         }
+        public IActionResult Details(int id)
+        {
+            var donhang = _bookStoreData.findDonHangById(id);
+            donhang.khachhang = _bookStoreData.findCustomerById(donhang.KhachHangId);
+            donhang.details = _bookStoreData.GetCTDonHang(donhang.ID).ToList();
+            for (int i = 0; i < donhang.details.Count; i++)
+            {
+                donhang.details[i].ThanhTien = donhang.details[i].GiaBan * donhang.details[i].SoLuong;
+            }
+            return View(donhang);
+        }
     }
 }

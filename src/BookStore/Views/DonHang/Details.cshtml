@@ -1,0 +1,280 @@
+﻿
+@model DonHangViewModel
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng";
+}
+<style>
+    .infoHeader {
+        margin-bottom: 3px;
+    }
+
+    .botomcol.column {
+        padding-top: 0px;
+    }
+</style>
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Chi tiết đơn hàng</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+            <a class="ui item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    <div class="twelve wide column">
+        <div class="ui grid">
+            <!-- Mặt hàng-->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui segment" style="height:180px;">
+                        <div class="column">
+                            <h4 class="ui dividing teal header">THÔNG TIN KHÁCH HÀNG</h4>
+                        </div>
+                        <div class="row">
+                            <div class="ui three column grid" style="padding-top:9px">
+                                <div class="column">
+                                    <h2 class="infoHeader">@Model.khachhang.TenLoaiKhachHang</h2>
+                                </div>
+                                <div class="column">
+                                    <h4 class="infoHeader">Mã khách hàng</h4>
+                                    <div>@Model.khachhang.ID</div>
+                                </div>
+                                <div class="column">
+                                    <h4 class="infoHeader">Tên khách hàng</h4>
+                                    <div>@Model.khachhang.TenKhachHang</div>
+                                </div>
+                                <div class="column" style="padding-top:0">
+                                    <h4 class="infoHeader">Số điện thoại</h4>
+                                    <div>@Model.khachhang.SoDienThoai</div>
+                                </div>
+                                <div class="column" style="padding-top:0">
+                                    <h4 class="infoHeader">Email</h4>
+                                    <div>@Model.khachhang.Email</div>
+                                </div>
+                                <div class="column" style="padding-top:0">
+                                    <h4 class="infoHeader">Địa chỉ</h4>
+                                    <div>phừng 5 m quận thủ đức, thành phố hồ chí minh</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sixteen wide column">
+                        <h4 class="ui dividing teal header">THÔNG TIN HÀNG HÓA</h4>
+                    </div>
+                    <table class="ui very basic selectable table">
+                        <thead>
+                            <tr>
+                                <th class="two wide">Mã hàng</th>
+                                <th class="eight wide">Tên hàng</th>
+                                <th class="two wide">Số lượng</th>
+                                <th class="two wide">Đơn giá</th>
+                                <th class="two wide">Thành tiền</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div style="margin-top:11px; overflow-y:scroll; height: 120px;">
+                        <table class="ui very basic selectable table">
+                            <thead>
+                                    <tr>
+                                        <th class="two wide"></th>
+                                        <th class="eight wide"></th>
+                                        <th class="two wide"></th>
+                                        <th class="two wide"></th>
+                                        <th class="two wide"></th>
+                                    </tr>
+                                </thead>
+                            <tbody>
+                                @foreach (var customer in @Model.details)
+                                {
+                                    <tr>
+                                        <td class="two wide">
+                                            @customer.ID
+                                        </td>
+                                        <td class="two wide">
+                                            @customer.TenHangHoa
+                                        </td>
+                                        <td class="two wide">
+                                            @customer.SoLuong
+                                        </td>
+                                        <td class="two wide">
+                                            @customer.GiaBan
+                                        </td>
+                                        <td class="two wide">
+                                            @customer.ThanhTien
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four wide column">
+        <form id="payment-form">
+            <div class="ui grid">
+                <!-- Khach hang -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Khách hàng</div>
+                        <table class="ui very basic fixed single line table" id="customer-table">
+                            <tbody>
+                                <tr>
+                                    <td class="ten wide">Tên khách hàng</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Điện thoại</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Địa chỉ</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Loại giá</td>
+                                    <td class="ten wide right aligned"
+                                        style="overflow:visible;">
+                                        <div class="ui compact selection dropdown" id="price-type">
+                                            <input name="pricetype" type="hidden">
+                                            <div class="text">Bán lẻ</div>
+                                            <i class="dropdown icon"></i>
+                                            <div class="menu">
+                                                <div class="item" data-value="2">Bán sỉ</div>
+                                                <div class="item active selected"
+                                                     data-value="1">Bán lẻ</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Nhân viên</td>
+                                    <td class="ten wide right aligned">
+                                        <div class="ui basic large label">
+                                            @Model.TenNhanVien
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Thanh toan -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">Thanh toán</div>
+                        <table class="ui very basic table" id="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Tổng tiền</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Khách phải trả</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td class="seven wide">Tiền khách đưa</td>
+                                    <td class="nine wide right aligned">
+                                        <div class="ui input"
+                                             style="width: 140px;"
+                                             id="paid-money">
+                                            <input type="text"
+                                                   name="CustomerPaid"
+                                                   style="text-align:right;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Tiền thừa</td>
+                                    <td class="ten wide right aligned"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="full-width">
+                                <tr>
+                                    <th colspan="2" class="right aligned">
+                                        <div class="ui positive button" id="pay">Thanh toán</div>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<div class="row" id="context">
+        <div class="sixteen wide column" style="padding:0">
+            <table class="ui teal table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-action="Index"
+                               asp-route-sortOrder="@ViewData["NameSortParm"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                               Tên hàng hóa
+                            </a>
+                        </th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customer in @Model.details)
+                    {
+                        <tr>
+                            <td class="selectable">
+                                <a asp-action="Details" asp-route-id="@customer.ID">
+                                    @customer.TenHangHoa
+                                </a>
+                            </td>
+                            <td class="selectable">
+                                <a asp-action="Details" asp-route-id="@customer.ID">
+                                    @customer.SoLuong
+                                </a>
+                            </td>
+                            <td class="selectable">
+                                <a asp-action="Details" asp-route-id="@customer.ID">
+                                    @customer.GiaBan
+                                </a>
+                            </td>
+                            <td class="selectable">
+                                <a asp-action="Details" asp-route-id="@customer.ID">
+                                    @customer.ThanhTien
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>*@
+<script src="~/js/PhieuChi/PhieuChiDetails.js"></script>
