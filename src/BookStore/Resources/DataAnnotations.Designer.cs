@@ -69,6 +69,24 @@ namespace BookStore.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Đơn Hàng.
+        /// </summary>
+        public static string DonHang {
+            get {
+                return ResourceManager.GetString("DonHang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Ghi Chú.
+        /// </summary>
+        public static string GhiChu {
+            get {
+                return ResourceManager.GetString("GhiChu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Giá bán lẽ.
         /// </summary>
         public static string GiaBanLe {
@@ -128,6 +146,15 @@ namespace BookStore.Resources {
         public static string Id {
             get {
                 return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Khách Hàng.
+        /// </summary>
+        public static string KhachHang {
+            get {
+                return ResourceManager.GetString("KhachHang", resourceCulture);
             }
         }
         
