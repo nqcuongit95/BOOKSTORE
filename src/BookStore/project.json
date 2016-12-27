@@ -23,7 +23,10 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.NETCore.App": "1.1.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore":"1.1.0" 
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore":"1.1.0",
+    "Microsoft.Extensions.Caching.Memory": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
+
   },
 
   "tools": {
@@ -49,7 +52,7 @@
       ]
     }
   },
-  
+
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true
@@ -71,6 +74,7 @@
   },
 
   "scripts": {
+    "precompile": [ "dotnet bundle" ],
     "prepublish": [ "bower install", "dotnet bundle" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },

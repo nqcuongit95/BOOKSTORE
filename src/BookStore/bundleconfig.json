@@ -20,5 +20,33 @@
     },
     // Optinally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/noname.min.css",
+    "inputFiles": [
+      "wwwroot/css/noname.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/noname.min.js",
+    "inputFiles": [
+      "wwwroot/js/noname.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/noname.validate.min.js",
+    "inputFiles": [
+      "wwwroot/js/noname.validate.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
   }
 ]

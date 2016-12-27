@@ -12,6 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using BookStore.Services;
 using BookStore.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace BookStore
 {
@@ -41,11 +45,39 @@ namespace BookStore
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
-
             //Configure connection string in "appsettings.json"
             services.AddDbContext<BOOKSTOREContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("BookStore")));
+                options => options.UseSqlServer(
+                    Configuration.GetConnectionString("BookStore")));
+            services.AddScoped<IBookStoreData, BookStoreData>();
+
+            services.AddMvc();
+            
+            services.AddMvc()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
+
+            services.AddScoped<LanguageActionFilter>();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>{
+                    new CultureInfo("en-US"),
+                    new CultureInfo("vi-VN")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(
+                    culture: "vi-VN",
+                    uiCulture: "vi-VN");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+
+                options.RequestCultureProviders.Insert(
+                    0, new CustomRequestCultureProvider(async context =>
+                {
+                    return new ProviderCultureResult("vi");
+                }));
+            });
 
             services.AddScoped<IBookStoreData, BookStoreData>();
 
@@ -70,6 +102,16 @@ namespace BookStore
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home";
+                    await next();
+                }
+            });
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -86,13 +128,16 @@ namespace BookStore
 
             app.UseStaticFiles();
 
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
             app.UseIdentity();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
             });
         }
     }

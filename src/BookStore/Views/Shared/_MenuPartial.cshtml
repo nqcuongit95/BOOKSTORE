@@ -1,0 +1,25 @@
+﻿@model Menu
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<div class="sub-menu ui secondary horizontal menu">
+    @foreach (var item in Model)
+    {
+        if (Model.SelectedKey == item.Key)
+        {
+            <a asp-controller="@item.Value.Controller"
+               asp-action="@item.Value.Action"
+               class="active item">
+                @sharedLocalizer[item.Key]
+            </a>
+        }
+        else
+        {
+            <a asp-controller="@item.Value.Controller"
+               asp-action="@item.Value.Action"
+               class="item">
+                @sharedLocalizer[item.Key]
+            </a>
+        }
+    }
+</div>

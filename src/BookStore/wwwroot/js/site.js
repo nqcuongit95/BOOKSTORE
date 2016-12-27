@@ -7,4 +7,8 @@ $(document).ready(function () {
         $('.ui.sidebar').sidebar('toggle');
     });
 
+    $('.disabled').click(function (e) {
+        e.preventDefault();
+    })
 });
+

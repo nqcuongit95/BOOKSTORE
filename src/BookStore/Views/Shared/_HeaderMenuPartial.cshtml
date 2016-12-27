@@ -1,0 +1,29 @@
+﻿@model Menu
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<div class="header-menu">
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@ViewData["Title"]</h2>
+
+        <div class="right menu">
+            @foreach (var item in Model)
+            {
+                if (Model.SelectedKey == item.Key)
+                {
+                    <a class="active item">
+                        @sharedLocalizer[item.Value.Action].Value
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="@item.Value.Controller"
+                       asp-action="@item.Value.Action"
+                       class="item">
+                        @sharedLocalizer[item.Value.Action].Value
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>

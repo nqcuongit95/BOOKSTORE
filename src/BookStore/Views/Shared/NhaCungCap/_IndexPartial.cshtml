@@ -1,0 +1,75 @@
+﻿@model NonamePaginatedList<NhaCungCap>
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    NhaCungCap nhaCungCap = new NhaCungCap();
+}
+
+<table class="nha-cung-cap data-table ui blue selectable sortable table">
+    <thead>
+        <tr>
+            <th class="one wide">@Html.DisplayNameFor(p => nhaCungCap.Id)</th>
+            <th class="twelve wide">@Html.DisplayNameFor(p => nhaCungCap.TenNhaCungCap)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => nhaCungCap.NgayLap)</th>
+            <th class="one wide">@sharedLocalizer["Operator"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span class="ui label black" style="width:100%">
+                        @string.Format(
+                       "{0}{1}",
+                       sharedLocalizer["NCC"],
+                       item.Id)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayLap)
+                </td>
+                <td class="action-buttons">
+                    <div class="ui floated menu">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="edit icon item">
+                            <i class="edit icon"></i>
+                        </a>
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="details icon item">
+                            <i class="file text outline icon"></i>
+                        </a>
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="delete icon item">
+                            <i class="trash icon"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var paginated = new NonamePaginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui small modal">
+</div>
