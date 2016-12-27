@@ -210,9 +210,11 @@ namespace BookStore.Controllers
             return PartialView("_CustomerTransaction",model);
         }
 
-        public async Task<IActionResult> CustomerLiabilites()
+        public async Task<IActionResult> CustomerLiabilites(int id)
         {
-            return View();
+            var model = await _bookStoreData.GetCustomerLiabilites(id);
+
+            return View("_CustomerLiabilites", model);
         }
     }
 }

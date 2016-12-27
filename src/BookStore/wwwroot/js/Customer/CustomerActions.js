@@ -27,7 +27,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 //go the the fucking hell
-                customerRegisterChartSegment.removeClass('loading');
+                
             }
         })
     })
@@ -56,7 +56,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 //go the the fucking hell
-                customerRegisterChartSegment.removeClass('loading');
+                
             }
         })
 
@@ -86,7 +86,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 //go the the fucking hell
-                customerRegisterChartSegment.removeClass('loading');
+                
             }
         })
 
@@ -101,7 +101,7 @@ $(document).ready(function () {
     liabilitesLink.on('click', function () {
         event.preventDefault();
         activeDimmer()
-        liabilitesLink($(this));
+        removeActive($(this));
         $(this).addClass('active');
 
         $.ajax({
@@ -117,7 +117,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 //go the the fucking hell
-                customerRegisterChartSegment.removeClass('loading');
+                
             }
         })
 

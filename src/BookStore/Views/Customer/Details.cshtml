@@ -36,21 +36,22 @@
                 <i class="info icon"></i>
                 Thông Tin
             </a>
-            <a class="@ViewData["Edit"] item"
+            <a class="item"
                asp-action="CustomerEdit"
                asp-route-id="@Model.ID"
                id="customer-edit">
                 <i class="edit icon"></i>
                 Cập Nhật
             </a>
-            <a class="@ViewData["Transaction"] item"
+            <a class="item"
                asp-action="CustomerTransaction"
                asp-route-id="@Model.ID"
                id="customer-transaction">
                 <i class="history icon"></i>
                 Lịch Sử Giao Dịch
             </a>
-            <a class="@ViewData["Liabilities"] item"
+            <a class="item"
+               asp-action="CustomerLiabilites"
                asp-route-id="@Model.ID"
                id="customer-liabilities">
                 <i class="money icon"></i>
@@ -68,6 +69,5 @@
     
     </div>
 </div>
-
-<script src="~/js/KhachHang.js"></script>
+<script src="~/js/Customer/KhachHang.js"></script>
 <script src="~/js/Customer/CustomerActions.js"></script>

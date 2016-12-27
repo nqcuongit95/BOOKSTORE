@@ -105,6 +105,7 @@ namespace BookStore.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCustomer(KhachHangViewModel model)
         {
             Notification notify;
@@ -143,6 +144,7 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LastCreatedCustomer(int id)
         {
             var model = await _bookStoreData.GetCustomerById(id);
@@ -151,6 +153,7 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePriceType(string[] productIds, int priceType)
         {
             List<ProductPriceViewModel> model = new List<ProductPriceViewModel>();
@@ -168,6 +171,7 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PayInvoice(InvoiceViewModel invoice,
                                         List<ProductBuyingDetailsViewModel> productDetails)
         {
@@ -181,7 +185,9 @@ namespace BookStore.Controllers
                     {
                         Title = "Thành Công",
                         Content = "Thêm đơn hàng thành công",
-                        Button = "Hoàn tất"
+                        Button = "Hoàn tất",
+                        Icon = "checkmark",
+                        MessageType = "positive"
                     };
                     return PartialView("_Notify", model1);
                 }
@@ -191,7 +197,9 @@ namespace BookStore.Controllers
             {
                 Title = "Thất bại",
                 Content = "Có lỗi xảy ra",
-                Button = "Quay lại"
+                Button = "Quay lại",
+                Icon = "remove",
+                MessageType = "negative"
             };
             return PartialView("_Notify", model);
 

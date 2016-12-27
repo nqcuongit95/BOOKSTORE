@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.ViewModels.Dashboard;
+using BookStore.ViewModels.Customer;
 
 namespace BookStore.Services
 {
@@ -385,6 +386,20 @@ namespace BookStore.Services
                                 }).FirstOrDefaultAsync();
 
             return result;
-        }        
+        }
+
+        public async Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id)
+        {
+            //var query = from customer in _context.KhachHang
+            //            where customer.Id == id
+            //            join invoice in _context.DonHang
+            //            on customer.Id equals invoice.KhachHangId into b
+            //            join receipt in _context.PhieuThu
+            //            on receipt
+
+            var model = new CustomerLiabilitesViewModel();
+
+            return model;
+        }
     }
 }

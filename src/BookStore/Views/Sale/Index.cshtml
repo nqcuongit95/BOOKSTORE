@@ -4,6 +4,10 @@
     ViewData["Title"] = "Bán Hàng";
 }
 
+<form asp-action="invoice" 
+      style="display:none;"
+      id="token">
+</form>
 <div class="row">
 
     <div class="twelve wide column">
@@ -211,6 +215,30 @@
     <div class="actions">
         <div class="ui blue cancel button">
             Quay lại
+        </div>
+    </div>
+</div>
+
+<div class="ui tiny modal" id="close-invoice-modal">
+    <div class="header">Xác nhận</div>
+    <div class="content">
+        <div class="ui negative icon message">
+            <i class="remove icon"></i>
+            <div class="content">
+                <div class="header">
+                    Bạn có chắc muốn đóng đơn hàng này không ?
+                </div>
+                <p>Hệ thống sẽ không lưu lại thông tin của đơn hàng này.</p>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">            
+            Hủy
+        </div>
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            Đồng ý
         </div>
     </div>
 </div>

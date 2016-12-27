@@ -7,7 +7,7 @@
         data: '',
         success: function (result, status, xhr) {
 
-            if (status === 'success') {                
+            if (status === 'success') {
                 //todo: show status bar                   
                 showProductsResult(result);
                 //inactive dimmer
@@ -22,7 +22,7 @@
     });
 
     //numeral.locale('vn');
-        
+
     class Payment {
         constructor() {
             this.id = 1;
@@ -54,7 +54,7 @@
             customerPaid: $('input[name=CustomerPaid]'),
         },
     }
-    
+
     //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
 
@@ -186,6 +186,9 @@
         return html;
     };
 
+    //get vertification token
+    var token = $('#token input').val();
+
     //*********************************global function*******************************
 
     $.fn.exists = function () {
@@ -257,13 +260,13 @@
         var table = $('#product-results');
         table.empty();
 
-        $.each(response.results, function (index, result) {                        
+        $.each(response.results, function (index, result) {
             var data = '<tr>';
 
             //id            
             data += '<td>';
             data += '<div class="ui label">';
-            data += result.id + '</div>';           
+            data += result.id + '</div>';
             data += '</td>';
 
             //name
@@ -285,14 +288,14 @@
             data += '<td>';
             data += '<div class="ui yellow label">';
             data += formatedValue + '</div>';
-            data += '</td>'            
+            data += '</td>'
 
             //available
             formatedValue = numeral(result.available).format('0,0');
             data += '<td class="center aligned">';
             data += '<div class="ui grey label">';
             data += formatedValue + '</div>';
-            data += '</td>'            
+            data += '</td>'
 
             data += '</tr>';
             table.append(data);
@@ -303,11 +306,11 @@
 
     //set total money
     function calculateTotalMoney(countInput, priceInput, totalTd) {
-        
+
         //get raw value
         var currentCountProducts = numeral(countInput.val()).value();
         var currentPrice = numeral(priceInput.val()).value();
-               
+
         var totalMoney = currentPrice * currentCountProducts;
 
         var formatedTotalMoney = numeral(totalMoney).format('0,0 $');
@@ -340,7 +343,7 @@
         invoiceObject[index].totalToPay = totalMoneyToPay;
 
         var formatedTotal = numeral(total).format('0,0 $');
-        
+
         saleControl.paymentSegment.totalValue.text(formatedTotal);
         //$('#payment-table tr:eq(0) td:eq(1)').text(formatedTotal).attr('value', total);
         saleControl.paymentSegment.customerToPay.text(formatedTotal);
@@ -350,14 +353,14 @@
 
     //update customer change
     function recalculateCustomerChange() {
-        console.log('lul')
+
         var customerPayTd = $('#paid-money input');
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
         var customerPayValue = customerPayTd.val();
         console.log(customerPayValue)
         var customerPayRawValue = numeral(customerPayValue).value();
-        
+
         var customerChange = customerPayRawValue - totalMoneyToPay;
         console.log(customerChange)
         //var customerChange = customerPay - totalMoneyToPay;
@@ -390,7 +393,7 @@
 
         var formatedTotalValue = numeral(payment.totalValue).format('0,0 $');
 
-        saleControl.paymentSegment.totalValue.text(formatedTotalValue);        
+        saleControl.paymentSegment.totalValue.text(formatedTotalValue);
         saleControl.paymentSegment.customerToPay.text(formatedTotalValue);
         saleControl.paymentSegment.customerPaid.val(payment.customerPaid);
 
@@ -417,7 +420,8 @@
             traditional: true,
             data: {
                 productIds: productIds,
-                priceType: priceType
+                priceType: priceType,
+                __RequestVerificationToken: token
             },
             success: function (result, status, xhr) {
                 if (status === 'success') {
@@ -529,7 +533,7 @@
 
                 return $(this).eq(0).text() == result.id
             });
-            tdId.closest('tr').trigger('click');                        
+            tdId.closest('tr').trigger('click');
         },
     })
 
@@ -573,7 +577,7 @@
                 else {
 
                     tdInputCount.val(count);
-                    tdInputCount.trigger('textInput');                    
+                    tdInputCount.trigger('textInput');
                 }
 
             }
@@ -604,11 +608,13 @@
                 new Cleave(countInput, {
                     numeral: true,
                     numeralThousandsGroupStyle: 'thousand',
+                    numeralPositiveOnly: true
                 })
 
                 new Cleave(priceInput, {
                     numeral: true,
                     numeralThousandsGroupStyle: 'thousand',
+                    numeralPositiveOnly: true
                 })
 
                 //update payment
@@ -625,27 +631,21 @@
                     updatePayment();
                     recalculateCustomerChange();
                 })
-                
+
                 //bind input event to count td;
                 invoice.find('tr:last').on(inputEvents, '.count-input input', function () {
-                    
+
                     var inputTd = $(this);
                     var currentCount = Number(inputTd.val());
 
+                    //exceed the number of current product
                     if (currentCount > availableProduct) {
                         alert("number of products exceed the stock");
                         inputTd.val(availableProduct);
                     }
 
-                    if (currentCount < 0) {
-
-                        //show popup when user enter negative value
-                        var msg = "Số lượng không được nhỏ hơn 0";
-
-                        showPopup(inputTd, msg);
-
+                    if (inputTd.val().length <= 0) {
                         inputTd.val(0);
-
                     }
 
                     var countTd = $(this);
@@ -663,14 +663,7 @@
                     var totalMoneyTd = priceTd.closest('td').next();
                     var currentCountTd = priceTd.closest('td').prev().find('input');
 
-                    //show popup when user enter negative price value
-                    if (Number(priceTd.val()) < 0) {
-                        //alert("price must not be negative");
-
-                        var msg = "Đơn giá không được nhỏ hơn 0";
-
-                        showPopup(priceTd, msg);
-
+                    if (priceTd.val().length <= 0) {
                         priceTd.val(0);
                     }
 
@@ -684,7 +677,7 @@
         else {
             //todo: show message indicate that no available products
         }
-    })    
+    })
 
     //update customer pay
     $('#paid-money').on(inputEvents, 'input', function () {
@@ -696,6 +689,9 @@
 
         //set value to attribute
         //$(this).attr('value', customerPay);
+        if (customerPaid.length <= 0) {
+            $(this).val(0);
+        }
 
         //update for current tab        
         var index = getCurrentPaymentObjectIndex(visibleDataTab);
@@ -760,15 +756,15 @@
             $('#invoice-modal').modal('show');
             thisBtn.removeClass('loading');
             return;
-        }
-
+        }        
 
         var invoiceDetail = {
             CustomerId: customerId,
             Staff: staff,
             TotalValue: rawTotalValue,
             CustomerPaid: rawCustomerPaid,
-            productDetails: []
+            productDetails: [],
+            __RequestVerificationToken: token
         }
 
         invoiceTableBody.find('tr').each(function (index, elem) {
@@ -791,14 +787,14 @@
 
         })
 
-        var modal = $('#notify-modal');
-
+        var modal = $('#notify-modal');        
+        //+"?" + token.attr('name') + "=" + token.val()
         $.ajax({
             type: "post",
             url: urlPayInvoice,
             data: invoiceDetail,
             success: function (result, status, xhr) {
-                
+
                 //active dimmer
                 activeProductResultsDimmer()
 
@@ -809,8 +805,9 @@
 
                     //close this tab
                     var tab = $('.tabular.menu .item[data-tab=' + visibleDataTab + ']');
-                    tab.find('.label.close-tab .icon').trigger('click');
-                    
+                    //tab.find('.label.close-tab .icon').trigger('click');
+                    closeCurrentTab(tab);
+
                     //update product results when success add invoice
                     updateProductResult();
 
@@ -838,39 +835,57 @@
     //bind click event to close tab
     $('.top.tabular.menu').on('click', '.label.close-tab .icon', function (event) {
         event.preventDefault();
-        //alert('click')
 
-        var thisTab = $(this).closest('.item');
+        var elem = $(this);
+        var thisTab = elem.closest('.item');
+
+        var confirmModal = $('#close-invoice-modal');
+        //confirmModal.modal('setting', 'closable', false);
+        confirmModal.modal({
+            closable: false,
+            onApprove: function (element) {
+                
+                closeCurrentTab(thisTab);
+                
+            }
+        }).modal('show')        
+    })
+
+    //close tab
+    function closeCurrentTab(tab) {
 
         //switching to closest tab, if thisTab is the one left then create new tab
         var closestTab = null;
 
-        if (thisTab.next('.item[data-tab]').exists()) {
+        if (tab.next('.item[data-tab]').exists()) {
 
-            closestTab = thisTab.next()
+            closestTab = tab.next()
         }
-        else if (thisTab.prev('.item[data-tab]').exists()) {
-            closestTab = thisTab.prev('.item[data-tab]');
+        else if (tab.prev('.item[data-tab]').exists()) {
+            closestTab = tab.prev('.item[data-tab]');
         }
         else {
 
             //create new one
             $('#newInvoice').trigger('click');
             //then close the previous
-            closeTab(thisTab);
+            closeDataTab(tab);
             return;
         }
-        closeTab(thisTab);
+
+        closeDataTab(tab);
         selectTab(closestTab);
-    })
+
+    }
+
 
     //helper function to click on tab
     function selectTab(tab) {
         $(tab).click();
     }
 
-    //helper function to close tab
-    function closeTab(tab) {
+    //helper function to close tab data
+    function closeDataTab(tab) {
         var dataTab = tab.attr('data-tab');
 
         //remove tab
@@ -882,7 +897,7 @@
         //remove payment data object from global array
         invoiceObject = jQuery.grep(invoiceObject, function (value) {
             return value.invoiceDataTab != dataTab;
-        })        
+        })
     }
 
     //bind event to add new tab
@@ -926,8 +941,8 @@
 
         //todo: update ui when switching tab
         $('.top.tabular.menu .item').tab({
-            onVisible: function (tabpath) {                
-                
+            onVisible: function (tabpath) {
+
                 //reupdate global variable, payment
                 visibleDataTab = tabpath;
                 invoiceTableBody = $('.active.tab.segment tbody');
@@ -937,7 +952,7 @@
                 //load data               
                 var paymentArr = $.grep(invoiceObject, function (e) {
                     return e.invoiceDataTab == tabpath;
-                });                
+                });
 
                 loadDataTab(paymentArr[0])
             }
@@ -952,13 +967,13 @@
 
                 $(elem).find('.close-tab').css('display', 'none');
             })
-        
+
         $('.top.tabular.menu .item[data-tab=' + visibleDataTab + ']').
             find('.close-tab').css('display', 'inline-block');
     }
 
     //reload product result table 
-    function updateProductResult() {        
+    function updateProductResult() {
         $.ajax({
             type: "post",
             url: urlUpdateSearchProduct,
@@ -995,7 +1010,7 @@
     var customerPaidInput = new Cleave('input[name=CustomerPaid]', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
-               
+        numeralPositiveOnly: true
     });
-           
+
 });

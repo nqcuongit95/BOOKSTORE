@@ -1,10 +1,6 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
-    $(".ui.dropdown").dropdown();
-
-    $('.ui.sticky').sticky({
-        context: '#context'
-    });
+    $(".ui.dropdown").dropdown();   
 
     $('.ui.form')
        .form({
@@ -45,18 +41,7 @@ $(document).ready(function () {
                    }]
                }
            }
-       });
-
-    $('.message .close')
-        .on('click', function () {
-            $(this)
-              .closest('.message')
-              .transition('fade');
-        });
-
-    setTimeout(function () {
-        $('.ui.success.message').slideDown('fast').delay(2000).fadeOut('slow');
-    }, 400);
+       });   
 
     //helper function
     function activeDimmer() {
@@ -90,7 +75,7 @@ $(document).ready(function () {
                 //dataType: 'json',
                 success: function (result, status, xhr) {
                     if (status === 'success') {
-                        console.log('success')
+                        
                         deactiveDimmer()
                         modal.html(result);
                         modal.modal('show');

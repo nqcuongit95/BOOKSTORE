@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+    //get vertification token
+    var token = $('#token input').val();
+
     $("#customer-type").dropdown();
 
     $('form#create-customer')
@@ -53,7 +56,10 @@
                         modal.html(result.modal);
                         modal.modal('show');
                         
-                        var customerId = { id: result.id };
+                        var customerId = {
+                            id: result.id,
+                            __RequestVerificationToken: token
+                        };
 
                         //update last created customer
                         $.ajax({

@@ -2,6 +2,7 @@
 using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
+using BookStore.ViewModels.Customer;
 using BookStore.ViewModels.Dashboard;
 using System;
 using System.Collections.Generic;
@@ -36,5 +37,6 @@ namespace BookStore.Services
         Task<CustomerStatisticsViewModel> GetCustomerStatistics();
         Task<ProductStatisticViewModel> GetProductStatistics();
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
+        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
     }
 }

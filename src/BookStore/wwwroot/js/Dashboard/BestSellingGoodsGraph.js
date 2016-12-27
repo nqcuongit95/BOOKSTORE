@@ -56,7 +56,15 @@ var myChart = new Chart(ctx, {
             }],
             yAxes: [{
                 display: true,
-                position: 'left'
+                position: 'left',
+                ticks: {                    
+                    userCallback: function (label, index, labels) {
+                        if (Math.floor(label) === label) {
+                            return label;
+                        }
+
+                    }
+                }
             }]
         },
         tooltips: {
