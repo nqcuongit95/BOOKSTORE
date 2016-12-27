@@ -1,5 +1,5 @@
 ﻿
-@model PhieuThuViewModel
+@model PhieuChiViewModel
 @{
     ViewData["Title"] = "Thêm Phiếu Thu";
 }
@@ -19,10 +19,10 @@
             <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
                 Đơn Hàng
             </a>
-            <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
                 Phiếu Thu
             </a>
-            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+            <a class="ui active item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
                 Phiếu Chi
             </a>
         </div>
@@ -31,16 +31,16 @@
         <div class="sixteen wide column">
             <div class="ui secondary menu four item">
                 <a class="item"
-                   asp-controller="PhieuThu"
+                   asp-controller="PhieuChi"
                    asp-action="Index">
                     <i class="list layout icon"></i>
-                    Danh sách phiếu thu
+                    Danh sách phiếu chi
                 </a>
                 <a class="item"
-                   asp-controller="PhieuThu"
+                   asp-controller="PhieuChi"
                    asp-action="Create">
                     <i class="add square icon"></i>
-                    Thêm mới phiếu thu
+                    Thêm mới phiếu chi
                 </a>
             </div>
         </div>
@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="field">
-            <label>Số tiền thu</label>
+            <label>Số tiền chi</label>
             <div class="ui disabled input">
                 <input type="text"
                        value="@Model.TongTien">
@@ -88,5 +88,4 @@
         </div>
     </form>
 </div>
-
-<script src="~/js/PhieuThu/PhieuThuDetails.js"></script>
+<script src="~/js/PhieuChi/PhieuChiDetails.js"></script>

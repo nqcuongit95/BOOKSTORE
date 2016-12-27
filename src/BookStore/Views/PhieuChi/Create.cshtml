@@ -1,7 +1,7 @@
 ﻿
-@model PhieuThuViewModel
+@model PhieuChiViewModel
 @{
-    ViewData["Title"] = "Thêm Phiếu Thu";
+    ViewData["Title"] = "Thêm Phiếu Chi";
 }
 
 @section menu{
@@ -19,10 +19,10 @@
             <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
                 Đơn Hàng
             </a>
-            <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
                 Phiếu Thu
             </a>
-            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+            <a class="ui active item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
                 Phiếu Chi
             </a>
         </div>
@@ -31,16 +31,16 @@
         <div class="sixteen wide column">
             <div class="ui secondary menu four item">
                 <a class="item"
-                   asp-controller="PhieuThu"
+                   asp-controller="PhieuChi"
                    asp-action="Index">
                     <i class="list layout icon"></i>
-                    Danh sách phiếu thu
+                    Danh sách phiếu chi
                 </a>
                 <a class="active item"
-                   asp-controller="PhieuThu"
+                   asp-controller="PhieuChi"
                    asp-action="Create">
                     <i class="add square icon"></i>
-                    Thêm mới phiếu thu
+                    Thêm mới phiếu chi
                 </a>
             </div>
         </div>
@@ -48,8 +48,8 @@
 }
 
 <div class="ui ten wide column">
-    <form class="ui form" asp-controller="PhieuThu" asp-action="Create">
-        
+    <form class="ui form" asp-controller="PhieuChi" asp-action="Create">
+
         <div class="field">
             <label>Đối Tượng</label>
             <select class="ui fluid dropdown" id="drop">
@@ -64,10 +64,10 @@
                        id="customerValue"
                        type="text"
                        placeholder="Thông tin khách hàng">
-                <input type="hidden" 
-                       name="KhachHangId" 
+                <input type="hidden"
+                       name="KhachHangId"
                        value=""
-                       id="khachhang"/>
+                       id="khachhang" />
                 <div class="results"></div>
             </div>
         </div>
@@ -78,10 +78,10 @@
                        id="providerValue"
                        type="text"
                        placeholder="Tên Nhà Cung Cấp">
-                <input type="hidden" 
-                       name="NCCId" 
-                       value="" 
-                       id="ncc"/>
+                <input type="hidden"
+                       name="NCCId"
+                       value=""
+                       id="ncc" />
                 <div class="results"></div>
             </div>
         </div>
@@ -92,9 +92,9 @@
                     asp-items="@Model.LoaiPhieu"
                     data-validate="valid-customer-type"></select>
         </div>
-      
+
         <div class="required field">
-            <label>Số tiền thu</label>
+            <label>Số tiền chi</label>
             <input type="text"
                    asp-for="@Model.TongTien"
                    placeholder="Số tiền thu"
@@ -106,11 +106,11 @@
         <div class="ui reset button" id="btnXoa">Hủy</div>
     </form>
 </div>
+<script src="~/js/PhieuChi/PhieuChiCreate.js"></script>
 
-<script src="~/js/PhieuThu/PhieuThuCreate.js"></script>
 <script>
-    var urlSearch = '@Url.Action("FindCustomer", "PhieuThu")';
+    var urlSearch = '@Url.Action("FindCustomer", "PhieuChi")';
     urlSearch += "?val={query}";
-    var urlSearchProvider = '@Url.Action("FindProvider", "PhieuThu")';
+    var urlSearchProvider = '@Url.Action("FindProvider", "PhieuChi")';
     urlSearchProvider += "?val={query}";
 </script>

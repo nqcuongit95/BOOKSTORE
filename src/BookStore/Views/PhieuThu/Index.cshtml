@@ -25,6 +25,9 @@
             <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
                 Phiếu Chi
             </a>
+            <a class="ui item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
         </div>
     </div>
     <div class="row">
@@ -124,3 +127,16 @@
 
     </div>
 </div>
+<script src="~/js/PhieuThu/PhieuThuIndex.js"></script>
+<script>
+    $('.search-input').keypress(function (event) {
+
+        if (event.which == 13) {
+
+            var keyword = $(this).val();
+            var url = '@Url.Action("Index","PhieuThu")';
+
+            window.location = url + "?searchString=" + keyword;
+        }
+    });
+</script>

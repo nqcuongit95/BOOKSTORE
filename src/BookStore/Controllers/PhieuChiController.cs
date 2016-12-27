@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
 using BookStore.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,10 +43,7 @@ namespace BookStore.Controllers
 
             var customers = _bookStoreData.GetAllPhieuChi();
 
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    customers = customers.Where(c => c.TenKhachHang.Contains(searchString));
-            //}
+           
 
             switch (sortOrder)
             {
@@ -82,7 +81,87 @@ namespace BookStore.Controllers
                     result[i].DoiTuong = "Nhà cung cấp";
                 }
             }
-            return View(result);
+             if (!string.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.ID.ToString().Contains(searchString));
+                return View(await PaginatedList<PhieuChiViewModel>.
+                        CreateAsync(customers, page ?? 1, pageSize,
+                                    numberOfDisplayPages,
+                                    firstShowedPage, lastShowedPage));
+            }
+            else
+            {
+                return View(result);
+            }
+            
+        }
+
+        public IActionResult Details(int id)
+        {
+            var phieu = _bookStoreData.findPhieuChi(id);
+
+            if (phieu.PhieuTraHangId.HasValue)
+            {
+                var khachhang = _bookStoreData.findCustomerByPhieuTra((int)phieu.PhieuTraHangId);
+                phieu.DoiTuong = "Khách Hàng";
+                phieu.TenKhachHang = khachhang.TenKhachHang;
+            }
+            else
+            {
+                var ncc = _bookStoreData.findProviderByPhieuNhap((int)phieu.PhieuNhapHangId);
+                phieu.TenNhaCungCap = ncc.TenNhaCungCap;
+                phieu.DoiTuong = "Nhà Cung Cấp";
+            }
+            return View(phieu);
+        }
+
+        public IActionResult Create()
+        {
+            var loaiphieu = _bookStoreData.GetAllLoaiPhieuChi();
+            var model = new PhieuChiViewModel();
+            model.LoaiPhieu = new SelectList(loaiphieu, "Id", "TenLoaiPhieu", 1);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(PhieuChiViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                PhieuChi phieu = new PhieuChi();
+                phieu.NgayLap = DateTime.Now;
+                phieu.NhanVienId = _bookStoreData.findUserId(User.Identity.Name);
+                phieu.TongTien = model.TongTien;
+                phieu.LoaiPhieuId = model.LoaiPhieuId;
+
+                if (model.KhachHangId != null)
+                {
+                    phieu.PhieuTraHangId = _bookStoreData.findPhieuTraByCustomer(model.KhachHangId);
+                    _bookStoreData.TaoPhieuChi(phieu);
+                    return RedirectToAction("Index");
+                }
+                if (model.NCCId != null)
+                {
+                    phieu.PhieuNhapHangId = _bookStoreData.findPhieuNhapByCustomer(model.NCCId);
+                    _bookStoreData.TaoPhieuChi(phieu);
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> FindCustomer(string val)
+        {
+            var result = await _bookStoreData.FindCustomer(val);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> FindProvider(string val)
+        {
+            var result = await _bookStoreData.FindProvider(val);
+
+            return Json(result);
         }
     }
 }

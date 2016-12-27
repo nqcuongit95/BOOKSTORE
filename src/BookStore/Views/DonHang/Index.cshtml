@@ -25,6 +25,9 @@
             <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
                 Phiếu Chi
             </a>
+            <a class="ui item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
         </div>
     </div>
 
@@ -127,9 +130,21 @@
 
     </div>
 </div>
-
+<script src="~/js/DonHang/DonHangIndex.js"></script>
 <script>
     $("#phieuthu").click(function () {
         document.getElementById("head").innerHTML = "Phiếu Thu";
     });
+
+    $('.search-input').keypress(function (event) {
+
+        if (event.which == 13) {
+
+            var keyword = $(this).val();
+            var url = '@Url.Action("Index","DonHang")';
+
+            window.location = url + "?searchString=" + keyword;
+        }
+    });
+
 </script>

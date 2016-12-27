@@ -93,10 +93,22 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-            return View(await PaginatedList<DonHang>.
+           
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                donhang = donhang.Where(c => c.Id.ToString().Contains(searchString));
+                return View(await PaginatedList<DonHang>.
                         CreateAsync(donhang, page ?? 1, pageSize,
                                     numberOfDisplayPages,
                                     firstShowedPage, lastShowedPage));
+            }
+            else
+            {
+                return View(await PaginatedList<DonHang>.
+                        CreateAsync(donhang, page ?? 1, pageSize,
+                                    numberOfDisplayPages,
+                                    firstShowedPage, lastShowedPage));
+            }
         }
     }
 }

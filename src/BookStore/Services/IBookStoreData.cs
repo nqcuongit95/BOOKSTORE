@@ -30,17 +30,24 @@ namespace BookStore.Services
         IQueryable<DonHang> GetAllDonHang();
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
         IQueryable<PhieuChiViewModel> GetAllPhieuChi();
-        IEnumerable<LoaiPhieu> GetAllLoaiPhieu();
+        IQueryable<TraHangViewModel> GetAllPhieuTraHang();
+        IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
+        IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         int TaoDonHang(DonHang donhang);
         void TaoPhieuThu(PhieuThu phieuthu);
         int TaoPhieuChi(PhieuChi phieuchi);
         void UpdateDonHang(int? id);
         int findDonHangByCustomer(int? customerID);
+        int findPhieuTraByCustomer(int? customerID);
+        int findPhieuNhapByCustomer(int? customerID);
         int findUserId(String name);
         int findPhieuTraNhapHang(int? providerID);
         PhieuThuViewModel findPhieuThu(int phieuID);
+        PhieuChiViewModel findPhieuChi(int phieuID);
         KhachHang findCustomerByDonhang(int donhangId);
         NhaCungCap findProviderByPhieuTra(int phieuID);
+        NhaCungCap findProviderByPhieuNhap(int phieuID);
+        KhachHang findCustomerByPhieuTra(int donhangId);
     }
 }

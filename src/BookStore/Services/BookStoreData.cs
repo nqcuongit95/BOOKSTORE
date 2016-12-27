@@ -55,11 +55,19 @@ namespace BookStore.Services
         {
             return _context.LoaiKhachHang;
         }
-        public IEnumerable<LoaiPhieu> GetAllLoaiPhieu()
+        public IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi()
         {
             var query = from loaiphieu in _context.LoaiPhieu
+                        where loaiphieu.Loai == "PCH"
                         select loaiphieu;
-            return _context.LoaiPhieu;
+            return query;
+        }
+        public IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu()
+        {
+            var query = from loaiphieu in _context.LoaiPhieu
+                        where loaiphieu.Loai == "PTH"
+                        select loaiphieu;
+            return query;
         }
         public IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang()
         {
@@ -172,12 +180,43 @@ namespace BookStore.Services
                      };
             return re.First();
         }
+        public PhieuChiViewModel findPhieuChi(int phieuID)
+        {
+            var re = from phieuchi in _context.PhieuChi
+                     join loaiphieu in _context.LoaiPhieu
+                     on phieuchi.LoaiPhieuId equals loaiphieu.Id
+                     join nv in _context.Staff
+                     on phieuchi.NhanVienId equals nv.Id
+                     where phieuchi.Id == phieuID
+                     select new PhieuChiViewModel
+                     {
+                         ID = phieuchi.Id,
+                         NgayLap = phieuchi.NgayLap,
+                         PhieuTraHangId = phieuchi.PhieuTraHangId,
+                         PhieuNhapHangId = phieuchi.PhieuNhapHangId,
+                         NhanVienId = phieuchi.NhanVienId,
+                         TongTien = phieuchi.TongTien,
+                         LoaiPhieuId = phieuchi.LoaiPhieuId,
+                         TenNhanVien = nv.FullName,
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                     };
+            return re.First();
+        }
         public KhachHang findCustomerByDonhang(int donhangId)
         {
             var query = from khachhang in _context.KhachHang
                         join don in _context.DonHang
                         on khachhang.Id equals don.KhachHangId
                         where don.Id == donhangId
+                        select khachhang;
+            return query.First();
+        }
+        public KhachHang findCustomerByPhieuTra(int donhangId)
+        {
+            var query = from khachhang in _context.KhachHang
+                        join phieu in _context.PhieuTraHang
+                        on khachhang.Id equals phieu.KhachHangId
+                        where phieu.Id == donhangId
                         select khachhang;
             return query.First();
         }
@@ -189,6 +228,15 @@ namespace BookStore.Services
                         join phieutra in _context.PhieuTraNhapHang
                         on phieu.Id equals phieutra.PhieuNhapHangId
                         where phieutra.Id == phieuID
+                        select ncc;
+            return query.First();
+        }
+        public NhaCungCap findProviderByPhieuNhap(int phieuID)
+        {
+            var query = from ncc in _context.NhaCungCap
+                        join phieu in _context.PhieuNhapHang
+                        on ncc.Id equals phieu.NhaCungCapId
+                        where phieu.Id == phieuID
                         select ncc;
             return query.First();
         }
@@ -429,6 +477,29 @@ namespace BookStore.Services
             }
             _context.SaveChanges();
         }
+        public int findPhieuTraByCustomer(int? customerID)
+        {
+            var donhangList = from phieutra in _context.PhieuTraHang
+                              join khachhang in _context.KhachHang
+                              on phieutra.KhachHangId equals khachhang.Id
+                              where customerID == khachhang.Id
+                              orderby phieutra.NgayLap descending
+                              select phieutra;
+            var result = donhangList.FirstOrDefault();
+            return result.Id;
+
+        }
+        public int findPhieuNhapByCustomer(int? customerID)
+        {
+            var donhangList = from phieunhap in _context.PhieuNhapHang
+                              join ncc in _context.NhaCungCap
+                              on phieunhap.NhaCungCapId equals ncc.Id
+                              where customerID == ncc.Id
+                              orderby phieunhap.NgayLap descending
+                              select phieunhap;
+            var result = donhangList.FirstOrDefault();
+            return result.Id;
+        }
         public int findDonHangByCustomer(int? customerID)
         {
             var donhangList = from donhang in _context.DonHang
@@ -466,7 +537,7 @@ namespace BookStore.Services
 
         public int TaoPhieuChi(PhieuChi phieuchi)
         {
-            _context.Add(phieuchi);
+            _context.PhieuChi.Add(phieuchi);
             _context.SaveChanges();
 
             return phieuchi.Id;
@@ -511,6 +582,29 @@ namespace BookStore.Services
                          LoaiPhieuId = phieuchi.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
                          TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                     };
+            return re;
+        }
+        public IQueryable<TraHangViewModel> GetAllPhieuTraHang()
+        {
+            var re = from phieu in _context.PhieuTraHang
+                     join khachhang in _context.KhachHang
+                     on phieu.KhachHangId equals khachhang.Id
+                     join donhang in _context.DonHang
+                     on phieu.DonHangId equals donhang.Id
+                     join nv in _context.Staff
+                     on phieu.NhanVienId equals nv.Id
+                     select new TraHangViewModel
+                     {
+                        ID = phieu.Id,
+                        NgayLap = phieu.NgayLap,
+                        KhachHangId = khachhang.Id,
+                        TenKhachHang = khachhang.TenKhachHang,
+                        DonHangId = donhang.Id,
+                        TongTien = phieu.TongTien,
+                        NhanVienId = nv.Id,
+                        TenNhanVien = nv.FullName,
+                        GhiChu = phieu.GhiChu
                      };
             return re;
         }

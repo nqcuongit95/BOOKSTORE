@@ -85,14 +85,25 @@ namespace BookStore.Controllers
             }
 
 
-            return View(result);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.ID.ToString().Contains(searchString));
+                return View(await PaginatedList<PhieuThuViewModel>.
+                        CreateAsync(customers, page ?? 1, pageSize,
+                                    numberOfDisplayPages,
+                                    firstShowedPage, lastShowedPage));
+            }
+            else
+            {
+                return View(result);
+            }
 
         }
 
 
         public IActionResult Create()
         {
-            var loaiphieu = _bookStoreData.GetAllLoaiPhieu();
+            var loaiphieu = _bookStoreData.GetAllLoaiPhieuThu();
             var model = new PhieuThuViewModel();
             model.LoaiPhieu = new SelectList(loaiphieu, "Id", "TenLoaiPhieu", 1);
             return View(model);
@@ -143,11 +154,6 @@ namespace BookStore.Controllers
 
         public IActionResult Details(int id)
         {
-            //render the success message
-            //ViewData["message"] = message;
-
-            //ActiveItemHelperFunction(section);
-
             var phieu = _bookStoreData.findPhieuThu(id);
 
             if (phieu.DonHangId.HasValue)
@@ -162,14 +168,6 @@ namespace BookStore.Controllers
                 phieu.TenNhaCungCap = ncc.TenNhaCungCap;
                 phieu.DoiTuong = "Nhà Cung Cấp";
             }
-            //var model = new PhieuThuViewModel
-            //{
-            //    ID = customer.ID,
-            //    Name = customer.TenKhachHang,
-            //    //Section = string.IsNullOrEmpty(section) ? "Details" :
-                
-            //};
-
             return View(phieu);
         }
     }
