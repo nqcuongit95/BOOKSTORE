@@ -1,0 +1,152 @@
+﻿@model PhieuNhanHang
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
+}
+
+<form id="PhieuNhanHang"
+      asp-action="CreateConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["PhieuNhanHang"]
+    </h2>
+
+    <div class="ui header aligned right">
+        <button id="phieu-kiem-kho-create"
+                class="action-button ui blue button"
+                style="float:right;">
+            <i class="add icon"></i>
+            @sharedLocalizer["RecieveProduct"]
+        </button>
+    </div>
+
+    <div class="field">
+        <label asp-for="PhieuNhapHangId"></label>
+        <div class="ui search selection dropdown"
+             href="@Url.Action("APIGetPhieuNhapHang", "PhieuNhapHang")">
+            <input asp-for="PhieuNhapHangId" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">
+                @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["PhieuNhapHang"].Value.ToLower())
+            </div>
+            <div class="menu">
+                @foreach (var item in bookStoreData.GetUnrecivedPhieuNhapHang())
+                {
+                    <div class="item" data-value="@item.Id">
+                        @String.Format("{0}{1}",
+                       sharedLocalizer["PNH"],
+                       item.Id)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="one wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.Id)
+                </th>
+                <th class="nine wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="properties"></tbody>
+    </table>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<table id="properties" class="hidden">
+    <tbody>
+        <tr>
+            <td class="HangHoaId">
+                <span class="ui label black"></span>
+            </td>
+            <td class="TenHangHoa"></td>
+            <td class="GiaNhap">
+                <span class="ui label yellow money"></span>
+            </td>
+            <td class="SoLuong"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#PhieuNhanHang .ui.dropdown').dropdown({
+            onChange: function () {
+                var value = $('#PhieuNhapHangId').val();
+                var url = $(this).attr('href');
+
+                url += '?id=' + value;
+
+                $.ajax({
+                    url: url,
+                    success: function (result) {
+                        if (result !== undefined) {
+                            var properties = $('#PhieuNhanHang .properties');
+                            var rowHTML = $('#properties tbody').html();
+
+                            properties.text('');
+
+                            $(result).each(function () {
+                                var property = $(this)[0];
+
+                                console.log(property);
+
+                                properties.append(rowHTML);
+
+                                var lastRow = properties.find('tr:last-child');
+
+                                lastRow.find('.HangHoaId').find('span')
+                                    .text('@sharedLocalizer["HH"]' + property.hangHoaId);
+                                lastRow.find('.TenHangHoa')
+                                    .text(property.tenHangHoa);
+                                lastRow.find('.GiaNhap').find('span')
+                                    .text(property.giaNhap);
+                                lastRow.find('.SoLuong')
+                                    .text(property.soLuong);
+
+                                $('.money').each(function (index) {
+                                    numeral.defaultFormat('0,0');
+
+                                    var text = $(this).text();
+
+                                    $(this).text(numeral(text).format() + ' đ');
+                                });
+                            })
+                        }
+                    }
+                });
+            }
+        });
+
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' đ');
+        });
+    });
+</script>

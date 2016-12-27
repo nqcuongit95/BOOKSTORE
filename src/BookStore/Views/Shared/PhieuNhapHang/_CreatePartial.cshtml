@@ -1,0 +1,286 @@
+﻿@model PhieuNhapHang
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
+}
+
+<form id="PhieuNhapHang"
+      asp-action="CreateConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <div id="phieu-nhap-hang-header">
+        <div class="ui search"
+             href="@Url.Action("APISearch","HangHoa")"
+             style="display:inline-block;">
+            <div class="ui icon input">
+                <input class="prompt"
+                       default-name="ThuocTinh"
+                       placeholder="@sharedLocalizer["HangHoa"]">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+        </div>
+
+        <div id="phieu-nhap-hang-create"
+             class="action-button ui basic button"
+             style="float:right;"
+             onclick="PhieuNhapHangSubmit()">
+            <i class="add icon"></i>
+            @sharedLocalizer["Create"]
+        </div>
+
+        <h3 class="header"
+            style="text-align:right">
+            @sharedLocalizer["TotalAmount"]:
+            <span id="totalAmount" style="display:inline-block;width:128px;"> 0</span>
+        </h3>
+    </div>
+
+    <div class="field">
+        <label asp-for="NhaCungCapId"></label>
+        <div class="ui search selection dropdown">
+            <input asp-for="NhaCungCapId" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">
+                @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhaCungCap"].Value.ToLower())
+            </div>
+            <div class="menu">
+                @foreach (var nhaCungCap in bookStoreData.GetNhaCungCap())
+                {
+                    <div class="item" data-value="@nhaCungCap.Id">
+                        @sharedLocalizer[nhaCungCap.TenNhaCungCap]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="six wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)
+                </th>
+                <th class="three wide">@sharedLocalizer["Amount"]</th>
+                <th class="one wide">@sharedLocalizer["Operator"]</th>
+            </tr>
+        </thead>
+
+        <tbody class="properties"></tbody>
+    </table>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<table id="properties" class="hidden">
+    <tbody>
+        <tr>
+            <td class="TenHangHoa">
+                <input type="hidden" default-name="HangHoaId" />
+            </td>
+            <td class="SoLuong">
+                <input asp-for="@chiTietPhieuNhapHang.SoLuong"
+                       type="number"
+                       default-name="SoLuong"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)">
+            </td>
+            <td class="GiaNhap">
+                <input asp-for="@chiTietPhieuNhapHang.GiaNhap"
+                       type="number"
+                       default-name="GiaNhap"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)">
+            </td>
+            <td class="Amount"></td>
+            <td>
+                <div class="ui remove red icon button">
+                    <i class="remove icon"></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    var header = $('#phieu-nhap-hang-header');
+    var form = $('#PhieuNhapHang');
+    var rowHTML = $('#properties tbody').html();
+
+    function PhieuNhapHangSubmit() {
+        if (form.form("is valid")) {
+            var url = form.attr('action');
+            var data = form.serialize();
+            var timeout = 1000;
+            var rows = form.find('tr');
+            console.log(data);
+
+            if (rows.length > 0) {
+                activeMessageLoader();
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data,
+                    success: function (result) {
+                        if (result !== undefined) {
+                            inactiveMessageLoader();
+                            showMessage(result);
+
+                            if (result.type !== 'error') {
+                                activeMessageProgress();
+
+                                if (result.results["Reload"] !== undefined &&
+                                    result.results["Reload"] === true) {
+                                    setTimeout(
+                                        function () {
+                                            location.reload();
+                                            message.modal('hide');
+                                        }, timeout);
+                                }
+                                else {
+                                    var redirect = result.results["RedirectUrl"];
+
+                                    if (redirect !== undefined) {
+                                        setTimeout(
+                                            function () {
+                                                location = redirect;
+                                                message.modal('hide');
+                                            }, timeout);
+                                    }
+                                }
+
+                                if (fn !== undefined) {
+                                    fn(result);
+                                }
+                            }
+                        }
+                        else {
+                            inactiveMessageLoader();
+                            showDefaultErrorMessage();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        inactiveMessageLoader();
+                        showDefaultErrorMessage();
+                    }
+                });
+            }
+
+            $('.money').each(function (index) {
+                numeral.defaultFormat('0,0');
+
+                $(this).text(numeral(text).format() + ' đ');
+                console.log($(this).text());
+            });
+        }
+    }
+
+    function addPhieuNhapHangProperties(result) {
+        var properties = form.find('.properties');
+
+        properties.append(rowHTML);
+
+        var lastRow = properties.find('tr:last-child');
+
+        lastRow.find('.TenHangHoa').append(result.tenHangHoa);
+        lastRow.find('.TenHangHoa').find('input').val(result.id);
+        lastRow.find('.SoLuong').find('input').val(0);
+        lastRow.find('.GiaNhap').find('input').val(parseInt(result.giaNhap));
+        lastRow.find('.Amount').text(0);
+
+        updatePhieuNhapHangProperties();
+    }
+
+    function calculateAmount() {
+        var totalAmount = 0;
+
+        $('#PhieuNhapHang .properties tr').each(function () {
+            var soLuong = $(this).find('.SoLuong').find('input').val();
+            var giaNhap = $(this).find('.GiaNhap').find('input').val();
+            var amount = soLuong * giaNhap;
+
+            $(this).find('.Amount').text(amount);
+            totalAmount += amount;
+        });
+
+        $('#totalAmount').text(totalAmount)
+    }
+
+    function updatePhieuNhapHangProperties() {
+        var rows = $('#PhieuNhapHang .properties tr');
+
+        rows.each(function (index) {
+            $(this).find('input').each(function () {
+                var defaultName = $(this).attr('default-name');
+
+                if (defaultName !== undefined) {
+                    var name = 'properties[' + index + '].' +
+                        defaultName;
+
+                    $(this).attr('id', name);
+                    $(this).attr('name', name);
+
+                    $(this).change(function () {
+                        calculateAmount();
+                    });
+                }
+            });
+        });
+
+        $('#PhieuNhapHang .properties tr .remove.button').click(function () {
+            var row = $(this).closest('tr');
+
+            row.transition({
+                animation: 'scale',
+                onComplete: function () {
+                    row.remove();
+
+                    updatePhieuNhapHangProperties();
+                    initializeValidationCRUDForm();
+                }
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        header.find('.ui.search').each(function () {
+            var search = $(this);
+
+            search.search({
+                apiSettings: {
+                    url: $(this).attr('href') + '?search={query}'
+                },
+                cache: false,
+                fields: {
+                    results: 'results',
+                    title: 'title',
+                    description: 'description'
+                },
+                minCharacters: 0,
+                error: false,
+                onSelect: function (result, response) {
+                    console.log(result);
+
+                    addPhieuNhapHangProperties(result);
+
+                    initializeValidationCRUDForm();
+                }
+            });
+        });
+    });
+</script>

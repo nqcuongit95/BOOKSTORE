@@ -1,0 +1,65 @@
+﻿@model HangHoa
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietHangHoa chiTietHangHoa = new ChiTietHangHoa();
+}
+
+
+<form id="HangHoa"
+      asp-action="DeleteConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      asp-route-id="@Model.Id"
+      class="crud-form delete ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["HangHoa"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["HH"],
+           Model.Id)
+        </span>
+    </h2>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="TenHangHoa"></label>
+            <input asp-for="TenHangHoa"
+                   readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
+        </div>
+        <div class="five field">
+            <label asp-for="NgayLap"></label>
+            <input type="date"
+                   readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
+                   value="@string.Format("{0:yyyy-MM-dd}", Model.NgayLap)">
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="action-button ui basic button">
+            <i class="trash icon"></i>
+            @sharedLocalizer["Delete"]
+        </button>
+        @if ((bool)ViewData["Modal"] == true)
+        {
+            <a class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index"
+               class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+    </div>
+</form>

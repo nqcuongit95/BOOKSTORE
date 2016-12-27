@@ -1,0 +1,257 @@
+﻿@model PhieuKiemKho
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuKiemKho chiTietPhieuKiemKho = new ChiTietPhieuKiemKho();
+}
+
+<form id="PhieuKiemKho"
+      asp-action="CreateConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form create ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["PhieuKiemKho"]
+    </h2>
+
+    <div id="phieu-kiem-kho-header">
+        <div class="ui search"
+             href="@Url.Action("APISearch","HangHoa")"
+             style="display:inline-block;">
+            <div class="ui icon input">
+                <input class="prompt"
+                       default-name="ThuocTinh"
+                       placeholder="@sharedLocalizer["HangHoa"]">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+        </div>
+
+        <button id="phieu-kiem-kho-create"
+                class="action-button ui basic button"
+                style="float:right;">
+            <i class="add icon"></i>
+            @sharedLocalizer["Create"]
+        </button>
+    </div>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="six wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKho)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKhoThucTe)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuKiemKho.LyDo)
+                </th>
+                <th class="one wide">@sharedLocalizer["Operator"]</th>
+            </tr>
+        </thead>
+
+        <tbody class="properties"></tbody>
+    </table>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<table id="properties" class="hidden">
+    <tbody>
+        <tr>
+            <td class="TenHangHoa">
+                <input type="hidden" default-name="HangHoaId" />
+            </td>
+            <td class="TonKho"></td>
+            <td class="TonKhoThucTe">
+                <input asp-for="@chiTietPhieuKiemKho.TonKhoThucTe"
+                       type="number"
+                       default-name="TonKhoThucTe"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuKiemKho.TonKhoThucTe)">
+            </td>
+            <td class="LyDo">
+                <input asp-for="@chiTietPhieuKiemKho.LyDo"
+                       default-name="LyDo"
+                       placeholder="@Html.DisplayNameFor(p => chiTietPhieuKiemKho.LyDo)">
+            </td>
+            <td>
+                <div class="ui remove red icon button">
+                    <i class="remove icon"></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    var header = $('#phieu-kiem-kho-header');
+    var form = $('#PhieuKiemKho');
+    var rowHTML = $('#properties tbody').html();
+
+    function PhieuKiemKhoSubmit() {
+        var url = form.attr('action');
+        var data = form.serialize();
+        var timeout = 1000;
+        var rows = form.find('tr');
+
+        if (rows.length > 0) {
+            activeMessageLoader();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result !== undefined) {
+                        inactiveMessageLoader();
+                        showMessage(result);
+
+                        if (result.type !== 'error') {
+                            activeMessageProgress();
+
+                            if (result.results["Reload"] !== undefined &&
+                                result.results["Reload"] === true) {
+                                setTimeout(
+                                    function () {
+                                        location.reload();
+                                        message.modal('hide');
+                                    }, timeout);
+                            }
+                            else {
+                                var redirect = result.results["RedirectUrl"];
+
+                                if (redirect !== undefined) {
+                                    setTimeout(
+                                        function () {
+                                            location = redirect;
+                                            message.modal('hide');
+                                        }, timeout);
+                                }
+                            }
+
+                            if (fn !== undefined) {
+                                fn(result);
+                            }
+                        }
+                    }
+                    else {
+                        inactiveMessageLoader();
+                        showDefaultErrorMessage();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    inactiveMessageLoader();
+                    showDefaultErrorMessage();
+                }
+            });
+        }
+    }
+
+    function addPhieuKiemKhoProperties(result) {
+        var check = true;
+
+        $('#PhieuKiemKho .TenHangHoa input').each(function () {
+            if (result.id.toString() === $(this).val().toString()) {
+                check = false;
+                return;
+            }
+        });
+
+        if (check) {
+            var properties = form.find('.properties');
+
+            properties.append(rowHTML);
+
+            var lastRow = properties.find('tr:last-child');
+
+            lastRow.find('.TenHangHoa').append(result.tenHangHoa);
+            lastRow.find('.TenHangHoa').find('input').val(result.id);
+            lastRow.find('.TonKho').append(result.tonKho);
+            lastRow.find('.TonKhoThucTe').find('input').val(0);
+
+            updatePhieuKiemKhoProperties();
+        }
+    }
+
+    function updatePhieuKiemKhoProperties() {
+        var rows = $('#PhieuKiemKho .properties tr');
+
+        rows.each(function (index) {
+            $(this).find('input').each(function () {
+                var defaultName = $(this).attr('default-name');
+
+                if (defaultName !== undefined) {
+                    var name = 'properties[' + index + '].' +
+                        defaultName;
+
+                    $(this).attr('id', name);
+                    $(this).attr('name', name);
+                }
+            });
+        });
+
+        $('#PhieuKiemKho .properties tr .remove.button').click(function () {
+            var row = $(this).closest('tr');
+
+            row.transition({
+                animation: 'scale',
+                onComplete: function () {
+                    row.remove();
+
+                    updatePhieuKiemKhoProperties();
+                    initializeValidationCRUDForm();
+                }
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        header.find('.ui.search').each(function () {
+            var search = $(this);
+
+            search.search({
+                apiSettings: {
+                    url: $(this).attr('href') + '?search={query}'
+                },
+                cache: false,
+                fields: {
+                    results: 'results',
+                    title: 'title',
+                    description: 'description'
+                },
+                minCharacters: 0,
+                error: false,
+                onSelect: function (result, response) {
+                    addPhieuKiemKhoProperties(result);
+
+                    initializeValidationCRUDForm();
+                }
+            });
+        });
+
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' đ');
+        });
+
+        form.form({
+            onSuccess: function (event) {
+                event.preventDefault();
+
+                PhieuKiemKhoSubmit();
+            }
+        });
+    });
+</script>
