@@ -105,6 +105,8 @@ namespace BookStore.ViewModels
                 Action = "Index",
                 Controller = controller
             });
+
+            SelectedKey = selectedKey;
         }
     }
 }
