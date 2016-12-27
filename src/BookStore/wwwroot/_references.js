@@ -17,6 +17,7 @@
 /// <reference path="js/loginform.js" />
 /// <reference path="js/noname.js" />
 /// <reference path="js/numeral.min.js" />
+/// <reference path="js/sale.js" />
 /// <reference path="js/numeral-js/numeral.min.js" />
 /// <reference path="js/sale/CreateCustomer.js" />
 /// <reference path="js/sale/Sale.js" />
