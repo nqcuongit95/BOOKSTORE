@@ -1,6 +1,9 @@
 ﻿using BookStore.Entities;
+using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
+using BookStore.ViewModels.Customer;
+using BookStore.ViewModels.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +28,15 @@ namespace BookStore.Services
         Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
         Task<bool> AddInvoice(InvoiceViewModel invoice,
-            List<ProductBuyingDetailsViewModel> productDetails);        
+            List<ProductBuyingDetailsViewModel> productDetails);       
+        Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
+        Task<CustomerFilterViewModel> GetCustomerById(int id);
+        Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
+        Task<List<FeedsViewModel>> GetFeeds(int take);
+        Task<TransactionStatisticsViewModel> GetTransactionStatistics();
+        Task<CustomerStatisticsViewModel> GetCustomerStatistics();
+        Task<ProductStatisticViewModel> GetProductStatistics();
+        Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
+        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
     }
 }

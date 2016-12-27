@@ -1,28 +1,128 @@
 ﻿<link href="~/css/Dashboard.css" rel="stylesheet" />
-<script src="~/js/chart.js/Chart.bundle.js"></script>
 
 @{
     ViewData["Title"] = "Dashboard";
-    
+
 }
 
 <div class="row equal width">
     <div class="column">
         <h2 class="ui header">Tổng Quan</h2>
     </div>
-    
+
     <div class="column">
-        
+
+    </div>
+</div>
+
+
+@*@await Component.InvokeAsync("Statistics")*@
+<div class="row">
+    <div class="column">
+        <div class="ui three cards">
+            @await Component.InvokeAsync("ProductStatistics")
+            @await Component.InvokeAsync("TransactionStatistics")            
+            @await Component.InvokeAsync("CustomerStatistics")
+        </div>
+    </div>
+</div>
+<div class="two column row">
+
+    @*@await Component.InvokeAsync("CustomerGraph")
+        @await Component.InvokeAsync("RevenueGraph")*@
+
+    <div class="column">
+        <div class="ui secondary pointing fluid menu">
+            <h4 class="ui header">Khách Hàng</h4>
+            <div class="right menu">
+                <a class="ui active item" 
+                   asp-action="CustomerRegisterGraph"
+                   asp-route-when="2">
+                    Tuần
+                </a>
+                <a class="ui item" 
+                   asp-action="CustomerRegisterGraph" 
+                   asp-route-when="3">
+                    Tháng
+                </a>
+            </div>
+        </div>
+        <!--chart go here-->
+        <div class="ui loading pink segment"
+             style="height: 360px;"
+             id="customer-register-chart">
+
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="ui secondary pointing fluid menu"
+              id="best-selling-item">
+            <h4 class="ui header">Mặt hàng bán chạy</h4>
+            <div class="right menu">
+                <a class="ui item" 
+                   asp-action="BestSellingGoodsGraph"
+                   asp-route-when="2">
+                    Tuần
+                </a>
+                <a class="ui active item" 
+                   asp-action="BestSellingGoodsGraph"
+                   asp-route-when="3">
+                    Tháng
+                </a>
+            </div>
+        </div>
+        <!--chart go here-->
+        <div class="ui loading yellow segment"
+             style="height: 360px;"
+             id="best-selling-chart">
+
+        </div>
     </div>
 
 </div>
 
+<div class="row">
+    <div class="five wide column">
+        <div class="ui secondary pointing fluid menu">
+            <h4 class="ui header">Hoạt động gần đây</h4>
+        </div>
+        <div class="ui loading green segment"
+             style="height: 460px;"
+             id="latest-activity">
 
-@await Component.InvokeAsync("Statistics")
+        </div>
+    </div>
+    <div class="eleven wide column">
+        <div class="ui secondary pointing fluid menu">
+            <h4 class="ui header">Doanh thu</h4>
 
-<div class="two column row">
-
-    @await Component.InvokeAsync("CustomerGraph")
-    @await Component.InvokeAsync("RevenueGraph")
-
+            <div class="right menu">
+                <a class="ui active item"
+                   asp-action="RevenueStatistic"
+                   asp-route-when="2">
+                    Tuần
+                </a>
+                <a class="ui item"
+                   asp-action="RevenueStatistic"
+                   asp-route-when="3">
+                    Tháng
+                </a>
+            </div>
+        </div>
+        <div class="ui loading orange segment"
+             style="height: 460px;"
+             id="revenue-statistic-chart">
+        </div>
+    </div>
 </div>
+
+<script>
+    var urlCustomerRegisterChart = '@Url.Action("CustomerRegisterGraph", "Dashboard")';
+    var urlBestSellingGoodsChart = '@Url.Action("BestSellingGoodsGraph", "Dashboard")';
+    var urlLastedActivity = '@Url.Action("LastestActivity", "Dashboard")';
+    var urlRevenueChart = '@Url.Action("RevenueStatistic", "Dashboard")';
+</script>
+
+<script src="~/js/Dashboard/Dashboard.js"></script>
+<script src="~/js/chart.js/Chart.bundle.js"></script>

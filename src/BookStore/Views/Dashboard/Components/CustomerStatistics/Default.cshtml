@@ -1,0 +1,49 @@
+﻿@model CustomerStatisticsViewModel
+
+<div class="ui blue card">
+    <div class="content">
+        <div class="header">Khách hàng</div>
+    </div>
+    <div class="content">
+        <h4 class="ui sub header">Activity</h4>
+        <div class="ui feed">
+            <div class="event">
+                <div class="content">
+                    <div class="summary">                        
+                        <div class="ui red horizontal label">
+                            @Model.TotalNewCumstomers
+                        </div>
+                        Khách hàng mới tuần này
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">                        
+                        <div class="ui grey horizontal label">
+                             @Model.CustomerLiabilities
+                        </div>
+                        Tổng tiền khách còn nợ
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">
+                        <a>Helen Troy</a> added two pictures
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra content center aligned">
+        <div class="ui blue statistic">
+            <div class="value">
+               @Model.TotalCustomers
+            </div>
+            <div class="label">
+                Khách hàng
+            </div>
+        </div>
+    </div>
+</div>

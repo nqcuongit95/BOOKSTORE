@@ -49,6 +49,8 @@ namespace BookStore
 
             services.AddScoped<IBookStoreData, BookStoreData>();
 
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+
             services.AddIdentity<Staff, Role>(
                     config =>
                     {

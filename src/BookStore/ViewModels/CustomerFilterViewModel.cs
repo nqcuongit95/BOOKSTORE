@@ -14,9 +14,16 @@ namespace BookStore.ViewModels
 
     }
 
+    public class Action
+    {
+        public string Url { get; set; }
+        public string Text { get; set; }
+    }
+
     public class CustomerFilterResults
     {
         public List<CustomerFilterViewModel> Results { get; set; }
+        public Action NewCustomer { get; set; }
     }
 
 }

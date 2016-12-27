@@ -10,6 +10,8 @@ namespace BookStore.ViewModels
         public string Name { get; set; }
         public int TotalInvoices { get; set; }
         public decimal TotalValues { get; set; }
-        public List<InvoiceDetailsViewModel> Invoices { get; set; }
+        public string TotalValuesFormated { get; set; }
+        public IQueryable<InvoiceDetailsViewModel> Invoices { get; set; }
+        public PaginatedList<InvoiceDetailsViewModel> InvoicesPage { get; set; }
     }
 }

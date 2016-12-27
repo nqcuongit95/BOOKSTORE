@@ -1,0 +1,33 @@
+﻿@model List<FeedsViewModel>
+
+<div class="ui feed">
+
+    @foreach (var feed in Model)
+    {
+
+        <div class="event">
+            <div class="label">
+                <i class="circular @feed.Icon icon"></i>
+            </div>
+            <div class="content">
+                <div class="date">
+                    @feed.TimeDescriptor
+                </div>
+                <div class="summary">
+                    <a>@feed.Content</a>
+                    @if (feed.FeedType == FeedType.NewInvoice ||
+                         feed.FeedType == FeedType.ReceiptVoucher)
+                    {
+                        <div class="date">
+                            <div class="ui label">@feed.ValueFormated</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    //jQuery.getScript('/js/Dashboard/FormatLabel.js')
+</script>
