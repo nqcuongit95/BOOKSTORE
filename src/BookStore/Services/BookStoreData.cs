@@ -291,11 +291,13 @@ namespace BookStore.Services
                 {
                     var receiptVoucher = new PhieuThu
                     {
+                        
                         NgayLap = DateTime.Now,
                         NhanVienId = invoice_.NhanVienId,
                         TongTien = invoice.CustomerPaid >= invoice.TotalValue ?
                                        invoice.TotalValue : invoice.CustomerPaid,
-                        LoaiPhieuId = 2 //hard code for tesing, edit later
+                        LoaiPhieuId = 2, //hard code for tesing, edit later
+                        KhachHangId = invoice.CustomerId
                     };
                     invoice_.PhieuThu.Add(receiptVoucher);
                 }
@@ -304,9 +306,9 @@ namespace BookStore.Services
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                var error = e;
                 return false;
             }
         }
