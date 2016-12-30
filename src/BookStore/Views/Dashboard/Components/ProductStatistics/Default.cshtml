@@ -1,0 +1,57 @@
+﻿@model ProductStatisticViewModel
+
+<div class="ui purple card">
+    <div class="content">
+        <div class="header">Hàng hóa</div>
+    </div>
+    <div class="content">
+        <h4 class="ui sub header">Activity</h4>
+        <div class="ui feed">
+            <div class="event">
+                <div class="content">
+                    <div class="summary">
+                        Sách bán chạy nhất tuần này: <a>@Model.BestSellingBook.Name</a>
+                        <div class="ui circular teal label">
+                            @Model.BestSellingBook.Solds
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">
+                        Trả hàng tuần này:
+                        <div class="ui grey label">
+                            @Model.TotalReturnThisWeek
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="event">
+                <div class="content">
+                    <div class="summary">
+                        <a>Helen Troy</a> added two pictures
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="extra content center aligned">
+        <div class="ui small  purple statistic" >
+            <div class="value">
+                @Model.TotalBooks
+            </div>
+            <div class="label">
+                Đầu sách
+            </div>
+        </div>
+        <div class="ui small purple statistic" >
+            <div class="value">
+                @Model.TotalStationerys
+            </div>
+            <div class="label">
+                Văn phòng phẩm
+            </div>
+        </div>
+    </div>
+</div>

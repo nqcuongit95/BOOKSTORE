@@ -1,0 +1,220 @@
+﻿@model PhieuChi
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietPhieuNhapHang chiTietPhieuNhapHang = new ChiTietPhieuNhapHang();
+}
+
+<form id="PhieuChiNhanHang"
+      class="crud-form create ui form"
+      asp-action="CreateConfirmed">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["PhieuChiNhanHang"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["PNH"],
+           Model.Id)
+        </span>
+    </h2>
+
+    <h3 class="header"
+        style="text-align:right">
+        @sharedLocalizer["TotalAmount"]:
+        <span id="totalAmount" class="money" style="display:inline-block;width:128px;">
+            @(Model.TongTien.ToString().Replace(',', '.'))
+        </span><br />
+
+        @switch (Model.PhieuNhapHang.TrangThai.VietTat)
+        {
+            case "Waiting":
+                <i class="large red attention icon"></i>@sharedLocalizer["Waiting"]
+                <span id="pay"
+                      class="ui blue button"
+                      href="@Url.Action(
+                           "Pay",
+                           "PhieuNhapHang",
+                           new { id = Model.PhieuNhapHangId })">
+                    @sharedLocalizer["Pay"]
+                </span>
+                break;
+
+            case "Paid":
+                <span>
+                    <i class="large yellow attention icon"></i>@sharedLocalizer["Paid"]
+                </span>
+                break;
+
+            case "Recived":
+                <span>
+                    <i class="large yellow attention checkmark icon"></i>@sharedLocalizer["Paid"]
+                    <span id="pay"
+                          class="ui blue button"
+                          href="@Url.Action(
+                           "PayPhieuNhapHang",
+                           "PhieuNhapHang",
+                           new { id = Model.PhieuNhapHangId })">
+                        @sharedLocalizer["Pay"]
+                    </span>
+                </span>
+                break;
+
+            case "PaidRecived":
+                <span>
+                    <i class="large green checkmark icon"></i>@sharedLocalizer["Paid"]
+                </span>
+                break;
+
+            default:
+                break;
+        }
+    </h3>
+
+    <div class="field">
+        <label asp-for="PhieuNhapHangId"></label>
+        <input value="@(sharedLocalizer["PNH"] + Model.Id)" readonly="" />
+    </div>
+
+    <table class="data-table ui blue selectable sortable table">
+        <thead>
+            <tr>
+                <th class="one wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.Id)
+                </th>
+                <th class="nine wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.HangHoa.TenHangHoa)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)
+                </th>
+                <th class="three wide">
+                    @Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="properties">
+            @foreach (var item in Model.PhieuNhapHang.ChiTietPhieuNhapHang)
+            {
+                <tr>
+                    <td class="HangHoaId">
+                        <span class="ui label black">
+                            @(sharedLocalizer["PNH"] + item.HangHoaId)
+                        </span>
+                    </td>
+                    <td class="TenHangHoa">
+                        @(sharedLocalizer["PNH"] + item.HangHoa.TenHangHoa)
+                    </td>
+                    <td class="GiaNhap">
+                        <span class="ui label yellow money">
+                            @item.GiaNhap.ToString().Replace(",", ".")
+                        </span>
+                    </td>
+                    <td class="SoLuong">@item.SoLuong</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="action-buttons">
+        @if ((bool)ViewData["Modal"] == true)
+        {
+            <a class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index"
+               class="action-button cancel ui basic button">
+                <i class="reply icon"></i>
+                @sharedLocalizer["Cancel"]
+            </a>
+        }
+    </div>
+</form>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' đ');
+        });
+
+        var payButton = $('#pay');
+        var url = payButton.attr('href');
+        var data = $('#PhieuChiNhanHang').serialize();
+
+        payButton.click(event, function () {
+            var timeout = 1000;
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result !== undefined) {
+                        inactiveMessageLoader();
+                        showMessage(result);
+
+                        if (result.type !== 'error') {
+                            activeMessageProgress();
+
+                            console.log(result.results["Reload"]);
+
+                            if (result.results["Reload"] !== undefined &&
+                                result.results["Reload"] === true) {
+                                setTimeout(
+                                    function () {
+                                        location.reload();
+                                        message.modal('hide');
+                                    }, timeout);
+                            }
+                            else {
+                                var redirect = result.results["RedirectUrl"];
+
+                                if (redirect !== undefined) {
+                                    setTimeout(
+                                        function () {
+                                            location = redirect;
+                                            message.modal('hide');
+                                        }, timeout);
+                                }
+                            }
+
+                            if (fn !== undefined) {
+                                fn(result);
+                            }
+                        }
+                    }
+                    else {
+                        inactiveMessageLoader();
+                        showDefaultErrorMessage();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    inactiveMessageLoader();
+                    showDefaultErrorMessage();
+                }
+            });
+        });
+
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' VNĐ');
+        });
+    });
+</script>

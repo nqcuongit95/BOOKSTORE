@@ -240,3 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# reference.js file
+/src/BookStore/wwwroot/_references.js

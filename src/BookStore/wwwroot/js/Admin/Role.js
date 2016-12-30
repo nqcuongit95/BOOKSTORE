@@ -150,9 +150,12 @@
     //update role modal
     $('.update-role-modal').modal({
         onApprove: function () {
-
+            
+            var elem = $(this).find('.positive.button');
             activeLoading(elem);
-
+            
+        },
+        onHidden: function () {
             var form = $(this).find('#updateForm');
             var elem = $(this).find('.positive.button');
             var data = form.serialize();
@@ -169,7 +172,7 @@
                         deactiveLoading(elem);
                         modal.html(result);
                         modal.modal('show');
-                        
+
                         setTimeout(function () {
                             modal.modal('hide');
                         }, 2000);

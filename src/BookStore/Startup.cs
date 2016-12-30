@@ -12,6 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using BookStore.Services;
 using BookStore.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace BookStore
 {
@@ -41,13 +45,37 @@ namespace BookStore
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
-
             //Configure connection string in "appsettings.json"
             services.AddDbContext<BOOKSTOREContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("BookStore")));
+                options => options.UseSqlServer(
+                    Configuration.GetConnectionString("BookStore")));
+            services.AddScoped<IBookStoreData, BookStoreData>();
+
+            services.AddMvc();
+            
+            services.AddMvc()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
+
+            services.AddScoped<LanguageActionFilter>();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>{
+                    new CultureInfo("en-US"),
+                    new CultureInfo("vi-VN")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(
+                    culture: "vi-VN",
+                    uiCulture: "vi-VN");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
 
             services.AddScoped<IBookStoreData, BookStoreData>();
+
+            services.AddScoped<IViewRenderService, ViewRenderService>();
 
             services.AddIdentity<Staff, Role>(
                     config =>
@@ -68,6 +96,16 @@ namespace BookStore
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home";
+                    await next();
+                }
+            });
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -83,6 +121,9 @@ namespace BookStore
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             app.UseIdentity();
 

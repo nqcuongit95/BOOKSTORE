@@ -1,0 +1,19 @@
+﻿@model List<RevenueViewModel>
+
+
+<canvas id="revenueChart" height="180"></canvas>
+
+
+<script>
+
+    var timelines = @Html.Raw(Json.Serialize(Model.Select(r=>r.Timeline)));
+    var values = @Html.Raw(Json.Serialize(Model.Select(r=>r.Value)));
+
+    //jQuery.getScript('/js/Numeral-js/numeral.min.js');
+    //jQuery.getScript('/js/FormatLocale.js');
+    //jQuery.getScript('/js/Dashboard/RevenueGraph.js');
+</script>
+
+<script src="~/js/Numeral-js/numeral.min.js"></script>
+<script src="~/js/FormatLocale.js"></script>
+<script src="~/js/Dashboard/RevenueGraph.js"></script>

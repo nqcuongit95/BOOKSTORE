@@ -13,6 +13,7 @@ namespace BookStore.Models
         public int? PhieuNhapHangId { get; set; }
         public decimal TongTien { get; set; }
         public int LoaiPhieuId { get; set; }
+        public string GhiChu { get; set; }
 
         public virtual LoaiPhieu LoaiPhieu { get; set; }
         public virtual Staff NhanVien { get; set; }

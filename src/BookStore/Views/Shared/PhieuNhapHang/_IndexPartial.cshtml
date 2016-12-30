@@ -1,0 +1,122 @@
+﻿@model NonamePaginatedList<PhieuNhapHang>
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    PhieuNhapHang phieuNhapHang = new PhieuNhapHang();
+}
+
+<table class="hang-hoa data-table ui blue selectable sortable table">
+    <thead>
+        <tr>
+            <th class="one wide">@Html.DisplayNameFor(p => phieuNhapHang.Id)</th>
+            <th class="six wide">@Html.DisplayNameFor(p => phieuNhapHang.NgayLap)</th>
+            <th class="three wide">@Html.DisplayNameFor(p => phieuNhapHang.NhaCungCapId)</th>
+            <th class="three wide">@Html.DisplayNameFor(p => phieuNhapHang.TongTien)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => phieuNhapHang.TrangThaiId)</th>
+            <th class="one wide">@sharedLocalizer["Operator"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string rowState = string.Empty;
+            string iconState = string.Empty;
+
+            switch (item.TrangThai.VietTat)
+            {
+                case "Waiting":
+                    rowState = "error";
+                    iconState = "<i class=\"large attention icon\"></i>";
+                    break;
+
+                case "Paid":
+                    rowState = "warning";
+                    iconState = "<i class=\"large attention icon\"></i>";
+                    break;
+
+                case "Recived":
+                    rowState = "warning";
+                    iconState = "<i class=\"large attention checkmark icon\"></i>";
+                    break;
+
+                case "PaidRecived":
+                    rowState = "success";
+                    iconState = "<i class=\"large green checkmark icon\"></i>";
+                    break;
+
+                default:
+                    break;
+            }
+
+            <tr class="@rowState">
+                <td>
+                    <span class="ui label black" style="width:100%">
+                        @string.Format(
+                       "{0}{1}",
+                       sharedLocalizer["PNH"],
+                       item.Id)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayLap)
+                </td>
+
+                <td>
+                    @item.NhaCungCap.TenNhaCungCap
+                </td>
+
+                <td class="money">
+                    @(item.TongTien.ToString().Replace(',', '.'))
+                </td>
+
+                <td>
+                    <b>
+                        @Html.Raw(iconState)
+                        @sharedLocalizer[item.TrangThai.VietTat]
+                    </b>
+                </td>
+
+                <td class="action-buttons">
+                    <div class="ui floated menu">
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="details icon item">
+                            <i class="file text outline icon"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var paginated = new NonamePaginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.money').each(function (index) {
+            numeral.defaultFormat('0,0');
+
+            var text = $(this).text();
+
+            $(this).text(numeral(text).format() + ' VNĐ');
+            console.log($(this).text());
+        });
+    });
+</script>

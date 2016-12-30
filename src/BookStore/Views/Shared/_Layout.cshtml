@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - BookStore</title>
     
     <environment names="Development">
+        <link rel="stylesheet" href="~/css/site.min.css" />
         <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />        
         <link rel="stylesheet" href="~/css/KhachHang.css" />
@@ -15,12 +16,13 @@
         
     </environment>
     <environment names="Staging,Production">
-        <!--stating environment-->        
+        <!--stating environment-->
+
     </environment>
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)    
+    @RenderSection("Additional", false)
+    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
-
     <!--Responsive sidebar menu-->
     <div class="ui sidebar inverted vertical menu">
         <div class="item">
@@ -40,7 +42,7 @@
         <a class="item" asp-controller="" asp-action="">
             Khách Hàng
         </a>
-        <a class="item" asp-controller="" asp-action="">
+        <a class="item" asp-controller="HangHoa" asp-action="Index">
             Hàng Hóa
         </a>
         <a class="item" asp-controller="" asp-action="">
@@ -51,11 +53,11 @@
 
     <div class="pusher">
         <div class="ui grid container">
-            <div class="ui left fixed vertical menu">
+            <div class="ui left fixed vertical menu" id="controller-menu">
                 <div class="item">
                     @await Component.InvokeAsync("LoginLogout")
                 </div>
-                <a class="active gray item" asp-controller="Dashboard" asp-action="Index">
+                <a class="gray item" asp-controller="Dashboard" asp-action="Index">
                     Tổng Quan
                 </a>
                 <a class="item" asp-controller="Sale" asp-action="Index">
@@ -69,7 +71,7 @@
                 <a class="item" asp-controller="Customer" asp-action="Index">
                     Khách Hàng
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="HangHoa" asp-action="Index">
                     Hàng Hóa
                 </a>
                 <a class="item" asp-controller="" asp-action="">

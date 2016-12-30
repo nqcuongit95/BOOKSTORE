@@ -1,0 +1,51 @@
+﻿@model NonamePaginated
+
+@{
+    var previousDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var firstDisabled = Model.PageIndex <= 1 ? "disabled" : "";
+    var lastDisabled = Model.PageIndex >= Model.TotalPages ? "disabled" : "";
+}
+
+<div id="index-pagination" class="ui pagination menu">
+    <a asp-action="Index"
+       asp-route-page="1"
+       class="first item @firstDisabled">
+        <i class="caret left icon" style="left:0;"></i>
+        <span style="width:100%;text-align:right;">Đầu</span>
+    </a>
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex - 1)"
+       class="previous item @previousDisabled">
+        <i class="chevron left icon"></i>
+    </a>
+
+    <select class="ui selection dropdown">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            if (i != Model.PageIndex)
+            {
+                <option value="@i">@i</option>
+            }
+            else
+            {
+                <option value="@i" id="page-index">@i</option>
+            }
+        }
+    </select>
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex +1)"
+       class="next item @nextDisabled">
+        <i class="chevron right icon"></i>
+    </a>
+
+    <a asp-action="Index"
+       asp-route-page="@Model.TotalPages"
+       class="last item @lastDisabled"
+       style="text-align:left;">
+        <i class="caret right icon" style="right:0;"></i>
+        <span style="width:100%;text-align:left;">Cuối</span>
+    </a>
+</div>

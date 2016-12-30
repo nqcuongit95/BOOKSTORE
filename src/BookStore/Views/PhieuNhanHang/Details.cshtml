@@ -1,0 +1,16 @@
+﻿@model PhieuNhanHang
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+
+    @await Html.PartialAsync(string.Format(
+        "~/Views/Shared/{0}/_CRUDPartial.cshtml",
+        controller), Model)
+}
+
+@section Additional {
+    @{
+        @await Html.PartialAsync("_NonamePartial")
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+}

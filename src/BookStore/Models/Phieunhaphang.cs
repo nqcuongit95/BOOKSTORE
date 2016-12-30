@@ -20,6 +20,7 @@ namespace BookStore.Models
         public int NhanVienId { get; set; }
         public int TrangThaiId { get; set; }
         public int NhaCungCapId { get; set; }
+        public string GhiChu { get; set; }
 
         public virtual ICollection<ChiTietPhieuNhapHang> ChiTietPhieuNhapHang { get; set; }
         public virtual ICollection<PhieuChi> PhieuChi { get; set; }

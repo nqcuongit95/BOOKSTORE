@@ -1,0 +1,71 @@
+﻿@model NonamePaginatedList<NhanHieu>
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+
+    Layout = string.Format("~/Views/Shared/{0}/_CRUDLayout.cshtml", controller);
+
+    NhanHieu nhanHieu = new NhanHieu();
+}
+
+<table class="nhan-hieu data-table ui blue selectable sortable table">
+    <thead>
+        <tr>
+            <th class="one wide">@Html.DisplayNameFor(p => nhanHieu.Id)</th>
+            <th class="thirteen wide">@Html.DisplayNameFor(p => nhanHieu.TenNhanHieu)</th>
+            <th class="two wide">@sharedLocalizer["Operator"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span class="ui label black" style="width:100%">
+                        @string.Format(
+                       "{0}{1}",
+                       sharedLocalizer["NH"],
+                       item.Id)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenNhanHieu)
+                </td>
+                <td class="action-buttons">
+                    <div class="ui floated menu">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="popup icon item">
+                            <i class="edit icon"></i>
+                        </a>
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="popup icon item">
+                            <i class="file text outline icon"></i>
+                        </a>
+                        <a asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="popup icon item">
+                            <i class="trash icon"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var paginated = new NonamePaginated(
+        Model.PageIndex,
+        Model.TotalPages
+        );
+}
+
+@await Html.PartialAsync("_PaginatedPartial", paginated)
+
+<div id="form-modal" class="ui modal">
+</div>

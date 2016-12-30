@@ -11,6 +11,7 @@ namespace BookStore.Models
         public DateTime NgayLap { get; set; }
         public int NhanVienId { get; set; }
         public decimal TongTien { get; set; }
+        public string GhiChu { get; set; }
 
         public virtual Staff NhanVien { get; set; }
         public virtual PhieuNhapHang PhieuNhapHang { get; set; }

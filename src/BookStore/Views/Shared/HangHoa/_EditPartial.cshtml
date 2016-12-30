@@ -1,0 +1,310 @@
+﻿@model HangHoa
+
+@inject IBookStoreData bookStoreData
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ChiTietHangHoa chiTietHangHoa = new ChiTietHangHoa();
+}
+
+<form id="HangHoa"
+      asp-action="EditConfirmed"
+      asp-route-modal="@ViewData["Modal"]"
+      asp-route-redirect="@ViewData["Redirect"]"
+      class="crud-form edit ui form">
+    <h2 class="ui header aligned center">@ViewData["Action"]</h2>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["HangHoa"]
+        <span class="ui label black">
+            @string.Format("{0}{1}",
+           sharedLocalizer["HH"],
+           Model.Id)
+        </span>
+    </h2>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="three fields">
+        <div class="field">
+            <label asp-for="TenHangHoa"></label>
+            <input asp-for="TenHangHoa"
+                   placeholder="@Html.DisplayNameFor(model => model.TenHangHoa)">
+        </div>
+
+        <div class="field">
+            <label asp-for="NgayLap"></label>
+            <input type="date"
+                   readonly=""
+                   placeholder="@Html.DisplayNameFor(model => model.NgayLap)"
+                   value="@string.Format("{0:yyyy-MM-dd}", DateTime.Now)">
+        </div>
+
+        <div class="field">
+            <label asp-for="TrangThaiId"></label>
+            <div class="ui search selection dropdown">
+                <input asp-for="TrangThaiId" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">
+                    @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["TrangThai"].Value.ToLower())
+                </div>
+                <div class="menu">
+                    @foreach (var trangThai in bookStoreData.GetTrangThai(null, "HangHoa"))
+                    {
+                        <div class="item" data-value="@trangThai.Id">
+                            @sharedLocalizer[trangThai.VietTat]
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="three fields">
+        <div class="field">
+            <label asp-for="LoaiHangHoaId"></label>
+            <div class="ui search selection dropdown">
+                <input asp-for="LoaiHangHoaId" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">
+                    @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["LoaiHangHoa"].Value.ToLower())
+                </div>
+                <div class="menu">
+                    @foreach (var loaiHangHoa in bookStoreData.GetLoaiHangHoa())
+                    {
+                    <div class="item" data-value="@loaiHangHoa.Id">
+                        @sharedLocalizer[loaiHangHoa.TenLoaiHangHoa]
+                    </div>
+                    }
+                </div>
+            </div>
+            <div href="@Url.Action(
+                      "Create", "LoaiHangHoa",
+                      new { modal = true, redirect = false })"
+                 class="loai-hang-hoa add ui blue icon button">
+                <i class="add icon"></i>
+            </div>
+        </div>
+
+        <div class="field">
+            <label asp-for="NhanHieuId"></label>
+            <div class="ui search selection dropdown">
+                <input asp-for="NhanHieuId" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">
+                    @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhanHieu"].Value.ToLower())
+                </div>
+                <div class="menu">
+                    @foreach (var nhanHieu in bookStoreData.GetNhanHieu())
+                    {
+                    <div class="item" data-value="@nhanHieu.Id">
+                        @sharedLocalizer[nhanHieu.TenNhanHieu]
+                    </div>
+                    }
+                </div>
+            </div>
+            <div href="@Url.Action(
+                      "Create", "NhanHieu",
+                      new { modal = true, redirect = false })"
+                 class="nhan-hieu add ui blue icon button">
+                <i class="add icon"></i>
+            </div>
+        </div>
+
+        <div class="field">
+            <label asp-for="NhaCungCapId"></label>
+            <div class="ui search selection dropdown">
+                <input asp-for="NhaCungCapId" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">
+                    @string.Format("{0} {1}",
+                   sharedLocalizer["PleaseChoose"],
+                   sharedLocalizer["NhaCungCap"].Value.ToLower())
+                </div>
+                <div class="menu">
+                    @foreach (var nhaCungCap in bookStoreData.GetNhaCungCap())
+                    {
+                    <div class="item" data-value="@nhaCungCap.Id">
+                        @sharedLocalizer[nhaCungCap.TenNhaCungCap]
+                    </div>
+                    }
+                </div>
+            </div>
+            <div href="@Url.Action(
+                      "Create", "NhaCungCap",
+                      new { modal = true, redirect = false })"
+                 class="nha-cung-cap add ui blue icon button">
+                <i class="add icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["DefaultConstruct"]
+    </h2>
+
+    <div class="field">
+        <label asp-for="TonKho"></label>
+        <input asp-for="TonKho"
+               placeholder="@Html.DisplayNameFor(model => model.TonKho)">
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="GiaKhoiTao"></label>
+            <input asp-for="GiaKhoiTao"
+                   type="number"
+                   value="@((int)Model.GiaKhoiTao)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaKhoiTao)">
+        </div>
+        <div class="field">
+            <label asp-for="GiaNhap"></label>
+            <input asp-for="GiaNhap"
+                   type="number"
+                   value="@((int)Model.GiaNhap)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaNhap)">
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label asp-for="GiaBanSi"></label>
+            <input asp-for="GiaBanSi"
+                   type="number"
+                   value="@((int)Model.GiaBanSi)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaBanSi)">
+        </div>
+        <div class="field">
+            <label asp-for="GiaBanLe"></label>
+            <input asp-for="GiaBanLe"
+                   type="number"
+                   value="@((int)Model.GiaBanLe)"
+                   placeholder="@Html.DisplayNameFor(model => model.GiaBanLe)">
+        </div>
+    </div>
+
+    <h2 class="ui dividing header">
+        @sharedLocalizer["Options"]
+    </h2>
+
+    <div class="add-property ui blue button">
+        <i class="add icon"></i>
+        @(string.Format("{0} {1}",
+        sharedLocalizer["Create"],
+        sharedLocalizer["Property"].Value.ToLower()))
+    </div>
+
+    <div class="properties">
+        @{
+            var properties = (ChiTietHangHoa[])Model.ChiTietHangHoa;
+
+            for (int i = 0; i < properties.Count(); i++)
+            {
+                <div class="property three fields">
+                    <div class="field">
+                        <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
+                        <input asp-for="@properties[i].ThuocTinh"
+                               id="properties[@i].ThuocTinh"
+                               name="properties[@i].ThuocTinh"
+                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="@chiTietHangHoa.GiaTri"></label>
+                        <input asp-for="@properties[i].GiaTri"
+                               id="properties[@i].GiaTri"
+                               name="properties[@i].GiaTri"
+                               type="number"
+                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
+                    </div>
+
+                    <div class="field">
+                        <label>&thinsp;</label>
+                        <div class="ui remove red icon button">
+                            <i class="remove icon"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="action-buttons">
+        <button class="action-button ui basic button">
+            <i class="checkmark icon"></i>
+            @sharedLocalizer["Edit"]
+        </button>
+        @if ((bool)ViewData["Modal"] == true)
+        {
+        <a class="action-button cancel ui basic button">
+            <i class="reply icon"></i>
+            @sharedLocalizer["Cancel"]
+        </a>
+        }
+        else
+        {
+        <a asp-action="Index"
+           class="action-button cancel ui basic button">
+            <i class="reply icon"></i>
+            @sharedLocalizer["Cancel"]
+        </a>
+        }
+    </div>
+</form>
+
+<div id="properties" class="hidden">
+    <div class="property three fields">
+        <div class="field">
+            <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
+
+            <div class="ui search"
+                 href="@Url.Action("APISearch","ThuocTinhHangHoa")"
+                 for-id="LoaiHangHoaId">
+                <div class="ui icon input">
+                    <input class="prompt"
+                           default-name="ThuocTinh"
+                           placeholder="@Html.DisplayNameFor(p=> @chiTietHangHoa.ThuocTinh)">
+                    <i class="dropdown icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label asp-for="@chiTietHangHoa.GiaTri"></label>
+            <input asp-for="@chiTietHangHoa.GiaTri"
+                   default-name="GiaTri"
+                   placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
+        </div>
+
+        <div class="field">
+            <label>&thinsp;</label>
+            <div class="ui remove red icon button">
+                <i class="remove icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="form-modal" class="ui modal">
+</div>
+
+<script>
+    $('#TrangThaiId').find('.ui.search.selection.dropdown')
+    .dropdown('set selected', @Model.TrangThaiId);
+
+    $('#LoaiHangHoaId').find('.ui.search.selection.dropdown')
+        .dropdown('set selected', @Model.LoaiHangHoaId);
+
+    $('#NhanHieuId').find('.ui.search.selection.dropdown')
+        .dropdown('set selected', @Model.NhanHieuId);
+
+    $('#NhaCungCapId').find('.ui.search.selection.dropdown')
+        .dropdown('set selected', @Model.NhaCungCapId);
+</script>

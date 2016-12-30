@@ -1,0 +1,62 @@
+﻿@model CustomerTransactionsViewModel
+
+<h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
+
+<div class="ui equal width internally celled grid">    
+    <div class="row">
+        <div class="column center aligned">
+            <div class="ui mini horizontal grey statistic">
+                <div class="value">
+                    @Model.TotalInvoices
+                </div>
+                <div class="label">
+                    ĐƠN HÀNG TỔNG CỘNG
+                </div>
+            </div>
+        </div>
+        <div class="column center aligned">
+            <div class="ui mini horizontal grey statistic">
+                <div class="value">
+                    @Model.TotalValuesFormated
+                </div>
+                <div class="label">
+                    (VND) TỔNG GIÁ TRỊ GIAO DỊCH
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+</div>
+
+<table class="ui very basic table">
+    <thead>
+        <tr>
+            <th class="four wide">Mã Số</th>
+            <th class="four wide">Ngày Lập</th>
+            <th class="four wide">Trạng Thái</th>
+            <th class="four wide">Tổng Tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var invoice in Model.InvoicesPage)
+            {
+            <tr>
+                <td>
+                    @invoice.ID
+                </td>
+                <td>
+                    @invoice.Date
+                </td>
+                <td>
+                    @invoice.Status
+                </td>
+                <td>
+                    @invoice.TotalValuesFormated    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("_PaginatedTransaction", Model.InvoicesPage)

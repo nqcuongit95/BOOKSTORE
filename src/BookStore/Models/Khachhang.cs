@@ -8,6 +8,7 @@ namespace BookStore.Models
         public KhachHang()
         {
             DonHang = new HashSet<DonHang>();
+            PhieuThu = new HashSet<PhieuThu>();
             PhieuTraHang = new HashSet<PhieuTraHang>();
         }
 
@@ -20,6 +21,7 @@ namespace BookStore.Models
         public DateTime NgayLap { get; set; }
 
         public virtual ICollection<DonHang> DonHang { get; set; }
+        public virtual ICollection<PhieuThu> PhieuThu { get; set; }
         public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }
         public virtual LoaiKhachHang LoaiKhachHang { get; set; }
     }
