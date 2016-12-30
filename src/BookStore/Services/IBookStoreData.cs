@@ -164,6 +164,17 @@ namespace BookStore.Services
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
+        Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
+        Task<CustomerFilterViewModel> GetCustomerById(int id);
+        Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
+        Task<List<FeedsViewModel>> GetFeeds(int take);
+        Task<TransactionStatisticsViewModel> GetTransactionStatistics();
+        Task<CustomerStatisticsViewModel> GetCustomerStatistics();
+        Task<ProductStatisticViewModel> GetProductStatistics();
+        Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
+        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
+
+        Task<Staff> GetStaffByUserName(string userName);
         int TaoDonHang(DonHang donhang);
         void TaoPhieuThu(PhieuThu phieuthu);
         int TaoPhieuChi(PhieuChi phieuchi);
@@ -181,6 +192,5 @@ namespace BookStore.Services
         NhaCungCap findProviderByPhieuTra(int phieuID);
         NhaCungCap findProviderByPhieuNhap(int phieuID);
         KhachHang findCustomerByPhieuTra(int donhangId);
-        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
     }
 }
