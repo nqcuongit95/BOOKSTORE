@@ -790,5 +790,11 @@ namespace BookStore.Services
                      };
             return re;
         }
+
+        public async Task<Staff> GetStaffByUserName(string userName)
+        {
+            return await _context.Staff
+                .SingleOrDefaultAsync(m => m.UserName == userName);
+        }
     }
 }
