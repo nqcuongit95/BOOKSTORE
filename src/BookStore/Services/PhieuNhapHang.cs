@@ -121,7 +121,7 @@ namespace BookStore.Services
                 .ThenInclude(m => m.HangHoa)
                 .Include(m => m.TrangThai)
                 .Where(m => m.TrangThai.Loai == "PhieuNhapHang"
-                && (m.TrangThai.VietTat != "Recived" ||
+                && (m.TrangThai.VietTat != "Recived" &&
                 m.TrangThai.VietTat != "PaidRecived"))
                 .Include(m => m.NhanVien);
 

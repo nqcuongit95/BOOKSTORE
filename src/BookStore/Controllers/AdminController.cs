@@ -37,7 +37,7 @@ namespace BookStore.Controllers
         public async  Task<IActionResult> Index()
         {
             var model = await _bookStoreData.GetListStaffs();
-
+            
             return View(model);        
         }
 
