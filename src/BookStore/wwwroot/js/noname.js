@@ -292,19 +292,20 @@ function onClickActionButton(element, fn) {
 
 function showDefaultErrorMessage() {
     var element = $('#message');
-    var messageHeader = $('#message>.header>.title');
-    var messageContent = $('#message>.content');
+    var messageHeader = $('#message>.header');
+    var messageIcon = $('#message>.content>.message>.icon');
+    var messageContent = $('#message>.content>.message>.content>.header');
 
-    element.attr('type', 'error');
+    //element.attr('type', 'error');
     messageHeader.text(messageHeader.attr('data-default-value'));
     messageContent.text(messageContent.attr('data-default-value'));
 
-    element.children('.header').find('>.icon').addClass('hidden');
-    element.children('.actions').find('>.button').addClass('hidden');
-    element.children('.header')
-        .find('>.error').removeClass('hidden');
-    element.children('.actions')
-        .find('>.error').removeClass('hidden');
+    //element.children('.header').find('>.icon').addClass('hidden');
+    //element.children('.actions').find('>.button').addClass('hidden');
+    //element.children('.header')
+    //  .find('>.error').removeClass('hidden');
+    // element.children('.actions')
+    //   .find('>.error').removeClass('hidden');
 
     element.modal('show');
 }
@@ -312,19 +313,35 @@ function showDefaultErrorMessage() {
 function showMessage(message) {
     if (message !== undefined) {
         var element = $('#message');
-        var title = $('#message>.header>.title');
-        var content = $('#message>.content');
+        var title = $('#message>.header');
+        var content = $('#message>.content>.message>.content>.header');
+        var messageIcon = $('#message>.content>.message>.icon');
 
-        element.attr('type', message.type);
+        //element.attr('type', message.type);
         title.text(message.header);
         content.text(message.content);
+        console.log(message.type);
+        switch (message.type)
+        {
+            case "success":
+                messageIcon.attr("class", "checkmark icon green");
+                break;
 
-        element.children('.header').find('>.icon').addClass('hidden');
-        element.children('.actions').find('>.button').addClass('hidden');
-        element.children('.header')
-            .find('>.' + message.type).removeClass('hidden');
-        element.children('.actions')
-            .find('>.' + message.type).removeClass('hidden');
+            case "error":
+                messageIcon.attr("class", "remove icon red");
+                break;
+
+            default:
+                messageIcon.attr("class", "");
+                break;
+        }
+
+        //element.children('.header').find('>.icon').addClass('hidden');
+        //element.children('.actions').find('>.button').addClass('hidden');
+        //element.children('.header')
+        //    .find('>.' + message.type).removeClass('hidden');
+        //element.children('.actions')
+        //    .find('>.' + message.type).removeClass('hidden');
 
         element.modal('show');
     }

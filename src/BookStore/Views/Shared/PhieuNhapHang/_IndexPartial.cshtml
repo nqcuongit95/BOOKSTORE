@@ -15,10 +15,10 @@
     <thead>
         <tr>
             <th class="one wide">@Html.DisplayNameFor(p => phieuNhapHang.Id)</th>
-            <th class="six wide">@Html.DisplayNameFor(p => phieuNhapHang.NgayLap)</th>
-            <th class="three wide">@Html.DisplayNameFor(p => phieuNhapHang.NhaCungCapId)</th>
-            <th class="three wide">@Html.DisplayNameFor(p => phieuNhapHang.TongTien)</th>
-            <th class="two wide">@Html.DisplayNameFor(p => phieuNhapHang.TrangThaiId)</th>
+            <th class="two wide">@Html.DisplayNameFor(p => phieuNhapHang.NgayLap)</th>
+            <th class="four wide">@Html.DisplayNameFor(p => phieuNhapHang.NhaCungCapId)</th>
+            <th class="four wide">@Html.DisplayNameFor(p => phieuNhapHang.TongTien)</th>
+            <th class="four wide">@Html.DisplayNameFor(p => phieuNhapHang.TrangThaiId)</th>
             <th class="one wide">@sharedLocalizer["Operator"]</th>
         </tr>
     </thead>
@@ -71,8 +71,10 @@
                     @item.NhaCungCap.TenNhaCungCap
                 </td>
 
-                <td class="money">
-                    @(item.TongTien.ToString().Replace(',', '.'))
+                <td>
+                    <span class="ui yellow label money">
+                        @(item.TongTien.ToString().Replace(',', '.'))
+                    </span>
                 </td>
 
                 <td>
@@ -115,7 +117,7 @@
 
             var text = $(this).text();
 
-            $(this).text(numeral(text).format() + ' VNĐ');
+            $(this).text(numeral(text).format() + ' đ');
             console.log($(this).text());
         });
     });

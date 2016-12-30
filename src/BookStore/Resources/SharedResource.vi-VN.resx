@@ -130,7 +130,7 @@
     <value>Vui lòng kiểm tra lại.</value>
   </data>
   <data name="DefaultErrorHeader" xml:space="preserve">
-    <value>Đã có lỗi xảy ra</value>
+    <value>Thất bại</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Xóa</value>
@@ -271,6 +271,9 @@
     <value>Đã nhận hàng(chưa thanh toán)</value>
   </data>
   <data name="PhieuChiNhapHang" xml:space="preserve">
+    <value>Phiếu chi nhập hàng</value>
+  </data>
+  <data name="PhieuChiNhanHang" xml:space="preserve">
     <value>Phiếu chi nhập hàng</value>
   </data>
 </root>

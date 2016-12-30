@@ -54,7 +54,7 @@
                     <span id="pay"
                           class="ui blue button"
                           href="@Url.Action(
-                           "PayPhieuNhapHang",
+                           "Pay",
                            "PhieuNhapHang",
                            new { id = Model.PhieuNhapHangId })">
                         @sharedLocalizer["Pay"]
@@ -214,7 +214,7 @@
 
             var text = $(this).text();
 
-            $(this).text(numeral(text).format() + ' VNĐ');
+            $(this).text(numeral(text).format() + ' đ');
         });
     });
 </script>

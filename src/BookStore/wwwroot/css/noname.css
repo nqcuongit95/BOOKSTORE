@@ -54,7 +54,7 @@
     min-height: 46px;
 }
 
-#message .header .icon.hidden,
+/*#message .header .icon.hidden,
 #message .actions .button.hidden {
     display: none !important;
 }
@@ -72,7 +72,7 @@
 #message[type=warning] .header,
 #message[type=warning] .content {
     color: #FFDF05;
-}
+}*/
 
 #message-progress {
     display: block;
