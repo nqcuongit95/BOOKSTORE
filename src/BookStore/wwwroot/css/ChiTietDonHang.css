@@ -1,0 +1,11 @@
+﻿.infoHeader {
+    margin-bottom: 3px;
+}
+
+.botomcol.column {
+    padding-top: 0px;
+}
+
+.hidethead thead {
+    display: none;
+}

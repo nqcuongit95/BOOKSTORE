@@ -187,6 +187,7 @@ namespace BookStore.Services
                      select new DonHangViewModel
                      {
                          ID = donhang.Id,
+                         TongTien = donhang.TongTien,
                          NgayLap = donhang.NgayLap,
                          KhachHangId = khachhang.Id,
                          TenKhachHang = khachhang.TenKhachHang,
