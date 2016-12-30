@@ -181,5 +181,6 @@ namespace BookStore.Services
         NhaCungCap findProviderByPhieuTra(int phieuID);
         NhaCungCap findProviderByPhieuNhap(int phieuID);
         KhachHang findCustomerByPhieuTra(int donhangId);
+        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
     }
 }

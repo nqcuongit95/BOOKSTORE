@@ -583,7 +583,8 @@ namespace BookStore.Services
 
             var model = new CustomerLiabilitesViewModel();
 
-          }
+            return model;
+        }
 
         //public IQueryable<DonHangViewModel> GetAllDonHang()
         //{
