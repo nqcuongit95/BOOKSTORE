@@ -20,7 +20,7 @@ namespace BookStore.Services
         {
             _context = context;
         }
-
+        
         public void Commit()
         {
             _context.SaveChanges();
@@ -137,9 +137,9 @@ namespace BookStore.Services
         {
             return await _context.Roles.ToListAsync();
         }
-        public async Task<List<Staff>> GetListStaffs()
+        public IQueryable<Staff> GetListStaffs()
         {
-            return await _context.Users.ToListAsync();
+            return  _context.Users;
         }
         public async Task<CustomerFilterResults> FindCustomer(string value)
         {

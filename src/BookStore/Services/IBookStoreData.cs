@@ -149,7 +149,7 @@ namespace BookStore.Services
         Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
         Task<StatisticsViewModel> GetStatisticsInformation();
         Task<List<Role>> GetListRoles();
-        Task<List<Staff>> GetListStaffs();
+        IQueryable<Staff> GetListStaffs();
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
@@ -164,7 +164,6 @@ namespace BookStore.Services
         Task<ProductStatisticViewModel> GetProductStatistics();
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
         Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
-
-        Task<Staff> GetStaffByUserName(string userName);
+        Task<Staff> GetStaffByUserName(string userName);             
     }
 }

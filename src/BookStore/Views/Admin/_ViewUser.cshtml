@@ -1,0 +1,23 @@
+﻿@model Staff
+
+<div class="header">
+    Chi Tiết
+</div>
+<div class="content">
+    <div class="ui centered grid">
+        <div class="row">
+            <div class="five wide column">
+                <p>Mã số: @Model.Id</p>
+                <p>Họ Tên: @Model.FullName</p>
+                <p>Ngày làm việc: @Model.DateCreate</p>
+                <p>Số điện thoại: @Model.PhoneNumber</p>
+                <p>Tài Khoản: @Model.UserName</p>
+            </div>
+        </div>        
+    </div>
+</div>
+<div class="actions">
+    <div class="ui cancel button">Quay Lại</div>
+</div>
+
+<link href="~/css/TiniModal.css" rel="stylesheet" />

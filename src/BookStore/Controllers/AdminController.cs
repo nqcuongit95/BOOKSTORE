@@ -10,6 +10,7 @@ using BookStore.ViewModels;
 using BookStore.Helper;
 using BookStore.Services;
 using Microsoft.AspNetCore.Authorization;
+using BookStore.ViewModels.Admin;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,11 +35,66 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        public async  Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var model = await _bookStoreData.GetListStaffs();
-            
-            return View(model);        
+            return View();
+        }
+
+        public async Task<IActionResult> ListUser(string sortOrder, string searchString,
+                                               string currentFilter, int? page,
+                                               int? firstShowedPage, int? lastShowedPage)
+        {
+
+            ViewData["QueryName"] = nameof(searchString);
+            ViewData["SortDirection"] = "up";
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var staffs = _bookStoreData.GetListStaffs();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                staffs = staffs.Where(c => c.UserName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    staffs = staffs.OrderByDescending(c => c.UserName);
+                    ViewData["SortDirection"] = "down";
+                    break;
+                case "Date":
+                    staffs = staffs.OrderBy(c => c.DateCreate);
+                    break;
+                case "date_desc":
+                    staffs = staffs.OrderByDescending(c => c.DateCreate);
+                    break;
+                default:
+                    staffs = staffs.OrderBy(c => c.UserName);
+                    ViewData["SortDirection"] = "up";
+                    break;
+            }
+
+            int pageSize = 5;
+            int numberOfDisplayPages = 5;
+
+            return PartialView("_ListUser", await PaginatedList<Staff>.
+                        CreateAsync(staffs, page ?? 1, pageSize,
+                                    numberOfDisplayPages,
+                                    firstShowedPage, lastShowedPage));
         }
 
         public IActionResult Roles()
@@ -50,9 +106,9 @@ namespace BookStore.Controllers
 
         public IActionResult NotificationMessage(Notification model)
         {
-            return PartialView("_Message",model);
+            return PartialView("_Message", model);
         }
-        
+
         public IActionResult CreateRole()
         {
             return PartialView("_CreateRoleModal");
@@ -83,7 +139,7 @@ namespace BookStore.Controllers
                             Button = "Hoàn tất"
                         };
 
-                        status.Url = Url.Action("NotificationMessage", "Admin",noti);
+                        status.Url = Url.Action("NotificationMessage", "Admin", noti);
 
                         return Json(status);
                     }
@@ -152,7 +208,7 @@ namespace BookStore.Controllers
                             ModelState.AddModelError("", error.Description);
                         }
                     }
-                }                
+                }
             }
 
             return View(model);
@@ -160,15 +216,15 @@ namespace BookStore.Controllers
 
         public async Task<IActionResult> ViewRole(int id)
         {
-            var role =await  _roleManager.FindByIdAsync(id.ToString());
-            
-            return PartialView("_ViewRole",role);
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+
+            return PartialView("_ViewRole", role);
         }
 
         public async Task<IActionResult> DeleteRole(int id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
-            return PartialView("_DeleteRole",role);
+            return PartialView("_DeleteRole", role);
         }
 
         public async Task<IActionResult> ConfirmDeleteRole(int id)
@@ -193,14 +249,14 @@ namespace BookStore.Controllers
 
             model = new Notification
             {
-                Title = "Xảy Ra Lỗi",                
+                Title = "Xảy Ra Lỗi",
                 Button = "Hoàn Tất"
             };
 
             foreach (var error in result.Errors)
             {
                 model.Content += error + "/n";
-            }            
+            }
 
             return PartialView("_Message", model);
         }
@@ -253,7 +309,157 @@ namespace BookStore.Controllers
             };
 
             return PartialView("_Message", msg);
-            
+
         }
+
+        //for user
+        public async Task<IActionResult> ViewUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return PartialView("_ViewUser", user);
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            var roles = await _bookStoreData.GetListRoles();
+            string userRole = "";
+            var listRole = roles.Select(r => r.Name).ToList();
+            if (user.Roles.Count > 0)
+            {
+                var role = await _roleManager.FindByIdAsync(user.Roles.First().RoleId.ToString());
+                userRole = role.Name;
+            }
+
+            var model = new EditUserViewModel
+            {
+                ID = id,
+                FullName = user.FullName,
+                Phone = user.PhoneNumber,
+                AssignedRole = userRole,
+                Roles = listRole,
+                Username = user.UserName
+            };
+
+            return PartialView("_EditUser", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            Notification noti;
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.ID.ToString());
+
+                //reset password if password data is not null
+                if (model.Password != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var result = await _userManager.ResetPasswordAsync(user, token, model.Password);
+
+                    if (!result.Succeeded)
+                    {
+                        noti = new Notification
+                        {
+                            Title = "Thất bại",
+                            Content = "Cập nhật thất bại, vui lòng thử lại.",
+                            Icon = "remove",
+                            MessageType = "negative",
+                            Button = "Quay lại"
+                        };
+                        return PartialView("_Notify", noti);
+                    }
+                }
+
+                //update user infomation
+                user.FullName = model.FullName;
+                user.PhoneNumber = model.Phone;
+                user.UserName = model.Username;
+
+                //update role if it has changed
+                string oldRole = "";
+                if (model.AssignedRole != null)
+                {
+                    if (user.Roles.Count > 0)
+                    {
+                        var role = await _roleManager.FindByIdAsync(user.Roles.First().RoleId.ToString());
+                        oldRole = role.Name;
+                        if (model.AssignedRole != oldRole)
+                        {
+                            var removeResult = await _userManager.RemoveFromRoleAsync(user, oldRole);
+                            var newRoleResult = await _userManager.AddToRoleAsync(user, model.AssignedRole);
+                            if (!removeResult.Succeeded || !newRoleResult.Succeeded)
+                            {
+                                noti = new Notification
+                                {
+                                    Title = "Thất bại",
+                                    Content = "Có lỗi xảy ra, vui lòng thử lại.",
+                                    Icon = "remove",
+                                    MessageType = "negative",
+                                    Button = "Quay lại"
+                                };
+                                return PartialView("_Notify", noti);
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        var newRoleResult = await _userManager.AddToRoleAsync(user, model.AssignedRole);
+                        if (!newRoleResult.Succeeded)
+                        {
+                            noti = new Notification
+                            {
+                                Title = "Thất bại",
+                                Content = "Có lỗi xảy ra, vui lòng thử lại.",
+                                Icon = "remove",
+                                MessageType = "negative",
+                                Button = "Quay lại"
+                            };
+                            return PartialView("_Notify", noti);
+                        }
+                    }
+                }
+                //finally, update user
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (updateResult.Succeeded)
+                {
+                    noti = new Notification
+                    {
+                        Title = "Thành công",
+                        Content = "Cập nhật thông tin nhân viên thành công.",
+                        Icon = "checkmark",
+                        MessageType = "positive",
+                        Button = "Hoàn tất"
+                    };
+                    return PartialView("_Notify", noti);
+                }
+            }
+
+            noti = new Notification
+            {
+                Title = "Thất bại",
+                Content = "Có lỗi xảy ra, vui lòng thử lại.",
+                Icon = "remove",
+                MessageType = "negative",
+                Button = "Quay lại"
+            };
+            return PartialView("_Notify", noti);
+
+        }
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return PartialView("_DeleteUser", user);
+        }
+        public async Task<IActionResult> ConfirmedDeleteUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return PartialView("_Notify", user);
+        }
+
     }
 }
