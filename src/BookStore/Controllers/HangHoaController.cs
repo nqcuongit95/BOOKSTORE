@@ -1,16 +1,16 @@
-﻿using System;
+﻿using BookStore.Models;
+using BookStore.Resources;
+using BookStore.Services;
+using BookStore.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using BookStore.Services;
-using Microsoft.Extensions.Localization;
-using BookStore.Models;
-using Microsoft.EntityFrameworkCore;
-using BookStore.ViewModels;
-using Microsoft.AspNetCore.Mvc.Localization;
-using BookStore.Resources;
-using Microsoft.AspNetCore.Routing;
 
 namespace BookStore.Controllers
 {
@@ -32,6 +32,7 @@ namespace BookStore.Controllers
         }
 
         #region Index
+
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
@@ -39,7 +40,7 @@ namespace BookStore.Controllers
             try
             {
                 var result = await NonamePaginatedList<HangHoa>.CreateAsync(
-                    _bookStoreData.GetHangHoa(null, false), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetHangHoa(null, null), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -57,7 +58,7 @@ namespace BookStore.Controllers
             {
                 SearchResult result = new SearchResult();
                 List<HangHoa> content = await _bookStoreData
-                    .GetHangHoa(search, true).ToListAsync();
+                    .GetHangHoa(search, "Use").ToListAsync();
 
                 foreach (var i in content)
                     result.Results.Add(new
@@ -79,9 +80,11 @@ namespace BookStore.Controllers
                 return null;
             }
         }
-        #endregion
+
+        #endregion Index
 
         #region Create
+
         [Route("Create")]
         public IActionResult Create(bool? modal, bool? redirect)
         {
@@ -152,9 +155,11 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Create
 
         #region Details
+
         [Route("Details")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -167,9 +172,11 @@ namespace BookStore.Controllers
         {
             return await RUD(id, true, false);
         }
-        #endregion
+
+        #endregion Details
 
         #region Edit
+
         [Route("Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -244,9 +251,11 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Edit
 
         #region Delete
+
         [Route("Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -301,9 +310,11 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Delete
 
         #region Other
+
         private IActionResult C(bool? modal, bool? redirect)
         {
             AddInfoToViewData();
@@ -417,6 +428,7 @@ namespace BookStore.Controllers
                 "~/Views/Shared/{0}/_{1}Partial.cshtml",
                 controller, action);
         }
-        #endregion
+
+        #endregion Other
     }
 }

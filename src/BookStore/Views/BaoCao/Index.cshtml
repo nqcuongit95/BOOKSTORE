@@ -1,0 +1,21 @@
+﻿@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+<div class="header-menu" style="width:100%;">
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@ViewData["Title"]</h2>
+
+        <div class="right menu">
+        </div>
+    </div>
+</div>
+
+<div class="page-container">
+    <a asp-controller="BaoCaoTonKho" asp-action="Index" class="ui blue label">
+        <i class="cubes icon"></i>
+        @sharedLocalizer["BaoCaoTonKho"]
+    </a>
+</div>
+
+@section Additional {
+    <link rel="stylesheet" href="~/css/baocao.css" />
+}

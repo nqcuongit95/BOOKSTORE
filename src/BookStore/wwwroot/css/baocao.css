@@ -1,0 +1,74 @@
+﻿.header-menu {
+  width: 100%;
+  padding: 1rem !important;
+}
+.page-container {
+  font-size: 0;
+  width: 100%;
+  text-align: left;
+}
+.page-container > .label {
+  display: inline-block;
+  width: calc(100% / 3 - 0.6em);
+  margin: 0.3em;
+  font-size: 36px;
+}
+.actions-bar {
+  padding: 1em 0;
+  position: relative !important;
+  text-align: right;
+  width: 100% !important;
+}
+.actions-bar .button {
+  display: inline-block;
+}
+.bao-cao {
+  font-family: bookstrore-gdi, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding-top: 1em;
+  padding-bottom: 72px;
+  width: 100%;
+}
+.bao-cao > .title,
+.bao-cao > .date {
+  width: 100%;
+  margin: 1em 0 !important;
+}
+.bao-cao > .summary {
+  font-size: 0;
+  text-align: center !important;
+  width: 100% !important;
+}
+.bao-cao > .summary > .label {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1.25;
+  margin: 0.3em;
+  text-align: left !important;
+  width: calc(50% - 0.6em) !important;
+}
+.bao-cao > table {
+  margin: 0 !important;
+}
+.bao-cao span.money {
+  display: block;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .bao-cao,
+  .bao-cao * {
+    visibility: visible;
+  }
+  .bao-cao {
+    display: table;
+    position: absolute;
+    top: 0;
+    margin: 0 !important;
+    width: 90%;
+  }
+}
+@page {
+  size: A4;
+}

@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Amount" xml:space="preserve">
+    <value>Thành tiền</value>
+  </data>
+  <data name="BaoCao" xml:space="preserve">
+    <value>Báo cáo</value>
+  </data>
+  <data name="BaoCaoTonKho" xml:space="preserve">
+    <value>Báo cáo tồn kho</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Trở về</value>
   </data>
@@ -126,11 +135,17 @@
   <data name="CreateConfirmed" xml:space="preserve">
     <value>Đã thêm</value>
   </data>
+  <data name="CurrentPrice" xml:space="preserve">
+    <value>Giá hiện tại</value>
+  </data>
+  <data name="DefaultConstruct" xml:space="preserve">
+    <value>Khởi tạo ban đầu</value>
+  </data>
   <data name="DefaultErrorContent" xml:space="preserve">
     <value>Vui lòng kiểm tra lại.</value>
   </data>
   <data name="DefaultErrorHeader" xml:space="preserve">
-    <value>Đã có lỗi xảy ra</value>
+    <value>Thất bại</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Xóa</value>
@@ -147,6 +162,18 @@
   <data name="EditConfirmed" xml:space="preserve">
     <value>Đã cập nhật</value>
   </data>
+  <data name="GiaBanLe" xml:space="preserve">
+    <value>Giá bán lẽ</value>
+  </data>
+  <data name="GiaBanSi" xml:space="preserve">
+    <value>Giá bán sĩ</value>
+  </data>
+  <data name="GiaKhoiTao" xml:space="preserve">
+    <value>Giá khởi tạo</value>
+  </data>
+  <data name="GiaNhap" xml:space="preserve">
+    <value>Giá nhập</value>
+  </data>
   <data name="HangHoa" xml:space="preserve">
     <value>Hàng hóa</value>
   </data>
@@ -155,6 +182,9 @@
   </data>
   <data name="Invalid" xml:space="preserve">
     <value>Không hợp lệ.</value>
+  </data>
+  <data name="LoaiHangHoa" xml:space="preserve">
+    <value>Loại hàng hóa</value>
   </data>
   <data name="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException" xml:space="preserve">
     <value>Lỗi truy cập đồng thời.</value>
@@ -168,6 +198,12 @@
   <data name="NhanHieu" xml:space="preserve">
     <value>Nhãn hiệu</value>
   </data>
+  <data name="NhanVien" xml:space="preserve">
+    <value>Nhân viên</value>
+  </data>
+  <data name="NhapHang" xml:space="preserve">
+    <value>Nhập hàng</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Không tìm thấy, vui lòng kiểm tra lại hoặc tải lại trang.</value>
   </data>
@@ -177,8 +213,56 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Thao tác</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Tùy chọn</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Đã thanh toán(chưa nhận hàng)</value>
+  </data>
+  <data name="PaidRecived" xml:space="preserve">
+    <value>Đã thanh toán và nhận hàng</value>
+  </data>
+  <data name="Pay" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="PhieuChiNhanHang" xml:space="preserve">
+    <value>Phiếu chi nhập hàng</value>
+  </data>
+  <data name="PhieuChiNhapHang" xml:space="preserve">
+    <value>Phiếu chi nhập hàng</value>
+  </data>
+  <data name="PhieuKiemKho" xml:space="preserve">
+    <value>Phiếu kiểm kho</value>
+  </data>
+  <data name="PhieuNhanHang" xml:space="preserve">
+    <value>Phiếu nhận hàng</value>
+  </data>
+  <data name="PhieuNhapHang" xml:space="preserve">
+    <value>Phiếu nhập hàng</value>
+  </data>
+  <data name="PleaseChoose" xml:space="preserve">
+    <value>Vui lòng chọn</value>
+  </data>
   <data name="PleaseWait" xml:space="preserve">
     <value>Vui lòng chờ...</value>
+  </data>
+  <data name="Price: {0} Available: {1}" xml:space="preserve">
+    <value>Giá: {0} Có thể bán: {1}</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Thuộc tính</value>
+  </data>
+  <data name="RecieveProduct" xml:space="preserve">
+    <value>Nhận hàng</value>
+  </data>
+  <data name="Recived" xml:space="preserve">
+    <value>Đã nhận hàng(chưa thanh toán)</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Thành công</value>
@@ -189,247 +273,31 @@
   <data name="System.Data.SqlClient.SqlException" xml:space="preserve">
     <value>Không kết nối được với cơ sở dữ liệu.</value>
   </data>
-  <data name="Use" xml:space="preserve">
-    <value>Đang sử dụng</value>
-  </data>
-  <data name="Operator" xml:space="preserve">
-    <value>Thao tác</value>
-  </data>
-  <data name="LoaiHangHoa" xml:space="preserve">
-    <value>Loại hàng hóa</value>
-  </data>
-  <data name="DefaultConstruct" xml:space="preserve">
-    <value>Khởi tạo ban đầu</value>
-  </data>
-  <data name="GiaBanLe" xml:space="preserve">
-    <value>Giá bán lẽ</value>
-  </data>
-  <data name="GiaBanSi" xml:space="preserve">
-    <value>Giá bán sĩ</value>
-  </data>
-  <data name="GiaKhoiTao" xml:space="preserve">
-    <value>Giá khởi tạo</value>
-  </data>
-  <data name="GiaNhap" xml:space="preserve">
-    <value>Giá nhập</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>Tùy chọn</value>
-  </data>
-  <data name="PleaseChoose" xml:space="preserve">
-    <value>Vui lòng chọn</value>
+  <data name="ToDate" xml:space="preserve">
+    <value>Đến ngày</value>
   </data>
   <data name="TonKho" xml:space="preserve">
     <value>Tồn kho</value>
   </data>
-  <data name="Property" xml:space="preserve">
-    <value>Thuộc tính</value>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
+  <data name="TotalInventory" xml:space="preserve">
+    <value>Tổng tồn kho</value>
+  </data>
+  <data name="TotalValueInventory" xml:space="preserve">
+    <value>Tổng giá trị tồn kho</value>
   </data>
   <data name="TrangThai" xml:space="preserve">
     <value>Trạng thái</value>
   </data>
-  <data name="NhapHang" xml:space="preserve">
-    <value>Nhập hàng</value>
-  </data>
-  <data name="PhieuNhapHang" xml:space="preserve">
-    <value>Phiếu nhập hàng</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Thành tiền</value>
-  </data>
-  <data name="Price: {0} Available: {1}" xml:space="preserve">
-    <value>Giá: {0} Có thể bán: {1}</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Tổng tiền</value>
-  </data>
-  <data name="Paid" xml:space="preserve">
-    <value>Đã thanh toán(chưa nhận hàng)</value>
-  </data>
-  <data name="Waiting" xml:space="preserve">
-    <value>Đang chờ</value>
-  </data>
-  <data name="Pay" xml:space="preserve">
-    <value>Thanh toán</value>
-  </data>
-  <data name="NhanVien" xml:space="preserve">
-    <value>Nhân viên</value>
-  </data>
-  <data name="PhieuKiemKho" xml:space="preserve">
-    <value>Phiếu kiểm kho</value>
-  </data>
-  <data name="PhieuNhanHang" xml:space="preserve">
-    <value>Phiếu nhận hàng</value>
-  </data>
-  <data name="RecieveProduct" xml:space="preserve">
-    <value>Nhận hàng</value>
-  </data>
-  <data name="PaidRecived" xml:space="preserve">
-    <value>Đã thanh toán và nhận hàng</value>
-  </data>
-  <data name="Recived" xml:space="preserve">
-    <value>Đã nhận hàng(chưa thanh toán)</value>
-  </data>
-  <data name="PhieuChiNhapHang" xml:space="preserve">
-    <value>Phiếu chi nhập hàng</value>
-  </data>
-  <data name="Amount1" xml:space="preserve">
-    <value>Thành tiền</value>
-  </data>
-  <data name="Cancel1" xml:space="preserve">
-    <value>Trở về</value>
-  </data>
-  <data name="Create1" xml:space="preserve">
-    <value>Thêm mới</value>
-  </data>
-  <data name="CreateConfirmed1" xml:space="preserve">
-    <value>Đã thêm</value>
-  </data>
-  <data name="DefaultConstruct1" xml:space="preserve">
-    <value>Khởi tạo ban đầu</value>
-  </data>
-  <data name="DefaultErrorContent1" xml:space="preserve">
-    <value>Vui lòng kiểm tra lại.</value>
-  </data>
-  <data name="DefaultErrorHeader1" xml:space="preserve">
-    <value>Đã có lỗi xảy ra</value>
-  </data>
-  <data name="Delete1" xml:space="preserve">
-    <value>Xóa</value>
-  </data>
-  <data name="DeleteConfirmed1" xml:space="preserve">
-    <value>Đã xóa</value>
-  </data>
-  <data name="Details1" xml:space="preserve">
-    <value>Chi tiết</value>
-  </data>
-  <data name="Edit1" xml:space="preserve">
-    <value>Cập nhật</value>
-  </data>
-  <data name="EditConfirmed1" xml:space="preserve">
-    <value>Đã cập nhật</value>
-  </data>
-  <data name="GiaBanLe1" xml:space="preserve">
-    <value>Giá bán lẽ</value>
-  </data>
-  <data name="GiaBanSi1" xml:space="preserve">
-    <value>Giá bán sĩ</value>
-  </data>
-  <data name="GiaKhoiTao1" xml:space="preserve">
-    <value>Giá khởi tạo</value>
-  </data>
-  <data name="GiaNhap1" xml:space="preserve">
-    <value>Giá nhập</value>
-  </data>
-  <data name="HangHoa1" xml:space="preserve">
-    <value>Hàng hóa</value>
-  </data>
-  <data name="Index1" xml:space="preserve">
-    <value>Danh sách</value>
-  </data>
-  <data name="Invalid1" xml:space="preserve">
-    <value>Không hợp lệ.</value>
-  </data>
-  <data name="LoaiHangHoa1" xml:space="preserve">
-    <value>Loại hàng hóa</value>
-  </data>
-  <data name="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException1" xml:space="preserve">
-    <value>Lỗi truy cập đồng thời.</value>
-  </data>
-  <data name="Microsoft.EntityFrameworkCore.DbUpdateException1" xml:space="preserve">
-    <value>Đối tượng hiện đang được sử dụng.</value>
-  </data>
-  <data name="NhaCungCap1" xml:space="preserve">
-    <value>Nhà cung cấp</value>
-  </data>
-  <data name="NhanHieu1" xml:space="preserve">
-    <value>Nhãn hiệu</value>
-  </data>
-  <data name="NhanVien1" xml:space="preserve">
-    <value>Nhân viên</value>
-  </data>
-  <data name="NhapHang1" xml:space="preserve">
-    <value>Nhập hàng</value>
-  </data>
-  <data name="NotFound1" xml:space="preserve">
-    <value>Không tìm thấy, vui lòng kiểm tra lại hoặc tải lại trang.</value>
-  </data>
-  <data name="NotUse1" xml:space="preserve">
-    <value>Ngưng sử dụng</value>
-  </data>
-  <data name="OK1" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Operator1" xml:space="preserve">
-    <value>Thao tác</value>
-  </data>
-  <data name="Options1" xml:space="preserve">
-    <value>Tùy chọn</value>
-  </data>
-  <data name="Paid1" xml:space="preserve">
-    <value>Đã thanh toán(chưa nhận hàng)</value>
-  </data>
-  <data name="PaidRecived1" xml:space="preserve">
-    <value>Đã thanh toán và nhận hàng</value>
-  </data>
-  <data name="Pay1" xml:space="preserve">
-    <value>Thanh toán</value>
-  </data>
-  <data name="PhieuChiNhanHang" xml:space="preserve">
-    <value>Phiếu chi nhập hàng</value>
-  </data>
-  <data name="PhieuChiNhapHang1" xml:space="preserve">
-    <value>Phiếu chi nhập hàng</value>
-  </data>
-  <data name="PhieuKiemKho1" xml:space="preserve">
-    <value>Phiếu kiểm kho</value>
-  </data>
-  <data name="PhieuNhanHang1" xml:space="preserve">
-    <value>Phiếu nhận hàng</value>
-  </data>
-  <data name="PhieuNhapHang1" xml:space="preserve">
-    <value>Phiếu nhập hàng</value>
-  </data>
-  <data name="PleaseChoose1" xml:space="preserve">
-    <value>Vui lòng chọn</value>
-  </data>
-  <data name="PleaseWait1" xml:space="preserve">
-    <value>Vui lòng chờ...</value>
-  </data>
-  <data name="Price: {0} Available: {1}1" xml:space="preserve">
-    <value>Giá: {0} Có thể bán: {1}</value>
-  </data>
-  <data name="Property1" xml:space="preserve">
-    <value>Thuộc tính</value>
-  </data>
-  <data name="RecieveProduct1" xml:space="preserve">
-    <value>Nhận hàng</value>
-  </data>
-  <data name="Recived1" xml:space="preserve">
-    <value>Đã nhận hàng(chưa thanh toán)</value>
-  </data>
-  <data name="Success1" xml:space="preserve">
-    <value>Thành công</value>
-  </data>
-  <data name="System.ArgumentNullException1" xml:space="preserve">
-    <value>Tham số truyền rỗng.</value>
-  </data>
-  <data name="System.Data.SqlClient.SqlException1" xml:space="preserve">
-    <value>Không kết nối được với cơ sở dữ liệu.</value>
-  </data>
-  <data name="TonKho1" xml:space="preserve">
-    <value>Tồn kho</value>
-  </data>
-  <data name="TotalAmount1" xml:space="preserve">
-    <value>Tổng tiền</value>
-  </data>
-  <data name="TrangThai1" xml:space="preserve">
-    <value>Trạng thái</value>
-  </data>
-  <data name="Use1" xml:space="preserve">
+  <data name="Use" xml:space="preserve">
     <value>Đang sử dụng</value>
   </data>
-  <data name="Waiting1" xml:space="preserve">
+  <data name="ValueInventory" xml:space="preserve">
+    <value>Giá trị tồn kho</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
     <value>Đang chờ</value>
   </data>
 </root>
