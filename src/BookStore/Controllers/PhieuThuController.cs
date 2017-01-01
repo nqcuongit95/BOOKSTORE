@@ -74,11 +74,11 @@ namespace BookStore.Controllers
                                     firstShowedPage, lastShowedPage);
             for (int i = 0; i < result.Count; i++)
             {
-                if (result[i].DonHangId.HasValue)
+                if (result[i].DonHangId.HasValue||result[i].KhachHangId.HasValue)
                 {
                     result[i].DoiTuong = "Khách hàng";
                 }
-                else
+                if (result[i].PhieuNhapHangId.HasValue)
                 {
                     result[i].DoiTuong = "Nhà cung cấp";
                 }
@@ -124,9 +124,8 @@ namespace BookStore.Controllers
 
                 if (model.KhachHangId!=null)
                 {
-                    phieu.DonHangId = _bookStoreData.findDonHangByCustomer(model.KhachHangId);
+                    phieu.KhachHangId = model.KhachHangId;
                     _bookStoreData.TaoPhieuThu(phieu);
-                    _bookStoreData.UpdateDonHang(phieu.DonHangId);
                     return RedirectToAction("Index");
                 }
                 if (model.NCCId != null)
@@ -162,7 +161,13 @@ namespace BookStore.Controllers
                 phieu.DoiTuong = "Khách Hàng";
                 phieu.TenKhachHang = khachhang.TenKhachHang;
             }
-            else
+            if (phieu.KhachHangId.HasValue)
+            {
+                var khach = _bookStoreData.findCustomerById((int)phieu.KhachHangId);
+                phieu.DoiTuong = "Khách Hàng";
+                phieu.TenKhachHang = khach.TenKhachHang;
+            }
+            if (phieu.PhieuNhapHangId.HasValue)
             {
                 var ncc = _bookStoreData.findProviderByPhieuTra((int)phieu.PhieuNhapHangId);
                 phieu.TenNhaCungCap = ncc.TenNhaCungCap;

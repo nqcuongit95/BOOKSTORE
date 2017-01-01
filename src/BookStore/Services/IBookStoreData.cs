@@ -179,12 +179,14 @@ namespace BookStore.Services
         void TaoPhieuThu(PhieuThu phieuthu);
         int TaoPhieuChi(PhieuChi phieuchi);
         void UpdateDonHang(int? id);
+        void CapnhatDonhang(int? id, decimal tienthu);
         int findDonHangByCustomer(int? customerID);
         int findPhieuTraByCustomer(int? customerID);
         int findPhieuNhapByCustomer(int? customerID);
         int findUserId(String name);
         int findPhieuTraNhapHang(int? providerID);
         PhieuThuViewModel findPhieuThu(int phieuID);
+        IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID);
         PhieuChiViewModel findPhieuChi(int phieuID);
         DonHangViewModel findDonHangById(int donhangID);
         KhachHang findCustomerByDonhang(int donhangId);

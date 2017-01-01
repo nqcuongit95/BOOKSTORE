@@ -7,7 +7,7 @@
 <link href="~/css/ChiTietDonHang.css" rel="stylesheet" />
 @section menu{
     <div class="ui secondary pointing fluid menu">
-        <h2 class="ui header">Chi tiết đơn hàng</h2>
+        <h2 class="ui header">Phiếu Trả Hàng</h2>
         <div class="right menu">
             <div class="item">
                 <div class="ui transparent icon input">
@@ -17,7 +17,7 @@
                     </a>
                 </div>
             </div>
-            <a class="ui active item" asp-controller="DonHang" asp-action="Index" id="donhang">
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
                 Đơn Hàng
             </a>
             <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
@@ -26,9 +26,27 @@
             <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
                 Phiếu Chi
             </a>
-            <a class="ui item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+            <a class="ui active item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
                 Phiếu Trả Hàng
             </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui secondary menu four item">
+                <a class="active item"
+                   asp-controller="TraHang"
+                   asp-action="Index">
+                    <i class="list layout icon"></i>
+                    Danh sách phiếu trả hàng
+                </a>
+                <a class="item"
+                   asp-controller="TraHang"
+                   asp-action="Create">
+                    <i class="add square icon"></i>
+                    Thêm mới phiếu trả hàng
+                </a>
+            </div>
         </div>
     </div>
 }
@@ -155,7 +173,13 @@
     </div>
 
     <div class="four wide column">
+        <form id="payment-form">
             <div class="ui grid">
+                @*<div class="row">
+                        <div class="column">
+                            <div class="ui dividing header">@Model.TenTrangThai</div>
+                        </div>
+                    </div>*@
                 <!-- Thanh toan -->
                 <div class="row">
 
@@ -165,7 +189,7 @@
                             <tbody>
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
-                                    <td class="ten wide right aligned" >
+                                    <td class="ten wide right aligned">
                                         <div id="tongtien">@Model.TongTien</div>
                                     </td>
                                 </tr>
@@ -177,36 +201,29 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div id="payment-table">
-                            <form asp-action="UpdateDonHang" method="post" id="submitHD"></form>
-
-                            <table class="ui very basic table">
-                                <tbody>
-                                    <tr>
-                                        <td class="seven wide">Tiền khách đưa</td>
-                                        <td class="nine wide right aligned">
-                                            <div class="ui input"
-                                                 style="width: 140px;"
-                                                 id="paid-money">
-                                                <input type="text"
-                                                       name="TienThu"
-                                                       style="text-align:right;"
-                                                       id="customerPaid"/>
-                                                <input type="hidden" name="ID" value="@Model.ID" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="six wide"></td>
-                                        <td class="ten wide right aligned">
-                                            <button class="ui positive fluid button" id="btnPay">Thanh toán</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                       
-                    
+                        <table class="ui very basic table" id="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td class="seven wide">Tiền khách đưa</td>
+                                    <td class="nine wide right aligned">
+                                        <div class="ui input"
+                                             style="width: 140px;"
+                                             id="paid-money">
+                                            <input type="text"
+                                                   name="CustomerPaid"
+                                                   asp-for="@Model.TienThu"
+                                                   style="text-align:right;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide"></td>
+                                    <td class="ten wide right aligned">
+                                        <button class="ui positive fluid button" id="pay">Thanh toán</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 @* trả hàng *@
@@ -218,10 +235,11 @@
                                 <tr>
                                     <td class="six wide"></td>
                                     <td class="ten wide right aligned">
-                                        <button class="ui positive fluid button" 
-                                                asp-controller="DonHang" 
-                                                asp-action="UpdateDonHang"
-                                                >Hoàn trả</button>
+                                        <button class="ui positive fluid button"
+                                                asp-controller="DonHang"
+                                                asp-action="UpdateDonHang">
+                                            Hoàn trả
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -229,16 +247,20 @@
                     </div>
                 </div>
             </div>
+        </form>
     </div>
 </div>
 
-<div class="ui tiny modal" id="notify-modal">
-
-</div>
-
 <script>
-    
+    //$(document).ready(function () {
+    //    var a = document.getElementById("tienthu").value;
+    //    var b = document.getElementById("tongtien").value;
+    //    if () {
+    //        $("#payment-table").hide();
+    //        alert(a + "-----" + b)
+    //    }
+    //    else {
+    //        $("#payment-table").show();
+    //    }
+    //})
 </script>
-<script src="~/js/DonHang/Details.js"></script>
-<script src="~/js/Numeral-js/numeral.min.js"></script>
-<script src="~/js/cleave.js/cleave.min.js"></script>

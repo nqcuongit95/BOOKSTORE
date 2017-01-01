@@ -15,9 +15,15 @@ namespace BookStore.ViewModels
         public int TrangThaiId { get; set; }
         public string TenTrangThai { get; set; }
         public decimal TongTien { get; set; }
+        public decimal TienDaThu { get; set; }
+        public decimal TienThu { get; set; }
+        public string TienThuFormated { get; set; }
+        public string TongTienFormated { get; set; }
+        public string TienDaThuFormated { get; set; }
         public int NhanVienId { get; set; }
         public string TenNhanVien { get; set; }
         public List<CTDonHang> details;
+        public List<PhieuThu> listPhieuThu;
         public CustomerInfoViewModel khachhang;
     }
 }

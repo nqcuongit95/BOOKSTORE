@@ -61,14 +61,14 @@ namespace BookStore.Services
         public IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi()
         {
             var query = from loaiphieu in _context.LoaiPhieu
-                        where loaiphieu.Loai == "PCH"
+                        where loaiphieu.Loai.Contains("PC")
                         select loaiphieu;
             return query;
         }
         public IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu()
         {
             var query = from loaiphieu in _context.LoaiPhieu
-                        where loaiphieu.Loai == "PTH"
+                        where loaiphieu.Loai.Contains("PTH")
                         select loaiphieu;
             return query;
         }
@@ -221,10 +221,13 @@ namespace BookStore.Services
                          TongTien = phieuthu.TongTien,
                          LoaiPhieuId = phieuthu.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
-                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
+                         KhachHangId = phieuthu.KhachHangId
                      };
             return re.First();
         }
+
+
         public PhieuChiViewModel findPhieuChi(int phieuID)
         {
             var re = from phieuchi in _context.PhieuChi
@@ -643,6 +646,19 @@ namespace BookStore.Services
             }
             _context.SaveChanges();
         }
+        public void CapnhatDonhang(int? id, decimal tienthu)
+        {
+            var donhang = _context.DonHang.Where(m => m.Id == id).FirstOrDefault();
+            if (tienthu >= donhang.TongTien)
+            {
+                donhang.TrangThaiId = 12; //da thanh toan
+            }
+            if (tienthu < donhang.TongTien)
+            {
+                donhang.TrangThaiId = 11;   //thanh toan mot phan
+            }
+            _context.SaveChanges();
+        }
         public int findPhieuTraByCustomer(int? customerID)
         {
             var donhangList = from phieutra in _context.PhieuTraHang
@@ -698,7 +714,7 @@ namespace BookStore.Services
         public void TaoPhieuThu(PhieuThu phieuthu)
         {
             _context.PhieuThu.Add(phieuthu);
-             _context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public int TaoPhieuChi(PhieuChi phieuchi)
@@ -707,6 +723,13 @@ namespace BookStore.Services
             _context.SaveChanges();
 
             return phieuchi.Id;
+        }
+        public IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID)
+        {
+            var query = from phieu in _context.PhieuThu
+                        where phieu.DonHangId == donHangID
+                        select phieu;
+            return query;
         }
         public IQueryable<CTDonHang> GetCTDonHang(int donhangID)
         {
@@ -742,7 +765,8 @@ namespace BookStore.Services
                          TongTien = phieuthu.TongTien,
                          LoaiPhieuId = phieuthu.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
-                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
+                         KhachHangId = phieuthu.KhachHangId
                      };
             return re;
         }

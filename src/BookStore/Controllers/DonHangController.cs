@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
 using BookStore.Models;
+using Microsoft.AspNetCore.Identity;
+using BookStore.Entities;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,8 +17,11 @@ namespace BookStore.Controllers
     {
         // GET: /<controller>/
         private IBookStoreData _bookStoreData;
-        public DonHangController(IBookStoreData bookStoreData)
+        private UserManager<Staff> _usermanager;
+
+        public DonHangController(IBookStoreData bookStoreData, UserManager<Staff> userManager)
         {
+            _usermanager = userManager;
             _bookStoreData = bookStoreData;
         }
         public async Task<IActionResult> Index(string sortOrder, string searchString,
@@ -93,7 +98,7 @@ namespace BookStore.Controllers
             int pageSize = 9;
             int numberOfDisplayPages = 5;
 
-           
+
             if (!string.IsNullOrEmpty(searchString))
             {
                 donhang = donhang.Where(c => c.Id.ToString().Contains(searchString));
@@ -115,11 +120,69 @@ namespace BookStore.Controllers
             var donhang = _bookStoreData.findDonHangById(id);
             donhang.khachhang = _bookStoreData.findCustomerById(donhang.KhachHangId);
             donhang.details = _bookStoreData.GetCTDonHang(donhang.ID).ToList();
+            donhang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(id).ToList();
             for (int i = 0; i < donhang.details.Count; i++)
             {
                 donhang.details[i].ThanhTien = donhang.details[i].GiaBan * donhang.details[i].SoLuong;
             }
+            decimal tienDaThu = 0;
+            for (int i = 0; i < donhang.listPhieuThu.Count; i++)
+            {
+                tienDaThu += donhang.listPhieuThu[i].TongTien;
+            }
+            donhang.TienDaThu = tienDaThu;
+            donhang.TienDaThuFormated = FormatDecimalValue(tienDaThu);
             return View(donhang);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateDonHang(decimal TienThu, int ID)
+        {
+            try
+            {
+                var phieuthu = new PhieuThu();
+                phieuthu.DonHangId = ID;
+                phieuthu.NgayLap = DateTime.Now;
+                var user = await _usermanager.FindByNameAsync(User.Identity.Name);
+                phieuthu.NhanVienId = user.Id;
+                phieuthu.TongTien = TienThu;
+                phieuthu.LoaiPhieuId = 2;
+                var kh = _bookStoreData.findCustomerByDonhang((int)phieuthu.DonHangId);
+                phieuthu.KhachHangId = kh.Id;
+                _bookStoreData.TaoPhieuThu(phieuthu);
+                var listPhieuThu = _bookStoreData.findPhieuThuByDonHang(ID).ToList();
+                decimal tienDaThu = 0; ;
+                for (int i = 0; i < listPhieuThu.Count; i++)
+                {
+                    tienDaThu += listPhieuThu[i].TongTien;
+                }
+                _bookStoreData.CapnhatDonhang(ID, tienDaThu);
+                var noti = new Notification
+                {
+                    Title = "Thành Công",
+                    Content = "Cập nhật đơn hàng thành công",
+                    Icon = "checkmark",
+                    MessageType = "positive",
+                };
+                return PartialView("_Notify", noti);
+            }
+            catch (Exception e)
+            {
+                var noti = new Notification
+                {
+                    Title = "Thất bại",
+                    Content = "Có lỗi xảy ra" + e.Message,
+                    Icon = "remove",
+                    MessageType = "negative",
+                };
+                return PartialView("_Notify", noti);
+            }
+        }
+        //helper function
+        public string FormatDecimalValue(decimal val)
+        {
+            return val.ToString("N0") + " đ";
         }
     }
 }
