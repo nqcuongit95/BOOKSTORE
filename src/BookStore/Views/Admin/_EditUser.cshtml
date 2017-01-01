@@ -9,7 +9,7 @@
           asp-action="EditUser"
           asp-route-id=""
           asp-antiforgery="true"
-          id="update-form">        
+          id="update-form">
         <div class="two fields">
             <div class="field">
                 <label asp-for="FullName"></label>
@@ -76,12 +76,13 @@
             <label>Chọn quyền: </label>
             @foreach (var role in Model.Roles)
             {
+                var isCheck = Model.AssignedRole == role ? "checked" : "";
                 <div class="inline field">
-                    <div class="ui radio checkbox">
+                    <div class="ui radio checkbox @isCheck">
                         <input type="radio"
                                asp-for="@Model.AssignedRole"
                                value="@role"
-                               tabindex="0"
+                               tabindex="0"                              
                                class="hidden">
                         <label>@role</label>
                     </div>

@@ -137,7 +137,7 @@ $(document).ready(function () {
         }
 
         $('.additional-modal').modal({
-            onHidden: function () {
+            onApprove: function () {
                 //reupdate list user
                 updateListUser();
             }

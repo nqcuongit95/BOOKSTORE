@@ -217,7 +217,7 @@ namespace BookStore.Controllers
         public async Task<IActionResult> ViewRole(int id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
-
+            
             return PartialView("_ViewRole", role);
         }
 
@@ -316,20 +316,29 @@ namespace BookStore.Controllers
         public async Task<IActionResult> ViewUser(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            return PartialView("_ViewUser", user);
+
+            var listRole = await _userManager.GetRolesAsync(user);
+
+            var model = new StaffViewModel
+            {
+                ID = user.Id,
+                FullName = user.FullName,
+                DateCreate = user.DateCreate.GetValueOrDefault(),
+                Phone = user.PhoneNumber,
+                UserName = user.UserName,
+                Role = listRole.FirstOrDefault()
+            };
+            return PartialView("_ViewUser", model);
         }
         [HttpGet]
         public async Task<IActionResult> EditUser(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             var roles = await _bookStoreData.GetListRoles();
-            string userRole = "";
+            
             var listRole = roles.Select(r => r.Name).ToList();
-            if (user.Roles.Count > 0)
-            {
-                var role = await _roleManager.FindByIdAsync(user.Roles.First().RoleId.ToString());
-                userRole = role.Name;
-            }
+            var listUserRole = await _userManager.GetRolesAsync(user);
+            var userRole = listUserRole.FirstOrDefault();
 
             var model = new EditUserViewModel
             {
@@ -381,12 +390,13 @@ namespace BookStore.Controllers
 
                 //update role if it has changed
                 string oldRole = "";
+                var listUserRoles = await _userManager.GetRolesAsync(user);
                 if (model.AssignedRole != null)
                 {
-                    if (user.Roles.Count > 0)
+                    if (listUserRoles.Count > 0)
                     {
-                        var role = await _roleManager.FindByIdAsync(user.Roles.First().RoleId.ToString());
-                        oldRole = role.Name;
+                        oldRole = listUserRoles.First();
+                        
                         if (model.AssignedRole != oldRole)
                         {
                             var removeResult = await _userManager.RemoveFromRoleAsync(user, oldRole);

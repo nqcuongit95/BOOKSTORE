@@ -44,7 +44,7 @@
 
 
     $('.additional-modal').modal({
-        onHidden: function () {
+        onDeny: function () {
             //reupdate list user
             updateListUser();
         }

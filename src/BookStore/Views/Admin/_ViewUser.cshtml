@@ -1,4 +1,4 @@
-﻿@model Staff
+﻿@model StaffViewModel
 
 <div class="header">
     Chi Tiết
@@ -7,11 +7,12 @@
     <div class="ui centered grid">
         <div class="row">
             <div class="five wide column">
-                <p>Mã số: @Model.Id</p>
+                <p>Mã số: @Model.ID</p>
                 <p>Họ Tên: @Model.FullName</p>
                 <p>Ngày làm việc: @Model.DateCreate</p>
-                <p>Số điện thoại: @Model.PhoneNumber</p>
+                <p>Số điện thoại: @Model.Phone</p>
                 <p>Tài Khoản: @Model.UserName</p>
+                <p>Quyền: @Model.Role</p>
             </div>
         </div>        
     </div>
