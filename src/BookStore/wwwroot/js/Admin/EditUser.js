@@ -155,26 +155,36 @@ $(document).ready(function () {
 
     //update list user table
     function updateListUser() {
-        var userTable = $('#user-segment');
 
+        activeLoader();
+        var userTable = $('#user-segment');
+        
         $.ajax({
             type: "post",
             url: urlListStaff,
             data: '',
-            success: function (result, status, xhr) {
-
-                //some loading indicating            
+            success: function (result, status, xhr) {                         
 
                 if (status === 'success') {
 
                     userTable.html(result);
+                    inactiveLoader();
                 }
             },
             error: function (xhr, status, error) {
-                //inactive dimmer
-
+                //inactive loading
+                inactiveLoader();
             }
         });
+    }
+
+    //loader
+    function activeLoader() {
+        $('#table-loader').addClass('active');
+    }
+
+    function inactiveLoader() {
+        $('#table-loader').removeClass('active');
     }
 
 });

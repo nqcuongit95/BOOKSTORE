@@ -3,10 +3,11 @@
     $('.ui.compact.menu .icon').popup()
 
     var userTable = $('#user-segment');
+    inactiveTableLoader();
 
     $('.ui.pagination a').on('click', function (event) {
         event.preventDefault();
-       
+        activeTableLoader();
         var url = $(this).attr('href');
 
         $.ajax({
@@ -17,12 +18,12 @@
                 
                 if (status === 'success') {                    
                     userTable.html(result);
-                    //inactiveDimmer();
+                    inactiveTableLoader();
                 }
             },
             error: function (xhr, status, error) {
-                //inactive dimmer
-                //inactiveDimmer();
+                
+                inactiveTableLoader();
             }
         });
 
@@ -47,7 +48,7 @@
         activeLoader(elem, name);
         var url = deleteUrl + "/" + _roleId;
 
-        crud(url, ".delete-role-modal", elem, name);
+        crud(url, ".additional-modal", elem, name);
 
     });
 
@@ -106,5 +107,13 @@
         });
     }
 
+    //loader
+    function activeTableLoader() {
+        $('#table-loader').addClass('active');
+    }
+
+    function inactiveTableLoader() {
+        $('#table-loader').removeClass('active');
+    }
     
 });

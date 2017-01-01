@@ -5,7 +5,7 @@
 
 }
 
-@Html.Partial("_AdminMenu","Index");
+@Html.Partial("_AdminMenu","Index")
 
 <div class="row">
     <div class="eleven wide column">
@@ -15,8 +15,8 @@
 </div>
 <div class="row">
     <div class="eleven wide column">
-        <div class="ui  inverted dimmer">
-            <div class="ui text loader">Loading</div>
+        <div class="ui inverted active dimmer" id="first-load-loader">
+            <div class="ui loader"></div>
         </div>
         <div id="user-segment">
 
@@ -31,6 +31,10 @@
 
 <script>
     var urlListStaff = '@Url.Action("ListUser", "Admin")';
+    var viewUrl = '@Url.Action("ViewUser","Admin")';
+    var deleteUrl = '@Url.Action("DeleteUser", "Admin")';
+    var editUrl = '@Url.Action("EditUser", "Admin")';
+    var confirmDeleteUrl = '@Url.Action("ConfirmDeleteUser", "Admin")';
 </script>
 
 <script src="~/js/Admin/Admin.js"></script>

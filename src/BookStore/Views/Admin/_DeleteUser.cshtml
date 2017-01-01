@@ -1,0 +1,18 @@
+﻿@model Staff 
+
+<div class="header">
+    Xóa Nhân Viên
+</div>
+<div class="content">
+    <p>Bạn có chắc muốn xóa nhân viên <b>@Model.FullName</b> không ?</p>
+</div>
+<div class="actions">
+    <div class="ui negative right labeled icon button" id="delete-user">
+        Xóa
+        <i class="checkmark icon"></i>
+    </div>
+    <div class="ui positive button">Hủy</div>
+</div>
+<input type="hidden" value="@Model.Id" id="staffId"/>
+
+<script src="~/js/Admin/DeleteUser.js"></script>

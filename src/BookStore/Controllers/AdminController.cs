@@ -450,15 +450,82 @@ namespace BookStore.Controllers
             return PartialView("_Notify", noti);
 
         }
+        [HttpGet]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             return PartialView("_DeleteUser", user);
         }
-        public async Task<IActionResult> ConfirmedDeleteUser(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDeleteUser(int id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            return PartialView("_Notify", user);
+            try
+            {
+
+                Notification noti;
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                var fullName = user.FullName;
+                if (user.UserName == "admin")
+                {
+                    noti = new Notification
+                    {
+                        Title = "Thất bại",
+                        Content = "Không được xóa account này !",
+                        Icon = "remove",
+                        MessageType = "negative",
+                        Button = "Quay lại"
+                    };
+                    return PartialView("_Notify", noti);
+                }
+                else
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
+
+                    if (userRoles.Count > 0)
+                    {
+                        await _userManager.RemoveFromRolesAsync(user, userRoles);
+                    }
+
+                    var result = await _userManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        _bookStoreData.Commit();
+                        noti = new Notification
+                        {
+                            Title = "Thành công",
+                            Content = "Đã xóa nhân viên " + fullName + " !",
+                            Icon = "checkmark",
+                            MessageType = "positive",
+                            Button = "Hoàn tất"
+                        };
+                        return PartialView("_Notify", noti);
+                    }
+                }
+
+                noti = new Notification
+                {
+                    Title = "Thất bại",
+                    Content = "Không được xóa account này !",
+                    Icon = "remove",
+                    MessageType = "negative",
+                    Button = "Quay lại"
+                };
+                return PartialView("_Notify", noti);
+            }
+            catch (Exception e)
+            {
+
+                var noti = new Notification
+                {
+                    Title = "Thất bại",
+                    Content = "Không được xóa nhân viên này !",
+                    Icon = "remove",
+                    MessageType = "negative",
+                    Button = "Quay lại"
+                };
+                return PartialView("_Notify", noti);
+            }
         }
 
     }

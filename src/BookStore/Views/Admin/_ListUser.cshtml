@@ -1,6 +1,9 @@
 ﻿@model PaginatedList<Staff>
 
 <table class="ui very basic fixed table">
+    <div class="ui inverted active dimmer" id="table-loader">
+        <div class="ui loader"></div>
+    </div>
     <thead>
         <tr>
             <th>Tên Nhân Viên</th>
@@ -41,15 +44,5 @@
 
     </tbody>
 </table>
-
-
-<script>
-    
-    var viewUrl = '@Url.Action("ViewUser","Admin")';
-    var deleteUrl = '@Url.Action("DeleteRole","Admin")';
-    var editUrl = '@Url.Action("EditUser", "Admin")';
-    var confirmDeleteUrl = '@Url.Action("ConfirmDeleteRole","Admin")';
-
-</script>
 
 @Html.Partial("_Paginated", Model)
