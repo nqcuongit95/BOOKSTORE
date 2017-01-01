@@ -64,7 +64,8 @@
                     @Html.DisplayFor(modelItem => item.LoaiHangHoa.TenLoaiHangHoa)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TonKho)
+                    @String.Format(CultureInfo.InvariantCulture,
+                                 "{0:0,0}", item.TonKho)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DaBan)

@@ -51,43 +51,43 @@
             <tr>
                 <th class="one wide">@sharedLocalizer["STT"]</th>
                 <th class="one wide">@Html.DisplayNameFor(p => hangHoa.Id)</th>
-                <th class="four wide">@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
+                <th class="two wide">@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
                 <th class="four wide">@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
                 <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
                 <th class="three wide">@sharedLocalizer["CurrentPrice"]</th>
-                <th class="four wide">@sharedLocalizer["ValueInventory"]</th>
+                <th class="six wide">@sharedLocalizer["ValueInventory"]</th>
             </tr>
         </thead>
         <tbody>
             @for (int i = 0; i < Model.HangHoa.Count; i++)
             {
-                <tr>
-                    <td>
-                        @(i + 1)
-                    </td>
-                    <td>
-                        @("HH" + Model.HangHoa[i].Id)
-                    </td>
-                    <td>
-                        @Model.HangHoa[i].LoaiHangHoa.TenLoaiHangHoa
-                    </td>
-                    <td>
-                        @Model.HangHoa[i].TenHangHoa
-                    </td>
-                    <td>
-                        @Model.HangHoa[i].TonKho
-                    </td>
-                    <td>
-                        <span class="money">
-                            @Model.HangHoa[i].GiaNhap.ToString().Replace(",", ".")
-                        </span>
-                    </td>
-                    <td>
-                        <span class="money">
-                            @(Model.HangHoa[i].TonKho * Model.HangHoa[i].GiaNhap)
-                        </span>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @(i + 1)
+                </td>
+                <td>
+                    @("HH" + Model.HangHoa[i].Id)
+                </td>
+                <td>
+                    @Model.HangHoa[i].LoaiHangHoa.TenLoaiHangHoa
+                </td>
+                <td>
+                    @Model.HangHoa[i].TenHangHoa
+                </td>
+                <td>
+                    @Model.HangHoa[i].TonKho
+                </td>
+                <td>
+                    <span class="money">
+                        @Model.HangHoa[i].GiaNhap.ToString().Replace(",", ".")
+                    </span>
+                </td>
+                <td>
+                    <span class="money">
+                        @(Model.HangHoa[i].TonKho * Model.HangHoa[i].GiaNhap)
+                    </span>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
