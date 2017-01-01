@@ -172,6 +172,8 @@ namespace BookStore.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.ChietKhau).HasColumnType("money");
+
                 entity.Property(e => e.KhachHangId).HasColumnName("KhachHangID");
 
                 entity.Property(e => e.NgayLap).HasColumnType("datetime");

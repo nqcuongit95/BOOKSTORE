@@ -256,7 +256,8 @@ namespace BookStore.Services
                     NhanVienId = userId,
                     NgayLap = DateTime.Now,
                     TongTien = invoice.TotalValue,
-                    TrangThaiId = statusId
+                    TrangThaiId = statusId,
+                    ChietKhau = invoice.Discount.GetValueOrDefault()
                 };
 
                 await _context.DonHang.AddAsync(invoice_);

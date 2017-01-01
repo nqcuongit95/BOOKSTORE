@@ -4,10 +4,9 @@
     ViewData["Title"] = "Bán Hàng";
 }
 
-<form asp-action="invoice" 
+<form asp-action="invoice"
       style="display:none;"
-      id="token">
-</form>
+      id="token"></form>
 <div class="row">
 
     <div class="twelve wide column">
@@ -36,7 +35,7 @@
                         </div>
                     </div>
                     <div class="ui bottom attached segment"
-                         style="height:160px;overflow-y:scroll;">
+                         style="height:160px;overflow-y:auto;">
                         <div class="ui inverted active dimmer">
                             <div class="ui loader"></div>
                         </div>
@@ -56,10 +55,10 @@
                     <div class="ui top attached tabular menu">
                         <div class="active item" data-tab="invoice1">
                             <div class="ui grey right corner mini label close-tab"
-                               style="padding:0 ;margin: 0;">
+                                 style="padding:0 ;margin: 0;">
                                 <i class="remove link icon"></i>
                             </div>
-                            Đơn hàng 1                            
+                            Đơn hàng 1
                         </div>
                         <div class="item" id="newInvoice">
                             <div class="ui basic icon button">
@@ -69,7 +68,7 @@
                     </div>
                     <div class="ui bottom attached active tab segment"
                          data-tab="invoice1"
-                         style="height:330px;margin: 0; overflow-y: scroll;">
+                         style="height:330px;margin: 0; overflow-y: auto;">
                         <table class="ui very basic table">
                             <thead>
                                 <tr>
@@ -106,7 +105,9 @@
                             </div>
                             <div class="results" id="customer-results"></div>
                         </div>
-                        <table class="ui very basic fixed single line table" id="customer-table">
+                        <table class="ui very basic fixed single line table"
+                               id="customer-table"
+                               style="margin-top: 3px;">
                             <tbody>
                                 <tr>
                                     <td class="six wide">Điện thoại</td>
@@ -150,22 +151,38 @@
                 <!-- Thanh toan -->
                 <div class="row" style="padding-top: 0;">
                     <div class="column">
-                        <div class="ui dividing header">Thanh toán</div>
-                        <table class="ui very basic table" id="payment-table">
+                        <div class="ui dividing header" style="margin-bottom: 0px;">
+                            Thanh toán
+                        </div>
+                        <table class="ui very basic table"
+                               id="payment-table"
+                               style="margin-top: 7px;">
                             <tbody>
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
-                                    <td class="ten wide right aligned total-value">                                         
-                                    </td>
+                                    <td class="ten wide right aligned total-value"></td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Chiết khấu</td>
-                                    <td class="ten wide right aligned discount-value"></td>
+                                    <td class="ten wide right aligned discount-value">
+                                        <div class="ui action input" id="discount-input">
+                                            <input type="text">
+                                            <div class="ui red dropdown button"
+                                                 id="discount-type">
+                                                <div class="text">đ</div>
+                                                <div class="menu">
+                                                    <div class="item active selected"
+                                                         data-value="1">đ</div>
+                                                    <div class="item"
+                                                         data-value="2">%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Khách phải trả</td>
-                                    <td class="ten wide right aligned paid-value">
-                                    </td>
+                                    <td class="ten wide right aligned paid-value"></td>
                                 </tr>
                                 <tr>
                                     <td class="seven wide">Tiền khách đưa</td>
@@ -175,7 +192,7 @@
                                              id="paid-money">
                                             <input type="text"
                                                    name="CustomerPaid"
-                                                   style="text-align:right;" />                                            
+                                                   style="text-align:right;" />
                                         </div>
                                     </td>
                                 </tr>
@@ -187,7 +204,10 @@
                             <tfoot class="full-width">
                                 <tr>
                                     <th colspan="2" class="right aligned">
-                                        <div class="ui positive button" id="pay">Thanh toán</div>
+                                        <div class="ui positive fluid button" id="pay">
+                                            <i class="in cart icon"></i>
+                                            Thanh toán
+                                        </div>
                                     </th>
                                 </tr>
                             </tfoot>
@@ -233,12 +253,12 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui blue cancel button">            
-            Hủy
-        </div>
-        <div class="ui green ok inverted button">
+        <div class="ui green ok button">
             <i class="checkmark icon"></i>
             Đồng ý
+        </div>
+        <div class="ui blue cancel button">
+            Hủy
         </div>
     </div>
 </div>

@@ -34,6 +34,8 @@
             this.totalToPay = 0;
             this.customerPaid = 0;
             this.invoiceDataTab = '';
+            this.discount = 0;
+            this.discountType = 1;
         }
     }
 
@@ -52,8 +54,27 @@
             totalValue: $('#payment-table tr').eq(0).find('td').eq(1),
             customerToPay: $('#payment-table tr').eq(2).find('td').eq(1),
             customerPaid: $('input[name=CustomerPaid]'),
+            discountInput: $('#discount-input input'),
+            discountType: $('#discount-type')
         },
     }
+
+    //**********************************format input**********************************
+    //customer paid input
+
+    var customerPaidInput = new Cleave('input[name=CustomerPaid]', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralPositiveOnly: true
+    });
+
+    //discount input
+    var discountCleaveInput = new Cleave('#discount-input input', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralPositiveOnly: true
+    });
+
 
     //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
@@ -71,9 +92,11 @@
     invoiceObject.push(firstPayment);
     loadDataTab(firstPayment);
 
-    var totalMoneyToPay = 0;
+    var totalMoneyBeforeDiscount = 0;
     var currentInvoiceCount = 1;
+    var totalTabRightNow = 1;
     var priceType = 1;
+    var discountType = 1;
     var invoiceTableBody = saleControl.invoiceTable;
 
     var numberInput = '<div class="ui tiny input count-input" style="max-width: 80px">'
@@ -335,18 +358,32 @@
             total += rawValue;
         })
 
-        totalMoneyToPay = total;
+        totalMoneyBeforeDiscount = total;
+        var totalMoneyAfterDiscount = 0;
+        var discountValue = 0;
+        //calculating for discount
+        if (discountType == 1) {
+            var discountValue = discountCleaveInput.getRawValue();            
+            totalMoneyAfterDiscount = totalMoneyBeforeDiscount - discountValue;
+        }
+        else if (discountType == 2) {
+            var discountPercent = discountCleaveInput.getRawValue();
+            var discountValue = discountPercent * totalMoneyBeforeDiscount / 100;
+            console.log("percent:" + discountValue);
+            totalMoneyAfterDiscount = totalMoneyBeforeDiscount - discountValue;
+        }
 
         //also update current invoice tab
         var index = getCurrentPaymentObjectIndex(visibleDataTab);
-        invoiceObject[index].totalValue = totalMoneyToPay;
-        invoiceObject[index].totalToPay = totalMoneyToPay;
+        invoiceObject[index].totalValue = totalMoneyBeforeDiscount;
+        invoiceObject[index].totalToPay = totalMoneyAfterDiscount;
 
-        var formatedTotal = numeral(total).format('0,0 $');
+        var formatedTotal = numeral(totalMoneyBeforeDiscount).format('0,0 $');
+        var formatedFinalValue = numeral(totalMoneyAfterDiscount).format('0,0 $');
 
         saleControl.paymentSegment.totalValue.text(formatedTotal);
         //$('#payment-table tr:eq(0) td:eq(1)').text(formatedTotal).attr('value', total);
-        saleControl.paymentSegment.customerToPay.text(formatedTotal);
+        saleControl.paymentSegment.customerToPay.text(formatedFinalValue);
         //$('#payment-table tr:eq(1) td:eq(1)').text(formatedTotal);
 
     }
@@ -358,12 +395,14 @@
         var customerChangeTd = customerPayTd.closest('tr').next('tr').find('td:eq(1)');
 
         var customerPayValue = customerPayTd.val();
-        console.log(customerPayValue)
+        console.log("pay: " + customerPayValue)
         var customerPayRawValue = numeral(customerPayValue).value();
 
+        var totalMoneyToPay = numeral(saleControl.paymentSegment.customerToPay.text()).value();
+        console.log("final value: " + totalMoneyToPay)
         var customerChange = customerPayRawValue - totalMoneyToPay;
-        console.log(customerChange)
-        //var customerChange = customerPay - totalMoneyToPay;
+        console.log("customer change: " + customerChange)
+        //var customerChange = customerPay - totalMoneyBeforeDiscount;
         var formatedCustomerChange = numeral(customerChange).format('0,0 $');
         if (customerChange > 0) {
             customerChangeTd.text(formatedCustomerChange)
@@ -378,6 +417,7 @@
     //load data tab
     function loadDataTab(payment) {
         console.log(payment);
+        
         //load customer              
         var table = $("#customer-table");
         var phone = table.find("tr:eq(0)").find("td:eq(1)");
@@ -392,10 +432,10 @@
         //load payment       
 
         var formatedTotalValue = numeral(payment.totalValue).format('0,0 $');
+        var formatedCustomerToPay = numeral(payment.totalToPay).format('0,0 $');
 
-        saleControl.paymentSegment.totalValue.text(formatedTotalValue);
-        saleControl.paymentSegment.customerToPay.text(formatedTotalValue);
-        saleControl.paymentSegment.customerPaid.val(payment.customerPaid);
+        saleControl.paymentSegment.totalValue.text(formatedTotalValue);                        
+        customerPaidInput.setRawValue(payment.customerPaid);
 
         //$('#payment-table tr:eq(0) td:eq(1)').text(formatedTotalValue)
         //.attr('value', payment.totalValue);
@@ -405,8 +445,14 @@
         //price type               
         $('#price-type').dropdown('set selected', payment.priceType);
 
-        //also load customer change
-        recalculateCustomerChange()
+        //discount type
+        saleControl.paymentSegment.discountType.dropdown('set selected', payment.discountType);
+                
+        discountCleaveInput.setRawValue(payment.discount);
+        saleControl.paymentSegment.customerToPay.text(formatedCustomerToPay);
+
+        //also load customer change        
+        recalculateCustomerChange();
 
     }
 
@@ -443,7 +489,7 @@
     }
 
     //*************************** ui controls *************************************
-    $(".ui.selection.dropdown").dropdown();
+    $(".ui.dropdown").dropdown();
 
     $(".ui.input").on("click", 'input', function () {
         $(this).select();
@@ -698,6 +744,7 @@
         invoiceObject[index].customerPaid = customerPaidRawValue;
 
         //alert(customerPay)
+        var totalMoneyToPay = numeral(saleControl.paymentSegment.customerToPay.text()).value();
         var customerChange = customerPaidRawValue - totalMoneyToPay;
         var customerChangeFormated = numeral(customerChange).format('0,0 $');
 
@@ -745,11 +792,20 @@
 
         var customerId = $('input[name=CustomerId]').val();
         var staff = $('input[name=StaffId]').val();
+        //var totalValue = $('#payment-table tr:eq(0) td:eq(1)').text();
         var totalValue = $('#payment-table tr:eq(0) td:eq(1)').text();
         var customerPaid = $('input[name=CustomerPaid]').val();
 
         var rawTotalValue = numeral(totalValue).value();
         var rawCustomerPaid = numeral(customerPaid).value();
+        var discount = 0;
+        if (discountType == 1) {
+            discount = discountCleaveInput.getRawValue();
+        }
+        else if (discountType == 2) {
+            var percent = discountCleaveInput.getRawValue();
+            discount = percent * rawTotalValue / 100;
+        }
 
         if (rawTotalValue <= 0) {
 
@@ -763,6 +819,7 @@
             Staff: staff,
             TotalValue: rawTotalValue,
             CustomerPaid: rawCustomerPaid,
+            Discount: discount,
             productDetails: [],
             __RequestVerificationToken: token
         }
@@ -834,7 +891,7 @@
 
     //bind click event to close tab
     $('.top.tabular.menu').on('click', '.label.close-tab .icon', function (event) {
-        event.preventDefault();
+        event.preventDefault();        
 
         var elem = $(this);
         var thisTab = elem.closest('.item');
@@ -846,7 +903,15 @@
             onApprove: function (element) {
                 
                 closeCurrentTab(thisTab);
-                
+                //change state of add tab button
+                totalTabRightNow -= 1;
+                if ($('#newInvoice .button').hasClass('disabled')) {
+
+                    if (totalTabRightNow < 7) {
+
+                        $('#newInvoice .button').removeClass('disabled');
+                    }
+                }
             }
         }).modal('show')        
     })
@@ -867,7 +932,7 @@
         else {
 
             //create new one
-            $('#newInvoice').trigger('click');
+            $('#newInvoice .button').trigger('click');
             //then close the previous
             closeDataTab(tab);
             return;
@@ -901,7 +966,7 @@
     }
 
     //bind event to add new tab
-    $('#newInvoice').on('click', function () {
+    $('#newInvoice .button').on('click', function () {
 
         var dataTab = "invoice";
         var dataText = "Đơn hàng ";
@@ -934,9 +999,9 @@
 
         //reupdate global variable
         invoiceTableBody = $('.active.tab.segment tbody');
-        updatePayment();
         loadDataTab(payment);
-
+        updatePayment();
+        
         updateTabCloseIcon();
 
         //todo: update ui when switching tab
@@ -946,19 +1011,27 @@
                 //reupdate global variable, payment
                 visibleDataTab = tabpath;
                 invoiceTableBody = $('.active.tab.segment tbody');
-                updateTabCloseIcon()
-                updatePayment();
+                updateTabCloseIcon()                
 
                 //load data               
                 var paymentArr = $.grep(invoiceObject, function (e) {
                     return e.invoiceDataTab == tabpath;
                 });
 
-                loadDataTab(paymentArr[0])
+                loadDataTab(paymentArr[0]);                
+                updatePayment();
             }
         });
 
-    })
+        //only have seven tab at the same time
+        totalTabRightNow += 1;
+        console.log(totalTabRightNow);
+        if (totalTabRightNow >= 7) {
+            
+            $(this).addClass('disabled');
+        }
+
+    });
 
     function updateTabCloseIcon() {
 
@@ -1002,15 +1075,55 @@
     }
     function inactiveProductResultsDimmer() {
         $('.ui.inverted.dimmer').removeClass('active');
-    }
+    }    
+        
+    //handling discount input entering
+    $('#discount-input').on(inputEvents, 'input', function () {
+        
+        var value = discountCleaveInput.getRawValue();
 
-    //**********************************format input**********************************
-    //customer paid input
+        if (value.length <= 0) {
+            $(this).val(0);
+        }
 
-    var customerPaidInput = new Cleave('input[name=CustomerPaid]', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralPositiveOnly: true
+        if (discountType == 1) {
+            if (value > totalMoneyBeforeDiscount) {
+                discountCleaveInput.setRawValue(totalMoneyBeforeDiscount);
+            }
+        }
+        else if (discountType == 2) {
+            if (value > 100) {
+                discountCleaveInput.setRawValue(100);
+            }
+        }
+
+        var index = getCurrentPaymentObjectIndex(visibleDataTab);
+        invoiceObject[index].discount = discountCleaveInput.getRawValue();        
+
+        updatePayment();
+        recalculateCustomerChange();        
+
     });
 
+    //hanling discount type when it has changed
+    $('#discount-type').dropdown({
+        onChange: function (value, text, choice) {
+
+            var index = getCurrentPaymentObjectIndex(visibleDataTab);
+            invoiceObject[index].discountType = value;
+            discountType = invoiceObject[index].discountType;
+
+            if (value == 2) {
+                if (discountCleaveInput.getRawValue() > 100) {
+                    discountCleaveInput.setRawValue(0);
+
+                    var index = getCurrentPaymentObjectIndex(visibleDataTab);
+                    invoiceObject[index].discount = discountCleaveInput.getRawValue();
+
+                }
+            }
+            updatePayment();
+            recalculateCustomerChange();
+        }
+    });
 });
