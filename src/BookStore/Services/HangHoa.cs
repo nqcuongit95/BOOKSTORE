@@ -10,7 +10,8 @@ namespace BookStore.Services
     public partial class BookStoreData
     {
         #region HangHoa
-        public IQueryable<HangHoa> GetHangHoa(string search, bool use)
+
+        public IQueryable<HangHoa> GetHangHoa(string search, string state)
         {
             string sortOrder = null;
 
@@ -23,8 +24,16 @@ namespace BookStore.Services
             if (!String.IsNullOrEmpty(search))
                 result = result.Where(i => i.TenHangHoa.Contains(search));
 
-            if (use)
-                result = result.Where(i => i.TrangThai.VietTat == "Use");
+            switch (state)
+            {
+                case "Use":
+                    result = result.Where(i => i.TrangThai.VietTat == "Use");
+                    break;
+
+                case "NotUse":
+                    result = result.Where(i => i.TrangThai.VietTat == "NotUse");
+                    break;
+            }
 
             switch (sortOrder)
             {
@@ -98,6 +107,7 @@ namespace BookStore.Services
 
             return await _context.SaveChangesAsync();
         }
-        #endregion
+
+        #endregion HangHoa
     }
 }
