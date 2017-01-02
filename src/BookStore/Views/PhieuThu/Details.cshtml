@@ -1,7 +1,7 @@
 ﻿
 @model PhieuThuViewModel
 @{
-    ViewData["Title"] = "Thêm Phiếu Thu";
+    ViewData["Title"] = "Chi Tiết Phiếu Thu";
 }
 
 @section menu{
@@ -49,47 +49,61 @@
         </div>
     </div>
 }
-
-<div class="ui ten wide column">
-    <form class="ui form" asp-controller="PhieuThu" asp-action="Create">
-
-        <div class="field">
-            <label>Đối Tượng</label>
-            <div class="ui disabled input">
-                <input type="text"
+<div class="ui centered grid equal width" style="width:100%;">
+    <div class="sixteen wide column">
+        <h3 class="ui dividing teal header"></h3>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h3 class="ui dividing header">
+                Mã phiếu
+                <div class="sub header">@Model.ID</div>
+            </h3>
+        </div>
+        <div class="column">
+            <h3 class="ui dividing header">
+                Đối tượng
+                <div class="sub header">@Model.DoiTuong</div>
+                <input type="hidden"
                        id="doituong"
                        value="@Model.DoiTuong">
-            </div>
+            </h3>
         </div>
-        <div class="field" id="tenkhachhang">
-            <label>Khách Hàng</label>
-            <div class="ui disabled input">
-                <input type="text"
-                       value="@Model.TenKhachHang">
-            </div>
+    </div>
+    <div class="row">
+        <div class="column" id="tenkhachhang">
+            <h3 class="ui dividing header">
+                Tên khách hàng
+                <div class="sub header">@Model.TenKhachHang</div>
+            </h3>
         </div>
-        <div class="field" id="tenncc">
-            <label>Nhà Cung Cấp</label>
-            <div class="ui disabled input">
-                <input type="text"
-                       value="@Model.TenNhaCungCap">
-            </div>
+        <div class="column" id="tenncc">
+            <h3 class="ui dividing header">
+                Nhà cung cấp
+                <div class="sub header">@Model.TenNhaCungCap</div>
+            </h3>
         </div>
-        <div class="field">
-            <label>Loại phiếu</label>
-            <div class="ui disabled input">
-                <input type="text"
-                       value="@Model.TenLoaiPhieu">
-            </div>
+        <div class="column">
+            <h3 class="ui dividing header">
+                Loại phiếu
+                <div class="sub header">@Model.TenLoaiPhieu</div>
+            </h3>
         </div>
-        <div class="field">
-            <label>Số tiền thu</label>
-            <div class="ui disabled input">
-                <input type="text"
-                       value="@Model.TongTien">
-            </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h3 class="ui dividing header">
+                Ngày lập
+                <div class="sub header">@Model.NgayLap</div>
+            </h3>
         </div>
-    </form>
+        <div class="column">
+            <h3 class="ui dividing header">
+                Tổng tiền
+                <div class="sub header">@(((int)Model.TongTien).ToString("N0") + " ₫")</div>
+            </h3>
+        </div>
+    </div>
 </div>
 
 <script src="~/js/PhieuThu/PhieuThuDetails.js"></script>

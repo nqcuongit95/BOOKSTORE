@@ -157,6 +157,7 @@ namespace BookStore.Services
         Task<bool> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);        
         IQueryable<DonHang> GetAllDonHang();
+        IQueryable<DonHang> GetDonHangWithOutPtra();
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
         IQueryable<PhieuChiViewModel> GetAllPhieuChi();
         IQueryable<TraHangViewModel> GetAllPhieuTraHang();
@@ -183,6 +184,7 @@ namespace BookStore.Services
         void TaoCTPhieuTraHang(ChiTietPhieuTraHang pth);
         void UpdateDonHang(int? id);
         void CapnhatDonhang(int? id, decimal tienthu);
+        int? findPhieuTraByDonHang(int donhangID);
         int findDonHangByCustomer(int? customerID);
         int findPhieuTraByCustomer(int? customerID);
         int findPhieuNhapByCustomer(int? customerID);

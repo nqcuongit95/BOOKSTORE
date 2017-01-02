@@ -1,18 +1,26 @@
 ﻿$(document).ready(function () {
 
-    //stuff
 
+    var phieutraid = $('#phieutraID').val();
+    //alert(phieutraid)
+    //stuff
+    if (phieutraid != '') {
+        $('#hoantra').hide();
+        $('#danhan').show();
+    }
+    if (phieutraid == '') {
+        //alert("222222222")
+        $('#hoantra').show();
+        $('#danhan').hide();
+    }
     update();
 
     function update() {
-
-        
         var tienThu = $("#tienthu").text();
         var tongTien = $("#tongtien").text();
-       
         var tienThuValue = numeral(tienThu).value();
-        var tongTienValue = numeral(tongTien).value();       
-
+        var tongTienValue = numeral(tongTien).value();
+        
         if (tienThuValue >= tongTienValue) {
             $("#payment-table").hide();
         }
@@ -20,16 +28,16 @@
             $("#payment-table").show();
         }
     }
-
-    
-
     $("#btnPay").on("click", function (event) {
         event.preventDefault
 
         var paid = numeral($('input[name=TienThu]').val()).value();
         var id = $('input[name=ID]').val();
         var token = $('#submitHD input').val();
-
+        if (paid <= 0) {
+            $('#error-modal').modal('show');
+            return;
+        }
         var data = {
             TienThu: paid,
             ID: id,

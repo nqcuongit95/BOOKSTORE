@@ -118,6 +118,7 @@ namespace BookStore.Controllers
         public IActionResult Details(int id)
         {
             var donhang = _bookStoreData.findDonHangById(id);
+            donhang.phieutraID = _bookStoreData.findPhieuTraByDonHang(donhang.ID);
             donhang.khachhang = _bookStoreData.findCustomerById(donhang.KhachHangId);
             donhang.details = _bookStoreData.GetCTDonHang(donhang.ID).ToList();
             donhang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(id).ToList();

@@ -9,6 +9,30 @@ $(document).ready(function () {
         $("#ncc").val("");
         $("#tien").val("");
     })
+    $('.ui.form')
+                 .form({
+                     inline: true,
+                     fields: {
+                         tenkhachhang: {
+                             identifier: 'tenkhachhang',
+                             rules: [
+                               {
+                                   type: 'empty',
+                                   prompt: 'tên khách hàng không hợp lệ.'
+                               }
+                             ]
+                         },
+                         sotienthu: {
+                             identifier: 'sotienthu',
+                             rules: [
+                               {
+                                   type: 'empty',
+                                   prompt: 'số tiền chi không hợp lệ.'
+                               }
+                             ]
+                         }
+                     }
+                 })
     $("#customer-search").search({
         apiSettings: {
             url: urlSearch
@@ -47,6 +71,30 @@ $(document).ready(function () {
             $("#providerFields").hide();
             $("#providerValue").val("");
             $("#ncc").val("");
+            $('.ui.form')
+                 .form({
+                     inline: true,
+                     fields: {
+                         tenkhachhang: {
+                             identifier: 'tenkhachhang',
+                             rules: [
+                               {
+                                   type: 'empty',
+                                   prompt: 'tên khách hàng không hợp lệ.'
+                               }
+                             ]
+                         },
+                         sotienthu: {
+                             identifier: 'sotienthu',
+                             rules: [
+                               {
+                                   type: 'empty',
+                                   prompt: 'số tiền chi không hợp lệ.'
+                               }
+                             ]
+                         }
+                     }
+                 })
         }
         if (doituong == "2") {
 
@@ -54,6 +102,30 @@ $(document).ready(function () {
             $("#providerFields").show();
             $("#customerValue").val("");
             $("#khachhang").val("");
+            $('.ui.form')
+  .form({
+      inline: true,
+      fields: {
+          tenncc: {
+              identifier: 'tenncc',
+              rules: [
+                {
+                    type: 'empty',
+                    prompt: 'tên nhà cung cấp không hợp lệ.'
+                }
+              ]
+          },
+          sotienthu: {
+              identifier: 'sotienthu',
+              rules: [
+                {
+                    type: 'empty',
+                    prompt: 'số tiền chi không hợp lệ.'
+                }
+              ]
+          }
+      }
+  })
         }
     })
 })

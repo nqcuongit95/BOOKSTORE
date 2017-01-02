@@ -37,6 +37,7 @@
 
     <div class="twelve wide column">
         <div class="ui grid">
+            <input type="hidden" id="phieutraID" value="@Model.phieutraID" />
             <!-- Thông tin khách hàng-->
             <div class="row">
                 <div class="sixteen wide column">
@@ -211,36 +212,52 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                       
-                    
+                        </div>                    
                     </div>
                 </div>
                 @* trả hàng *@
                 <div class="row">
                     <div class="column">
                         <div class="ui dividing header">Trả hàng</div>
-                        <table class="ui very basic table" id="repayment-table">
-                            <tbody>
-                                <tr>
-                                    <td class="six wide"></td>
-                                    <td class="ten wide right aligned">
-                                        <a asp-controller="TraHang" 
-                                                asp-action="Create"
-                                                asp-route-id="@Model.ID">
-                                            <button class="ui positive fluid button">Hoàn trả</button>
-                                        </a>
-                                        
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div id="hoantra">
+                            <table class="ui very basic table" id="repayment-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="six wide"></td>
+                                        <td class="ten wide right aligned">
+                                            <a asp-controller="TraHang"
+                                               asp-action="Create"
+                                               asp-route-id="@Model.ID">
+                                                <button class="ui positive fluid button">Hoàn trả</button>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="danhan">Đã nhận</div>
                     </div>
                 </div>
             </div>
     </div>
 </div>
-
+<div class="ui tiny modal" id="error-modal">
+    <div class="header">Không Thể Thanh Toán </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Số tiền phải lớn hơn 0.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">
+            Quay lại
+        </div>
+    </div>
+</div>
 <div class="ui tiny modal" id="notify-modal">
 
 </div>

@@ -226,6 +226,33 @@ namespace BookStore.Services
                      };
             return re.First();
         }
+
+        public int? findPhieuTraByDonHang(int donhangID)
+        {
+            var query = _context.PhieuTraHang.Where(m => m.DonHangId == donhangID).FirstOrDefault();
+            if (query == null)
+            {
+                return null;
+            }
+            else
+            {
+                return query.Id;
+            }
+        }
+        public IQueryable<DonHang> GetDonHangWithOutPtra()
+        {
+            //var query = (from donhang in _context.DonHang
+            //             join phieu in _context.PhieuTraHang
+            //             on donhang.Id equals phieu.DonHangId
+            //             where 
+            //             select donhang).DefaultIfEmpty();
+            var query = _context.DonHang
+                .Include(m => m.KhachHang)
+                .Include(m => m.TrangThai)
+                .Include(m => m.PhieuTraHang)
+                .Where(m => m.PhieuTraHang.Count == 0);
+            return query;
+        }
         public TraHangViewModel findPhieuTra(int phieuID)
         {
             var re = from phieutra in _context.PhieuTraHang

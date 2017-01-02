@@ -107,7 +107,7 @@
                                         <h4 class="infoHeader">Tổng tiền trả khách</h4>
                                     </div>
                                     <div class="right aligned column">
-                                        <div>@(((int)Model.TongTien).ToString("N0"))</div>
+                                        <div>@(((int)Model.TongTien).ToString("N0")+ " ₫")</div>
                                     </div>
                                     <div class="wide column">
                                         <h4 class="infoHeader">Người lập</h4>
@@ -136,9 +136,15 @@
             <!-- Thanh toan -->
             <div class="row">
                 <div class="column">
-                    <div class="ui dividing header">@Model.TenKhachHang</div>
+                    <div class="ui dividing header">@Model.ID</div>
                     <table class="ui very basic table">
                         <tbody>
+                            <tr>
+                                <td class="six wide">Khách hàng</td>
+                                <td class="ten wide right aligned">
+                                    <div id="tongtien">@Model.TenKhachHang</div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="six wide">Đơn hàng</td>
                                 <td class="ten wide right aligned">
@@ -148,13 +154,7 @@
                             <tr>
                                 <td class="six wide">Tổng tiền</td>
                                 <td class="ten wide right aligned">
-                                    <div id="tongtien">@(((int)Model.TongTien).ToString("N0"))</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="six wide">Đã thanh toán</td>
-                                <td class="ten wide right aligned">
-                                    <div id="tienthu">@(((int)Model.TongTien).ToString("N0"))</div>
+                                    <div id="tongtien">@(((int)Model.TongTien).ToString("N0")+ " ₫")</div>
                                 </td>
                             </tr>
                         </tbody>

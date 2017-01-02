@@ -125,7 +125,7 @@
                                         <h4 class="infoHeader">Tổng tiền trả khách</h4>
                                     </div>
                                     <div class="right aligned column">
-                                        <div>@(((int)Model.TienDaThu).ToString("N0"))</div>
+                                        <div id="tongtientra">@(((int)Model.TienDaThu).ToString("N0"))</div>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +194,38 @@
             </div>
     </div>
 </div>
-
+<div class="ui tiny modal" id="error-modal">
+    <div class="header">Không Tạo Được Phiếu Trả Hàng </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Số tiền phải lớn hơn 0.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">
+            Quay lại
+        </div>
+    </div>
+</div>
+<div class="ui tiny modal" id="error-2-modal">
+    <div class="header">Không Tạo Được Phiếu Trả Hàng </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Vui lòng chọn hàng trả.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">
+            Quay lại
+        </div>
+    </div>
+</div>
 <div class="ui tiny modal" id="notify-modal">
 
 </div>

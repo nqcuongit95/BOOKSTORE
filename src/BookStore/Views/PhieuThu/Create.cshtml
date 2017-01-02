@@ -66,12 +66,15 @@
                 <input class="prompt"
                        id="customerValue"
                        type="text"
+                       name="tenkhachhang"
                        placeholder="Thông tin khách hàng">
-                <input type="hidden" 
-                       name="KhachHangId" 
+                <input type="hidden"
+                       name="KhachHangId"
+                       asp-for="@Model.KhachHangId"
                        value=""
-                       id="khachhang"/>
+                       id="khachhang" />
                 <div class="results"></div>
+                <span id=""></span>
             </div>
         </div>
         <div class="field" id="providerFields">
@@ -80,6 +83,7 @@
                 <input class="prompt"
                        id="providerValue"
                        type="text"
+                       name="tenncc"
                        placeholder="Tên Nhà Cung Cấp">
                 <input type="hidden" 
                        name="NCCId" 
@@ -96,9 +100,10 @@
                     data-validate="valid-customer-type"></select>
         </div>
       
-        <div class="required field">
+        <div class="field">
             <label>Số tiền thu</label>
             <input type="text"
+                   name="sotienthu"
                    asp-for="@Model.TongTien"
                    placeholder="Số tiền thu"
                    data-validate="valid-phone"

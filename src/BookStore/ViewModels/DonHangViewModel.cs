@@ -22,6 +22,7 @@ namespace BookStore.ViewModels
         public string TienDaThuFormated { get; set; }
         public int NhanVienId { get; set; }
         public string TenNhanVien { get; set; }
+        public int? phieutraID { get; set; }
         public List<CTDonHang> details;
         public List<PhieuThu> listPhieuThu;
         public CustomerInfoViewModel khachhang;

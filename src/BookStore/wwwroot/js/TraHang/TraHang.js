@@ -6,6 +6,8 @@
         $(this).select();
     });
 
+   
+
     $('#return').on("click", function () {
 
         var url = $("#returnForm").attr("action");
@@ -13,7 +15,20 @@
         var paid = numeral($('input[name=TienThu]').val()).value();
         var id = $('input[name=donhangID]').val();
         var token = $('#returnForm input').val();
-
+        var count = 0;
+        $('#detailbdy tr').each(function () {
+            if ($(this).find('td:eq(0) input').prop('checked')) {
+                count++;
+            }
+        })
+        if (paid <= 0) {
+            $('#error-modal').modal('show');
+            return;
+        }
+        if (count == 0) {
+            $('#error-2-modal').modal('show');
+            return;
+        }
         var data = {
             TienThu: paid,
             ID: id,
@@ -67,11 +82,25 @@
     })
     $('#notify-modal').modal({
         onHidden: function () {
-            location.reload();
+            //ocation.reload();
+            //window.history.back();
+            location.href = "/TraHang/ListDonHang";
         }
     });
     
+    function updatePayment() {
+        var total = 0;
 
+        $('#detailbdy tr').each(function () {
+
+            var formatedValue = $(this).find('td:eq(5)').text();
+            var rawValue = numeral(formatedValue).value();
+
+            total += rawValue;
+        })
+        var formatedTotal = numeral(total).format('0,0 $');
+        $('#tongtientra').text(formatedTotal);
+    }
     $('tbody tr').each(function () {
 
         var thisRow = $(this);
@@ -89,11 +118,12 @@
                 var total = count * price;
                 var formatedTotal = numeral(total).format('0,0 $');
                 totalValueTd.text(formatedTotal);
-
+                updatePayment();
             }
             else {
                 totalValueTd.text(0);
                 inputCount.val(0);
+                updatePayment();
             }
         })
         inputCount.on(inputEvents, function () {
@@ -104,6 +134,7 @@
             var total = count * price;
             var formatedTotal = numeral(total).format('0,0 $');
             totalValueTd.text(formatedTotal);
+            updatePayment();
         });
 
         inputPrice.on(inputEvents, function () {
@@ -114,6 +145,7 @@
             var total = count * price;
             var formatedTotal = numeral(total).format('0,0 $');
             totalValueTd.text(formatedTotal);
+            updatePayment();
         });
 
 

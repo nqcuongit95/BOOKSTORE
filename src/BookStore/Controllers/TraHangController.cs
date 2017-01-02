@@ -109,7 +109,7 @@ namespace BookStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var donhang = _bookStoreData.GetAllDonHang();
+            var donhang = _bookStoreData.GetDonHangWithOutPtra();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -155,7 +155,7 @@ namespace BookStore.Controllers
 
             int pageSize = 9;
             int numberOfDisplayPages = 5;
-
+           
 
             if (!string.IsNullOrEmpty(searchString))
             {
