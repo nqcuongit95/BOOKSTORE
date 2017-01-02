@@ -95,13 +95,13 @@
                 <input type="hidden" default-name="HangHoaId" />
             </td>
             <td class="SoLuong">
-                <input asp-for="@chiTietPhieuNhapHang.SoLuong"
+                <input asp-for=@chiTietPhieuNhapHang.SoLuong
                        type="number"
                        default-name="SoLuong"
                        placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.GiaNhap)">
             </td>
             <td class="GiaNhap">
-                <input asp-for="@chiTietPhieuNhapHang.GiaNhap"
+                <input asp-for=@chiTietPhieuNhapHang.GiaNhap
                        type="number"
                        default-name="GiaNhap"
                        placeholder="@Html.DisplayNameFor(p => chiTietPhieuNhapHang.SoLuong)">
@@ -119,7 +119,6 @@
 <script>
     var header = $('#phieu-nhap-hang-header');
     var form = $('#PhieuNhapHang');
-    var rowHTML = $('#properties tbody').html();
 
     function PhieuNhapHangSubmit() {
         if (form.form("is valid")) {
@@ -191,19 +190,22 @@
     }
 
     function addPhieuNhapHangProperties(result) {
+        var rowHTML = $('#properties tbody').html();
         var properties = form.find('.properties');
-
+        console.log(rowHTML);
         properties.append(rowHTML);
 
         var lastRow = properties.find('tr:last-child');
 
         lastRow.find('.TenHangHoa').append(result.tenHangHoa);
         lastRow.find('.TenHangHoa').find('input').val(result.id);
-        lastRow.find('.SoLuong').find('input').val(0);
+        lastRow.find('.SoLuong').find('input').val(1);
         lastRow.find('.GiaNhap').find('input').val(parseInt(result.giaNhap));
         lastRow.find('.Amount').text(0);
 
         updatePhieuNhapHangProperties();
+
+        calculateAmount();
     }
 
     function calculateAmount() {
@@ -218,7 +220,7 @@
             totalAmount += amount;
         });
 
-        $('#totalAmount').text(totalAmount)
+        $('#totalAmount').text(totalAmount);
     }
 
     function updatePhieuNhapHangProperties() {
@@ -235,6 +237,18 @@
                     $(this).attr('id', name);
                     $(this).attr('name', name);
 
+                    $(this).keydown(function () {
+                        calculateAmount();
+                    });
+                    $(this).keypress(function () {
+                        calculateAmount();
+                    });
+                    $(this).keyup(function () {
+                        calculateAmount();
+                    });
+                    $(this).on('paste', function () {
+                        calculateAmount();
+                    });
                     $(this).change(function () {
                         calculateAmount();
                     });
@@ -255,6 +269,8 @@
                 }
             });
         });
+
+        initializeValidationCRUDForm();
     }
 
     $(document).ready(function () {

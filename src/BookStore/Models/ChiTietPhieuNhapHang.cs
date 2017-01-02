@@ -18,7 +18,7 @@ namespace BookStore.Models
         [Display(Name = "SoLuong",
             ResourceType = typeof(Resources.DataAnnotations))]
         [Required(ErrorMessage = "Bạn không được để trống trường này.")]
-        [Range(0, 1000000,
+        [Range(1, 1000000,
             ErrorMessage = "Giá trị của trường tối thiểu {1} và không vượt quá {2}.")]
         public int SoLuong { get; set; }
 
