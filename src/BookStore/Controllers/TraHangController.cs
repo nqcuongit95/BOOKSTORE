@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Services;
 using BookStore.ViewModels;
 using BookStore.Models;
+using Microsoft.AspNetCore.Identity;
+using BookStore.Entities;
 
 namespace BookStore.Controllers
 {
@@ -13,8 +15,10 @@ namespace BookStore.Controllers
     {
         // GET: /<controller>/
         private IBookStoreData _bookStoreData;
-        public TraHangController(IBookStoreData bookStoreData)
+        private UserManager<Staff> _usermanager;
+        public TraHangController(IBookStoreData bookStoreData, UserManager<Staff> userManager)
         {
+            _usermanager = userManager;
             _bookStoreData = bookStoreData;
         }
         public async Task<IActionResult> Index(string sortOrder, string searchString,
@@ -107,10 +111,10 @@ namespace BookStore.Controllers
 
             var donhang = _bookStoreData.GetAllDonHang();
 
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    donhang = donhang.Where(c => c.TenKhachHang.Contains(searchString));
-            //}
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                donhang = donhang.Where(c => c.Id.ToString().Contains(searchString));
+            }
 
             switch (sortOrder)
             {
@@ -173,7 +177,7 @@ namespace BookStore.Controllers
         public IActionResult Create(int id)
         {
             // if ()
-            var donhang = _bookStoreData.findDonHangById(1);
+            var donhang = _bookStoreData.findDonHangById(id);
             donhang.khachhang = _bookStoreData.findCustomerById(donhang.KhachHangId);
             donhang.details = _bookStoreData.GetCTDonHang(donhang.ID).ToList();
             donhang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(id).ToList();
@@ -187,6 +191,78 @@ namespace BookStore.Controllers
             }
             //var donhang = new DonHangViewModel();
             return View(donhang);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(decimal TienThu, int ID, List<ChiTietTraHang> returnDetails)
+        {
+            //try
+            {
+                var phieutra = new PhieuTraHang();
+                phieutra.DonHangId = ID;
+                phieutra.NgayLap = DateTime.Now;
+                var user = await _usermanager.FindByNameAsync(User.Identity.Name);
+                phieutra.NhanVienId = user.Id;
+                phieutra.TongTien = TienThu;
+                var kh = _bookStoreData.findCustomerByDonhang((int)phieutra.DonHangId);
+                phieutra.KhachHangId = kh.Id;
+                _bookStoreData.TaoPhieuTraHang(phieutra);
+                var phieuchi = new PhieuChi();
+                var pt = _bookStoreData.findNewPhieuTraHang();
+                phieuchi.NhanVienId = user.Id;
+                phieuchi.PhieuTraHangId = pt.Id;
+                phieuchi.TongTien = phieutra.TongTien;
+                phieuchi.LoaiPhieuId = 10;
+                phieuchi.NgayLap = DateTime.Now;
+                _bookStoreData.TaoPhieuChi(phieuchi);
+                
+                //List<ChiTietPhieuTraHang> chitietphieu = new List<ChiTietPhieuTraHang>();
+                for (int i = 0; i < returnDetails.Count; i++)
+                {
+                    var chitiet = new ChiTietPhieuTraHang();
+                    chitiet.PhieuTraHangId = pt.Id;
+                    chitiet.ChiTietDonHangId = returnDetails[i].ChiTietDonHangId;
+                    chitiet.SoLuong = returnDetails[i].Soluong;
+                    chitiet.GiaTra = returnDetails[i].GiaTra;
+                    _bookStoreData.TaoCTPhieuTraHang(chitiet);
+                }
+                var noti = new Notification
+                {
+                    Title = "Thành Công",
+                    Content = "Tạo phiếu trả hàng thành công",
+                    Icon = "checkmark",
+                    MessageType = "positive",
+                };
+                return PartialView("_Notify", noti);
+            }
+            //catch (Exception e)
+            //{
+            //    var noti = new Notification
+            //    {
+            //        Title = "Thất bại",
+            //        Content = "Có lỗi xảy ra" + e.Message,
+            //        Icon = "remove",
+            //        MessageType = "negative",
+            //    };
+            //    return PartialView("_Notify", noti);
+            //}
+        }
+
+        public IActionResult Details(int id)
+        {
+            var phieutra = _bookStoreData.findPhieuTra(id);
+            phieutra.details = _bookStoreData.GetCTTraHang(phieutra.ID).ToList();
+            for (int i = 0; i < phieutra.details.Count; i++)
+            {
+                phieutra.details[i].ThanhTien = phieutra.details[i].GiaTra * phieutra.details[i].SoLuong;
+            }
+            return View(phieutra);
+        }
+
+        public string FormatDecimalValue(decimal val)
+        {
+            return val.ToString("N0") + " đ";
         }
     }
 }

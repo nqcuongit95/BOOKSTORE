@@ -11,24 +11,17 @@
         var tongTien = $("#tongtien").text();
        
         var tienThuValue = numeral(tienThu).value();
-        var tongTienValue = numeral(tongTien).value();
-     
-
-       
+        var tongTienValue = numeral(tongTien).value();       
 
         if (tienThuValue >= tongTienValue) {
-            
-
             $("#payment-table").hide();
-            
         }
         else {
-            
             $("#payment-table").show();
         }
     }
 
-
+    
 
     $("#btnPay").on("click", function (event) {
         event.preventDefault

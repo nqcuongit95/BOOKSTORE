@@ -18,5 +18,6 @@ namespace BookStore.ViewModels
         public string TenKhachHang { get; set; }
         public SelectList ListDonHang { get; set; }
         public string GhiChu { get; set; }
+        public List<TraHangDetailViewModel> details { get; set; }
     }
 }

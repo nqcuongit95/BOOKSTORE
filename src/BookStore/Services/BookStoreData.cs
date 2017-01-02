@@ -226,7 +226,30 @@ namespace BookStore.Services
                      };
             return re.First();
         }
-
+        public TraHangViewModel findPhieuTra(int phieuID)
+        {
+            var re = from phieutra in _context.PhieuTraHang
+                     join nv in _context.Staff
+                     on phieutra.NhanVienId equals nv.Id
+                     join khachhang in _context.KhachHang
+                     on phieutra.KhachHangId equals khachhang.Id
+                     join donhang in _context.DonHang
+                     on phieutra.DonHangId equals donhang.Id
+                     where phieutra.Id == phieuID
+                     select new TraHangViewModel
+                     {
+                         ID = phieutra.Id,
+                         NgayLap = phieutra.NgayLap,
+                         KhachHangId = khachhang.Id,
+                         TenKhachHang = khachhang.TenKhachHang,
+                         DonHangId = donhang.Id,
+                         TongTien = phieutra.TongTien,
+                         NhanVienId = nv.Id,
+                         TenNhanVien = nv.FullName
+                         
+                     };
+            return re.First();
+        }
 
         public PhieuChiViewModel findPhieuChi(int phieuID)
         {
@@ -716,13 +739,27 @@ namespace BookStore.Services
             _context.PhieuThu.Add(phieuthu);
             _context.SaveChanges();
         }
-
-        public int TaoPhieuChi(PhieuChi phieuchi)
+        public void TaoPhieuTraHang(PhieuTraHang pth)
+        {
+            _context.PhieuTraHang.Add(pth);
+            _context.SaveChanges();
+        }
+        public void TaoCTPhieuTraHang(ChiTietPhieuTraHang pth)
+        {
+            _context.ChiTietPhieuTraHang.Add(pth);
+            _context.SaveChanges();
+        }
+        public PhieuTraHang findNewPhieuTraHang()
+        {
+            var query = from phieu in _context.PhieuTraHang
+                        orderby phieu.NgayLap descending
+                        select phieu;
+            return query.First();
+        }
+        public void TaoPhieuChi(PhieuChi phieuchi)
         {
             _context.PhieuChi.Add(phieuchi);
             _context.SaveChanges();
-
-            return phieuchi.Id;
         }
         public IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID)
         {
@@ -745,6 +782,25 @@ namespace BookStore.Services
                          TenHangHoa = hanghoa.TenHangHoa,
                          SoLuong = cthang.SoLuong,
                          GiaBan = cthang.GiaBan
+                     };
+            return re;
+        }
+        public IQueryable<TraHangDetailViewModel> GetCTTraHang(int phieutraID)
+        {
+            var re = from cthang in _context.ChiTietPhieuTraHang
+                     join ctdonhag in _context.ChiTietDonHang
+                     on cthang.ChiTietDonHangId equals ctdonhag.Id
+                     join hanghoa in _context.HangHoa
+                     on ctdonhag.HangHoaId equals hanghoa.Id
+                     where cthang.PhieuTraHangId == phieutraID
+                     select new TraHangDetailViewModel
+                     {
+                         ID = cthang.Id,
+                         TraHangId = cthang.PhieuTraHangId,
+                         HangHoaId = hanghoa.Id,
+                         TenHangHoa = hanghoa.TenHangHoa,
+                         SoLuong = cthang.SoLuong,
+                         GiaTra = cthang.GiaTra
                      };
             return re;
         }

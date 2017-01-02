@@ -84,28 +84,28 @@
                 {
                     <tr>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.Id">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.Id
                             </a>
                         </td>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.Id">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.KhachHang.TenKhachHang
                             </a>
                         </td>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.Id">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.TrangThai.TenTrangThai
                             </a>
                         </td>
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.Id">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.TongTien
                             </a>
                         </td>
 
                         <td class="selectable">
-                            <a asp-action="Details" asp-route-id="@customer.Id">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.NgayLap
                             </a>
                         </td>
@@ -115,7 +115,7 @@
 
         </table>
 
-        @Html.Partial("_Paginated", Model)
+        @Html.Partial("_PaginatedListreturn", Model)
 
     </div>
 </div>

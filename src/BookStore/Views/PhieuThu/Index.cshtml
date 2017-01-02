@@ -109,7 +109,7 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TongTien
+                                @(((int)customer.TongTien).ToString("N0") + " ₫")
                             </a>
                         </td>
                         <td class="selectable">

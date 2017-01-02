@@ -41,7 +41,7 @@
                 </a>
                 <a class="item"
                    asp-controller="TraHang"
-                   asp-action="Create">
+                   asp-action="ListDonHang">
                     <i class="add square icon"></i>
                     Thêm mới phiếu trả hàng
                 </a>
@@ -110,7 +110,7 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.TongTien
+                                @(((int)customer.TongTien).ToString("N0") + " ₫")
                             </a>
                         </td>
                         <td class="selectable">

@@ -161,6 +161,7 @@ namespace BookStore.Services
         IQueryable<PhieuChiViewModel> GetAllPhieuChi();
         IQueryable<TraHangViewModel> GetAllPhieuTraHang();
         IQueryable<CTDonHang> GetCTDonHang(int donhangID);
+        IQueryable<TraHangDetailViewModel> GetCTTraHang(int phieutraID);
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
@@ -177,7 +178,9 @@ namespace BookStore.Services
         Task<Staff> GetStaffByUserName(string userName);
         int TaoDonHang(DonHang donhang);
         void TaoPhieuThu(PhieuThu phieuthu);
-        int TaoPhieuChi(PhieuChi phieuchi);
+        void TaoPhieuChi(PhieuChi phieuchi);
+        void TaoPhieuTraHang(PhieuTraHang pth);
+        void TaoCTPhieuTraHang(ChiTietPhieuTraHang pth);
         void UpdateDonHang(int? id);
         void CapnhatDonhang(int? id, decimal tienthu);
         int findDonHangByCustomer(int? customerID);
@@ -188,11 +191,13 @@ namespace BookStore.Services
         PhieuThuViewModel findPhieuThu(int phieuID);
         IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID);
         PhieuChiViewModel findPhieuChi(int phieuID);
+        TraHangViewModel findPhieuTra(int phieuID);
         DonHangViewModel findDonHangById(int donhangID);
         KhachHang findCustomerByDonhang(int donhangId);
         CustomerInfoViewModel findCustomerById(int customerId);
         NhaCungCap findProviderByPhieuTra(int phieuID);
         NhaCungCap findProviderByPhieuNhap(int phieuID);
         KhachHang findCustomerByPhieuTra(int donhangId);
+        PhieuTraHang findNewPhieuTraHang();
     }
 }
