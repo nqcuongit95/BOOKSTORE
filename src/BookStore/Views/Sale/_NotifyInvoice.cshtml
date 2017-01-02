@@ -2,6 +2,7 @@
 
 <div class="header"> @Model.Title </div>
 <div class="content">
+    <input type="hidden" value="@Model.ExtraData" name="BillID"/>
     <div class="ui @Model.MessageType icon message">
         <i class="@Model.Icon icon"></i>
         <div class="content">
@@ -15,7 +16,7 @@
     @{
         if (Model.ExtraAction != null)
         {
-            <div class="ui @Model.MessageType labeled icon button">
+            <div class="ui @Model.MessageType labeled icon button" id="print-btn">
                 <i class="print icon"></i>
                 @Model.ExtraAction
             </div>
@@ -25,3 +26,9 @@
         @Model.Button
     </div>
 </div>
+
+<script>
+    var urlPrint= '@Url.Action("PrintBill", "Sale")';
+</script>
+
+<script src="~/js/Sale/PrintInvoice.js"></script>

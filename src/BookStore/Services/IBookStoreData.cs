@@ -4,6 +4,7 @@ using BookStore.Models;
 using BookStore.ViewModels;
 using BookStore.ViewModels.Customer;
 using BookStore.ViewModels.Dashboard;
+using BookStore.ViewModels.Sale;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,7 +154,7 @@ namespace BookStore.Services
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<ProductFilterResults> FindProduct(string val);
         Task<ProductPriceViewModel> GetPrice(int id, int type);
-        Task<bool> AddInvoice(InvoiceViewModel invoice,
+        Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);       
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
         Task<CustomerFilterViewModel> GetCustomerById(int id);
@@ -164,6 +165,7 @@ namespace BookStore.Services
         Task<ProductStatisticViewModel> GetProductStatistics();
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
         Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
-        Task<Staff> GetStaffByUserName(string userName);             
+        Task<Staff> GetStaffByUserName(string userName);
+        Task<BillViewModel> GetBill(int id);
     }
 }

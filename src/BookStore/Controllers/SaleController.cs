@@ -51,7 +51,7 @@ namespace BookStore.Controllers
                 Text = "Thêm mới khách hàng",
                 Url = url
             };
-            
+
             if (val == null)
             {
 
@@ -60,7 +60,7 @@ namespace BookStore.Controllers
                 {
                     Name = "Khách Vãng Lai",
                     Phone = "",
-                    Address="",                    
+                    Address = "",
                     Id = 1   //hard code id for simplicity sake                  
                 });
 
@@ -72,7 +72,7 @@ namespace BookStore.Controllers
 
             var model = await _bookStoreData.FindCustomer(val);
             model.NewCustomer = addCustomerAction;
-            
+
             return Json(model);
         }
 
@@ -81,7 +81,7 @@ namespace BookStore.Controllers
 
             if (keyword == null)
             {
-                var model = await _bookStoreData.GetBestSellingGoods(4, Helper.TimeEnum.Week,ProductType.Both);
+                var model = await _bookStoreData.GetBestSellingGoods(4, Helper.TimeEnum.Week, ProductType.Both);
 
                 var result1 = new ProductFilterResults { Results = model };
 
@@ -100,10 +100,10 @@ namespace BookStore.Controllers
             var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
             var model = new KhachHangViewModel();
             model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang", 3);
-            
+
             return PartialView("_CreateCustomer", model);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCustomer(KhachHangViewModel model)
@@ -120,14 +120,14 @@ namespace BookStore.Controllers
                     Icon = "checkmark",
                     Title = "Thành Công",
                     Content = "Thêm mới khách hàng thành công",
-                    MessageType ="positive",
+                    MessageType = "positive",
                     Button = "Hoàn tất"
-                    
+
                 };
 
                 modalAsString = await _viewRenderService.RenderToStringAsync("Sale/_Notify", notify);
-                return Json(new { modal = modalAsString, id = id });                
-                
+                return Json(new { modal = modalAsString, id = id });
+
             }
 
             notify = new Notification
@@ -140,7 +140,7 @@ namespace BookStore.Controllers
             };
 
             modalAsString = await _viewRenderService.RenderToStringAsync("Sale/_Notify", notify);
-            return Json(new { modal = modalAsString});
+            return Json(new { modal = modalAsString });
         }
 
         [HttpPost]
@@ -178,8 +178,8 @@ namespace BookStore.Controllers
             if (ModelState.IsValid)
             {
                 var status = await _bookStoreData.AddInvoice(invoice, productDetails);
-                
-                if (status)
+
+                if (status.Item1)
                 {
                     var model1 = new Notification
                     {
@@ -187,9 +187,11 @@ namespace BookStore.Controllers
                         Content = "Thêm đơn hàng thành công",
                         Button = "Hoàn tất",
                         Icon = "checkmark",
-                        MessageType = "positive"
+                        MessageType = "positive",
+                        ExtraAction = "In hóa đơn",
+                        ExtraData = status.Item2.ToString()
                     };
-                    return PartialView("_Notify", model1);
+                    return PartialView("_NotifyInvoice", model1);
                 }
             }
 
@@ -204,6 +206,31 @@ namespace BookStore.Controllers
             return PartialView("_Notify", model);
 
         }
-        
+
+        public async Task<IActionResult> PrintBill(int id, decimal pay)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var model = await _bookStoreData.GetBill(id);
+
+                model.CustomerPaid = pay;
+                var change = pay - model.TotalValueAfterDiscount;
+                model.CustomerChange = change > 0 ? change : 0;
+
+                return PartialView("_Bill", model);
+            }
+
+            var modelError = new Notification
+            {
+                Title = "Thất bại",
+                Content = "Có lỗi xảy ra, không thể in đơn hàng",
+                Button = "Quay lại",
+                Icon = "remove",
+                MessageType = "negative"
+            };
+            return PartialView("_Notify", modelError);
+        }
+
     }
 }

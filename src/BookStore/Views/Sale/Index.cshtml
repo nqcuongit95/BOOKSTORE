@@ -266,6 +266,8 @@
 <div class="ui tiny modal" id="create-modal">
 </div>
 
+<div class="ui modal" id="print-preview-modal">
+</div>
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';
@@ -277,6 +279,8 @@
     var urlCustomerCreatedInfo = '@Url.Action("LastCreatedCustomer", "Sale")';
 
     var invoiceObject = [];
+    var __valueCustomerPay = 0;
+    
 </script>
 
 <link href="~/css/sale.css" rel="stylesheet" />

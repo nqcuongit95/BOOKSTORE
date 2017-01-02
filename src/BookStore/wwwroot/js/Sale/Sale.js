@@ -234,6 +234,9 @@
 
     }
 
+    //validate current product on invoice
+
+
     function getCurrentPaymentObjectIndex(dataTab) {
 
         return invoiceObject.findIndex(function (elem) {
@@ -651,11 +654,11 @@
                 var countInput = invoice.find('tr:last td:eq(2) input')
                 var priceInput = invoice.find('tr:last td:eq(3) input')
 
-                new Cleave(countInput, {
-                    numeral: true,
-                    numeralThousandsGroupStyle: 'thousand',
-                    numeralPositiveOnly: true
-                })
+                //new Cleave(countInput, {
+                //    numeral: true,
+                //    numeralThousandsGroupStyle: 'thousand',
+                //    numeralPositiveOnly: true
+                //})
 
                 new Cleave(priceInput, {
                     numeral: true,
@@ -824,6 +827,10 @@
             __RequestVerificationToken: token
         }
 
+        //save this for later print
+        __valueCustomerPay = rawCustomerPaid;
+        
+
         invoiceTableBody.find('tr').each(function (index, elem) {
 
             var productId = $(elem).find('td:eq(0)').text();
@@ -858,19 +865,16 @@
                 if (status === 'success') {
                     thisBtn.removeClass('loading');
                     modal.html(result);
-                    modal.modal('show');
+                    modal.modal('setting', 'closable', false).modal('show');
 
                     //close this tab
                     var tab = $('.tabular.menu .item[data-tab=' + visibleDataTab + ']');
                     //tab.find('.label.close-tab .icon').trigger('click');
                     closeCurrentTab(tab);
-
+                                        
                     //update product results when success add invoice
                     updateProductResult();
-
-                    setTimeout(function () {
-                        modal.modal('hide');
-                    }, 2000);
+                    
                 }
             },
             error: function (xhr, status, error) {
@@ -903,15 +907,7 @@
             onApprove: function (element) {
                 
                 closeCurrentTab(thisTab);
-                //change state of add tab button
-                totalTabRightNow -= 1;
-                if ($('#newInvoice .button').hasClass('disabled')) {
-
-                    if (totalTabRightNow < 7) {
-
-                        $('#newInvoice .button').removeClass('disabled');
-                    }
-                }
+                
             }
         }).modal('show')        
     })
@@ -940,6 +936,16 @@
 
         closeDataTab(tab);
         selectTab(closestTab);
+
+        //change state of add tab button
+        totalTabRightNow -= 1;
+        if ($('#newInvoice .button').hasClass('disabled')) {
+
+            if (totalTabRightNow < 7) {
+
+                $('#newInvoice .button').removeClass('disabled');
+            }
+        }
 
     }
 
@@ -1007,7 +1013,7 @@
         //todo: update ui when switching tab
         $('.top.tabular.menu .item').tab({
             onVisible: function (tabpath) {
-
+                
                 //reupdate global variable, payment
                 visibleDataTab = tabpath;
                 invoiceTableBody = $('.active.tab.segment tbody');
