@@ -1,5 +1,4 @@
 ﻿/// <autosync enabled="true" />
-/// <reference path="../wwwroot/_references.js" />
 /// <reference path="../wwwroot/js/Account.js" />
 /// <reference path="../wwwroot/js/Admin/Admin.js" />
 /// <reference path="../wwwroot/js/Admin/DeleteUser.js" />

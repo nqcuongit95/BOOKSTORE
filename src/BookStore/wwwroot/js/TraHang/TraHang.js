@@ -84,7 +84,7 @@
     $('#notify-modal').modal({
         onHidden: function () {
            // window.history.back();
-            location.replace = "/TraHang";
+            location.href = "/TraHang";
         }
     });
     function updatePayment() {
@@ -97,7 +97,7 @@
         var formatedTotal = numeral(total).format('0,0 $');
         $('#tongtientra').text(formatedTotal);
     }
-    $('tbody tr').each(function () {
+    $('#detailbdy tr').each(function () {
         var thisRow = $(this);
         var inputCount = $(this).find('td:eq(3) input');
         var inputPrice = $(this).find('td:eq(4) input');
@@ -122,11 +122,16 @@
                 updatePayment();
             }
         })
+
+        var maxCountValue = maxcount.val();
+        
         inputCount.on(inputEvents, function () {
-            if ($(this).val() > maxcount.val()) {
-                $(this).val(maxcount.val());
+            console.log(maxCountValue)
+            console.log($(this).val())
+            if (numeral($(this).val()).value() > numeral(maxCountValue).value()) {
+                $(this).val(maxCountValue);
             }
-            if ($(this).val() < 1) {
+            if (numeral($(this).val()).value() < 1) {
                 $(this).val(1);
             }
             var count = $(this).val();
