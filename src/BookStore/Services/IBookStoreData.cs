@@ -256,7 +256,7 @@ namespace BookStore.Services
         Task<List<Staff>> GetListStaffs();
 
         Task<CustomerFilterResults> FindCustomer(string value);
-
+        Task<ProviderFilterResults> FindProvider(string value);
         Task<ProductFilterResults> FindProduct(string val);
 
         Task<ProductPriceViewModel> GetPrice(int id, int type);

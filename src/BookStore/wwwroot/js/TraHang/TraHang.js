@@ -155,12 +155,27 @@
         numeralThousandsGroupStyle: 'thousand',
         numeralPositiveOnly: true
     });
-    $('tbody tr').each(function (event) {
-        var inputPrice = $(this).find('td:eq(4) input');
-        new Cleave(inputPrice, {
+
+
+
+    //$('tbody tr').each(function (event) {
+    //    var inputPrice = $(this).find('td:eq(4) input');
+    //    new Cleave(inputPrice, {
+    //        numeral: true,
+    //        numeralThousandsGroupStyle: 'thousand',
+    //        numeralPositiveOnly: true
+    //    });
+    //})
+
+    $('.input-price').toArray().forEach(function (field) {
+        //var inputPrice = $(this).find('td:eq(4) input');
+        new Cleave(field, {
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',
             numeralPositiveOnly: true
         });
     })
+
+    
+
 })
