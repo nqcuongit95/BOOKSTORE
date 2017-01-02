@@ -262,8 +262,17 @@ namespace BookStore.Services
         Task<ProductPriceViewModel> GetPrice(int id, int type);
 
         Task<bool> AddInvoice(InvoiceViewModel invoice,
-            List<ProductBuyingDetailsViewModel> productDetails);
-
+            List<ProductBuyingDetailsViewModel> productDetails);        
+        IQueryable<DonHang> GetAllDonHang();
+        IQueryable<DonHang> GetDonHangWithOutPtra();
+        IQueryable<PhieuThuViewModel> GetAllPhieuThu();
+        IQueryable<PhieuChiViewModel> GetAllPhieuChi();
+        IQueryable<TraHangViewModel> GetAllPhieuTraHang();
+        IQueryable<CTDonHang> GetCTDonHang(int donhangID);
+        IQueryable<TraHangDetailViewModel> GetCTTraHang(int phieutraID);
+        IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
+        IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
+        IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
 
         Task<CustomerFilterViewModel> GetCustomerById(int id);
@@ -283,5 +292,29 @@ namespace BookStore.Services
         Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
 
         Task<Staff> GetStaffByUserName(string userName);
+        int TaoDonHang(DonHang donhang);
+        void TaoPhieuThu(PhieuThu phieuthu);
+        void TaoPhieuChi(PhieuChi phieuchi);
+        void TaoPhieuTraHang(PhieuTraHang pth);
+        void TaoCTPhieuTraHang(ChiTietPhieuTraHang pth);
+        void UpdateDonHang(int? id);
+        void CapnhatDonhang(int? id, decimal tienthu);
+        int? findPhieuTraByDonHang(int donhangID);
+        int findDonHangByCustomer(int? customerID);
+        int findPhieuTraByCustomer(int? customerID);
+        int findPhieuNhapByCustomer(int? customerID);
+        int findUserId(String name);
+        int findPhieuTraNhapHang(int? providerID);
+        PhieuThuViewModel findPhieuThu(int phieuID);
+        IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID);
+        PhieuChiViewModel findPhieuChi(int phieuID);
+        TraHangViewModel findPhieuTra(int phieuID);
+        DonHangViewModel findDonHangById(int donhangID);
+        KhachHang findCustomerByDonhang(int donhangId);
+        CustomerInfoViewModel findCustomerById(int customerId);
+        NhaCungCap findProviderByPhieuTra(int phieuID);
+        NhaCungCap findProviderByPhieuNhap(int phieuID);
+        KhachHang findCustomerByPhieuTra(int donhangId);
+        PhieuTraHang findNewPhieuTraHang();
     }
 }

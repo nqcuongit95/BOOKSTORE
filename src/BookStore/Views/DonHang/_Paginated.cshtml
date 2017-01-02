@@ -1,0 +1,48 @@
+﻿@model PaginatedList<DonHang>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var display = Model.TotalPages > 1 ? "" : "none";    
+}
+
+
+<div class="ui pagination floated right menu" style="display: @display">
+    <a class="icon @prevDisabled item"
+       asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-firstShowedPage="@Model.FirstShowedPage"
+       asp-route-lastShowedPage="@Model.LastShowedPage">
+        <i class="chevron  left icon"></i>
+    </a>
+    @for (int i = Model.FirstShowedPage; i <= Model.LastShowedPage; i++)
+    {
+        var active = "";
+
+        if (i == Model.PageIndex)
+        {
+            active = "active";
+        }
+
+        <a class="item @active"
+           asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@i"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-firstShowedPage="@Model.FirstShowedPage"
+           asp-route-lastShowedPage="@Model.LastShowedPage">
+            @i
+        </a>
+    }
+    <a class="icon @nextDisabled item"
+       asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-firstShowedPage="@Model.FirstShowedPage"
+       asp-route-lastShowedPage="@Model.LastShowedPage">
+        <i class="chevron right icon"></i>
+    </a>
+</div>

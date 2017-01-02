@@ -1,0 +1,171 @@
+﻿
+@model TraHangViewModel
+@{
+    ViewData["Title"] = "Chi tiết phiếu trả hàng";
+}
+
+<link href="~/css/ChiTietDonHang.css" rel="stylesheet" />
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Chi tiết phiếu trả hàng</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+            <a class="ui active item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
+        </div>
+    </div>
+}
+<div class="row">
+
+    <div class="twelve wide column">
+        <div class="ui grid">
+            <!-- Thông tin khách hàng-->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="sixteen wide column">
+                        <h4 class="ui dividing teal header">HÀNG TRẢ</h4>
+                    </div>
+                    <div style="margin-top:11px; overflow:auto;">
+                        <table class="ui very basic selectable table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="five wide">Tên hàng</th>
+                                    <th class="two wide">Số lượng</th>
+                                    <th class="three wide">Giá hàng trả</th>
+                                    <th class="two wide">Thành tiền</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div style="overflow-x:hidden;overflow-y:auto; height: 320px;">
+                        <table class="ui very basic selectable hidethead table">
+                            <thead>
+                                <tr>
+                                    <th class="two wide"></th>
+                                    <th class="fibe wide"></th>
+                                    <th class="two wide"></th>
+                                    <th class="three wide"></th>
+                                    <th class="two wide"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailbdy">
+                                @foreach (var customer in @Model.details)
+                                {
+                                    <tr>
+                                        <td class="two wide">
+                                            @customer.HangHoaId
+                                        </td>
+                                        <td class="five wide">
+                                            @customer.TenHangHoa
+                                        </td>
+                                        <td class="two wide">
+                                            @((int)customer.SoLuong)
+                                        </td>
+                                        <td class="three wide">
+                                            <div>
+                                                @(((int)customer.GiaTra).ToString("N0"))
+                                            </div>
+                                        </td>
+                                        <td class="two wide"
+                                            id="tientra">
+                                            @(((int)customer.ThanhTien).ToString("N0")+" đ")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sixteen wide column">
+                        <h4 class="ui dividing teal header"></h4>
+                    </div>
+                    <div class="row">
+                        <div class="ui two column grid" style="padding-top:9px">
+                            <div class="ten wide column">
+                                <h4 class="infoHeader">Ghi chú</h4>
+                            </div>
+                            <div class="six wide column">
+                                <div class="ui two column grid">
+                                    <div class="wide column">
+                                        <h4 class="infoHeader">Tổng tiền trả khách</h4>
+                                    </div>
+                                    <div class="right aligned column">
+                                        <div>@(((int)Model.TongTien).ToString("N0")+ " ₫")</div>
+                                    </div>
+                                    <div class="wide column">
+                                        <h4 class="infoHeader">Người lập</h4>
+                                    </div>
+                                    <div class="right aligned column">
+                                        @Model.TenNhanVien
+                                    </div>
+                                    <div class="wide column">
+                                        <h4 class="infoHeader">Ngày lập</h4>
+                                    </div>
+                                    <div class="right aligned column">
+                                        @Model.NgayLap
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four wide column">
+        <form asp-action="Create" method="post" id="returnForm"></form>
+        <div class="ui grid">
+            <!-- Thanh toan -->
+            <div class="row">
+                <div class="column">
+                    <div class="ui dividing header">@Model.ID</div>
+                    <table class="ui very basic table">
+                        <tbody>
+                            <tr>
+                                <td class="six wide">Khách hàng</td>
+                                <td class="ten wide right aligned">
+                                    <div id="tongtien">@Model.TenKhachHang</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="six wide">Đơn hàng</td>
+                                <td class="ten wide right aligned">
+                                    <div id="tongtien">@Model.DonHangId</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="six wide">Tổng tiền</td>
+                                <td class="ten wide right aligned">
+                                    <div id="tongtien">@(((int)Model.TongTien).ToString("N0")+ " ₫")</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Numeral-js/numeral.min.js"></script>
+<script src="~/js/cleave.js/cleave.min.js"></script>
+<script src="~/js/FormatLocale.js"></script>
+<script src="~/js/TraHang/TraHang.js"></script>

@@ -1,0 +1,235 @@
+﻿
+@model DonHangViewModel
+@{
+    ViewData["Title"] = "Tạo phiếu trả hàng";
+}
+
+<link href="~/css/ChiTietDonHang.css" rel="stylesheet" />
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Tạo Phiếu Trả Hàng</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+            <a class="ui active item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
+        </div>
+    </div>
+}
+<div class="row">
+
+    <div class="twelve wide column">
+        <div class="ui grid">
+            <!-- Thông tin khách hàng-->
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="sixteen wide column">
+                        <h4 class="ui dividing teal header">HÀNG TRẢ</h4>
+                    </div>
+                    <div style="margin-top:11px; overflow:auto;">
+                        <table class="ui very basic selectable table">
+                            <thead>
+                                <tr>
+                                    <th class="one wide"></th>
+                                    <th class="two wide">Mã hàng</th>
+                                    <th class="five wide">Tên hàng</th>
+                                    <th class="two wide">Số lượng</th>
+                                    <th class="three wide">Giá hàng trả</th>
+                                    <th class="two wide">Thành tiền</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div style="overflow-x:hidden;overflow-y:auto; height: 400px;">
+                        <table class="ui very basic selectable hidethead table">
+                            <thead>
+                                <tr>
+                                    <th class="one wide"></th>
+                                    <th class="two wide"></th>
+                                    <th class="fibe wide"></th>
+                                    <th class="two wide"></th>
+                                    <th class="three wide"></th>
+                                    <th class="two wide"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailbdy">
+                                @foreach (var customer in @Model.details)
+                                {
+                                    <tr>
+                                        <td class="one wide">
+                                                <input type="checkbox" checked="">
+                                        </td>
+                                        <td class="two wide">
+                                            @customer.HangHoaId
+                                            <input type="hidden" name="detailID" value="@customer.ID"/>
+                                        </td>
+                                        <td class="five wide">
+                                            @customer.TenHangHoa
+                                        </td>
+                                        <td class="two wide">
+                                            <div class="ui input count"
+                                                 style="width:79px;">
+                                                <input type="number"
+                                                       max="@customer.SoLuong"
+                                                       min="1"
+                                                       value="@customer.SoLuong"
+                                                       style="text-align:right;" />
+                                            </div>
+                                        </td>
+                                        <td class="three wide">
+                                            <div class="ui input price"
+                                                 style="width:135px;">
+                                                <input type="text"
+                                                       id="inputPrice"
+                                                       min="0"
+                                                       value="@((int)customer.GiaBan)"
+                                                       style="text-align:right;" />
+                                            </div>
+                                        </td>
+                                        <td class="two wide"
+                                            id="tientra">
+                                            @(((int)customer.ThanhTien).ToString("N0"))
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sixteen wide column">
+                        <h4 class="ui dividing teal header"></h4>
+                    </div>
+                    <div class="row">
+                        <div class="ui two column grid" style="padding-top:9px">
+                            <div class="ten wide column">
+                                <h4 class="infoHeader">Ghi chú</h4>
+                            </div>
+                            <div class="six wide column">
+                                <div class="ui two column grid">
+                                    <div class="wide column">
+                                        <h4 class="infoHeader">Tổng tiền trả khách</h4>
+                                    </div>
+                                    <div class="right aligned column">
+                                        <div id="tongtientra">@(((int)Model.TienDaThu).ToString("N0"))</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four wide column">
+        <form asp-action="Create" method="post"  id="returnForm"></form>
+            <div class="ui grid">
+                <!-- Thanh toan -->
+                <div class="row">
+                    <div class="column">
+                        <div class="ui dividing header">@Model.TenKhachHang</div>
+                        <table class="ui very basic table">
+                            <tbody>
+                                <tr>
+                                    <td class="six wide">Đơn hàng</td>
+                                    <td class="ten wide right aligned">
+                                        <div id="tongtien">@Model.ID</div>
+                                        <input type="hidden" value="@Model.ID" name="donhangID"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Tổng tiền</td>
+                                    <td class="ten wide right aligned">
+                                        <div id="tongtien">@(((int)Model.TongTien).ToString("N0"))</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide">Đã thanh toán</td>
+                                    <td class="ten wide right aligned">
+                                        <div id="tienthu">@(((int)Model.TienDaThu).ToString("N0"))</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="ui very basic table" id="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td class="seven wide">Tiền trả khách</td>
+                                    <td class="nine wide right aligned">
+                                        <div class="ui input"
+                                             style="width: 140px;"
+                                             id="paid-money">
+                                            <input type="text"
+                                                   name="TienThu"
+                                                   style="text-align:right;"
+                                                   value="@((int)Model.TienDaThu)" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="six wide"></td>
+                                    <td class="ten wide right aligned">
+                                        <button class="ui positive fluid button" id="return">Hoàn trả</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="ui tiny modal" id="error-modal">
+    <div class="header">Không Tạo Được Phiếu Trả Hàng </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Số tiền phải lớn hơn 0.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">
+            Quay lại
+        </div>
+    </div>
+</div>
+<div class="ui tiny modal" id="error-2-modal">
+    <div class="header">Không Tạo Được Phiếu Trả Hàng </div>
+    <div class="content">
+        <div class="ui warning icon message">
+            <i class="warning icon"></i>
+            <div class="header">
+                Vui lòng chọn hàng trả.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui blue cancel button">
+            Quay lại
+        </div>
+    </div>
+</div>
+<div class="ui tiny modal" id="notify-modal">
+
+</div>
+<script src="~/js/Numeral-js/numeral.min.js"></script>
+<script src="~/js/cleave.js/cleave.min.js"></script>
+<script src="~/js/FormatLocale.js"></script>
+<script src="~/js/TraHang/TraHang.js"></script>
