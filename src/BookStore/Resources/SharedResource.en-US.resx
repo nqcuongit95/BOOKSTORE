@@ -162,6 +162,9 @@
   <data name="EditConfirmed" xml:space="preserve">
     <value>Đã cập nhật</value>
   </data>
+  <data name="EditImage" xml:space="preserve">
+    <value>Cập nhật ảnh</value>
+  </data>
   <data name="GiaBanLe" xml:space="preserve">
     <value>Giá bán lẽ</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="HangHoa" xml:space="preserve">
     <value>Hàng hóa</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Hình ảnh</value>
   </data>
   <data name="Index" xml:space="preserve">
     <value>Danh sách</value>

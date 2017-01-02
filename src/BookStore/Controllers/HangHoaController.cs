@@ -2,13 +2,17 @@
 using BookStore.Resources;
 using BookStore.Services;
 using BookStore.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,16 +23,19 @@ namespace BookStore.Controllers
     {
         private readonly IBookStoreData _bookStoreData = null;
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+        private IHostingEnvironment _environment;
 
         private string controller;
         private string action;
 
         public HangHoaController(
             IBookStoreData bookStoreData,
-            IStringLocalizer<SharedResource> sharedLocalizer)
+            IStringLocalizer<SharedResource> sharedLocalizer,
+            IHostingEnvironment environment)
         {
             _bookStoreData = bookStoreData;
             _sharedLocalizer = sharedLocalizer;
+            _environment = environment;
         }
 
         #region Index
@@ -314,6 +321,91 @@ namespace BookStore.Controllers
         #endregion Delete
 
         #region Other
+
+        [Route("UploadAjax")]
+        [HttpPost]
+        public async Task<IActionResult> UploadAjax(int? id)
+        {
+            Message message = new Message();
+
+            if (id == null)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer["NotFound"];
+            }
+
+            try
+            {
+                HangHoa hangHoa = await _bookStoreData.GetHangHoaById(id);
+
+                hangHoa.TrangThai =
+                    await _bookStoreData.GetTrangThaiById(hangHoa.TrangThaiId);
+
+                if (hangHoa.TrangThai.Loai != "HangHoa")
+                    throw new Exception("Invalid");
+
+                if (hangHoa == null)
+                {
+                    message.Type = MessageType.Error;
+                    message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                    message.Content = _sharedLocalizer["NotFound"];
+                }
+
+                Random random = new Random();
+                var file = Request.Form.Files[0];
+                string temp = ContentDispositionHeaderValue
+                            .Parse(file.ContentDisposition)
+                            .FileName
+                            .Trim('"');
+
+                string fileName = new string(
+                    Enumerable.Repeat("abcdefghijklmnopqrstuvwxyz0123456789", 50)
+                    .Select(s => s[random.Next(s.Length)]).ToArray())
+                    + temp;
+                string fullFileName = _environment.WebRootPath + $@"\uploads\{fileName}";
+
+                while (System.IO.File.Exists(fullFileName))
+                {
+                    fileName = new string(
+                    Enumerable.Repeat("abcdefghijklmnopqrstuvwxyz0123456789", 50)
+                    .Select(s => s[random.Next(s.Length)]).ToArray())
+                    + temp;
+                    fullFileName = _environment.WebRootPath + $@"\uploads\{fileName}";
+                }
+
+                if (hangHoa.ImageUrl != null)
+                    System.IO.File.Delete(
+                        _environment.WebRootPath + hangHoa.ImageUrl);
+
+                using (FileStream fs = System.IO.File.Create(fullFileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+
+                hangHoa.ImageUrl = $@"\uploads\{fileName}";
+
+                await _bookStoreData.UpdateHangHoa(hangHoa, hangHoa.ChiTietHangHoa);
+
+                message.Results["Reload"] = true;
+
+                message.Type = MessageType.Success;
+                message.Header = _sharedLocalizer["Success"];
+                message.Content = string.Format(
+                    "{0} {1}",
+                    _sharedLocalizer["EditImage"],
+                    _sharedLocalizer["Success"].Value.ToLower());
+            }
+            catch (Exception ex)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer[ex.GetType().FullName];
+            }
+
+            return Json(message);
+        }
 
         private IActionResult C(bool? modal, bool? redirect)
         {

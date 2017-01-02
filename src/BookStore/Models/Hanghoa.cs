@@ -88,6 +88,8 @@ namespace BookStore.Models
             Resources.DataAnnotations))]
         public int? DaBan { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public virtual ICollection<ChiTietDonHang> ChiTietDonHang { get; set; }
         public virtual ICollection<ChiTietHangHoa> ChiTietHangHoa { get; set; }
         public virtual ICollection<ChiTietPhieuKiemKho> ChiTietPhieuKiemKho { get; set; }

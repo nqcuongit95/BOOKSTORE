@@ -300,4 +300,10 @@
   <data name="TotalValueInventory" xml:space="preserve">
     <value>Tổng giá trị tồn kho</value>
   </data>
+  <data name="EditImage" xml:space="preserve">
+    <value>Cập nhật ảnh</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Hình ảnh</value>
+  </data>
 </root>
