@@ -69,7 +69,10 @@ namespace BookStore.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                trahang = trahang.Where(c => c.ID.ToString().Contains(searchString));
+                trahang = from p in trahang
+                          where p.ID.ToString().Contains(searchString)
+                          || p.DonHangId.ToString().Contains(searchString)
+                          select p;
                 return View(await PaginatedList<TraHangViewModel>.
                         CreateAsync(trahang, page ?? 1, pageSize,
                                     numberOfDisplayPages,
@@ -82,7 +85,6 @@ namespace BookStore.Controllers
                                     numberOfDisplayPages,
                                     firstShowedPage, lastShowedPage));
             }
-
         }
         public async Task<IActionResult> ListDonHang(string sortOrder, string searchString,
                                               string currentFilter, int? page,
@@ -252,6 +254,12 @@ namespace BookStore.Controllers
         public IActionResult Details(int id)
         {
             var phieutra = _bookStoreData.findPhieuTra(id);
+            phieutra.DonHang = _bookStoreData.findDonHangById(phieutra.DonHangId);
+            phieutra.DonHang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(id).ToList();
+            for (int i = 0; i < phieutra.DonHang.listPhieuThu.Count; i++)
+            {
+                phieutra.DonHang.TienDaThu += phieutra.DonHang.listPhieuThu[i].TongTien;
+            }
             phieutra.details = _bookStoreData.GetCTTraHang(phieutra.ID).ToList();
             for (int i = 0; i < phieutra.details.Count; i++)
             {

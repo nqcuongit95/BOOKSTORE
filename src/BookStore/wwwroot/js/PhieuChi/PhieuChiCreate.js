@@ -1,5 +1,24 @@
 ﻿$('.ui.dropdown').dropdown();
 $(document).ready(function () {
+    var inputEvents = 'DOMAttrModified textInput input keypress paste';
+    updatepay();
+    $('#tien').on(inputEvents, function () {
+        var tiendaThu = $("#tien").val();
+        var tiendaThuValue = numeral(tiendaThu).value();
+        $('#tongtien').val(tiendaThuValue);
+    });
+    function updatepay() {
+
+        var tiendaThu = $("#tien").val();
+        var tiendaThuValue = numeral(tiendaThu).value();
+
+        $('#tongtien').val(tiendaThuValue);
+    };
+    var TongTientemp = new Cleave('input[name=TongTientemp]', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralPositiveOnly: true
+    });
     $("#customerFields").show();
     $("#providerFields").hide();
     $("#btnXoa").click(function () {
@@ -22,15 +41,24 @@ $(document).ready(function () {
                                }
                              ]
                          },
-                         sotienthu: {
-                             identifier: 'sotienthu',
+                         TongTien: {
+                             identifier: 'TongTien',
+                             rules: [
+                               {
+                                   type: 'integer[1000..]',
+                                   prompt: 'số tiền chi tối thiểu là 1000đ'
+                               }
+                             ]
+                         },
+                         KhachHangId: {
+                             identifier: 'KhachHangId',
                              rules: [
                                {
                                    type: 'empty',
-                                   prompt: 'số tiền chi không hợp lệ.'
+                                   prompt: 'không tìm thấy khách hàng'
                                }
                              ]
-                         }
+                         },
                      }
                  })
     $("#customer-search").search({
@@ -66,11 +94,11 @@ $(document).ready(function () {
         var doituong = this.value;
         console.log(this.value)
         if (doituong == "1") {
-
             $("#customerFields").show();
             $("#providerFields").hide();
             $("#providerValue").val("");
-            $("#ncc").val("");
+            $("#providerValue").val("");
+            $("#NCCId").val("");
             $('.ui.form')
                  .form({
                      inline: true,
@@ -84,24 +112,33 @@ $(document).ready(function () {
                                }
                              ]
                          },
-                         sotienthu: {
-                             identifier: 'sotienthu',
+                         TongTien: {
+                             identifier: 'TongTien',
+                             rules: [
+                               {
+                                   type: 'integer[1000..]',
+                                   prompt: 'số tiền chi tối thiểu là 1000đ'
+                               }
+                             ]
+                         },
+                         KhachHangId: {
+                             identifier: 'KhachHangId',
                              rules: [
                                {
                                    type: 'empty',
-                                   prompt: 'số tiền chi không hợp lệ.'
+                                   prompt: 'không tìm thấy khách hàng'
                                }
                              ]
-                         }
+                         },
                      }
                  })
         }
         if (doituong == "2") {
-
             $("#customerFields").hide();
             $("#providerFields").show();
             $("#customerValue").val("");
             $("#khachhang").val("");
+            $("#KhachHangId").val("");
             $('.ui.form')
   .form({
       inline: true,
@@ -115,15 +152,24 @@ $(document).ready(function () {
                 }
               ]
           },
-          sotienthu: {
-              identifier: 'sotienthu',
+          TongTien: {
+              identifier: 'TongTien',
+              rules: [
+                {
+                    type: 'integer[1000..]',
+                    prompt: 'số tiền chi tối thiểu là 1000đ'
+                }
+              ]
+          },
+          NCCId: {
+              identifier: 'NCCId',
               rules: [
                 {
                     type: 'empty',
-                    prompt: 'số tiền chi không hợp lệ.'
+                    prompt: 'không tìm thấy nhà cung cấp'
                 }
               ]
-          }
+          },
       }
   })
         }

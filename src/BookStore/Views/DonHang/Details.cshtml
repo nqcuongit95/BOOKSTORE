@@ -179,7 +179,7 @@
                                 <tr>
                                     <td class="six wide">Tiền đã thu</td>
                                     <td class="ten wide right aligned">
-                                        <div id="tienthu">@(((int)Model.TienDaThu).ToString("N0") + " ₫")</div>
+                                        <div id="tiendathu">@(((int)Model.TienDaThu).ToString("N0") + " ₫")</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -190,7 +190,7 @@
                             <table class="ui very basic table">
                                 <tbody>
                                     <tr>
-                                        <td class="seven wide">Tiền khách đưa</td>
+                                        <td class="seven wide">Tiền thu</td>
                                         <td class="nine wide right aligned">
                                             <div class="ui input"
                                                  style="width: 140px;"
@@ -198,7 +198,8 @@
                                                 <input type="text"
                                                        name="TienThu"
                                                        style="text-align:right;"
-                                                       id="customerPaid"/>
+                                                       id="customerPaid"
+                                                       value="0"/>
                                                 
                                                 <input type="hidden" name="ID" value="@Model.ID"/>
                                             </div>

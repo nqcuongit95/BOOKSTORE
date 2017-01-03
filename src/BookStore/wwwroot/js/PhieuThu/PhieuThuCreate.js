@@ -1,6 +1,29 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
+    var inputEvents = 'DOMAttrModified textInput input keypress paste';
+    updatepay();
 
+    $('#tien').on(inputEvents, function () {
+        var tiendaThu = $("#tien").val();
+        var tiendaThuValue = numeral(tiendaThu).value();
+        $('#tongtien').val(tiendaThuValue);
+    });
+    function updatepay() {
+
+        var tiendaThu = $("#tien").val();
+        var tiendaThuValue = numeral(tiendaThu).value();
+
+        $('#tongtien').val(tiendaThuValue);
+    };
+    var TongTientemp = new Cleave('input[name=TongTientemp]', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralPositiveOnly: true
+    });
+    $('#notify-modal').modal({
+        onHidden: function () {
+            location.reload();
+        }
+    });
     $('.ui.dropdown').dropdown();
     $("#customerFields").show();
     $("#providerFields").hide();
@@ -24,12 +47,12 @@ $(document).ready(function () {
                                 }
                               ]
                           },
-                          sotienthu: {
-                              identifier: 'sotienthu',
+                          TongTien: {
+                              identifier: 'TongTien',
                               rules: [
                                 {
-                                    type: 'empty',
-                                    prompt: 'số tiền thu không hợp lệ.'
+                                    type: 'integer[1000..]',
+                                    prompt: 'số tiền thu tối thiểu là 1000đ'
                                 }
                               ]
                           }
@@ -67,12 +90,11 @@ $(document).ready(function () {
         var doituong = this.value;
         console.log(this.value)
         if (doituong == "1") {
-
             $("#customerFields").show();
             $("#providerFields").hide();
             $("#providerValue").val("");
             $("#ncc").val("");
-
+            $("#NCCId").val("");
             $('.ui.form')
                   .form({
                       inline: true,
@@ -86,12 +108,12 @@ $(document).ready(function () {
                                 }
                               ]
                           },
-                          sotienthu: {
-                              identifier: 'sotienthu',
+                          TongTien: {
+                              identifier: 'TongTien',
                               rules: [
                                 {
-                                    type: 'empty',
-                                    prompt: 'số tiền thu không hợp lệ.'
+                                    type: 'integer[1000..]',
+                                    prompt: 'số tiền thu tối thiểu là 1000đ'
                                 }
                               ]
                           }
@@ -99,7 +121,6 @@ $(document).ready(function () {
                   })
         }
         if (doituong == "2") {
-
             $("#customerFields").hide();
             $("#providerFields").show();
             $("#customerValue").val("");
@@ -117,12 +138,21 @@ $(document).ready(function () {
                   }
                 ]
             },
-            sotienthu: {
-                identifier: 'sotienthu',
+            TongTien: {
+                identifier: 'TongTien',
+                rules: [
+                  {
+                      type: 'integer[1000..]',
+                      prompt: 'số tiền thu tối thiểu là 1000đ'
+                  }
+                ]
+            },
+            NCCId: {
+                identifier: 'NCCId',
                 rules: [
                   {
                       type: 'empty',
-                      prompt: 'số tiền thu không hợp lệ.'
+                      prompt: 'không tìm thấy Nhà cung cấp.'
                   }
                 ]
             }

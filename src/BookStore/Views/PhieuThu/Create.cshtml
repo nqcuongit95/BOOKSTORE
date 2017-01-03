@@ -70,7 +70,6 @@
                        placeholder="Thông tin khách hàng">
                 <input type="hidden"
                        name="KhachHangId"
-                       asp-for="@Model.KhachHangId"
                        value=""
                        id="khachhang" />
                 <div class="results"></div>
@@ -103,18 +102,25 @@
         <div class="field">
             <label>Số tiền thu</label>
             <input type="text"
-                   name="sotienthu"
-                   asp-for="@Model.TongTien"
+                   name="TongTientemp"
                    placeholder="Số tiền thu"
                    data-validate="valid-phone"
                    id="tien"
-                   value="">
+                   value="1000">
         </div>
+        <input type="hidden"
+               name="TongTien"
+               asp-for="@Model.TongTien"
+               id="tongtien">
         <button class="ui primary submit button" type="submit">Thêm</button>
         <div class="ui reset button" id="btnXoa">Hủy</div>
     </form>
 </div>
+<div class="ui tiny modal" id="notify-modal">
 
+</div>
+<script src="~/js/cleave.js/cleave.min.js"></script>
+<script src="~/js/numeral.min.js"></script>
 <script src="~/js/PhieuThu/PhieuThuCreate.js"></script>
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "PhieuThu")';

@@ -101,17 +101,22 @@
         <div class="required field">
             <label>Số tiền chi</label>
             <input type="text"
-                   name="sotienthu"
-                   asp-for="@Model.TongTien"
+                   name="TongTientemp"
                    placeholder="Số tiền thu"
                    data-validate="valid-phone"
                    id="tien"
-                   value="">
+                   value="1000">
         </div>
+        <input type="hidden"
+               name="TongTien"
+               asp-for="@Model.TongTien"
+               id="tongtien">
         <button class="ui primary submit button" type="submit">Thêm</button>
         <div class="ui reset button" id="btnXoa">Hủy</div>
     </form>
 </div>
+<script src="~/js/cleave.js/cleave.min.js"></script>
+<script src="~/js/numeral.min.js"></script>
 <script src="~/js/PhieuChi/PhieuChiCreate.js"></script>
 
 <script>

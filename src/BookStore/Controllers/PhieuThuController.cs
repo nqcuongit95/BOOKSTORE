@@ -74,7 +74,7 @@ namespace BookStore.Controllers
                                     firstShowedPage, lastShowedPage);
             for (int i = 0; i < result.Count; i++)
             {
-                if (result[i].DonHangId.HasValue||result[i].KhachHangId.HasValue)
+                if (result[i].DonHangId.HasValue || result[i].KhachHangId.HasValue)
                 {
                     result[i].DoiTuong = "Khách hàng";
                 }
@@ -122,9 +122,15 @@ namespace BookStore.Controllers
                 phieu.TongTien = model.TongTien;
                 phieu.LoaiPhieuId = model.LoaiPhieuId;
 
-                if (model.KhachHangId!=null)
+                if (model.KhachHangId != null)
                 {
                     phieu.KhachHangId = model.KhachHangId;
+                    _bookStoreData.TaoPhieuThu(phieu);
+                    return RedirectToAction("Index");
+                }
+                if (model.KhachHangId == null && model.NCCId == null)
+                {
+                    phieu.KhachHangId = 1;
                     _bookStoreData.TaoPhieuThu(phieu);
                     return RedirectToAction("Index");
                 }

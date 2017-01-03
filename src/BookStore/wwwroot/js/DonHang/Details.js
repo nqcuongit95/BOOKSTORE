@@ -1,22 +1,44 @@
 ﻿$(document).ready(function () {
-
-
+    updatepay();
+    var inputEvents = 'DOMAttrModified textInput input keypress paste';
+    $('#customerPaid').on(inputEvents, function () {
+        var tiendaThu = $("#tiendathu").text();
+        var tongTien = $("#tongtien").text();
+        var tiendaThuValue = numeral(tiendaThu).value();
+        var tongTienValue = numeral(tongTien).value();
+        var tiencon = (tongTienValue - tiendaThuValue);
+        var tienthu = numeral($('#customerPaid').val()).value();
+        var formatedtienthu = numeral(tiencon).format('0,0 $');
+        if (tienthu > tiencon) {
+            $('#customerPaid').val(tiencon);
+        }
+    })
+    function updatepay() {
+        var tiendaThu = $("#tiendathu").text();
+        var tongTien = $("#tongtien").text();
+        var tiendaThuValue =numeral(tiendaThu).value();
+        var tongTienValue =numeral(tongTien).value();
+        var tienthu =(tongTienValue - tiendaThuValue);
+        var formatedtienthu = numeral(tienthu).format('0,0 $');
+        $('#customerPaid').val(formatedtienthu);
+    }
     var phieutraid = $('#phieutraID').val();
     //alert(phieutraid)
     //stuff
+    update();
     if (phieutraid != '') {
+        $("#payment-table").hide();
         $('#hoantra').hide();
         $('#danhan').show();
     }
     if (phieutraid == '') {
-        //alert("222222222")
         $('#hoantra').show();
         $('#danhan').hide();
     }
-    update();
+    
 
     function update() {
-        var tienThu = $("#tienthu").text();
+        var tienThu = $("#tiendathu").text();
         var tongTien = $("#tongtien").text();
         var tienThuValue = numeral(tienThu).value();
         var tongTienValue = numeral(tongTien).value();

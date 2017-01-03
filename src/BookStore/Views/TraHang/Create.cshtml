@@ -81,6 +81,7 @@
                                         </td>
                                         <td class="five wide">
                                             @customer.TenHangHoa
+                                            <input type="hidden" id="max" value="@customer.SoLuong" />
                                         </td>
                                         <td class="two wide">
                                             <div class="ui input count"
@@ -89,7 +90,8 @@
                                                        max="@customer.SoLuong"
                                                        min="1"
                                                        value="@customer.SoLuong"
-                                                       style="text-align:right;" />
+                                                       style="text-align:right;"/>
+                                                
                                             </div>
                                         </td>
                                         <td class="three wide">
@@ -105,7 +107,8 @@
                                         </td>
                                         <td class="two wide"
                                             id="tientra">
-                                            @(((int)customer.ThanhTien).ToString("N0"))
+                                            @(((int)customer.ThanhTien).ToString("N0")+ " ₫")
+                                            <input type="hidden" id="maxgia" value="@(((int)customer.GiaBan).ToString("N0"))"/>
                                         </td>
                                     </tr>
                                 }
@@ -123,10 +126,10 @@
                             <div class="six wide column">
                                 <div class="ui two column grid">
                                     <div class="wide column">
-                                        <h4 class="infoHeader">Tổng tiền trả khách</h4>
+                                        <h4 class="infoHeader">Giá trị hàng trả</h4>
                                     </div>
                                     <div class="right aligned column">
-                                        <div id="tongtientra">@(((int)Model.TienDaThu).ToString("N0"))</div>
+                                        <div id="tongtientra">@(((int)Model.TienDaThu).ToString("N0")+ " ₫")</div>
                                     </div>
                                 </div>
                             </div>
@@ -156,13 +159,13 @@
                                 <tr>
                                     <td class="six wide">Tổng tiền</td>
                                     <td class="ten wide right aligned">
-                                        <div id="tongtien">@(((int)Model.TongTien).ToString("N0"))</div>
+                                        <div id="tongtien">@(((int)Model.TongTien).ToString("N0")+ " ₫")</div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="six wide">Đã thanh toán</td>
                                     <td class="ten wide right aligned">
-                                        <div id="tienthu">@(((int)Model.TienDaThu).ToString("N0"))</div>
+                                        <div id="tienthu">@(((int)Model.TienDaThu).ToString("N0")+ " ₫")</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -178,7 +181,7 @@
                                             <input type="text"
                                                    name="TienThu"
                                                    style="text-align:right;"
-                                                   value="@((int)Model.TienDaThu)" />
+                                                   id="tienphaitra"/>
                                         </div>
                                     </td>
                                 </tr>
