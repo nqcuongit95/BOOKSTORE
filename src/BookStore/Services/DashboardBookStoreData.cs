@@ -82,7 +82,7 @@ namespace BookStore.Services
                              Id = item.Id,
                              FeedType = FeedType.ReturnGoods,
                              Content = Content.ReturnProduct,
-                             Icon = "share", //dont know what icon to use right there
+                             Icon = "send", //dont know what icon to use right there
                              Time = item.NgayLap
                          };
             var lastestReturnProducts = await query3.Take(take).ToListAsync();
@@ -109,7 +109,7 @@ namespace BookStore.Services
                              Id = item.Id,
                              FeedType = FeedType.ImportedGoods,
                              Content = Content.ImportProduct,
-                             Icon = "",
+                             Icon = "shipping",
                              Time = item.NgayLap
                          };
             var lastestImportedProducts = await query5.Take(take).ToListAsync();

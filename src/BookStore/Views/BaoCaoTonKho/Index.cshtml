@@ -1,0 +1,111 @@
+﻿@model BaoCaoTonKhoViewModel
+
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    HangHoa hangHoa = new HangHoa();
+}
+
+<div class="header-menu" style="width:100%;">
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">@sharedLocalizer["BaoCao"]</h2>
+
+        <div class="right menu">
+        </div>
+    </div>
+</div>
+
+<div class="actions-bar">
+    <div class="ui blue print button" onclick="window.print();">
+        @sharedLocalizer["Print"]
+    </div>
+</div>
+
+<div class="bao-cao">
+    <div class="title ui center aligned large header">
+        @sharedLocalizer[ViewData["Title"].ToString()]
+    </div>
+
+    <p class="date">
+        <i class="calendar icon"></i>
+        @string.Format("{0}: {1}",
+    sharedLocalizer["ToDate"],
+    DateTime.Now.Date.ToString("dd/MM/yyyy"))
+    </p>
+
+    <div class="summary">
+        <div class="ui basic label">
+            @sharedLocalizer["TotalInventory"]:<br />
+            @Model.TotalInventory
+        </div>
+        <div class="ui basic label">
+            @sharedLocalizer["TotalValueInventory"]:<br />
+            <span class="money">
+                @Model.TotalValueInventory
+            </span>
+        </div>
+    </div>
+
+    <table class="ui structured celled table">
+        <thead>
+            <tr>
+                <th class="one wide">@sharedLocalizer["STT"]</th>
+                <th class="one wide">@Html.DisplayNameFor(p => hangHoa.Id)</th>
+                <th class="two wide">@Html.DisplayNameFor(p => hangHoa.LoaiHangHoaId)</th>
+                <th class="four wide">@Html.DisplayNameFor(p => hangHoa.TenHangHoa)</th>
+                <th class="two wide">@Html.DisplayNameFor(p => hangHoa.TonKho)</th>
+                <th class="three wide">@sharedLocalizer["CurrentPrice"]</th>
+                <th class="six wide">@sharedLocalizer["ValueInventory"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.HangHoa.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @("HH" + Model.HangHoa[i].Id)
+                    </td>
+                    <td>
+                        @Model.HangHoa[i].LoaiHangHoa.TenLoaiHangHoa
+                    </td>
+                    <td>
+                        @Model.HangHoa[i].TenHangHoa
+                    </td>
+                    <td>
+                        @Model.HangHoa[i].TonKho
+                    </td>
+                    <td>
+                        <span class="money">
+                            @Model.HangHoa[i].GiaNhap.ToString().Replace(",", ".")
+                        </span>
+                    </td>
+                    <td>
+                        <span class="money">
+                            @(Model.HangHoa[i].TonKho * Model.HangHoa[i].GiaNhap)
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.money').each(function (index) {
+            var text = $(this).text();
+
+            numeral.defaultFormat('0,0');
+
+            $(this).text(numeral(text).format() + ' đ');
+        });
+    });
+</script>
+
+@section Additional {
+    <link rel="stylesheet" href="~/css/baocao.css" />
+    <script src="~/js/numeral.min.js"></script>
+}
