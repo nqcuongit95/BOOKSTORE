@@ -1,20 +1,19 @@
 ﻿@model CustomerLiabilitesViewModel
 
-<h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
+<h3 class="ui dividing teal header">CÔNG NỢ HIỆN TẠI: @Model.TotalDebts.ToString("N0") VNĐ</h3>
 
 <table class="ui very basic table">
     <thead>
         <tr>
-            <th class="four wide">Mã Phiếu</th>
-            <th class="four wide">Người Tạo</th>
-            <th class="four wide">Ngày Tạo</th>
-            <th class="four wide">Ghi Chú</th>
-            <th class="four wide">Giá Trị</th>
-            <th class="four wide">Công Nợ</th>
+            <th class="two wide">Mã Phiếu</th>
+            <th class="three wide">Người Tạo</th>
+            <th class="three wide">Ngày Tạo</th>
+            <th class="two wide">Ghi Chú</th>
+            <th class="three wide right aligned">Giá Trị</th>
+            <th class="three wide right aligned">Công Nợ</th>
         </tr>
     </thead>
     <tbody>
-
         @foreach (var debt in Model.Debts )
             {
             <tr>
@@ -25,20 +24,20 @@
                     @debt.Staff   
                 </td>
                 <td>
-                    @debt.DateCreate
+                    @debt.DateCreate.ToString("dd/MM/yyyy hh:mm:ss tt")
                 </td>
                 <td>
                     @debt.Note
                 </td>
-                <td>
-                    @debt.Value
+                <td class="right aligned">
+                    @debt.Value.ToString("N0") đ
                 </td>
-                <td>
-                    @debt.Debt
+                <td class="right aligned">
+                    @debt.Debt.ToString("N0") đ
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@Html.Partial("_PaginatedTransaction", Model.Debts)
+@Html.Partial("_PaginatedLiabilites", Model.Debts)

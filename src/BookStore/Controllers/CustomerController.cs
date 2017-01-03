@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BookStore.ViewModels.Customer;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -210,11 +211,32 @@ namespace BookStore.Controllers
             return PartialView("_CustomerTransaction",model);
         }
 
-        public async Task<IActionResult> CustomerLiabilites(int id)
+        public async Task<IActionResult> CustomerLiabilites(int id, int? page,
+                                               int? firstShowedPage, int? lastShowedPage)
         {
             var model = await _bookStoreData.GetCustomerLiabilites(id);
+            model.CustomerId = id;
 
-            return View("_CustomerLiabilites", model);
+            
+            decimal totalDebts = await model.sourceDebts.SumAsync(d => d.Value);
+            model.TotalDebts = totalDebts;
+            var list = await model.sourceDebts.OrderByDescending(m=>m.DateCreate).ToListAsync();                                           
+
+            model.Debts = await PaginatedList<DebtViewModel>
+                .CreateAsync(model.sourceDebts.OrderByDescending(i=>i.DateCreate),
+                page ?? 1, 7, 5, 
+                firstShowedPage, 
+                lastShowedPage);
+
+            for (int i = 0; i < model.Debts.Count; i++)
+            {
+                var index = list.FindIndex(d => d.Id == model.Debts[i].Id);
+                var currentDebt = list.Skip(index).Sum(m=>m.Value);
+                model.Debts[i].Debt = currentDebt;
+                
+            }
+
+            return PartialView("_CustomerLiabilites", model);
         }
     }
 }

@@ -26,20 +26,20 @@ $(document).ready(function () {
                        }
                    ]
                },
-               address: {
-                   identifier: 'valid-address',
-                   rules: [{
-                       type: 'empty',
-                       prompt: 'Vui lòng nhập địa chỉ.'
-                   }]
-               },
-               email: {
-                   identifier: 'valid-email',
-                   rules: [{
-                       type: 'email',
-                       prompt: 'Vui lòng nhập đúng email.'
-                   }]
-               }
+               //address: {
+               //    identifier: 'valid-address',
+               //    rules: [{
+               //        type: 'empty',
+               //        prompt: 'Vui lòng nhập địa chỉ.'
+               //    }]
+               //},
+               //email: {
+               //    identifier: 'valid-email',
+               //    rules: [{
+               //        type: 'email',
+               //        prompt: 'Vui lòng nhập đúng email.'
+               //    }]
+               //}
            }
        });   
 
