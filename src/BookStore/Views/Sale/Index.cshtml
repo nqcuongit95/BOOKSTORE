@@ -21,8 +21,8 @@
                             Lọc
                         </a>
                         <div class="right menu">
-                            <div class="ui search item"
-                                 style="width: 300px;"
+                            <div class="ui fluid search item"
+                                 style="width: 400px;"
                                  id="product-input">
                                 <div class="ui transparent icon input">
                                     <input class="prompt"
@@ -219,55 +219,7 @@
     </div>
 </div>
 
-<div class="ui tiny modal" id="notify-modal">
-</div>
-
-<div class="ui tiny modal" id="invoice-modal">
-    <div class="header"> Không Tạo Được Đơn Hàng </div>
-    <div class="content">
-        <div class="ui warning icon message">
-            <i class="warning icon"></i>
-            <div class="header">
-                Giá trị đơn hàng phải lớn hơn 0.
-            </div>
-        </div>
-    </div>
-    <div class="actions">
-        <div class="ui blue cancel button">
-            Quay lại
-        </div>
-    </div>
-</div>
-
-<div class="ui tiny modal" id="close-invoice-modal">
-    <div class="header">Xác nhận</div>
-    <div class="content">
-        <div class="ui negative icon message">
-            <i class="remove icon"></i>
-            <div class="content">
-                <div class="header">
-                    Bạn có chắc muốn đóng đơn hàng này không ?
-                </div>
-                <p>Hệ thống sẽ không lưu lại thông tin của đơn hàng này.</p>
-            </div>
-        </div>
-    </div>
-    <div class="actions">
-        <div class="ui green ok button">
-            <i class="checkmark icon"></i>
-            Đồng ý
-        </div>
-        <div class="ui blue cancel button">
-            Hủy
-        </div>
-    </div>
-</div>
-
-<div class="ui tiny modal" id="create-modal">
-</div>
-
-<div class="ui modal" id="print-preview-modal">
-</div>
+@Html.Partial("_WarningModal")
 
 <script>
     var urlSearch = '@Url.Action("FindCustomer", "Sale")';

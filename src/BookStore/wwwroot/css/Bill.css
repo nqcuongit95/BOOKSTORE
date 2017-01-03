@@ -5,8 +5,11 @@
     font-size: 17px !important;
 }
 
+
+
 @media print{
-    .actions.bill, .header.bill  {
+    
+    .actions.bill, .header.bill  {        
         display: none !important;
     }    
 }
