@@ -100,10 +100,9 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Create" asp-route-id="@customer.Id">
-                                @customer.TongTien
+                                @(((int)customer.TongTien).ToString("N0")+ " ₫")
                             </a>
                         </td>
-
                         <td class="selectable">
                             <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.NgayLap
@@ -112,11 +111,8 @@
                     </tr>
                 }
             </tbody>
-
         </table>
-
         @Html.Partial("_PaginatedListreturn", Model)
-
     </div>
 </div>
 <script>

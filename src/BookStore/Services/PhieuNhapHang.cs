@@ -10,6 +10,7 @@ namespace BookStore.Services
     public partial class BookStoreData
     {
         #region PhieuNhapHang
+
         public IQueryable<PhieuNhapHang> GetPhieuNhapHang(string trangThai)
         {
             string sortOrder = null;
@@ -65,7 +66,7 @@ namespace BookStore.Services
             {
                 property.PhieuNhapHangId = phieuNhapHang.Id;
 
-                phieuNhapHang.TongTien = property.SoLuong * property.GiaNhap;
+                phieuNhapHang.TongTien += property.SoLuong * property.GiaNhap;
             }
 
             await _context.ChiTietPhieuNhapHang.AddRangeAsync(properties);
@@ -121,7 +122,7 @@ namespace BookStore.Services
                 .ThenInclude(m => m.HangHoa)
                 .Include(m => m.TrangThai)
                 .Where(m => m.TrangThai.Loai == "PhieuNhapHang"
-                && (m.TrangThai.VietTat != "Recived" ||
+                && (m.TrangThai.VietTat != "Recived" &&
                 m.TrangThai.VietTat != "PaidRecived"))
                 .Include(m => m.NhanVien);
 
@@ -139,10 +140,11 @@ namespace BookStore.Services
         {
             var phieuNhapHang = await _context.PhieuNhapHang
                 .Include(m => m.TrangThai)
+                .Include(m => m.ChiTietPhieuNhapHang)
                 .Where(m => m.TrangThai.Loai == "PhieuNhapHang")
                 .SingleOrDefaultAsync(m => m.Id == id);
 
-            if (phieuNhapHang.TrangThai.VietTat != "Paid" ||
+            if (phieuNhapHang.TrangThai.VietTat != "Paid" &&
                 phieuNhapHang.TrangThai.VietTat != "PaidRecived")
             {
                 if (phieuNhapHang.TrangThai.VietTat == "Recived")
@@ -170,10 +172,11 @@ namespace BookStore.Services
         {
             var phieuNhapHang = await _context.PhieuNhapHang
                 .Include(m => m.TrangThai)
+                .Include(m => m.ChiTietPhieuNhapHang)
                 .Where(m => m.TrangThai.Loai == "PhieuNhapHang")
                 .SingleOrDefaultAsync(m => m.Id == id);
 
-            if (phieuNhapHang.TrangThai.VietTat != "Recived" ||
+            if (phieuNhapHang.TrangThai.VietTat != "Recived" &&
                 phieuNhapHang.TrangThai.VietTat != "PaidRecived")
             {
                 if (phieuNhapHang.TrangThai.VietTat == "Paid")
@@ -187,6 +190,18 @@ namespace BookStore.Services
                             m => m.VietTat == "Recived" &&
                             m.Loai == "PhieuNhapHang")).Id;
 
+                foreach (var item in phieuNhapHang.ChiTietPhieuNhapHang)
+                {
+                    HangHoa hangHoa = await _context.HangHoa
+                        .SingleOrDefaultAsync(m => m.Id == item.HangHoaId);
+
+                    hangHoa.TonKho += item.SoLuong;
+
+                    _context.HangHoa.Attach(hangHoa);
+                    _context.Entry(hangHoa)
+                        .Property(m => m.TonKho).IsModified = true;
+                }
+
                 _context.PhieuNhapHang.Attach(phieuNhapHang);
                 _context.Entry(phieuNhapHang)
                     .Property(m => m.TrangThaiId).IsModified = true;
@@ -196,6 +211,7 @@ namespace BookStore.Services
 
             return await _context.SaveChangesAsync();
         }
-        #endregion
+
+        #endregion PhieuNhapHang
     }
 }

@@ -223,6 +223,10 @@ namespace BookStore.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.ImageUrl)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
                 entity.Property(e => e.TrangThaiId).HasColumnName("TrangThaiID");
 
                 entity.HasOne(d => d.LoaiHangHoa)

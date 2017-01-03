@@ -4,20 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BookStore</title>
-    
+
     <environment names="Development">
         <link rel="stylesheet" href="~/css/site.min.css" />
         <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css" />
-        <link rel="stylesheet" href="~/css/site.css" />        
+        <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/KhachHang.css" />
         <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="~/lib/semantic/dist/semantic.min.js"></script>
         <script src="~/js/site.js"></script>
-        
     </environment>
     <environment names="Staging,Production">
         <!--stating environment-->
-
     </environment>
     @RenderSection("Additional", false)
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
@@ -45,11 +43,10 @@
         <a class="item" asp-controller="HangHoa" asp-action="Index">
             Hàng Hóa
         </a>
-        <a class="item" asp-controller="" asp-action="">
+        <a class="item" asp-controller="BaoCao" asp-action="Index">
             Báo Cáo
-        </a>        
+        </a>
     </div>
-
 
     <div class="pusher">
         <div class="ui grid container">
@@ -74,7 +71,7 @@
                 <a class="item" asp-controller="HangHoa" asp-action="Index">
                     Hàng Hóa
                 </a>
-                <a class="item" asp-controller="" asp-action="">
+                <a class="item" asp-controller="BaoCao" asp-action="Index">
                     Báo Cáo
                 </a>
                 <a class="item" asp-controller="Admin" asp-action="Index">
@@ -93,13 +90,10 @@
                     </div>
                 </div>
 
-                @RenderSection("menu",false)
+                @RenderSection("menu", false)
                 @RenderBody()
-
             </div>
-
         </div>
     </div>
-
 </body>
 </html>

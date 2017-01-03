@@ -130,7 +130,7 @@
     <value>Vui lòng kiểm tra lại.</value>
   </data>
   <data name="DefaultErrorHeader" xml:space="preserve">
-    <value>Đã có lỗi xảy ra</value>
+    <value>Thất bại</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Xóa</value>
@@ -272,5 +272,38 @@
   </data>
   <data name="PhieuChiNhapHang" xml:space="preserve">
     <value>Phiếu chi nhập hàng</value>
+  </data>
+  <data name="PhieuChiNhanHang" xml:space="preserve">
+    <value>Phiếu chi nhập hàng</value>
+  </data>
+  <data name="BaoCao" xml:space="preserve">
+    <value>Báo cáo</value>
+  </data>
+  <data name="BaoCaoTonKho" xml:space="preserve">
+    <value>Báo cáo tồn kho</value>
+  </data>
+  <data name="CurrentPrice" xml:space="preserve">
+    <value>Giá hiện tại</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>Đến ngày</value>
+  </data>
+  <data name="ValueInventory" xml:space="preserve">
+    <value>Giá trị tồn kho</value>
+  </data>
+  <data name="TotalInventory" xml:space="preserve">
+    <value>Tổng tồn kho</value>
+  </data>
+  <data name="TotalValueInventory" xml:space="preserve">
+    <value>Tổng giá trị tồn kho</value>
+  </data>
+  <data name="EditImage" xml:space="preserve">
+    <value>Cập nhật ảnh</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Hình ảnh</value>
   </data>
 </root>

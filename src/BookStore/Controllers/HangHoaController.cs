@@ -1,16 +1,20 @@
-﻿using System;
+﻿using BookStore.Models;
+using BookStore.Resources;
+using BookStore.Services;
+using BookStore.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Net.Http.Headers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using BookStore.Services;
-using Microsoft.Extensions.Localization;
-using BookStore.Models;
-using Microsoft.EntityFrameworkCore;
-using BookStore.ViewModels;
-using Microsoft.AspNetCore.Mvc.Localization;
-using BookStore.Resources;
-using Microsoft.AspNetCore.Routing;
 
 namespace BookStore.Controllers
 {
@@ -19,19 +23,23 @@ namespace BookStore.Controllers
     {
         private readonly IBookStoreData _bookStoreData = null;
         private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+        private IHostingEnvironment _environment;
 
         private string controller;
         private string action;
 
         public HangHoaController(
             IBookStoreData bookStoreData,
-            IStringLocalizer<SharedResource> sharedLocalizer)
+            IStringLocalizer<SharedResource> sharedLocalizer,
+            IHostingEnvironment environment)
         {
             _bookStoreData = bookStoreData;
             _sharedLocalizer = sharedLocalizer;
+            _environment = environment;
         }
 
         #region Index
+
         public async Task<IActionResult> Index(int? page, int? pageSize)
         {
             AddInfoToViewData();
@@ -39,7 +47,7 @@ namespace BookStore.Controllers
             try
             {
                 var result = await NonamePaginatedList<HangHoa>.CreateAsync(
-                    _bookStoreData.GetHangHoa(null, false), page ?? 1, pageSize ?? 10);
+                    _bookStoreData.GetHangHoa(null, null), page ?? 1, pageSize ?? 10);
 
                 return View(result);
             }
@@ -57,7 +65,7 @@ namespace BookStore.Controllers
             {
                 SearchResult result = new SearchResult();
                 List<HangHoa> content = await _bookStoreData
-                    .GetHangHoa(search, true).ToListAsync();
+                    .GetHangHoa(search, "Use").ToListAsync();
 
                 foreach (var i in content)
                     result.Results.Add(new
@@ -79,9 +87,11 @@ namespace BookStore.Controllers
                 return null;
             }
         }
-        #endregion
+
+        #endregion Index
 
         #region Create
+
         [Route("Create")]
         public IActionResult Create(bool? modal, bool? redirect)
         {
@@ -152,9 +162,11 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Create
 
         #region Details
+
         [Route("Details")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -167,9 +179,11 @@ namespace BookStore.Controllers
         {
             return await RUD(id, true, false);
         }
-        #endregion
+
+        #endregion Details
 
         #region Edit
+
         [Route("Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -244,9 +258,11 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Edit
 
         #region Delete
+
         [Route("Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -301,9 +317,96 @@ namespace BookStore.Controllers
 
             return Json(message);
         }
-        #endregion
+
+        #endregion Delete
 
         #region Other
+
+        [Route("UploadAjax")]
+        [HttpPost]
+        public async Task<IActionResult> UploadAjax(int? id)
+        {
+            Message message = new Message();
+
+            if (id == null)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer["NotFound"];
+            }
+
+            try
+            {
+                HangHoa hangHoa = await _bookStoreData.GetHangHoaById(id);
+
+                hangHoa.TrangThai =
+                    await _bookStoreData.GetTrangThaiById(hangHoa.TrangThaiId);
+
+                if (hangHoa.TrangThai.Loai != "HangHoa")
+                    throw new Exception("Invalid");
+
+                if (hangHoa == null)
+                {
+                    message.Type = MessageType.Error;
+                    message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                    message.Content = _sharedLocalizer["NotFound"];
+                }
+
+                Random random = new Random();
+                var file = Request.Form.Files[0];
+                string temp = ContentDispositionHeaderValue
+                            .Parse(file.ContentDisposition)
+                            .FileName
+                            .Trim('"');
+
+                string fileName = new string(
+                    Enumerable.Repeat("abcdefghijklmnopqrstuvwxyz0123456789", 50)
+                    .Select(s => s[random.Next(s.Length)]).ToArray())
+                    + temp;
+                string fullFileName = _environment.WebRootPath + $@"\uploads\{fileName}";
+
+                while (System.IO.File.Exists(fullFileName))
+                {
+                    fileName = new string(
+                    Enumerable.Repeat("abcdefghijklmnopqrstuvwxyz0123456789", 50)
+                    .Select(s => s[random.Next(s.Length)]).ToArray())
+                    + temp;
+                    fullFileName = _environment.WebRootPath + $@"\uploads\{fileName}";
+                }
+
+                if (hangHoa.ImageUrl != null)
+                    System.IO.File.Delete(
+                        _environment.WebRootPath + hangHoa.ImageUrl);
+
+                using (FileStream fs = System.IO.File.Create(fullFileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+
+                hangHoa.ImageUrl = $@"\uploads\{fileName}";
+
+                await _bookStoreData.UpdateHangHoa(hangHoa, hangHoa.ChiTietHangHoa);
+
+                message.Results["Reload"] = true;
+
+                message.Type = MessageType.Success;
+                message.Header = _sharedLocalizer["Success"];
+                message.Content = string.Format(
+                    "{0} {1}",
+                    _sharedLocalizer["EditImage"],
+                    _sharedLocalizer["Success"].Value.ToLower());
+            }
+            catch (Exception ex)
+            {
+                message.Type = MessageType.Error;
+                message.Header = _sharedLocalizer["DefaultErrorHeader"];
+                message.Content = _sharedLocalizer[ex.GetType().FullName];
+            }
+
+            return Json(message);
+        }
+
         private IActionResult C(bool? modal, bool? redirect)
         {
             AddInfoToViewData();
@@ -417,6 +520,7 @@ namespace BookStore.Controllers
                 "~/Views/Shared/{0}/_{1}Partial.cshtml",
                 controller, action);
         }
-        #endregion
+
+        #endregion Other
     }
 }

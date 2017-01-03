@@ -14,146 +14,253 @@ namespace BookStore.Services
     public interface IBookStoreData
     {
         #region TrangThai
+
         IQueryable<TrangThai> GetTrangThai(string vietTat, string loai);
+
         bool TrangThaiExists(int? id);
+
         Task<int> AddTrangThai(TrangThai trangThai);
+
         Task<TrangThai> GetTrangThaiById(int? id);
+
         Task<int> UpdateTrangThai(TrangThai trangThai);
+
         Task<int> DeleteTrangThai(int id);
-        #endregion
+
+        #endregion TrangThai
 
         #region NhaCungCap
+
         IQueryable<NhaCungCap> GetNhaCungCap();
+
         bool NhaCungCapExists(int? id);
+
         Task<int> AddNhaCungCap(NhaCungCap nhaCungCap);
+
         Task<NhaCungCap> GetNhaCungCapById(int? id);
+
         Task<int> UpdateNhaCungCap(NhaCungCap nhaCungCap);
+
         Task<int> DeleteNhaCungCap(int id);
-        #endregion
+
+        #endregion NhaCungCap
 
         #region NhanHieu
+
         IQueryable<NhanHieu> GetNhanHieu();
+
         bool NhanHieuExists(int? id);
+
         Task<int> AddNhanHieu(NhanHieu nhanHieu);
+
         Task<NhanHieu> GetNhanHieuById(int? id);
+
         Task<int> UpdateNhanHieu(NhanHieu nhanHieu);
+
         Task<int> DeleteNhanHieu(int id);
-        #endregion
+
+        #endregion NhanHieu
 
         #region LoaiHangHoa
+
         IQueryable<LoaiHangHoa> GetLoaiHangHoa();
+
         Task<LoaiHangHoa> GetLoaiHangHoaById(int? id);
+
         bool LoaiHangHoaExists(int? id);
+
         Task<int> AddLoaiHangHoa(LoaiHangHoa loaiHangHoa);
+
         Task<int> UpdateLoaiHangHoa(LoaiHangHoa loaiHangHoa);
+
         Task<int> DeleteLoaiHangHoa(int id);
-        #endregion
+
+        #endregion LoaiHangHoa
 
         #region ThuocTinhHangHoa
+
         IQueryable<ThuocTinhHangHoa> GetThuocTinhHangHoa(int? loaiHangHoaId);
+
         bool ThuocTinhHangHoaExists(int? id);
+
         Task<int> AddThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu);
+
         Task<ThuocTinhHangHoa> GetThuocTinhHangHoaById(int? id);
+
         Task<int> UpdateThuocTinhHangHoa(ThuocTinhHangHoa nhanHieu);
+
         Task<int> DeleteThuocTinhHangHoa(int id);
-        #endregion
+
+        #endregion ThuocTinhHangHoa
 
         #region ChiTietHangHoa
+
         IQueryable<ChiTietHangHoa> GetChiTietHangHoa(int? hangHoaId);
+
         bool ChiTietHangHoaExists(int? id);
+
         Task<int> AddChiTietHangHoa(ChiTietHangHoa chiTietHangHoa);
+
         Task<ChiTietHangHoa> GetChiTietHangHoaById(int? id);
+
         Task<int> UpdateChiTietHangHoa(ChiTietHangHoa chiTietHangHoa);
+
         Task<int> DeleteChiTietHangHoa(int id);
-        #endregion
+
+        #endregion ChiTietHangHoa
 
         #region HangHoa
-        IQueryable<HangHoa> GetHangHoa(string search, bool use);
+
+        IQueryable<HangHoa> GetHangHoa(string search, string state);
+
         bool HangHoaExists(int? id);
+
         Task<int> AddHangHoa(HangHoa hangHoa,
             ICollection<ChiTietHangHoa> properties);
+
         Task<HangHoa> GetHangHoaById(int? id);
+
         Task<int> UpdateHangHoa(HangHoa hangHoa,
            ICollection<ChiTietHangHoa> properties);
+
         Task<int> DeleteHangHoa(int id);
-        #endregion
+
+        #endregion HangHoa
 
         #region PhieuNhapHang
+
         IQueryable<PhieuNhapHang> GetPhieuNhapHang(string trangThai);
+
         bool PhieuNhapHangExists(int? id);
+
         Task<int> AddPhieuNhapHang(PhieuNhapHang phieuNhapHang,
             ICollection<ChiTietPhieuNhapHang> properties);
+
         Task<PhieuNhapHang> GetPhieuNhapHangById(int? id);
+
         Task<int> UpdatePhieuNhapHang(PhieuNhapHang phieuNhapHang,
            ICollection<ChiTietPhieuNhapHang> properties);
+
         Task<int> DeletePhieuNhapHang(int id);
+
         IQueryable<PhieuNhapHang> GetUnrecivedPhieuNhapHang();
+
         Task<int> PayPhieuNhapHang(int id);
+
         Task<int> RecivePhieuNhapHang(int id);
-        #endregion
+
+        #endregion PhieuNhapHang
 
         #region ChiTietPhieuNhapHang
+
         IQueryable<ChiTietPhieuNhapHang> GetChiTietPhieuNhapHang(int? phieuNhapHangId);
+
         bool ChiTietPhieuNhapHangExists(int? id);
+
         Task<int> AddChiTietPhieuNhapHang(ChiTietPhieuNhapHang chiTietPhieuNhapHang);
+
         Task<ChiTietPhieuNhapHang> GetChiTietPhieuNhapHangById(int? id);
+
         Task<int> UpdateChiTietPhieuNhapHang(ChiTietPhieuNhapHang chiTietPhieuNhapHang);
+
         Task<int> DeleteChiTietPhieuNhapHang(int id);
-        #endregion
+
+        #endregion ChiTietPhieuNhapHang
 
         #region PhieuKiemKho
+
         IQueryable<PhieuKiemKho> GetPhieuKiemKho();
+
         bool PhieuKiemKhoExists(int? id);
+
         Task<int> AddPhieuKiemKho(PhieuKiemKho phieuKiemKho,
             ICollection<ChiTietPhieuKiemKho> properties);
+
         Task<PhieuKiemKho> GetPhieuKiemKhoById(int? id);
+
         Task<int> UpdatePhieuKiemKho(PhieuKiemKho phieuKiemKho,
            ICollection<ChiTietPhieuKiemKho> properties);
+
         Task<int> DeletePhieuKiemKho(int id);
-        #endregion
+
+        #endregion PhieuKiemKho
 
         #region ChiTietPhieuKiemKho
+
         IQueryable<ChiTietPhieuKiemKho> GetChiTietPhieuKiemKho(int? phieuKiemKhoId);
+
         bool ChiTietPhieuKiemKhoExists(int? id);
+
         Task<int> AddChiTietPhieuKiemKho(ChiTietPhieuKiemKho chiTietPhieuKiemKho);
+
         Task<ChiTietPhieuKiemKho> GetChiTietPhieuKiemKhoById(int? id);
+
         Task<int> UpdateChiTietPhieuKiemKho(ChiTietPhieuKiemKho chiTietPhieuKiemKho);
+
         Task<int> DeleteChiTietPhieuKiemKho(int id);
-        #endregion
+
+        #endregion ChiTietPhieuKiemKho
 
         #region PhieuNhanHang
+
         IQueryable<PhieuNhanHang> GetPhieuNhanHang();
+
         bool PhieuNhanHangExists(int? id);
+
         Task<int> AddPhieuNhanHang(PhieuNhanHang phieuNhanHang);
+
         Task<PhieuNhanHang> GetPhieuNhanHangById(int? id);
+
         Task<int> UpdatePhieuNhanHang(PhieuNhanHang phieuNhanHang);
+
         Task<int> DeletePhieuNhanHang(int id);
-        #endregion
+
+        #endregion PhieuNhanHang
 
         #region PhieuChiNhapHang
+
         IQueryable<PhieuChi> GetPhieuChiNhapHang();
+
         bool PhieuChiNhapHangExists(int? id);
+
         Task<int> AddPhieuChiNhapHang(PhieuChi phieuChi);
+
         Task<PhieuChi> GetPhieuChiNhapHangById(int? id);
+
         Task<int> UpdatePhieuChiNhapHang(PhieuChi phieuChi);
+
         Task<int> DeletePhieuChiNhapHang(int id);
-        #endregion
+
+        #endregion PhieuChiNhapHang
 
         void Commit();
+
         IQueryable<CustomerInfoViewModel> GetAllKhachHang();
+
         int CreateCustomer(KhachHang customer);
+
         IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang();
+
         string GetTenLoaiKhachHang(int id);
+
         CustomerInfoViewModel GetKhachHangInfo(int id);
+
         KhachHang GetKhachHang(int id);
+
         Task<CustomerTransactionsViewModel> GetCustomerTransactionsDetails(int id);
+
         Task<StatisticsViewModel> GetStatisticsInformation();
+
         Task<List<Role>> GetListRoles();
+
         Task<List<Staff>> GetListStaffs();
+
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<ProviderFilterResults> FindProvider(string value);
         Task<ProductFilterResults> FindProduct(string val);
+
         Task<ProductPriceViewModel> GetPrice(int id, int type);
+
         Task<bool> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);        
         IQueryable<DonHang> GetAllDonHang();
@@ -167,13 +274,21 @@ namespace BookStore.Services
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
+
         Task<CustomerFilterViewModel> GetCustomerById(int id);
+
         Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
+
         Task<List<FeedsViewModel>> GetFeeds(int take);
+
         Task<TransactionStatisticsViewModel> GetTransactionStatistics();
+
         Task<CustomerStatisticsViewModel> GetCustomerStatistics();
+
         Task<ProductStatisticViewModel> GetProductStatistics();
+
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
+
         Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
 
         Task<Staff> GetStaffByUserName(string userName);
