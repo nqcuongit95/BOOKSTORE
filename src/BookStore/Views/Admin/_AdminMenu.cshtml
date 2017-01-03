@@ -1,4 +1,21 @@
-﻿
+﻿@model string
+
+@{ 
+    string activeIndex = "", activeRole = "", activeCreate = "";
+
+    if (Model == "Index")
+    {
+        activeIndex = "active";
+    }
+    else if (Model == "Role")
+    {
+        activeRole = "active";
+    }
+    else
+    {
+        activeCreate = "active";
+    }
+}
 
 <div class="ui secondary pointing fluid menu">
     <h2 class="ui header">Admin</h2>
@@ -11,13 +28,13 @@
                 </a>
             </div>
         </div>
-        <a class="ui active item" asp-action="Index">
+        <a class="ui @activeIndex item" asp-action="Index">
             Tài khoản
         </a>
-        <a class="ui item" asp-action="Roles">
+        <a class="ui @activeRole item" asp-action="Roles">
             Quyền
         </a>
-        <a class="ui item" asp-action="CreateUser">
+        <a class="ui @activeCreate item" asp-action="CreateUser">
             Thêm mới
         </a>        
     </div>

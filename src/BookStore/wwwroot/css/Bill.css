@@ -1,0 +1,15 @@
+﻿
+.content.bill{
+
+    font-family: bookstrore-gdi,Arial,Helvetica,sans-serif !important;
+    font-size: 17px !important;
+}
+
+
+
+@media print{
+    
+    .actions.bill, .header.bill  {        
+        display: none !important;
+    }    
+}

@@ -4,6 +4,7 @@ using BookStore.Models;
 using BookStore.ViewModels;
 using BookStore.ViewModels.Customer;
 using BookStore.ViewModels.Dashboard;
+using BookStore.ViewModels.Sale;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -252,6 +253,7 @@ namespace BookStore.Services
         Task<StatisticsViewModel> GetStatisticsInformation();
 
         Task<List<Role>> GetListRoles();
+        IQueryable<Staff> GetListStaffs();
 
         Task<List<Staff>> GetListStaffs();
 
@@ -273,8 +275,9 @@ namespace BookStore.Services
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
+        Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
+            List<ProductBuyingDetailsViewModel> productDetails);       
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
-
         Task<CustomerFilterViewModel> GetCustomerById(int id);
 
         Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
@@ -290,7 +293,6 @@ namespace BookStore.Services
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
 
         Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
-
         Task<Staff> GetStaffByUserName(string userName);
         int TaoDonHang(DonHang donhang);
         void TaoPhieuThu(PhieuThu phieuthu);
@@ -316,5 +318,6 @@ namespace BookStore.Services
         NhaCungCap findProviderByPhieuNhap(int phieuID);
         KhachHang findCustomerByPhieuTra(int donhangId);
         PhieuTraHang findNewPhieuTraHang();
+        Task<BillViewModel> GetBill(int id);
     }
 }

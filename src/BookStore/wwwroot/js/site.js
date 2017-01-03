@@ -1,5 +1,18 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
+    
+    //progress bar
+    $('.ui.progress').progress({
+        duration: 400,
+        total: 100,
+        autoSuccess: false,
+        onChange: function (percent, value, total) {
+            if (value == total) {                
+                $(this).transition();
+            }
+        }
+    });
+
     var currentDate = new Date();
 
     //responsive sidebar menu
@@ -32,6 +45,6 @@ $(document).ready(function () {
 
     function getPosition(string, subString, index) {
         return string.split(subString, index).join(subString).length;
-    }
+    }   
 });
 

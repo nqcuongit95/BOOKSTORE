@@ -1,0 +1,111 @@
+﻿@model EditUserViewModel
+
+<div class="header">
+    Cập nhật Nhân Viên
+</div>
+<div class="content">
+    <form class="ui large form"
+          method="post"
+          asp-action="EditUser"
+          asp-route-id=""
+          asp-antiforgery="true"
+          id="update-form">
+        <div class="two fields">
+            <div class="field">
+                <label asp-for="FullName"></label>
+                <div class="ui left icon labeled input">
+                    <input type="text" asp-for="FullName"
+                           placeholder="Họ tên"
+                           data-validate="valid-fullname"
+                           value="@Model.FullName">
+                    <i class="student icon"></i>
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label asp-for="@Model.Phone"></label>
+                <div class="ui left icon labeled input">
+                    <input type="text" asp-for="@Model.Phone"
+                           placeholder="Số điện thoại"
+                           data-validate="valid-phone"
+                           value="@Model.Phone">
+                    <i class="call icon"></i>
+                    <div class="ui corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field">
+            <label asp-for="Username"></label>
+            <div class="ui left icon labeled input">
+                <input type="text" asp-for="@Model.Username"
+                       placeholder="Tài khoản"
+                       data-validate="valid-username"
+                       value="@Model.Username">
+                <i class="user icon"></i>
+                <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="@Model.Password"></label>
+            <div class="ui left icon labeled input">
+                <input type="password" asp-for="@Model.Password"
+                       placeholder="Mật khẩu"
+                       data-validate="valid-password">
+                <i class="lock icon"></i>               
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="@Model.ConfirmPassword"></label>
+            <div class="ui left icon labeled input">
+                <input type="password" asp-for="@Model.ConfirmPassword"
+                       placeholder="Xác nhận mật khẩu"
+                       data-validate="valid-confirm-password">
+                <i class="lock icon"></i>                
+            </div>
+        </div>
+        <input type="hidden" asp-for="ID" value="@Model.ID" />
+        <div class="inline fields">
+            <label>Chọn quyền: </label>
+            @foreach (var role in Model.Roles)
+            {
+                var isCheck = Model.AssignedRole == role ? "checked" : "";
+                <div class="inline field">
+                    <div class="ui radio checkbox @isCheck">
+                        <input type="radio"
+                               asp-for="@Model.AssignedRole"
+                               value="@role"
+                               tabindex="0"                              
+                               class="hidden">
+                        <label>@role</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</div>
+
+<div class="actions">
+    <div class="ui blue button left floated" id="reset-btn">
+        Mặc định
+    </div>
+    <div class="ui green labeled icon submit button" id="submit-btn">
+        <i class="checkmark icon"></i> Cập nhật
+    </div>
+    <div class="ui cancel button">Quay Lại</div>
+</div>
+
+<script>
+
+    var redirectUrl = '@Url.Action("Index","Admin")';
+
+</script>
+
+<script src="~/js/Admin/EditUser.js"></script>

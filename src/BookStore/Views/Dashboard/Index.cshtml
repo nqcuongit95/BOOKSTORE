@@ -5,14 +5,11 @@
 
 }
 
-<div class="row equal width">
+<div class="row">
     <div class="column">
-        <h2 class="ui header">Tổng Quan</h2>
-    </div>
-
-    <div class="column">
-
-    </div>
+        <h2 class="ui right floated header">@DateTime.Now.ToString("dd/MM/yyyy")</h2>
+        <h2 class="ui left floated header">Tổng Quan</h2>
+    </div>    
 </div>
 
 
@@ -32,8 +29,14 @@
         @await Component.InvokeAsync("RevenueGraph")*@
 
     <div class="column">
-        <div class="ui secondary pointing fluid menu">
-            <h4 class="ui header">Khách Hàng</h4>
+        <div class="ui secondary pointing fluid menu"
+             id="customer-register">
+            <h4 class="ui header">
+                <i class="line chart icon"></i>
+                <div class="content">
+                    Khách Hàng
+                </div>
+            </h4>            
             <div class="right menu">
                 <a class="ui active item" 
                    asp-action="CustomerRegisterGraph"
@@ -58,7 +61,12 @@
     <div class="column">
         <div class="ui secondary pointing fluid menu"
               id="best-selling-item">
-            <h4 class="ui header">Mặt hàng bán chạy</h4>
+            <h4 class="ui header">
+                <i class="bar chart icon"></i>
+                <div class="content">
+                    Mặt hàng bán chạy
+                </div>
+            </h4>            
             <div class="right menu">
                 <a class="ui item" 
                    asp-action="BestSellingGoodsGraph"
@@ -84,8 +92,13 @@
 
 <div class="row">
     <div class="five wide column">
-        <div class="ui secondary pointing fluid menu">
-            <h4 class="ui header">Hoạt động gần đây</h4>
+        <div class="ui secondary pointing fluid menu">            
+            <h4 class="ui header">
+                <i class="alarm outline icon"></i>
+                <div class="content">
+                    Hoạt động gần đây
+                </div>
+            </h4>            
         </div>
         <div class="ui loading green segment"
              style="height: 460px;"
@@ -94,9 +107,14 @@
         </div>
     </div>
     <div class="eleven wide column">
-        <div class="ui secondary pointing fluid menu">
-            <h4 class="ui header">Doanh thu</h4>
-
+        <div class="ui secondary pointing fluid menu"
+             id="revenue-graph">            
+            <h4 class="ui header">
+                <i class="line chart icon"></i>
+                <div class="content">
+                    Doanh thu
+                </div>
+            </h4>
             <div class="right menu">
                 <a class="ui active item"
                    asp-action="RevenueStatistic"

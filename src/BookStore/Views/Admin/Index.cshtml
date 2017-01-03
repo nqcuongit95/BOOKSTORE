@@ -1,11 +1,11 @@
-﻿@model List<Staff>
+﻿@model PaginatedList<Staff>
 
 @{
     ViewData["Title"] = "Admin";
 
 }
 
-@Html.Partial("_AdminMenu");
+@Html.Partial("_AdminMenu","Index")
 
 <div class="row">
     <div class="eleven wide column">
@@ -15,44 +15,26 @@
 </div>
 <div class="row">
     <div class="eleven wide column">
-        <table class="ui very basic fixed table">
-            <thead>
-                <tr>
-                    <th>Tên Nhân Viên</th>
-                    <th>Tên Tài Khoản</th>
-                    <th>Ngày Tạo</th>
-                    <th class="right aligned">Hành Động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td>@user.FullName</td>
-                        <td>@user.UserName</td>
-                        <td>@user.DateCreate</td>
-                        <td class="right aligned">
-                            <div class="ui compact menu">
-                                <div class="icon link item view"
-                                     id="@user.Id"
-                                     data-title="Xem">
-                                    <i class="file text outline icon"></i>
-                                </div>
-                                <div class="icon link item delete"
-                                     data-title="Xóa"
-                                     id="@user.Id">
-                                    <i class="remove icon"></i>
-                                </div>
-                                <div class="icon link item update"
-                                     data-title="Sửa"
-                                     id="@user.Id">
-                                    <i class="edit icon"></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="ui inverted active dimmer" id="first-load-loader">
+            <div class="ui loader"></div>
+        </div>
+        <div id="user-segment">
+
+        </div>
     </div>
 </div>
+
+<div class="ui tiny modal additional-modal">
+</div>
+<div class="ui tiny modal edit-modal">
+</div>
+
+<script>
+    var urlListStaff = '@Url.Action("ListUser", "Admin")';
+    var viewUrl = '@Url.Action("ViewUser","Admin")';
+    var deleteUrl = '@Url.Action("DeleteUser", "Admin")';
+    var editUrl = '@Url.Action("EditUser", "Admin")';
+    var confirmDeleteUrl = '@Url.Action("ConfirmDeleteUser", "Admin")';
+</script>
+
+<script src="~/js/Admin/Admin.js"></script>

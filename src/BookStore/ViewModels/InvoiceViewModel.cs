@@ -14,6 +14,7 @@ namespace BookStore.ViewModels
         public decimal TotalValue { get; set; }
         public decimal CustomerPaid { get; set; }
         public DateTime DateCreate { get; set; }
+        public decimal? Discount { get; set; }
 
     }
 }

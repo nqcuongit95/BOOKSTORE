@@ -1,0 +1,141 @@
+﻿@model BillViewModel
+
+@{
+    var month = DateTime.Now.ToString("MM");
+    var day = DateTime.Now.ToString("dd");
+    var prefix = "HD" + day + month;
+}
+
+
+<div class="header bill">Thông tin đơn hàng</div>
+<div class="content bill">
+    <div class="ui justified container">
+        <div class="ui grid">
+            <div class="row">
+                <div class="column">
+                    <div class="ui center aligned header">ĐƠN HÀNG</div>
+                </div>
+            </div>
+            <div class="two column row"
+                 style="padding-bottom: 5px;">
+                <div class="column">
+                    <b>Mã hóa đơn: @prefix@Model.ID</b>
+                </div>
+                <div class="column right aligned">
+                    <p><b>Ngày lập:</b> @Model.DateCreate.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                </div>
+            </div>
+            <div class="two column row"
+                 style="padding-top: 0;">
+                <div class="column">
+                    @if (Model.Customer.ID != 1)
+                    {
+                        <p><b>Khách hàng:</b> @Model.Customer.Name - @Model.Customer.Phone</p>
+                    }
+                    else
+                    {
+                        <p><b>Khách hàng:</b> @Model.Customer.Name</p>
+                    }
+                </div>
+                <div class="column right aligned">
+                    <p><b>Thu ngân:</b> @Model.Staff</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <table class="ui very basic table">
+                        <thead>
+                            <tr>
+                                <th class="eight wide">Tên hàng hóa</th>
+                                <th class="two wide center aligned">Số lượng</th>
+                                <th class="three wide right aligned">Đơn giá</th>
+                                <th class="three wide right aligned">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detail in Model.ProductDetail)
+                            {
+                                <tr>
+                                    <td>@detail.ProductName.ToUpper()</td>
+                                    <td class="center aligned">@detail.Count</td>
+                                    <td class="right aligned">@detail.Price.ToString("N0") đ</td>
+                                    <td class="right aligned">@detail.TotalValue.ToString("N0") đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="row">
+                <div class="nine wide column">
+                    <b>CỬA HÀNG SÁCH - BRILLIANT YOUR FUTURE</b><br />
+                    <p>
+                        303 Lê Lợi, P. Bến Nghé, Quận 1, TP. HCM <br />
+                        <i class="call icon"></i>(08) 3998 9898
+                    </p>                    
+                    <b>Kính chúc quý khách năm mới 2017 <br />An Khang Thịnh Vượng</b>
+                </div>                
+                <div class="seven wide column">
+                    <div class="ui middle aligned list">
+                        <div class="item">
+                            <div class="right floated content">
+                                @Model.TotalValue.ToString("N0") đ
+                            </div>
+                            <div class="content">
+                                <b>Tổng tiền hàng: </b>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="right floated content">
+                                @Model.Discount.ToString("N0") đ
+                            </div>
+                            <div class="content">
+                                <b>Chiết khấu: </b>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="right floated content">
+                                <b>@Model.TotalValueAfterDiscount.ToString("N0") đ</b>
+                            </div>
+                            <div class="content">
+                                <b>Khách phải trả: </b>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="right floated content">
+                                @Model.CustomerPaid.ToString("N0") đ
+                            </div>
+                            <div class="content">
+                                <b>Tiền khách đưa: </b>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="right floated content">
+                                @Model.CustomerChange.ToString("N0") đ
+                            </div>
+                            <div class="content">
+                                <b>Tiền thừa: </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="ui horizontal divider header">
+                Xin chào và hẹp gặp lại quý khách
+            </h4>
+        </div>
+    </div>
+</div>
+<div class="actions bill">
+    <div class="ui green icon labeled button" onclick="window.print()">
+        <i class="print icon"></i>In hóa đơn
+    </div>
+    <div class="ui blue ok icon labeled button">
+        <i class="reply icon"></i>
+        Quay lại
+    </div>
+</div>
+
+<link href="~/css/Bill.css" rel="stylesheet" />

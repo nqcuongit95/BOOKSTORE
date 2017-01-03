@@ -15,3 +15,13 @@
 #customer-table td{
     padding-bottom: 7px;
 }
+
+.discount-value input{
+    width:100px !important; 
+    text-align:right !important;
+}
+
+.discount-value  .dropdown.button{
+    padding: 11px 14px !important;
+}
+

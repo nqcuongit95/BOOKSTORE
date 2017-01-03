@@ -11,16 +11,7 @@
         </div>
     </div>
 </div>
-<div class="actions">    
-    @{
-        if (Model.ExtraAction != null)
-        {
-            <div class="ui @Model.MessageType labeled icon button">
-                <i class="print icon"></i>
-                @Model.ExtraAction
-            </div>
-        }
-    }
+<div class="actions">
     <div class="ui blue cancel button">
         @Model.Button
     </div>

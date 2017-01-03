@@ -50,9 +50,9 @@
     //bind crud event
     $('.item.view').click(function (event) {
 
-        var name = 'unhide';
+        var name = 'file text outline';
         var elem = $(this);
-        activeLoader(elem, 'unhide');
+        activeLoader(elem, 'file text outline');
         var url = viewUrl + "/" + elem.attr('id');
 
         crud(url, ".view-role-modal", elem, name);
@@ -98,11 +98,7 @@
                     modal.html(result);
                     modal.modal('show');
 
-
-                }
-                else {
-
-                }
+                }                
             },
             error: function (xhr, status, error) {
                 deactiveLoader(elem, name);
@@ -119,7 +115,7 @@
 
     function deactiveLoader(elem, str) {
         var icon = $(elem).find('.icon');
-        icon.addClass(str).removeClass('spinner').removeClass('loading')
+        icon.addClass(str).removeClass('spinner').removeClass('loading');
     }
 
     //delete role modal

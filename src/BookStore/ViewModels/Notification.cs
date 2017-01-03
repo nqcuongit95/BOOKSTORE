@@ -12,5 +12,7 @@ namespace BookStore.ViewModels
         public string Icon { get; set; }
         public string Content { get; set; }
         public string Button { get; set; }
+        public string ExtraAction { get; set; }
+        public string ExtraData { get; set; }
     }
 }

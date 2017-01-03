@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookStore.ViewModels.Dashboard;
 using BookStore.ViewModels.Customer;
+using BookStore.ViewModels.Sale;
 
 namespace BookStore.Services
 {
@@ -132,10 +133,10 @@ namespace BookStore.Services
             var totalInvoices = await query.CountAsync();
             var totalValues = await query.SumAsync(inv => inv.TotalValues);
 
-            model.Invoices = query.OrderByDescending(i=>i.Date);
+            model.Invoices = query.OrderByDescending(i => i.Date);
             model.TotalInvoices = totalInvoices;
             model.TotalValues = totalValues;
-            model.TotalValuesFormated = totalValues.ToString("N0");        
+            model.TotalValuesFormated = totalValues.ToString("N0");
 
             return model;
         }
@@ -158,9 +159,9 @@ namespace BookStore.Services
         {
             return await _context.Roles.ToListAsync();
         }
-        public async Task<List<Staff>> GetListStaffs()
+        public IQueryable<Staff> GetListStaffs()
         {
-            return await _context.Users.ToListAsync();
+            return _context.Users;
         }
         public CustomerInfoViewModel findCustomerById(int customerId)
         {
@@ -461,7 +462,7 @@ namespace BookStore.Services
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<bool> AddInvoice(InvoiceViewModel invoice,
+        public async Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails)
         {
             try
@@ -473,7 +474,7 @@ namespace BookStore.Services
 
                     if (product == null || (details.Count > product.TonKho))
                     {
-                        return false;
+                        return new Tuple<bool, int>(false, -1);
                     }
                 }
 
@@ -491,7 +492,8 @@ namespace BookStore.Services
                     NhanVienId = userId,
                     NgayLap = DateTime.Now,
                     TongTien = invoice.TotalValue,
-                    TrangThaiId = statusId
+                    TrangThaiId = statusId,
+                    ChietKhau = invoice.Discount.GetValueOrDefault()
                 };
 
                 await _context.DonHang.AddAsync(invoice_);
@@ -526,7 +528,7 @@ namespace BookStore.Services
                 {
                     var receiptVoucher = new PhieuThu
                     {
-                        
+
                         NgayLap = DateTime.Now,
                         NhanVienId = invoice_.NhanVienId,
                         TongTien = invoice.CustomerPaid >= invoice.TotalValue ?
@@ -539,12 +541,12 @@ namespace BookStore.Services
                 //commit transaction
                 _context.SaveChanges();
 
-                return true;
+                return new Tuple<bool, int>(true, invoice_.Id);
             }
             catch (Exception e)
             {
                 var error = e;
-                return false;
+                return new Tuple<bool, int>(false, -1); ;
             }
         }
 
@@ -627,14 +629,33 @@ namespace BookStore.Services
 
         public async Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id)
         {
-            //var query = from customer in _context.KhachHang
-            //            where customer.Id == id
-            //            join invoice in _context.DonHang
-            //            on customer.Id equals invoice.KhachHangId into b
-            //            join receipt in _context.PhieuThu
-            //            on receipt
-
             var model = new CustomerLiabilitesViewModel();
+
+            var invoices = from invoice in _context.DonHang
+                           where invoice.KhachHangId == id
+                           select new DebtViewModel
+                           {
+                               Id = invoice.Id,
+                               DateCreate = invoice.NgayLap,
+                               Note = "Đơn hàng",
+                               Staff = invoice.NhanVien.FullName,
+                               Value = invoice.TongTien
+                           };
+
+            var receiptVouchers = from receipt in _context.PhieuThu
+                                  where receipt.KhachHangId == id
+                                  select new DebtViewModel
+                                  {
+                                      Id = receipt.Id,
+                                      DateCreate = receipt.NgayLap,
+                                      Note = "Phiếu thu",
+                                      Staff = receipt.NhanVien.FullName,
+                                      Value = -receipt.TongTien
+                                  };
+
+            var result = invoices.Concat(receiptVouchers);
+
+            model.sourceDebts = result;
 
             return model;
         }
@@ -902,6 +923,48 @@ namespace BookStore.Services
         {
             return await _context.Staff
                 .SingleOrDefaultAsync(m => m.UserName == userName);
+        }
+
+        public async Task<BillViewModel> GetBill(int id)
+        {
+            var bill = await _context.DonHang.Where(i => i.Id == id).FirstOrDefaultAsync();
+
+            var billDetails = await _context.ChiTietDonHang.Where(i => i.DonHangId == id)
+                                                           .Select(d => new ProductBuyingDetailsViewModel
+                                                           {
+                                                               ProductName = d.HangHoa.TenHangHoa,
+                                                               Count = d.SoLuong,
+                                                               Price = d.GiaBan,
+                                                               TotalValue = d.SoLuong * d.GiaBan
+                                                           }).ToListAsync();
+
+            var receiptVoucher = await _context.PhieuThu.Where(i => i.DonHangId == id)
+                                                        .OrderByDescending(u => u.NgayLap)
+                                                        .FirstOrDefaultAsync();
+
+            var staff = await _context.Staff.Where(s => s.Id == bill.NhanVienId).FirstAsync();
+            var customer = await _context.KhachHang.Where(c => c.Id == bill.KhachHangId).FirstAsync();
+
+            var result = new BillViewModel
+            {
+                ID = bill.Id.ToString(),
+                Staff = staff.FullName,
+                DateCreate = DateTime.Now,
+                TotalValue = bill.TongTien,
+                Discount = bill.ChietKhau.GetValueOrDefault(),
+                TotalValueAfterDiscount = bill.TongTien - bill.ChietKhau.GetValueOrDefault(),
+                ProductDetail = billDetails
+            };
+
+            result.Customer = new CustomerViewModel
+            {
+                ID = customer.Id,
+                Name = customer.TenKhachHang,
+                Address = customer.DiaChi,
+                Phone = customer.SoDienThoai
+            };
+
+            return result;
         }
     }
 }
