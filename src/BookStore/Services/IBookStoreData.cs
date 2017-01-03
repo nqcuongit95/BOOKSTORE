@@ -253,9 +253,7 @@ namespace BookStore.Services
         Task<StatisticsViewModel> GetStatisticsInformation();
 
         Task<List<Role>> GetListRoles();
-        IQueryable<Staff> GetListStaffs();
-
-        Task<List<Staff>> GetListStaffs();
+        IQueryable<Staff> GetListStaffQueryable();        
 
         Task<CustomerFilterResults> FindCustomer(string value);
         Task<ProviderFilterResults> FindProvider(string value);
@@ -263,8 +261,7 @@ namespace BookStore.Services
 
         Task<ProductPriceViewModel> GetPrice(int id, int type);
 
-        Task<bool> AddInvoice(InvoiceViewModel invoice,
-            List<ProductBuyingDetailsViewModel> productDetails);        
+              
         IQueryable<DonHang> GetAllDonHang();
         IQueryable<DonHang> GetDonHangWithOutPtra();
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
@@ -292,7 +289,7 @@ namespace BookStore.Services
 
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
 
-        Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id);
+        CustomerLiabilitesViewModel GetCustomerLiabilites(int id);
         Task<Staff> GetStaffByUserName(string userName);
         int TaoDonHang(DonHang donhang);
         void TaoPhieuThu(PhieuThu phieuthu);

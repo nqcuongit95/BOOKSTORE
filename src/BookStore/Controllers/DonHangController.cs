@@ -140,8 +140,8 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateDonHang(decimal TienThu, int ID)
         {
-            try
-            {
+            //try
+            //{
                 var phieuthu = new PhieuThu();
                 phieuthu.DonHangId = ID;
                 phieuthu.NgayLap = DateTime.Now;
@@ -167,18 +167,18 @@ namespace BookStore.Controllers
                     MessageType = "positive",
                 };
                 return PartialView("_Notify", noti);
-            }
-            catch (Exception e)
-            {
-                var noti = new Notification
-                {
-                    Title = "Thất bại",
-                    Content = "Có lỗi xảy ra" + e.Message,
-                    Icon = "remove",
-                    MessageType = "negative",
-                };
-                return PartialView("_Notify", noti);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    var noti = new Notification
+            //    {
+            //        Title = "Thất bại",
+            //        Content = "Có lỗi xảy ra" + e.Message,
+            //        Icon = "remove",
+            //        MessageType = "negative",
+            //    };
+            //    return PartialView("_Notify", noti);
+            //}
         }
         //helper function
         public string FormatDecimalValue(decimal val)

@@ -64,7 +64,7 @@ namespace BookStore.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var staffs = _bookStoreData.GetListStaffs();
+            var staffs = _bookStoreData.GetListStaffQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -524,7 +524,7 @@ namespace BookStore.Controllers
                 };
                 return PartialView("_Notify", noti);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
                 var noti = new Notification

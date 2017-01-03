@@ -16,7 +16,7 @@
 
     <h2 class="ui dividing header">
         @sharedLocalizer["HangHoa"]
-        <span class="ui label black">
+        <span class="ui label">
             @string.Format("{0}{1}",
            sharedLocalizer["HH"],
            Model.Id)
@@ -220,7 +220,6 @@
                         <input asp-for="@properties[i].GiaTri"
                                id="properties[@i].GiaTri"
                                name="properties[@i].GiaTri"
-                               type="number"
                                placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
                     </div>
 

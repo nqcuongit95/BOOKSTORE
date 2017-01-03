@@ -84,11 +84,12 @@ namespace BookStore.Services
             _context.Entry(hangHoa).State = EntityState.Modified;
             _context.Entry(hangHoa).Property("NgayLap").IsModified = false;
 
-            _context.ChiTietHangHoa.RemoveRange(await _context.ChiTietHangHoa
-                .Where(i => i.HangHoaId == hangHoa.Id).ToArrayAsync());
+            _context.ChiTietHangHoa.RemoveRange(_context.ChiTietHangHoa
+                .Where(m => m.HangHoaId == hangHoa.Id));
 
             foreach (var property in properties)
                 property.HangHoaId = hangHoa.Id;
+
             await _context.ChiTietHangHoa.AddRangeAsync(properties);
 
             return await _context.SaveChangesAsync();

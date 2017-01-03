@@ -2,7 +2,7 @@
 using BookStore.Helper;
 using BookStore.Models;
 using BookStore.ViewModels;
-using BookStore.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -159,7 +159,7 @@ namespace BookStore.Services
         {
             return await _context.Roles.ToListAsync();
         }
-        public IQueryable<Staff> GetListStaffs()
+        public IQueryable<Staff> GetListStaffQueryable()
         {
             return _context.Users;
         }
@@ -423,7 +423,8 @@ namespace BookStore.Services
                                  Name = product.TenHangHoa,
                                  RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
                                  WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
-                                 Available = product.TonKho
+                                 Available = product.TonKho,
+                                 ImageUrl = product.ImageUrl
 
                              };
                 var result1 = await query1.ToListAsync();
@@ -438,7 +439,8 @@ namespace BookStore.Services
                             Name = product.TenHangHoa,
                             RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
                             WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
-                            Available = product.TonKho
+                            Available = product.TonKho,
+                            ImageUrl = product.ImageUrl
                         };
 
             var result2 = await query.ToListAsync();
@@ -595,7 +597,8 @@ namespace BookStore.Services
                     Name = product.TenHangHoa,
                     Available = product.TonKho,
                     RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
-                    WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0
+                    WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
+                    ImageUrl = product.ImageUrl
                 };
             }).OrderByDescending(i => i.TotalSold);
 
@@ -627,7 +630,7 @@ namespace BookStore.Services
             return result;
         }
 
-        public async Task<CustomerLiabilitesViewModel> GetCustomerLiabilites(int id)
+        public  CustomerLiabilitesViewModel GetCustomerLiabilites(int id)
         {
             var model = new CustomerLiabilitesViewModel();
 

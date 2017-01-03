@@ -215,7 +215,7 @@ namespace BookStore.Controllers
         public async Task<IActionResult> CustomerLiabilites(int id, int? page,
                                                int? firstShowedPage, int? lastShowedPage)
         {
-            var model = await _bookStoreData.GetCustomerLiabilites(id);
+            var model =  _bookStoreData.GetCustomerLiabilites(id);
             model.CustomerId = id;
 
             

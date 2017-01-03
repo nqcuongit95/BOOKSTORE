@@ -195,17 +195,20 @@
 
         $.each(response.results, function (index, product) {
             var image = '';
+            
             var formatedRetailPrice = numeral(product.retailPrice).format('0,0 $');
-
-            if (product.image !== undefined) {
+            console.log(product.imageUrl);
+            if (product.imageUrl !== null) {
                 image += '<div class="image" style="width: 6em;height: 5em;">'
-                  + ' <img src="' + product.image + '">'
+                  + ' <img src="' + product.imageUrl + '">'
                   + '</div>';
+                
             }
             else {
                 image += '<div class="image" style="width: 6em;height: 5em;">'
                   + ' <img src="' + defaultImageUrl + '">'
                   + '</div>';
+                
             }          
 
             html += '<a class="result">';
