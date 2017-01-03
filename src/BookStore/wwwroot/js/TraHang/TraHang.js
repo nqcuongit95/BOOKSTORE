@@ -88,7 +88,7 @@
     })
     $('#notify-modal').modal({
         onHidden: function () {
-            location.href = "/TraHang/ListDonHang";
+            window.history.back();
         }
     });
     function updatePayment() {
