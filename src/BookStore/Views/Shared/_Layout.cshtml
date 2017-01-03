@@ -47,7 +47,7 @@
         </a>
         <a class="item" asp-controller="" asp-action="">
             Báo Cáo
-        </a>        
+        </a>
     </div>
 
 
@@ -56,32 +56,34 @@
             <div class="bar"></div>
         </div>
         <div class="ui grid container">
-            <div class="ui left fixed vertical menu" id="controller-menu">
+            <div class="ui left fixed vertical inverted menu" id="controller-menu">
                 <div class="item">
                     @await Component.InvokeAsync("LoginLogout")
                 </div>
                 <a class="gray item" asp-controller="Dashboard" asp-action="Index">
-                    Tổng Quan
+                    <span><i class="home icon"></i>TỔNG QUAN</span>
                 </a>
                 <a class="item" asp-controller="Sale" asp-action="Index">
-                    Bán Hàng
-                    <div class="ui label">11</div>
+                    <span><i class="add to cart icon"></i>BÁN HÀNG</span>
                 </a>
                 <a class="item" asp-controller="" asp-action="">
-                    Đơn Hàng
-                    <div class="ui label">22</div>
+                    <span><i class="file text icon"></i>ĐƠN HÀNG</span>
                 </a>
+                @*<a class="item" asp-controller="" asp-action="">
+                        <i class="file text icon"></i>
+                        Đơn Hàng
+                    </a>*@
                 <a class="item" asp-controller="Customer" asp-action="Index">
-                    Khách Hàng
+                    <span><i class="users icon"></i>KHÁCH HÀNG</span>                    
                 </a>
                 <a class="item" asp-controller="HangHoa" asp-action="Index">
-                    Hàng Hóa
+                    <span><i class="database icon"></i>HÀNG HÓA</span>
                 </a>
                 <a class="item" asp-controller="" asp-action="">
-                    Báo Cáo
+                    <span><i class="area chart layout icon"></i>BÁO CÁO</span>
                 </a>
                 <a class="item" asp-controller="Admin" asp-action="Index">
-                    Admin
+                    <span><i class="spy icon"></i>ADMIN</span>
                 </a>
             </div>
 
@@ -96,12 +98,12 @@
                     </div>
                 </div>
 
-                @RenderSection("menu",false)
+                @RenderSection("menu", false)
                 @RenderBody()
 
             </div>
 
         </div>
-    </div>    
+    </div>
 </body>
 </html>

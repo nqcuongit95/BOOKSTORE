@@ -2,16 +2,25 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="header">Hello, @Model !</div>
+    <div class="header">Hello, @Model</div>
     <div class="menu">
-        <a class="item" asp-controller="" asp-action="">Account</a>
-        <a class="item" asp-controller="Account" asp-action="Logout">Sign out</a>
+        <a class="item" asp-controller="" asp-action="">
+            <i class="user icon"></i>
+            Tài khoản
+        </a>
+        <a class="item" asp-controller="Account" asp-action="Logout">
+            <i class="sign out icon"></i>
+            Đăng xuất
+        </a>
     </div>
 }
 else
 {
     <div class="header">Bạn chưa đăng nhập.</div>
     <div class="menu">
-        <a class="item" asp-controller="Account" asp-action="Login">Login</a>        
+        <a class="item" asp-controller="Account" asp-action="Login">
+            <i class="sign in icon"></i>
+            Đăng nhập
+        </a>
     </div>
 }

@@ -25,7 +25,7 @@
     //render product chart
     var bestSellingGoodsChartSegment = $('#best-selling-chart');
 
-    //render customer chart
+    //render product chart
     $.ajax({
         type: "post",
         url: urlBestSellingGoodsChart,
@@ -85,7 +85,7 @@
     })
 
     //handle view by week, month
-    //customer chart
+    //product chart
     $('#best-selling-item a').on('click', function (event) {
 
         event.preventDefault();
@@ -118,4 +118,73 @@
         })
     })
 
+
+    //handle view by week, month
+    //customer chart
+    $('#customer-register a').on('click', function (event) {
+
+        event.preventDefault();
+
+        menuItem = $(this);
+        menuItem.siblings().removeClass('active');
+        menuItem.addClass('active');
+
+        customerRegisterChartSegment.empty();
+        customerRegisterChartSegment.addClass('loading');
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            type: "post",
+            url: url,
+            data: '',
+            //dataType: 'json',
+            success: function (result, status, xhr) {
+                if (status === 'success') {
+
+                    customerRegisterChartSegment.removeClass('loading');
+                    customerRegisterChartSegment.html(result);
+                }
+            },
+            error: function (xhr, status, error) {
+                //go the the fucking hell
+                customerRegisterChartSegment.removeClass('loading');
+            }
+        })
+    });
+
+
+    //handle view by week, month
+    //revenue chart
+    $('#revenue-graph a').on('click', function (event) {
+
+        event.preventDefault();
+
+        menuItem = $(this);
+        menuItem.siblings().removeClass('active');
+        menuItem.addClass('active');
+
+        revenueChart.empty();
+        revenueChart.addClass('loading');
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            type: "post",
+            url: url,
+            data: '',
+            //dataType: 'json',
+            success: function (result, status, xhr) {
+                if (status === 'success') {
+
+                    revenueChart.removeClass('loading');
+                    revenueChart.html(result);
+                }
+            },
+            error: function (xhr, status, error) {
+                //go the the fucking hell
+                revenueChart.removeClass('loading');
+            }
+        })
+    })
 });
