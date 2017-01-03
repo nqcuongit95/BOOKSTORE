@@ -321,8 +321,7 @@ function showMessage(message) {
         title.text(message.header);
         content.text(message.content);
         console.log(message.type);
-        switch (message.type)
-        {
+        switch (message.type) {
             case "success":
                 messageIcon.attr("class", "checkmark icon green");
                 break;

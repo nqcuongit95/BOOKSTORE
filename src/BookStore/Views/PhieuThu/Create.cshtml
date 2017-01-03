@@ -1,0 +1,130 @@
+﻿
+@model PhieuThuViewModel
+@{
+    ViewData["Title"] = "Thêm Phiếu Thu";
+}
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Phiếu Thu</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui active item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+            <a class="ui item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui secondary menu four item">
+                <a class="item"
+                   asp-controller="PhieuThu"
+                   asp-action="Index">
+                    <i class="list layout icon"></i>
+                    Danh sách phiếu thu
+                </a>
+                <a class="active item"
+                   asp-controller="PhieuThu"
+                   asp-action="Create">
+                    <i class="add square icon"></i>
+                    Thêm mới phiếu thu
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="ui ten wide column">
+    <form class="ui form" asp-controller="PhieuThu" asp-action="Create">
+        
+        <div class="field">
+            <label>Đối Tượng</label>
+            <select class="ui fluid dropdown" id="drop">
+                <option value="1">Khách Hàng</option>
+                <option value="2">Nhà Cung Cấp</option>
+            </select>
+        </div>
+        <div class="field" id="customerFields">
+            <label>Khách Hàng</label>
+            <div class="ui search" id="customer-search">
+                <input class="prompt"
+                       id="customerValue"
+                       type="text"
+                       name="tenkhachhang"
+                       placeholder="Thông tin khách hàng">
+                <input type="hidden"
+                       name="KhachHangId"
+                       value=""
+                       id="khachhang" />
+                <div class="results"></div>
+                <span id=""></span>
+            </div>
+        </div>
+        <div class="field" id="providerFields">
+            <label>Nhà Cung Cấp</label>
+            <div class="ui search" id="provider-search">
+                <input class="prompt"
+                       id="providerValue"
+                       type="text"
+                       name="tenncc"
+                       placeholder="Tên Nhà Cung Cấp">
+                <input type="hidden" 
+                       name="NCCId" 
+                       value="" 
+                       id="ncc"/>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div class="field">
+            <label>Loại phiếu</label>
+            <select class="ui fluid dropdown"
+                    asp-for="@Model.LoaiPhieuId"
+                    asp-items="@Model.LoaiPhieu"
+                    data-validate="valid-customer-type"></select>
+        </div>
+      
+        <div class="field">
+            <label>Số tiền thu</label>
+            <input type="text"
+                   name="TongTientemp"
+                   placeholder="Số tiền thu"
+                   data-validate="valid-phone"
+                   id="tien"
+                   value="1000">
+        </div>
+        <input type="hidden"
+               name="TongTien"
+               asp-for="@Model.TongTien"
+               id="tongtien">
+        <button class="ui primary submit button" type="submit">Thêm</button>
+        <div class="ui reset button" id="btnXoa">Hủy</div>
+    </form>
+</div>
+<div class="ui tiny modal" id="notify-modal">
+
+</div>
+<script src="~/js/cleave.js/cleave.min.js"></script>
+<script src="~/js/numeral.min.js"></script>
+<script src="~/js/PhieuThu/PhieuThuCreate.js"></script>
+<script>
+    var urlSearch = '@Url.Action("FindCustomer", "PhieuThu")';
+    urlSearch += "?val={query}";
+    var urlSearchProvider = '@Url.Action("FindProvider", "PhieuThu")';
+    urlSearchProvider += "?val={query}";
+</script>

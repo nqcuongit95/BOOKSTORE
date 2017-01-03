@@ -1,0 +1,130 @@
+﻿@model PaginatedList<DonHang>
+
+@{
+    ViewData["Title"] = "Đơn hàng";
+}
+
+@section menu{
+    <div class="ui secondary pointing fluid menu">
+        <h2 class="ui header">Chọn Đơn Hàng</h2>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui transparent icon input">
+                    <input type="text" placeholder="Tìm kiếm..." class="search-input">
+                    <a class="search-btn">
+                        <i class="search icon"></i>
+                    </a>
+                </div>
+            </div>
+            <a class="ui item" asp-controller="DonHang" asp-action="Index" id="donhang">
+                Đơn Hàng
+            </a>
+            <a class="ui item" asp-controller="PhieuThu" asp-action="Index" id="phieuthu">
+                Phiếu Thu
+            </a>
+            <a class="ui item" asp-controller="PhieuChi" asp-action="Index" id="phieuchi">
+                Phiếu Chi
+            </a>
+            <a class="ui active item" asp-controller="TraHang" asp-action="Index" id="phieuthu">
+                Phiếu Trả Hàng
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2>Chọn Đơn Hàng</h2>
+    </div>
+}
+
+
+<div class="row" id="context">
+    <div class="sixteen wide column" style="padding:0">
+        <table class="ui teal table">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["IDSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            ID
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Khách Hàng
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["StatusSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Trạng Thái
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["MoneySortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Tổng Tiền
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewData["DateSortParm"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            Ngày Lập
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td class="selectable">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
+                                @customer.Id
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
+                                @customer.KhachHang.TenKhachHang
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
+                                @customer.TrangThai.TenTrangThai
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
+                                @(((int)customer.TongTien).ToString("N0")+ " ₫")
+                            </a>
+                        </td>
+                        <td class="selectable">
+                            <a asp-action="Create" asp-route-id="@customer.Id">
+                                @customer.NgayLap
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PaginatedListreturn", Model)
+    </div>
+</div>
+<script>
+    $('.search-input').keypress(function (event) {
+
+        if (event.which == 13) {
+
+            var keyword = $(this).val();
+            var url = '@Url.Action("ListDonHang","TraHang")';
+
+            window.location = url + "?searchString=" + keyword;
+        }
+    });
+
+</script>
