@@ -14,12 +14,14 @@ namespace BookStore.Models
         public decimal TongTien { get; set; }
         public int LoaiPhieuId { get; set; }
         public int? KhachHangId { get; set; }
-        public string GhiChu { get; set; }
+        public string GhiChu { get; set; }        
+        public int? NhaCungCapId { get; set; }
 
         public virtual DonHang DonHang { get; set; }
         public virtual KhachHang KhachHang { get; set; }
         public virtual LoaiPhieu LoaiPhieu { get; set; }
         public virtual Staff NhanVien { get; set; }
-        public virtual PhieuTraNhapHang PhieuTraNhapHang { get; set; }
+        public virtual PhieuTraNhapHang PhieuTraNhapHang { get; set; }        
+        public virtual NhaCungCap NhaCungCap { get; set; }
     }
 }
