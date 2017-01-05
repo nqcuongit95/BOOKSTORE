@@ -163,6 +163,11 @@ namespace BookStore.Services
         {
             return _context.Users;
         }
+        public NhaCungCap findProviderById(int ID)
+        {
+            var query = _context.NhaCungCap.Where(m => m.Id == ID);
+            return query.First();
+        }
         public CustomerInfoViewModel findCustomerById(int customerId)
         {
             var query = from khachhang in _context.KhachHang
@@ -223,7 +228,8 @@ namespace BookStore.Services
                          LoaiPhieuId = phieuthu.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
                          TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
-                         KhachHangId = phieuthu.KhachHangId
+                         KhachHangId = phieuthu.KhachHangId,
+                         NCCId = phieuthu.NhaCungCapId
                      };
             return re.First();
         }
@@ -297,7 +303,9 @@ namespace BookStore.Services
                          TongTien = phieuchi.TongTien,
                          LoaiPhieuId = phieuchi.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
-                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
+                         KhachHangId = phieuchi.KhachHangId,
+                         NCCId = phieuchi.NhaCungCapId
                      };
             return re.First();
         }
@@ -644,7 +652,6 @@ namespace BookStore.Services
                                Staff = invoice.NhanVien.FullName,
                                Value = invoice.TongTien
                            };
-
             var receiptVouchers = from receipt in _context.PhieuThu
                                   where receipt.KhachHangId == id
                                   select new DebtViewModel
@@ -655,14 +662,10 @@ namespace BookStore.Services
                                       Staff = receipt.NhanVien.FullName,
                                       Value = -receipt.TongTien
                                   };
-
             var result = invoices.Concat(receiptVouchers);
-
             model.sourceDebts = result;
-
             return model;
         }
-
         //public IQueryable<DonHangViewModel> GetAllDonHang()
         //{
         //    var query = from donhang in _context.DonHang
@@ -684,15 +687,12 @@ namespace BookStore.Services
 
         //    return query;
         //}
-
         public IQueryable<DonHang> GetAllDonHang()
         {
             var query = _context.DonHang.Include(m => m.KhachHang)
                 .Include(m => m.TrangThai);
             return query;
         }
-
-
         public int TaoDonHang(DonHang donhang)
         {
             _context.Add(donhang);
@@ -700,7 +700,6 @@ namespace BookStore.Services
 
             return donhang.Id;
         }
-
         public void  UpdateDonHang(int? id)
         {
             decimal totalValue = 0;
@@ -720,16 +719,26 @@ namespace BookStore.Services
             }
             _context.SaveChanges();
         }
+        public int findLoaiPhieuByLoai(string loai)
+        {
+            var query = _context.LoaiPhieu.Where(m => m.Loai == loai).First();
+            return query.Id;
+        }
+        public int findTrangThaiByVietTat(string vt)
+        {
+            var query = _context.TrangThai.Where(m => m.VietTat == vt).First();
+            return query.Id;
+        }
         public void CapnhatDonhang(int? id, decimal tienthu)
         {
             var donhang = _context.DonHang.Where(m => m.Id == id).FirstOrDefault();
             if (tienthu >= donhang.TongTien)
             {
-                donhang.TrangThaiId = 12; //da thanh toan
+                donhang.TrangThaiId = findTrangThaiByVietTat("Paid"); //da thanh toan
             }
             if (tienthu < donhang.TongTien)
             {
-                donhang.TrangThaiId = 11;   //thanh toan mot phan
+                donhang.TrangThaiId = findTrangThaiByVietTat("Semi - Paid");    //thanh toan mot phan
             }
             _context.SaveChanges();
         }
@@ -873,7 +882,8 @@ namespace BookStore.Services
                          LoaiPhieuId = phieuthu.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
                          TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
-                         KhachHangId = phieuthu.KhachHangId
+                         KhachHangId = phieuthu.KhachHangId,
+                         NCCId = phieuthu.NhaCungCapId
                      };
             return re;
         }
@@ -894,7 +904,9 @@ namespace BookStore.Services
                          TongTien = phieuchi.TongTien,
                          LoaiPhieuId = phieuchi.LoaiPhieuId,
                          TenNhanVien = nv.FullName,
-                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu
+                         TenLoaiPhieu = loaiphieu.TenLoaiPhieu,
+                        KhachHangId = phieuchi.KhachHangId,
+                        NCCId = phieuchi.NhaCungCapId
                      };
             return re;
         }

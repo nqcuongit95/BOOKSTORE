@@ -57,7 +57,13 @@
         <div class="column">
             <h3 class="ui dividing header">
                 Mã phiếu
-                <div class="sub header">@Model.ID</div>
+                @{
+                    var month = Model.NgayLap.ToString("MM");
+                    var day = Model.NgayLap.ToString("dd");
+                    var pre = "PT" + day + month + Model.ID;
+                    <div class="sub header">@pre</div>
+                }
+               
             </h3>
         </div>
         <div class="column">

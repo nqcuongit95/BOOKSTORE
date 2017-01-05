@@ -83,11 +83,16 @@
                 @foreach (var customer in Model)
                 {
                     <tr>
-                        <td class="selectable">
-                            <a asp-action="Create" asp-route-id="@customer.Id">
-                                @customer.Id
-                            </a>
-                        </td>
+                        @{
+                            var month = customer.NgayLap.ToString("MM");
+                            var day = customer.NgayLap.ToString("dd");
+                            var pre = "DH" + day + month + customer.Id;
+                            <td class="selectable">
+                                <a asp-action="Details" asp-route-id="@customer.Id">
+                                    @pre
+                                </a>
+                            </td>
+                        }
                         <td class="selectable">
                             <a asp-action="Create" asp-route-id="@customer.Id">
                                 @customer.KhachHang.TenKhachHang

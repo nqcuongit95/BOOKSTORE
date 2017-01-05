@@ -32,7 +32,7 @@
 
 <div class="row" id="context">
     <div class="sixteen wide column">
-        <table class="ui teal table">
+        <table class="ui teal table" id="customer-table">
             <thead>
                 <tr>
                     <th>
@@ -51,6 +51,8 @@
                            asp-route-sortOrder="@ViewData["DateSortParm"]"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]">
                             Ngày Lập
+                            <i class="caret @ViewData["SortDirection"] icon"
+                               style="display: none"></i>
                         </a>
                     </th>
                 </tr>
@@ -109,5 +111,5 @@
             window.location = url + "?searchString=" + keyword;
         }
     });
-
+    
 </script>

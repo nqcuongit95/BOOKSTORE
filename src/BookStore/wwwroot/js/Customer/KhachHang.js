@@ -98,4 +98,23 @@ $(document).ready(function () {
         }
     })
 
+    //sort direction
+
+    function hideSortDirection() {
+
+        $('#customer-table thead th').each(function (index, elem) {
+
+            $(elem).find('i').css('display', 'none');
+
+        })
+    }
+
+    $('#customer-table thead th').on('click', function () {
+
+        hideSortDirection();
+        $(this).find('i').css('display', 'inline-block');
+    })
+
+    
+
 });

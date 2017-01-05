@@ -283,7 +283,8 @@ namespace BookStore.Services
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
 
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
-
+        int findLoaiPhieuByLoai(string loai);
+        int findTrangThaiByVietTat(string vt);
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
 
         Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
@@ -352,7 +353,7 @@ namespace BookStore.Services
         NhaCungCap findProviderByPhieuTra(int phieuID);
 
         NhaCungCap findProviderByPhieuNhap(int phieuID);
-
+        NhaCungCap findProviderById(int ID);
         KhachHang findCustomerByPhieuTra(int donhangId);
 
         PhieuTraHang findNewPhieuTraHang();
