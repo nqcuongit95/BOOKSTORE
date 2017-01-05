@@ -10,6 +10,7 @@ namespace BookStore.Services
     public partial class BookStoreData
     {
         #region PhieuChiNhapHang
+
         public IQueryable<PhieuChi> GetPhieuChiNhapHang()
         {
             string sortOrder = null;
@@ -21,6 +22,7 @@ namespace BookStore.Services
                 .Include(m => m.PhieuNhapHang.TrangThai)
                 .Include(m => m.NhanVien)
                 .Include(m => m.LoaiPhieu)
+                .Include(m => m.NhaCungCap)
                 .Where(m => m.PhieuNhapHang != null &&
                 m.LoaiPhieu.Loai == "PCNH");
 
@@ -43,7 +45,9 @@ namespace BookStore.Services
                 .Include(m => m.PhieuNhapHang.TrangThai)
                 .Include(m => m.NhanVien)
                 .Include(m => m.LoaiPhieu)
-                .Where(m => m.PhieuNhapHang != null &&
+                .Include(m => m.NhaCungCap)
+                .Where(
+                m => m.PhieuNhapHang != null &&
                 m.LoaiPhieu.Loai == "PCNH")
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
@@ -78,6 +82,7 @@ namespace BookStore.Services
 
             return await _context.SaveChangesAsync();
         }
-        #endregion
+
+        #endregion PhieuChiNhapHang
     }
 }

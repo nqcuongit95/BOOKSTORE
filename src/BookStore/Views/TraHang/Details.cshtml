@@ -136,7 +136,13 @@
             <!-- Thanh toan -->
             <div class="row">
                 <div class="column">
-                    <div class="ui dividing header">@Model.ID</div>
+                    @{
+                        var month = Model.NgayLap.ToString("MM");
+                        var day = Model.NgayLap.ToString("dd");
+                        var pre = "PTH" + day + month + Model.ID;
+                        <div class="ui dividing header">@pre</div>
+                    }
+                    
                     <table class="ui very basic table">
                         <tbody>
                             <tr>
@@ -148,7 +154,12 @@
                             <tr>
                                 <td class="six wide">Đơn hàng</td>
                                 <td class="ten wide right aligned">
-                                    <div id="tongtien">@Model.DonHangId</div>
+                                    @{
+                                        var month1 = Model.DonHang.NgayLap.ToString("MM");
+                                        var day1 = Model.DonHang.NgayLap.ToString("dd");
+                                        var pre1 = "DH" + day1 + month1 + Model.DonHang.ID;
+                                        <div id="tongtien">@pre1</div>
+                                    }
                                 </td>
                             </tr>
                             <tr>

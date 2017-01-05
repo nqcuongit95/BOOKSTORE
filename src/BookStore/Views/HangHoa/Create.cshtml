@@ -16,37 +16,37 @@
 }
 
 <script>
-    initializeCRUDForm();
-    $('#form-modal').modal({
-        autofocus: false
-    });
+    //initializeCRUDForm();
+    //$('#form-modal').modal({
+    //    autofocus: false
+    //});
 
-    initializeDataTable();
-    initializeIndexPagination();
+    //initializeDataTable();
+    //initializeIndexPagination();
 
-    initializeMessageProgress(0, 100);
+    //initializeMessageProgress(0, 100);
 
-    $('.ui.search').each(function () {
-        $(this).search({
-            apiSettings: {
-                url: $(this).attr('href') + '?search={query}'
-            },
-            cache: false,
-            fields: {
-                results: 'results',
-                title: 'title',
-                description: 'description'
-            },
-            minCharacters: 0,
-            error: false
-        });
-    });
+    //$('.ui.search').each(function () {
+    //    $(this).search({
+    //        apiSettings: {
+    //            url: $(this).attr('href') + '?search={query}'
+    //        },
+    //        cache: false,
+    //        fields: {
+    //            results: 'results',
+    //            title: 'title',
+    //            description: 'description'
+    //        },
+    //        minCharacters: 0,
+    //        error: false
+    //    });
+    //});
 
-    $('.money').each(function (index) {
-        numeral.defaultFormat('0,0');
+    //$('.money').each(function (index) {
+    //    numeral.defaultFormat('0,0');
 
-        var text = $(this).text();
+    //    var text = $(this).text();
 
-        $(this).text(numeral(text).format() + ' đ');
-    });
+    //    $(this).text(numeral(text).format() + ' đ');
+    //});
 </script>

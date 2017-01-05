@@ -152,7 +152,14 @@
                                 <tr>
                                     <td class="six wide">Đơn hàng</td>
                                     <td class="ten wide right aligned">
-                                        <div id="tongtien">@Model.ID</div>
+                                        @{
+                                            var month = Model.NgayLap.ToString("MM");
+                                            var day = Model.NgayLap.ToString("dd");
+                                            var pre = "DH" + day + month + Model.ID;
+
+                                            <div id="tongtien">@pre</div>
+                                        }
+                                        
                                         <input type="hidden" value="@Model.ID" name="donhangID"/>
                                     </td>
                                 </tr>
