@@ -31,12 +31,6 @@
                 count++;
             }
         })
-        //var tiendaThu = $("#tienthu").text();
-        //var tiendaThuValue = numeral(tiendaThu).value();
-        //if (paid < tiendaThuValue) {
-        //    $('#error-modal').modal('show');
-        //    return;
-        //}
         if (count == 0) {
             $('#error-2-modal').modal('show');
             return;
@@ -86,9 +80,11 @@
             }
         });
     })
+    var donid = $('input[name=donhangID]').val();
     $('#notify-modal').modal({
         onHidden: function () {
-            window.history.back();
+           // window.history.back();
+            location.replace = "/TraHang";
         }
     });
     function updatePayment() {

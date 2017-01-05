@@ -58,7 +58,7 @@ namespace BookStore.Controllers
                     customers = customers.OrderByDescending(c => c.NgayLap);
                     break;
                 default:
-                    customers = customers.OrderBy(c => c.ID);
+                    customers = customers.OrderByDescending(c => c.NgayLap);
                     ViewData["SortDirection"] = "up";
                     break;
             }

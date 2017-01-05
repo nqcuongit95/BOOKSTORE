@@ -58,7 +58,7 @@ namespace BookStore.Controllers
                     trahang = trahang.OrderByDescending(c => c.NgayLap);
                     break;
                 default:
-                    trahang = trahang.OrderBy(c => c.ID);
+                    trahang = trahang.OrderByDescending(c => c.NgayLap);
                     ViewData["SortDirection"] = "up";
                     break;
             }
@@ -150,7 +150,7 @@ namespace BookStore.Controllers
                     donhang = donhang.OrderByDescending(c => c.NgayLap);
                     break;
                 default:
-                    donhang = donhang.OrderBy(c => c.Id);
+                    donhang = donhang.OrderByDescending(c => c.NgayLap);
                     ViewData["SortDirection"] = "up";
                     break;
             }

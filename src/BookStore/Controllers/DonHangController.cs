@@ -90,7 +90,7 @@ namespace BookStore.Controllers
                     donhang = donhang.OrderByDescending(c => c.NgayLap);
                     break;
                 default:
-                    donhang = donhang.OrderBy(c => c.Id);
+                    donhang = donhang.OrderByDescending(c => c.NgayLap);
                     ViewData["SortDirection"] = "up";
                     break;
             }
