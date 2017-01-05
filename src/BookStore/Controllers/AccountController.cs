@@ -59,16 +59,18 @@ namespace BookStore.Controllers
             {
                 await _signInManager.SignOutAsync();                
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Dashboard");
-            }
+            }            
+
             return View();
         }
 
@@ -96,6 +98,11 @@ namespace BookStore.Controllers
             ModelState.AddModelError("", "Không thể đăng nhập");
 
             return View(model);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 

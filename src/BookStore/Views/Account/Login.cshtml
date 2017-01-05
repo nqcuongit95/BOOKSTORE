@@ -13,7 +13,8 @@
         <h3 class="ui dividing center aligned header">Đăng Nhập</h3>
         <form class="ui large form" id="loginForm" 
               asp-action="Login"           
-              asp-antiforgery="true">
+              asp-antiforgery="true"
+              asp-route-returnUrl="@ViewData["ReturnUrl"]">
             <div class="required field">
                 <label>Tài Khoản</label>
                 <div class="ui left icon input">

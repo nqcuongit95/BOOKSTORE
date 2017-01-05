@@ -416,8 +416,8 @@ namespace BookStore.Services
 
             if (val.All(char.IsDigit))
             {
-                var query1 = from product in _context.HangHoa
-                             where product.Id.ToString().Contains(val)
+                var query1 = from product in _context.HangHoa.Include(m=>m.TrangThai)
+                             where product.Id.ToString().Contains(val) && product.TrangThai.VietTat == "Use"
                              select new ProductFilterViewModel
                              {
                                  Id = product.Id,
@@ -599,9 +599,11 @@ namespace BookStore.Services
                                             (acc, c) => acc.Accumulate(c),
                                             acc => acc.Compute());
 
-                var product = (from pro in _context.HangHoa
-                               where pro.Id == g.Key
-                               select pro).First();
+                var product =  (from pro in _context.HangHoa.Include(m=>m.TrangThai)                               
+                                where pro.Id == g.Key
+                                select pro).First();
+
+
 
                 return new ProductFilterViewModel
                 {
@@ -612,7 +614,8 @@ namespace BookStore.Services
                     Available = product.TonKho,
                     RetailPrice = product.GiaBanLe != null ? product.GiaBanLe.Value : 0,
                     WholeSaleprice = product.GiaBanSi != null ? product.GiaBanSi.Value : 0,
-                    ImageUrl = product.ImageUrl
+                    ImageUrl = product.ImageUrl,
+                    ShortcutStatus = product.TrangThai.VietTat
                 };
             }).OrderByDescending(i => i.TotalSold);
 
@@ -620,7 +623,7 @@ namespace BookStore.Services
 
             if (type == ProductType.Both)
             {
-                results = query2.Take(take).ToList();
+                results = query2.Where(i=>i.ShortcutStatus == "Use").Take(take).ToList();
                 return results;
             }
 
