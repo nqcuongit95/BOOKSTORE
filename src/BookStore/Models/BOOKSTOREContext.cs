@@ -352,6 +352,10 @@ namespace BookStore.Models
 
                 entity.Property(e => e.TongTien).HasColumnType("money");
 
+                entity.Property(e => e.KhachHangId).HasColumnName("KhachHangID");
+
+                entity.Property(e => e.NhaCungCapId).HasColumnName("NhaCungCapID");
+
                 entity.HasOne(d => d.LoaiPhieu)
                     .WithMany(p => p.PhieuChi)
                     .HasForeignKey(d => d.LoaiPhieuId)
@@ -373,6 +377,16 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuChi)
                     .HasForeignKey(d => d.PhieuTraHangId)
                     .HasConstraintName("FK_PhieuChi_PhieuTraHang");
+
+                entity.HasOne(d => d.KhachHang)
+                    .WithMany(p => p.PhieuChi)
+                    .HasForeignKey(d => d.KhachHangId)
+                    .HasConstraintName("FK_PhieuChi_KhachHang");
+
+                entity.HasOne(d => d.NhaCungCap)
+                    .WithMany(p => p.PhieuChi)
+                    .HasForeignKey(d => d.NhaCungCapId)
+                    .HasConstraintName("FK_PhieuChi_NhaCungCap");
             });
 
             modelBuilder.Entity<PhieuKiemKho>(entity =>
@@ -471,6 +485,7 @@ namespace BookStore.Models
                 entity.Property(e => e.PhieuTraNhapHangId).HasColumnName("PhieuTraNhapHangID");
 
                 entity.Property(e => e.TongTien).HasColumnType("money");
+                entity.Property(e => e.NhaCungCapId).HasColumnName("NhaCungCapID");
 
                 entity.HasOne(d => d.DonHang)
                     .WithMany(p => p.PhieuThu)
@@ -499,6 +514,10 @@ namespace BookStore.Models
                     .WithMany(p => p.PhieuThu)
                     .HasForeignKey(d => d.PhieuTraNhapHangId)
                     .HasConstraintName("FK_PhieuThu_PhieuTraNhapHang");
+                entity.HasOne(d => d.NhaCungCap)
+                    .WithMany(p => p.PhieuThu)
+                    .HasForeignKey(d => d.NhaCungCapId)
+                    .HasConstraintName("FK_PhieuThu_NhaCungCap");
             });
 
             modelBuilder.Entity<PhieuTraHang>(entity =>

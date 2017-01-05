@@ -12,6 +12,8 @@ namespace BookStore.Models
         {
             HangHoa = new HashSet<HangHoa>();
             PhieuNhapHang = new HashSet<PhieuNhapHang>();
+            PhieuChi = new HashSet<PhieuChi>();
+            PhieuThu = new HashSet<PhieuThu>();
         }
 
         [Display(Name = "Id", ResourceType = typeof(
@@ -32,5 +34,7 @@ namespace BookStore.Models
 
         public virtual ICollection<HangHoa> HangHoa { get; set; }
         public virtual ICollection<PhieuNhapHang> PhieuNhapHang { get; set; }
+        public virtual ICollection<PhieuChi> PhieuChi { get; set; }
+        public virtual ICollection<PhieuThu> PhieuThu { get; set; }
     }
 }

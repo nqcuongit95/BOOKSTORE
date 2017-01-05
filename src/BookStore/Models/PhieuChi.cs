@@ -39,7 +39,11 @@ namespace BookStore.Models
         public int LoaiPhieuId { get; set; }
 
         public string GhiChu { get; set; }
+        public int? KhachHangId { get; set; }
+        public int? NhaCungCapId { get; set; }
 
+        public virtual KhachHang KhachHang { get; set; }
+        public virtual NhaCungCap NhaCungCap { get; set; }
         public virtual LoaiPhieu LoaiPhieu { get; set; }
         public virtual Staff NhanVien { get; set; }
         public virtual PhieuNhapHang PhieuNhapHang { get; set; }

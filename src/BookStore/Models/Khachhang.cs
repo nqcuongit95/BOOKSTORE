@@ -10,6 +10,7 @@ namespace BookStore.Models
             DonHang = new HashSet<DonHang>();
             PhieuThu = new HashSet<PhieuThu>();
             PhieuTraHang = new HashSet<PhieuTraHang>();
+            PhieuChi = new HashSet<PhieuChi>();
         }
 
         public int Id { get; set; }
@@ -24,5 +25,6 @@ namespace BookStore.Models
         public virtual ICollection<PhieuThu> PhieuThu { get; set; }
         public virtual ICollection<PhieuTraHang> PhieuTraHang { get; set; }
         public virtual LoaiKhachHang LoaiKhachHang { get; set; }
+        public virtual ICollection<PhieuChi> PhieuChi { get; set; }
     }
 }
