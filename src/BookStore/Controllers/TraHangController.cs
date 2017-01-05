@@ -63,7 +63,7 @@ namespace BookStore.Controllers
                     break;
             }
 
-            int pageSize = 9;
+            int pageSize = 8;
             int numberOfDisplayPages = 5;
 
 
@@ -155,7 +155,7 @@ namespace BookStore.Controllers
                     break;
             }
 
-            int pageSize = 9;
+            int pageSize = 8;
             int numberOfDisplayPages = 5;
            
 
@@ -199,7 +199,7 @@ namespace BookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(decimal TienThu, int ID, List<ChiTietTraHang> returnDetails)
         {
-            //try
+            try
             {
                 var phieutra = new PhieuTraHang();
                 phieutra.DonHangId = ID;
@@ -212,6 +212,7 @@ namespace BookStore.Controllers
                 _bookStoreData.TaoPhieuTraHang(phieutra);
                 var phieuchi = new PhieuChi();
                 var pt = _bookStoreData.findNewPhieuTraHang();
+                phieuchi.KhachHangId = kh.Id;
                 phieuchi.NhanVienId = user.Id;
                 phieuchi.PhieuTraHangId = pt.Id;
                 phieuchi.TongTien = phieutra.TongTien;
@@ -238,17 +239,17 @@ namespace BookStore.Controllers
                 };
                 return PartialView("_Notify", noti);
             }
-            //catch (Exception e)
-            //{
-            //    var noti = new Notification
-            //    {
-            //        Title = "Thất bại",
-            //        Content = "Có lỗi xảy ra" + e.Message,
-            //        Icon = "remove",
-            //        MessageType = "negative",
-            //    };
-            //    return PartialView("_Notify", noti);
-            //}
+            catch (Exception e)
+            {
+                var noti = new Notification
+                {
+                    Title = "Thất bại",
+                    Content = "Có lỗi xảy ra" + e.Message,
+                    Icon = "remove",
+                    MessageType = "negative",
+                };
+                return PartialView("_Notify", noti);
+            }
         }
 
         public IActionResult Details(int id)

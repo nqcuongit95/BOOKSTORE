@@ -271,6 +271,8 @@ namespace BookStore.Services
         IQueryable<TraHangDetailViewModel> GetCTTraHang(int phieutraID);
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
+        int findLoaiPhieuByLoai(string loai);
+        int findTrangThaiByVietTat(string vt);
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
         Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
             List<ProductBuyingDetailsViewModel> productDetails);       
@@ -299,6 +301,7 @@ namespace BookStore.Services
         void UpdateDonHang(int? id);
         void CapnhatDonhang(int? id, decimal tienthu);
         int? findPhieuTraByDonHang(int donhangID);
+
         int findDonHangByCustomer(int? customerID);
         int findPhieuTraByCustomer(int? customerID);
         int findPhieuNhapByCustomer(int? customerID);
@@ -313,6 +316,7 @@ namespace BookStore.Services
         CustomerInfoViewModel findCustomerById(int customerId);
         NhaCungCap findProviderByPhieuTra(int phieuID);
         NhaCungCap findProviderByPhieuNhap(int phieuID);
+        NhaCungCap findProviderById(int ID);
         KhachHang findCustomerByPhieuTra(int donhangId);
         PhieuTraHang findNewPhieuTraHang();
         Task<BillViewModel> GetBill(int id);

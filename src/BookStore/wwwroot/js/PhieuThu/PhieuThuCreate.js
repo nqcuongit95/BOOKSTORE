@@ -1,17 +1,14 @@
 ﻿$(document).ready(function () {
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
     updatepay();
-
     $('#tien').on(inputEvents, function () {
         var tiendaThu = $("#tien").val();
         var tiendaThuValue = numeral(tiendaThu).value();
         $('#tongtien').val(tiendaThuValue);
     });
     function updatepay() {
-
         var tiendaThu = $("#tien").val();
         var tiendaThuValue = numeral(tiendaThu).value();
-
         $('#tongtien').val(tiendaThuValue);
     };
     var TongTientemp = new Cleave('input[name=TongTientemp]', {

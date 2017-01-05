@@ -95,7 +95,7 @@ namespace BookStore.Controllers
                     break;
             }
 
-            int pageSize = 9;
+            int pageSize = 8;
             int numberOfDisplayPages = 5;
 
 
