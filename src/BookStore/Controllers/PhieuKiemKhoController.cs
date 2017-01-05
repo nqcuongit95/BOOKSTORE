@@ -15,8 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
-    [Route("HangHoa/PhieuKiemKho")]
-    [Authorize]
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
+    [Route("HangHoa/PhieuKiemKho")]    
     public class PhieuKiemKhoController : Controller
     {
         private readonly IBookStoreData _bookStoreData = null;

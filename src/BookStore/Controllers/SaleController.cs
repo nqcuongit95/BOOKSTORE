@@ -16,7 +16,7 @@ using BookStore.Helper;
 
 namespace BookStore.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "NhanVienBanHang,Admin")]
     public class SaleController : Controller
     {
         private IBookStoreData _bookStoreData;

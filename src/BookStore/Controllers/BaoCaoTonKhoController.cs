@@ -1,6 +1,7 @@
 ﻿using BookStore.Resources;
 using BookStore.Services;
 using BookStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
     [Route("BaoCao/BaoCaoTonKho")]
     public class BaoCaoTonKhoController : Controller
     {

@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
     public class DashboardController : Controller
     {
 

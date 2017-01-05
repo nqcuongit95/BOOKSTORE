@@ -8,9 +8,11 @@ using BookStore.ViewModels;
 using BookStore.Models;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
     public class TraHangController : Controller
     {
         // GET: /<controller>/

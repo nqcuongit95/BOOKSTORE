@@ -2,6 +2,7 @@
 using BookStore.Resources;
 using BookStore.Services;
 using BookStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
     [Route("HangHoa")]
     public class HangHoaController : Controller
     {

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controllers
 {
+    
     [Route("HangHoa/ThuocTinhHangHoa")]
     public class ThuocTinhHangHoaController : Controller
     {

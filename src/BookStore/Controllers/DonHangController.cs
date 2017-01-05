@@ -8,11 +8,13 @@ using BookStore.ViewModels;
 using BookStore.Models;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienBanHang,Admin")]
     public class DonHangController : Controller
     {
         // GET: /<controller>/

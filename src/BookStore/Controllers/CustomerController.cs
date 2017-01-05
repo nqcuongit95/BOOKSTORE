@@ -10,11 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BookStore.ViewModels.Customer;
+using BookStore.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienBanHang,Admin")]
     public class CustomerController : Controller
     {
         private IBookStoreData _bookStoreData;

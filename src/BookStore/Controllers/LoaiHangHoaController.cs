@@ -11,9 +11,11 @@ using BookStore.ViewModels;
 using Microsoft.AspNetCore.Mvc.Localization;
 using BookStore.Resources;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = "NhanVienKhoHang,NhanVienBanHang,Admin")]
     [Route("HangHoa/LoaiHangHoa")]
     public class LoaiHangHoaController : Controller
     {
