@@ -55,7 +55,7 @@
     }
 
     & > table {
-        margin: 0 !important;
+        /*margin: 0 !important;*/
     }
 
     span.money {
@@ -68,19 +68,31 @@
         visibility: hidden;
     }
 
+    .ui.main.grid {
+        left: 1rem !important;
+        right: 1rem !important;
+        padding: 0;
+        margin: 1rem !important;
+    }
+
+    #controller-menu {
+        display: none;
+    }
+
     .bao-cao, .bao-cao * {
         visibility: visible;
     }
 
     .bao-cao {
-        display: table;
+        display: block;
         position: absolute;
         top: 0;
-        margin: 0 !important;
-        width: 90%;
+        margin: 0;
+        width: auto;
     }
 }
 
 @page {
     size: A4;
+    margin: 0.5rem;
 }
