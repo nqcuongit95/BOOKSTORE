@@ -257,7 +257,7 @@ namespace BookStore.Controllers
             foreach (var error in result.Errors)
             {
                 model.Content += error + "/n";
-            }
+            }             
 
             return PartialView("_Message", model);
         }

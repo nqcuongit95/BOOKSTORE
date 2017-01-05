@@ -2,7 +2,7 @@
 
 <h3 class="ui dividing teal header">LỊCH SỬ GIAO DỊCH</h3>
 
-<div class="ui equal width internally celled grid">    
+<div class="ui equal width internally celled grid">
     <div class="row">
         <div class="column center aligned">
             <div class="ui mini horizontal grey statistic">
@@ -42,20 +42,38 @@
         @foreach (var invoice in Model.InvoicesPage)
             {
             <tr>
+                @{
+
+                    var month = invoice.Date.ToString("MM");
+                    var day = invoice.Date.ToString("dd");
+                    var prefix = "HD" + day + month + invoice.ID;
+
+                    <td>
+                        <div class="ui label">@prefix</div>
+                    </td>
+                }
                 <td>
-                    @invoice.ID
+                    <b>@invoice.Date.ToString("dd/MM/yyyy hh:mm:ss tt")</b>
                 </td>
                 <td>
-                    @invoice.Date.ToString("dd/MM/yyyy hh:mm:ss tt")
+                    @if (invoice.StatusAcronym == "Paid")
+                {
+                        <div class="ui green label">@invoice.Status</div>
+                    }
+                    else if (invoice.StatusAcronym == "Semi-Paid")
+                    {
+                        <div class="ui olive label">@invoice.Status</div>
+                    }
+                    else
+                    {
+                        <div class="ui red label">@invoice.Status</div>
+                    }
                 </td>
                 <td>
-                    @invoice.Status
-                </td>
-                <td>
-                    @invoice.TotalValuesFormated    
+                    <div class="ui grey label">@invoice.TotalValuesFormated</div>
                 </td>
             </tr>
-        }
+                    }
     </tbody>
 </table>
 

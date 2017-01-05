@@ -32,7 +32,7 @@
 
 <div class="row" id="context">
     <div class="sixteen wide column">
-        <table class="ui teal table">
+        <table class="ui teal table" id="customerTable">
             <thead>
                 <tr>
                     <th>
@@ -51,6 +51,8 @@
                            asp-route-sortOrder="@ViewData["DateSortParm"]"
                            asp-route-currentFilter="@ViewData["CurrentFilter"]">
                             Ngày Lập
+                            <i class="caret @ViewData["SortDirection"] icon"
+                               style="display:none"></i>
                         </a>
                     </th>
                 </tr>
@@ -81,7 +83,7 @@
                         </td>
                         <td class="selectable">
                             <a asp-action="Details" asp-route-id="@customer.ID">
-                                @customer.NgayLap
+                                @customer.NgayLap.ToString("dd/MM/yyyy hh:mm:ss tt")
                             </a>
                         </td>
                     </tr>
@@ -95,7 +97,6 @@
     </div>
 </div>
 
-<script src="~/js/Customer/KhachHang.js"></script>
 <script type="text/javascript">
 
     //handle enter key for search input
@@ -109,5 +110,10 @@
             window.location = url + "?searchString=" + keyword;
         }
     });
+    
+    var currentSortedHeader = '@ViewData["CurrentSortTHead"].ToString()';
+    console.log("current sort" + currentSortedHeader);
 
 </script>
+<script src="~/js/Admin/SortHeader.js"></script>
+<script src="~/js/Customer/KhachHang.js"></script>

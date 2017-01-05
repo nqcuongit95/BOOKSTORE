@@ -24,10 +24,10 @@ namespace BookStore.Controllers
             _bookStoreData = bookStoreData;
         }
 
-        
+
         public async Task<IActionResult> Index(string sortOrder, string searchString,
-                                               string currentFilter,int? page,                                               
-                                               int? firstShowedPage, int ? lastShowedPage)
+                                               string currentFilter, int? page,
+                                               int? firstShowedPage, int? lastShowedPage)
         {
             ViewData["QueryName"] = nameof(searchString);
             ViewData["SortDirection"] = "up";
@@ -58,17 +58,23 @@ namespace BookStore.Controllers
             {
                 case "name_desc":
                     customers = customers.OrderByDescending(c => c.TenKhachHang);
-                        ViewData["SortDirection"] = "down";
+                    ViewData["SortDirection"] = "down";
+                    ViewData["CurrentSortTHead"] = "0";
                     break;
                 case "Date":
                     customers = customers.OrderBy(c => c.NgayLap);
+                    ViewData["SortDirection"] = "up";
+                    ViewData["CurrentSortTHead"] = "4";
                     break;
                 case "date_desc":
                     customers = customers.OrderByDescending(c => c.NgayLap);
+                    ViewData["SortDirection"] = "down";
+                    ViewData["CurrentSortTHead"] = "4";
                     break;
                 default:
                     customers = customers.OrderBy(c => c.TenKhachHang);
                     ViewData["SortDirection"] = "up";
+                    ViewData["CurrentSortTHead"] = "0";
                     break;
             }
 
@@ -78,15 +84,15 @@ namespace BookStore.Controllers
             return View(await PaginatedList<CustomerInfoViewModel>.
                         CreateAsync(customers, page ?? 1, pageSize,
                                     numberOfDisplayPages,
-                                    firstShowedPage,lastShowedPage));
+                                    firstShowedPage, lastShowedPage));
         }
 
         public IActionResult Create()
         {
             var loaiKhachHang = _bookStoreData.GetAllLoaiKhachHang();
             var model = new KhachHangViewModel();
-            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang",3);
-           
+            model.LoaiKhachHang = new SelectList(loaiKhachHang, "Id", "TenLoaiKhachHang", 3);
+
             return View(model);
         }
 
@@ -98,10 +104,10 @@ namespace BookStore.Controllers
             {
                 model.KhachHang.NgayLap = DateTime.Now;
                 var ID = _bookStoreData.CreateCustomer(model.KhachHang);
-                
-                return RedirectToAction("Details",new { id = ID, message = "_CreateMessage" });
-                }
-            
+
+                return RedirectToAction("Details", new { id = ID, message = "_CreateMessage" });
+            }
+
             return View();
         }
 
@@ -113,7 +119,7 @@ namespace BookStore.Controllers
             ActiveItemHelperFunction(section);
 
             var customer = _bookStoreData.GetKhachHangInfo(id);
-                       
+
             var model = new CustomerDetailsViewModel
             {
                 ID = customer.ID,
@@ -152,7 +158,7 @@ namespace BookStore.Controllers
 
                 };
 
-                return PartialView("_Notify", notify);                
+                return PartialView("_Notify", notify);
             }
 
             notify = new Notification
@@ -207,34 +213,34 @@ namespace BookStore.Controllers
         {
             var model = await _bookStoreData.GetCustomerTransactionsDetails(id);
             model.InvoicesPage = await PaginatedList<InvoiceDetailsViewModel>
-                                 .CreateAsync(model.Invoices,page ?? 1, 5, 5, firstShowedPage, lastShowedPage);
+                                 .CreateAsync(model.Invoices, page ?? 1, 5, 5, firstShowedPage, lastShowedPage);
 
-            return PartialView("_CustomerTransaction",model);
+            return PartialView("_CustomerTransaction", model);
         }
 
         public async Task<IActionResult> CustomerLiabilites(int id, int? page,
                                                int? firstShowedPage, int? lastShowedPage)
         {
-            var model =  _bookStoreData.GetCustomerLiabilites(id);
+            var model = _bookStoreData.GetCustomerLiabilites(id);
             model.CustomerId = id;
 
-            
+
             decimal totalDebts = await model.sourceDebts.SumAsync(d => d.Value);
             model.TotalDebts = totalDebts;
-            var list = await model.sourceDebts.OrderByDescending(m=>m.DateCreate).ToListAsync();                                           
+            var list = await model.sourceDebts.OrderByDescending(m => m.DateCreate).ToListAsync();
 
             model.Debts = await PaginatedList<DebtViewModel>
-                .CreateAsync(model.sourceDebts.OrderByDescending(i=>i.DateCreate),
-                page ?? 1, 7, 5, 
-                firstShowedPage, 
+                .CreateAsync(model.sourceDebts.OrderByDescending(i => i.DateCreate),
+                page ?? 1, 7, 5,
+                firstShowedPage,
                 lastShowedPage);
 
             for (int i = 0; i < model.Debts.Count; i++)
             {
                 var index = list.FindIndex(d => d.Id == model.Debts[i].Id);
-                var currentDebt = list.Skip(index).Sum(m=>m.Value);
+                var currentDebt = list.Skip(index).Sum(m => m.Value);
                 model.Debts[i].Debt = currentDebt;
-                
+
             }
 
             return PartialView("_CustomerLiabilites", model);

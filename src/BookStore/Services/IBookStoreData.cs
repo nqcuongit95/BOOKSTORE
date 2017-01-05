@@ -237,7 +237,7 @@ namespace BookStore.Services
         void Commit();
 
         IQueryable<CustomerInfoViewModel> GetAllKhachHang();
-
+        Task<int> GetCustomerTransactionStatus(string shortcut, string type);
         int CreateCustomer(KhachHang customer);
 
         IEnumerable<LoaiKhachHang> GetAllLoaiKhachHang();

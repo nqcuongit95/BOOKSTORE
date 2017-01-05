@@ -144,16 +144,11 @@
     });
     
     //update role modal
-    $('.update-role-modal').modal({
+    $('.update-role-modal').modal({        
         onApprove: function () {
-            
-            var elem = $(this).find('.positive.button');
-            activeLoading(elem);
-            
-        },
-        onHidden: function () {
             var form = $(this).find('#updateForm');
             var elem = $(this).find('.positive.button');
+            activeLoading(elem);
             var data = form.serialize();
 
             var modal = $('.notify-modal');

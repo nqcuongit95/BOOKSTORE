@@ -14,14 +14,31 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var debt in Model.Debts )
-            {
+        @foreach (var debt in Model.Debts)
+        {
             <tr>
+
+                @{
+
+                    var month = debt.DateCreate.ToString("MM");
+                    var day = debt.DateCreate.ToString("dd");
+                    var dayMonth = day + month;
+                    var formatId = "";
+                    if (debt.Value > 0)
+                    {
+                        formatId += "HD" + dayMonth + debt.Id;
+                    }
+                    else
+                    {
+                        formatId += "PT" + dayMonth + debt.Id;
+                    }
+                    <td>
+                        <div class="ui label">@formatId</div>
+                    </td>
+                }
+
                 <td>
-                    @debt.Id
-                </td>
-                <td>
-                    @debt.Staff   
+                    @debt.Staff
                 </td>
                 <td>
                     @debt.DateCreate.ToString("dd/MM/yyyy hh:mm:ss tt")
@@ -30,13 +47,20 @@
                     @debt.Note
                 </td>
                 <td class="right aligned">
-                    @debt.Value.ToString("N0") đ
+                    @if (debt.Value > 0)
+                    {
+                        <div class="ui green label">@debt.Value.ToString("N0") đ</div>
+                    }
+                    else
+                    {
+                        <div class="ui red label">@debt.Value.ToString("N0") đ</div>
+                    }
                 </td>
                 <td class="right aligned">
-                    @debt.Debt.ToString("N0") đ
+                    <div class="ui grey label">@debt.Debt.ToString("N0") đ</div>
                 </td>
             </tr>
-        }
+                    }
     </tbody>
 </table>
 

@@ -9,6 +9,7 @@ namespace BookStore.ViewModels
     {
         public int ID { get; set; }
         public string Status { get; set; }
+        public string StatusAcronym { get; set; }
         public DateTime Date { get; set; }
         public decimal TotalValues { get; set; }
         public string TotalValuesFormated { get; set; }

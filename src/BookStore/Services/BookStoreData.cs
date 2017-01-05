@@ -125,6 +125,7 @@ namespace BookStore.Services
                             ID = invoice.Id,
                             Date = invoice.NgayLap,
                             Status = status.TenTrangThai,
+                            StatusAcronym = status.VietTat,
                             TotalValues = invoice.TongTien,
                             TotalValuesFormated = FormatDecimalValue(invoice.TongTien)
                         };
@@ -486,7 +487,20 @@ namespace BookStore.Services
                               select user).First().Id;
 
                 //hard code id, edit later
-                var statusId = invoice.CustomerPaid >= invoice.TotalValue ? 2 : 3;
+                int statusId = 0;
+                
+                if (invoice.CustomerPaid >= invoice.TotalValue)
+                {
+                    statusId = await GetCustomerTransactionStatus("Paid", "KhachHang");
+                }
+                else if(invoice.CustomerPaid <= 0)
+                {
+                    statusId = await GetCustomerTransactionStatus("Not-Paid", "KhachHang");
+                }
+                else 
+                {
+                    statusId = await GetCustomerTransactionStatus("Semi-Paid", "KhachHang");
+                }
 
                 var invoice_ = new DonHang
                 {
@@ -968,6 +982,14 @@ namespace BookStore.Services
             };
 
             return result;
+        }
+
+        public async Task<int> GetCustomerTransactionStatus(string shortcut, string type)
+        {            
+            var query = await _context.TrangThai
+                .Where(t => t.VietTat == shortcut && t.Loai == type).FirstAsync();
+
+           return query.Id;                     
         }
     }
 }

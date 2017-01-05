@@ -74,10 +74,22 @@
         numeralThousandsGroupStyle: 'thousand',
         numeralPositiveOnly: true
     });
-
-
+    
     //*******************************global variable*********************************
     var inputEvents = 'DOMAttrModified textInput input keypress paste';
+
+    //dont let user enter over these values
+    var maxValue = 999999999999;
+    var secondMaxValue = 99999999;
+
+    $('input[name=CustomerPaid]').on(inputEvents, function () {
+        
+        if (numeral($(this).val()).value() > maxValue) {
+            
+            customerPaidInput.setRawValue(maxValue);
+        }
+
+    });    
 
     //api setting
     $.fn.api.settings.api = {
@@ -191,42 +203,42 @@
     //search product result template
     $.fn.search.settings.templates.productSearchTemplate = function (response) {
 
-        var html = '';               
+        var html = '';
 
         $.each(response.results, function (index, product) {
             var image = '';
-            
+
             var formatedRetailPrice = numeral(product.retailPrice).format('0,0 $');
             console.log(product.imageUrl);
             if (product.imageUrl !== null) {
                 image += '<div class="image" style="width: 6em;height: 5em;">'
                   + ' <img src="' + product.imageUrl + '">'
                   + '</div>';
-                
+
             }
             else {
                 image += '<div class="image" style="width: 6em;height: 5em;">'
                   + ' <img src="' + defaultImageUrl + '">'
                   + '</div>';
-                
-            }          
+
+            }
 
             html += '<a class="result">';
-            html += image            
-            html += '<div class="content" style="margin: 0 8em 0 0;">';            
+            html += image
+            html += '<div class="content" style="margin: 0 8em 0 0;">';
             html += '<div class="title">' + product.name + '</div>';
             html += '<div class="description">'
             html += '<i class="shop icon"></i>';
             html += 'Có thể bán: ' + product.available;
-            html += '</div>'                        
+            html += '</div>'
             html += '<div class="ui divider" style="margin: 4px 0 4px 0;"></div>'
             html += '<div class="ui teal tag label price">' + formatedRetailPrice + '</div>'
             html += '<div class="ui floated right label">' + "Mã SP: " + product.id + '</div>'
-            html += '</div>'           
+            html += '</div>'
             html += '</a>'
 
         });
-       
+
         return html;
     };
 
@@ -267,7 +279,7 @@
             inputCount.trigger('input');
             inputValue.trigger('input');
 
-        });        
+        });
     }
 
     //validate current product on invoice
@@ -668,7 +680,7 @@
                 if (count > availableProduct) {
                     count -= 1;
                     //alert("buying exceed the stock");
-                    var msg = "Sản phẩm này chỉ có thể bán " + availableProduct;
+                    var msg = "Sản phẩm này chỉ còn lại " + availableProduct + " mặt hàng";
                     showPopup(tdInputCount, msg);
                 }
                 else {
@@ -708,11 +720,20 @@
                 //    numeralPositiveOnly: true
                 //})
 
-                new Cleave(priceInput, {
+                var cleavePriceInput = new Cleave(priceInput, {
                     numeral: true,
                     numeralThousandsGroupStyle: 'thousand',
                     numeralPositiveOnly: true
                 })
+
+                priceInput.on('click',function(){
+                    $(this).select();
+                })
+
+                countInput.on('click', function () {
+                    $(this).select();
+                })
+
 
                 //update payment
                 updatePayment();
@@ -737,7 +758,7 @@
 
                     //exceed the number of current product
                     if (currentCount > availableProduct) {
-                        var msg = "Sản phẩm này chỉ có thể bán " + availableProduct;
+                        var msg = "Sản phẩm này chỉ còn lại " + availableProduct + " mặt hàng";
                         showPopup(inputTd, msg);
                         inputTd.val(availableProduct);
                     }
@@ -763,6 +784,9 @@
 
                     if (priceTd.val().length <= 0) {
                         priceTd.val(0);
+                    }
+                    else if (numeral($(this).val()).value() > secondMaxValue) {
+                        cleavePriceInput.setRawValue(secondMaxValue);
                     }
 
                     calculateTotalMoney(currentCountTd, priceTd, totalMoneyTd);
@@ -872,7 +896,7 @@
             $('#zero-product-modal').modal('show');
             thisBtn.removeClass('loading');
             return;
-        }        
+        }
 
         var invoiceDetail = {
             CustomerId: customerId,
