@@ -61,7 +61,6 @@ function initializeCRUDForm() {
     });
     $('.crud-form .add-property.button').click(function () {
         addPropertyForm($('.crud-form .properties'));
-
         updateProperties();
         initializeValidationCRUDForm();
     });
@@ -147,7 +146,6 @@ function initializeFormModal(fn) {
         crudFormSubmit(this, fn);
     });
 
-    updateProperties();
     initializePropertyFieldset();
 
     form.find('.cancel.button').click(function (event) {
@@ -185,6 +183,7 @@ function initializePropertyFieldset() {
             }
         });
     });
+    updateProperties();
 }
 
 function addPropertyForm(content) {
@@ -201,8 +200,8 @@ function addPropertyForm(content) {
 function updateProperties() {
     var fields = $('.crud-form .properties .fields');
 
-    fields.each(function (index) {
-        $(this).find('input').each(function () {
+    fields.each(function(index) {
+        $(this).find('input').each(function() {
             var defaultName = $(this).attr('default-name');
             if (defaultName !== undefined) {
                 var name = 'properties[' + index + '].' +
@@ -213,35 +212,35 @@ function updateProperties() {
             }
         });
 
-        $(this).find('.ui.search').each(function () {
+        $(this).find('.ui.search').each(function() {
             $(this).search({
-                minCharacters: 0,
-                apiSettings: {
-                    url: $(this).attr('href') + '?' +
-                        $(this).attr('for-id') + '=' +
-                        $('#' + $(this).attr('for-id')).val()
-                },
-                fields: {
-                    results: 'results',
-                    title: 'title'
-                },
-                error: false
-            });
+                    minCharacters: 0,
+                    apiSettings: {
+                        url: $(this).attr('href') + '?' +
+                            $(this).attr('for-id') + '=' +
+                            $('#' +$(this).attr('for-id')).val()
+                    },
+                    fields: {
+                        results: 'results',
+                        title: 'title'
+                    },
+                    error: false
+                });
 
             $(this).search('clear cache');
         });
     });
-}
+    }
 
 function initializeDataTable() {
     var table = $('.data-table');
 
-    $('.data-table .action-buttons .item').click(function (event) {
+    $('.data-table .action-buttons .item').click(function(event) {
         event.preventDefault();
 
         onClickActionButton(this);
     });
-}
+    }
 
 function initializeIndexPagination() {
     var dropdown = $('#index-pagination > .ui.dropdown');
@@ -249,12 +248,12 @@ function initializeIndexPagination() {
     dropdown.dropdown('set selected', $('#page-index').val());
 
     dropdown.dropdown({
-        onChange: function (value, text) {
-            console.log('onChange');
-            location.search = '?page=' + value;
-        }
-    });
-}
+            onChange: function (value, text) {
+                console.log('onChange');
+                location.search = '?page=' + value;
+            }
+        });
+    }
 
 function onClickActionButton(element, fn) {
     element = $(element);
@@ -265,30 +264,30 @@ function onClickActionButton(element, fn) {
     activeMessageLoader();
 
     $.ajax({
-        url: url,
-        type: 'post',
-        success: function (result, status, xhr) {
-            if (typeof result === 'string') {
-                formModal.html(result);
+            url: url,
+            type: 'post',
+            success: function (result, status, xhr) {
+                if(typeof result === 'string') {
+                    formModal.html(result);
 
-                initializeFormModal(fn);
+                    initializeFormModal(fn);
 
+                    inactiveMessageLoader();
+                    formModal.modal('show');
+                }
+                else {
+                    inactiveMessageLoader();
+                    showMessage(result);
+                }
+            },
+            error: function (xhr, status, error) {
                 inactiveMessageLoader();
-                formModal.modal('show');
-            }
-            else {
-                inactiveMessageLoader();
-                showMessage(result);
-            }
-        },
-        error: function (xhr, status, error) {
-            inactiveMessageLoader();
-            showDefaultErrorMessage();
+                showDefaultErrorMessage();
 
-            return null;
-        }
-    });
-}
+                return null;
+            }
+        });
+    }
 
 function showDefaultErrorMessage() {
     var element = $('#message');
@@ -308,10 +307,10 @@ function showDefaultErrorMessage() {
     //   .find('>.error').removeClass('hidden');
 
     element.modal('show');
-}
+    }
 
 function showMessage(message) {
-    if (message !== undefined) {
+    if(message !== undefined) {
         var element = $('#message');
         var title = $('#message>.header');
         var content = $('#message>.content>.message>.content>.header');
@@ -333,7 +332,7 @@ function showMessage(message) {
             default:
                 messageIcon.attr("class", "");
                 break;
-        }
+            }
 
         //element.children('.header').find('>.icon').addClass('hidden');
         //element.children('.actions').find('>.button').addClass('hidden');
@@ -344,29 +343,29 @@ function showMessage(message) {
 
         element.modal('show');
     }
-}
+    }
 
 function hideMessage() {
     $('#message').modal('hide');
-}
+    }
 
 function activeMessageLoader() {
     $('#message-loader').addClass('active');
-}
+    }
 
 function inactiveMessageLoader() {
     $('#message-loader').removeClass('active');
-}
+    }
 
 function initializeMessageProgress(duration, total) {
     $('#message-progress').progress({
-        duration: duration,
-        total: total,
-        onSuccess: function () {
-            inactiveMessageProgress();
-        }
-    });
-}
+            duration: duration,
+            total: total,
+            onSuccess: function () {
+                inactiveMessageProgress();
+            }
+        });
+    }
 
 function activeMessageProgress(timeout) {
     var element = $('#message-progress');
@@ -376,22 +375,22 @@ function activeMessageProgress(timeout) {
     element.progress('reset');
     element.removeClass('hidden');
 
-    setInterval(function () {
+    setInterval(function() {
         element.progress('increment');
     }, intervals);
-}
+    }
 
 function inactiveMessageProgress() {
     var element = $('#message-progress');
 
     element.progress('reset');
     element.addClass('hidden');
-}
+    }
 
 function showFormModal() {
     $('#form-modal').modal('show');
-}
+    }
 
 function hideFormModal() {
     $('#form-modal').modal('hide');
-}
+    }

@@ -163,29 +163,29 @@
 
             for (int i = 0; i < properties.Count(); i++)
             {
-                <div class="property three fields">
-                    <div class="field">
-                        <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
-                        <input asp-for="@properties[i].ThuocTinh"
-                               id="properties[@i].ThuocTinh"
-                               name="properties[@i].ThuocTinh"
-                               readonly=""
-                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
-                    </div>
-
-                    <div class="field">
-                        <label asp-for="@chiTietHangHoa.GiaTri"></label>
-                        <input asp-for="@properties[i].GiaTri"
-                               id="properties[@i].GiaTri"
-                               name="properties[@i].GiaTri"
-                               readonly=""
-                               placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
-                    </div>
-
-                    <div class="field">
-                        <label>&thinsp;</label>
-                    </div>
+            <div class="property three fields">
+                <div class="field">
+                    <label asp-for="@chiTietHangHoa.ThuocTinh"></label>
+                    <input asp-for="@properties[i].ThuocTinh"
+                           id="properties[@i].ThuocTinh"
+                           name="properties[@i].ThuocTinh"
+                           readonly=""
+                           placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.ThuocTinh)">
                 </div>
+
+                <div class="field">
+                    <label asp-for="@chiTietHangHoa.GiaTri"></label>
+                    <input asp-for="@properties[i].GiaTri"
+                           id="properties[@i].GiaTri"
+                           name="properties[@i].GiaTri"
+                           readonly=""
+                           placeholder="@Html.DisplayNameFor(p => chiTietHangHoa.GiaTri)">
+                </div>
+
+                <div class="field">
+                    <label>&thinsp;</label>
+                </div>
+            </div>
             }
         }
     </div>
@@ -210,59 +210,67 @@
 </form>
 
 <script>
-    $(document).ready(function () {
-        $("#upload").click(function (event) {
-            var timeout = 1000;
+    $("#upload").click(function (event) {
+        var timeout = 1000;
 
-            var fileUpload = $("#files").get(0);
-            var files = fileUpload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length ; i++) {
-                data.append(files[i].name, files[i]);
-            }
-            $.ajax({
-                type: "POST",
-                url: $("#upload").attr("href"),
-                contentType: false,
-                processData: false,
-                data: data,
-                success: function (result) {
-                    inactiveMessageLoader();
-                    showMessage(result);
+        var fileUpload = $("#files").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length ; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $.ajax({
+            type: "POST",
+            url: $("#upload").attr("href"),
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                inactiveMessageLoader();
+                showMessage(result);
 
-                    if (result.type !== 'error') {
-                        activeMessageProgress();
+                if (result.type !== 'error') {
+                    activeMessageProgress();
 
-                        if (result.results["Reload"] !== undefined &&
-                            result.results["Reload"] === true) {
+                    if (result.results["Reload"] !== undefined &&
+                        result.results["Reload"] === true) {
+                        setTimeout(
+                            function () {
+                                location.reload();
+                                message.modal('hide');
+                            }, timeout);
+                    }
+                    else {
+                        var redirect = result.results["RedirectUrl"];
+
+                        if (redirect !== undefined) {
                             setTimeout(
                                 function () {
-                                    location.reload();
+                                    location = redirect;
                                     message.modal('hide');
                                 }, timeout);
                         }
-                        else {
-                            var redirect = result.results["RedirectUrl"];
-
-                            if (redirect !== undefined) {
-                                setTimeout(
-                                    function () {
-                                        location = redirect;
-                                        message.modal('hide');
-                                    }, timeout);
-                            }
-                        }
-
-                        if (fn !== undefined) {
-                            fn(result);
-                        }
                     }
-                },
-                error: function () {
-                    inactiveMessageLoader();
-                    showDefaultErrorMessage();
+
+                    if (fn !== undefined) {
+                        fn(result);
+                    }
                 }
-            });
+            },
+            error: function () {
+                inactiveMessageLoader();
+                showDefaultErrorMessage();
+            }
         });
+    });
+
+    initializeCRUDForm();
+
+    $('.money').each(function (index) {
+        numeral.defaultFormat('0,0');
+
+        var text = $(this).text();
+
+        $(this).text(numeral(text).format() + ' đ');
     });
 </script>

@@ -64,8 +64,9 @@ namespace BookStore.Services
             ICollection<ChiTietHangHoa> properties)
         {
             hangHoa.TrangThai = await _context.TrangThai
-                .SingleOrDefaultAsync(m => m.VietTat == hangHoa.TrangThai.VietTat
-                 && m.Loai == hangHoa.TrangThai.Loai);
+                .SingleOrDefaultAsync(
+                m => m.VietTat == hangHoa.TrangThai.VietTat &&
+                m.Loai == hangHoa.TrangThai.Loai);
             hangHoa.TrangThaiId = hangHoa.TrangThai.Id;
 
             await _context.HangHoa.AddAsync(hangHoa);
@@ -88,9 +89,25 @@ namespace BookStore.Services
                 .Where(m => m.HangHoaId == hangHoa.Id));
 
             foreach (var property in properties)
+            {
+                property.Id = 0;
+                property.HangHoa = null;
                 property.HangHoaId = hangHoa.Id;
+            }
 
             await _context.ChiTietHangHoa.AddRangeAsync(properties);
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateHangHoaImageUrl(int id, string imageUrl)
+        {
+            HangHoa hangHoa = await _context.HangHoa
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            hangHoa.ImageUrl = imageUrl;
+
+            _context.Entry(hangHoa).State = EntityState.Modified;
 
             return await _context.SaveChangesAsync();
         }

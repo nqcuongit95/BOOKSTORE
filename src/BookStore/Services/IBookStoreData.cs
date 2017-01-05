@@ -126,6 +126,8 @@ namespace BookStore.Services
 
         Task<int> DeleteHangHoa(int id);
 
+        Task<int> UpdateHangHoaImageUrl(int id, string imageUrl);
+
         #endregion HangHoa
 
         #region PhieuNhapHang
@@ -253,28 +255,42 @@ namespace BookStore.Services
         Task<StatisticsViewModel> GetStatisticsInformation();
 
         Task<List<Role>> GetListRoles();
-        IQueryable<Staff> GetListStaffQueryable();        
+
+        IQueryable<Staff> GetListStaffQueryable();
 
         Task<CustomerFilterResults> FindCustomer(string value);
+
         Task<ProviderFilterResults> FindProvider(string value);
+
         Task<ProductFilterResults> FindProduct(string val);
 
         Task<ProductPriceViewModel> GetPrice(int id, int type);
 
-              
         IQueryable<DonHang> GetAllDonHang();
+
         IQueryable<DonHang> GetDonHangWithOutPtra();
+
         IQueryable<PhieuThuViewModel> GetAllPhieuThu();
+
         IQueryable<PhieuChiViewModel> GetAllPhieuChi();
+
         IQueryable<TraHangViewModel> GetAllPhieuTraHang();
+
         IQueryable<CTDonHang> GetCTDonHang(int donhangID);
+
         IQueryable<TraHangDetailViewModel> GetCTTraHang(int phieutraID);
+
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuChi();
+
         IEnumerable<LoaiPhieu> GetAllLoaiPhieuThu();
+
         IEnumerable<PhieuTraNhapHang> GetAllPhieuTraNhapHang();
+
         Task<Tuple<bool, int>> AddInvoice(InvoiceViewModel invoice,
-            List<ProductBuyingDetailsViewModel> productDetails);       
+            List<ProductBuyingDetailsViewModel> productDetails);
+
         Task<List<ProductFilterViewModel>> GetBestSellingGoods(int take, TimeEnum time, ProductType type);
+
         Task<CustomerFilterViewModel> GetCustomerById(int id);
 
         Task<List<RevenueViewModel>> GetRevenueStatistics(int take, TimeEnum time);
@@ -290,31 +306,57 @@ namespace BookStore.Services
         Task<List<NumberOfCustomersByMonthViewModel>> GetCustomerRegisterStatistics();
 
         CustomerLiabilitesViewModel GetCustomerLiabilites(int id);
+
         Task<Staff> GetStaffByUserName(string userName);
+
         int TaoDonHang(DonHang donhang);
+
         void TaoPhieuThu(PhieuThu phieuthu);
+
         void TaoPhieuChi(PhieuChi phieuchi);
+
         void TaoPhieuTraHang(PhieuTraHang pth);
+
         void TaoCTPhieuTraHang(ChiTietPhieuTraHang pth);
+
         void UpdateDonHang(int? id);
+
         void CapnhatDonhang(int? id, decimal tienthu);
+
         int? findPhieuTraByDonHang(int donhangID);
+
         int findDonHangByCustomer(int? customerID);
+
         int findPhieuTraByCustomer(int? customerID);
+
         int findPhieuNhapByCustomer(int? customerID);
+
         int findUserId(String name);
+
         int findPhieuTraNhapHang(int? providerID);
+
         PhieuThuViewModel findPhieuThu(int phieuID);
+
         IQueryable<PhieuThu> findPhieuThuByDonHang(int donHangID);
+
         PhieuChiViewModel findPhieuChi(int phieuID);
+
         TraHangViewModel findPhieuTra(int phieuID);
+
         DonHangViewModel findDonHangById(int donhangID);
+
         KhachHang findCustomerByDonhang(int donhangId);
+
         CustomerInfoViewModel findCustomerById(int customerId);
+
         NhaCungCap findProviderByPhieuTra(int phieuID);
+
         NhaCungCap findProviderByPhieuNhap(int phieuID);
+
         KhachHang findCustomerByPhieuTra(int donhangId);
+
         PhieuTraHang findNewPhieuTraHang();
+
         Task<BillViewModel> GetBill(int id);
     }
 }

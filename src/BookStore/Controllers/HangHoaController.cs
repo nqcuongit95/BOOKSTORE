@@ -384,9 +384,8 @@ namespace BookStore.Controllers
                     fs.Flush();
                 }
 
-                hangHoa.ImageUrl = $@"\uploads\{fileName}";
-
-                await _bookStoreData.UpdateHangHoa(hangHoa, hangHoa.ChiTietHangHoa);
+                await _bookStoreData
+                    .UpdateHangHoaImageUrl(id ?? 0, $@"\uploads\{fileName}");
 
                 message.Results["Reload"] = true;
 
