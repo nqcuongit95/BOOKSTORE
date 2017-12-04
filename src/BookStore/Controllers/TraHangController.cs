@@ -258,7 +258,7 @@ namespace BookStore.Controllers
         {
             var phieutra = _bookStoreData.findPhieuTra(id);
             phieutra.DonHang = _bookStoreData.findDonHangById(phieutra.DonHangId);
-            phieutra.DonHang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(id).ToList();
+            phieutra.DonHang.listPhieuThu = _bookStoreData.findPhieuThuByDonHang(phieutra.DonHangId).ToList();
             for (int i = 0; i < phieutra.DonHang.listPhieuThu.Count; i++)
             {
                 phieutra.DonHang.TienDaThu += phieutra.DonHang.listPhieuThu[i].TongTien;

@@ -6,6 +6,10 @@ $(document).ready(function () {
         var tiendaThu = $("#tien").val();
         var tiendaThuValue = numeral(tiendaThu).value();
         $('#tongtien').val(tiendaThuValue);
+        if (tiendaThuValue > 999999999) {
+            $("#tien").val(999999999)
+            $('#tongtien').val(999999999);
+        }
     });
     function updatepay() {
 

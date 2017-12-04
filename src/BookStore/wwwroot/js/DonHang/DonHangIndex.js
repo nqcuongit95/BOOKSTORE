@@ -15,14 +15,14 @@ $(document).ready(function () {
         var inputCount = $(this).find('td:eq(2) a');
         var inputth = $(this).find('td:eq(2) input');
         var status = inputth.val();
-        if (status == "Thanh Toán Một Phần") {
+        if (status == "Thanh toán một phần") {
+            inputCount.css('background-color', 'blue');
+        }
+        if (status == "Đã thanh toán") {
             inputCount.css('background-color', 'green');
         }
-        if (status == "Đã Thanh Toán") {
+        if (status == "Chưa thanh toán") {
             inputCount.css('background-color', 'red');
-        }
-        if (status == "Đang giao dịch") {
-            inputCount.css('background-color', 'lightgreen');
         }
 
         if (status == "Chưa Thanh Toán") {

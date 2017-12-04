@@ -88,7 +88,7 @@
                             var day = customer.NgayLap.ToString("dd");
                             var pre = "DH" + day + month + customer.Id;
                             <td class="selectable">
-                                <a asp-action="Details" asp-route-id="@customer.Id">
+                                <a asp-action="Create" asp-route-id="@customer.Id">
                                     @pre
                                 </a>
                             </td>
