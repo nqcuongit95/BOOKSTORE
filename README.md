@@ -5,7 +5,6 @@ Final project for Open Source and OOAD module
 * Nguyễn Quốc Cường – 13520105
 * Dương Huỳnh Duy – 13520163
 * Trần Anh Tuất – 13521003
-* Nguyễn Ngọc Hoàng - 13520297
 
 ## TECHNOLOGIES
 * [Asp.Net Core](https://www.asp.net/core)
